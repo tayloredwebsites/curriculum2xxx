@@ -1,0 +1,24 @@
+<h3>Translations Listing</h3>
+<p><%= link_to "Create new Translation", new_locale_translation_url(@locale) %></p>
+<table>
+  <thead>
+    <tr>
+      <th>Locale</th>
+      <th>Key</th>
+      <th>Translated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @translations.each do |t| %>
+      <tr id="<%= t.key %>">
+        <td><%= t.locale %></td>
+        <td style='word-break: break-all; min-width: 150px;'><%= t.key %></td>
+        <td><%= t.value.blank? ? '' : t.value %></td>
+        <td>
+          <%= link_to "Edit", edit_locale_translation_url(id: t.id, locale_id: @locale) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

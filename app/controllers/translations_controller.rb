@@ -52,6 +52,13 @@ class TranslationsController < ApplicationController
     I18n.backend.reload!
   end
 
+  def new_layout
+    params[:locale_id] = 'en'
+    find_locale
+    @translations = Translation.where(locale: @locale).order('key')
+    render layout: 'responsive1'
+  end
+
   private
 
   def find_locale

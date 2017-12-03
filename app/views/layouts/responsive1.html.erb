@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Curriculum</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <style>
+    /* styles.css */
+
+
+    /* *************************************************************************************
+    Normalizations
+    */
+
+    /*  */
+
+    /* normalize margins and padding */
+    html, body, div, dl, dt, dd, ul, ol, li,
+    h1, h2, h3, h4, h5, h6,
+    pre, form, fieldset, input, p, blockquote, th, td
+    {
+    	margin: 0px;
+    	padding: 0px;
+    }
+
+    /* normalize font size for headers, pre and code */
+    h1, h2, h3, h4, h5, h6, pre, code {
+    	font-size: 100%;
+    }
+
+
+    /* remove list-style from lists */
+    ol, ul {
+    	list-style: none;
+    }
+
+    /* remove border from fieldset and img */
+    fieldset, img {
+    	border: none;
+    }
+
+    /* left align text in caption and th */
+    caption, th {
+    	text-align: left;
+    }
+
+    /* remove quote marks from q tag (see http://alistapart.com/articles/qtag)
+    	This is done because win/ie does not place quotes around the q as per W3C standard.
+    	This turns off quotes on other browsers (since they recognize the :before and :after).
+    	Be sure to place quotes OUTSIDE of the q tags to meet the W3C specifications.
+    	e.g. &ldquo;;<q>The quick brown fox jumps over the lazy dog</q>&rdquo;
+     */
+    q:before, q:after {
+    	content: "";
+    }
+
+    /* remove italization from address */
+    address {
+    	font-style: normal;
+    }
+
+    /* commonly used classes and general changes */
+
+    #content form {
+    	border-top:1px #FFFFFF solid;	/* hack to remove extra spacing above firefox forms */
+    }
+
+
+    /* *************************************************************************************
+    Tools - handy tools including clear(fix)
+    */
+    .clear {
+     display:inline-block;
+    }
+    .clear:after {
+     display:block;
+     visibility:hidden;
+     clear:both;
+     height:0;
+     content: ".";
+    }
+
+    .offscreen {
+    	position:absolute;
+    	left:-10000px;
+    	top:auto;
+    	width:1px;
+    	height:1px;
+    	overflow:hidden;
+    }
+
+    .nowrap {
+    	white-space: nowrap;
+    }
+
+    .center {
+    	text-align: center;
+    }
+
+    /* *************************************************************************************
+    Global Site Styles
+    */
+
+    html {
+    	margin:0px;
+    	font-size: 10px;		/* layout font size 1em = 10px */
+    }
+
+    body {
+    	font-family: Georgia, "Times New Roman", Times, serif;
+    	font-size: 100%;
+    	line-height: 1.2em;
+    	background-color:#eceae0;
+    }
+
+    a {
+    	text-decoration: none;
+    	font-weight: bold;
+    }
+    a:link, a:visited {
+    	color: #172632;
+    }
+    a:hover {
+    	color: #c23;
+    }
+
+    p {
+    	padding-bottom:.5em;
+    }
+
+    #content_main h1 {line-height: 2em; font-size: 1.8em; font-weight: bold;}
+    #content_main h2 {line-height: 1.8em; font-size: 1.6em; font-weight: bold;}
+    #content_main h3 {line-height: 1.6em; font-size: 1.4em; font-weight: bold;}
+    #content_main p {line-height: 1.6em; font-size: 1.4em;}
+
+    #content_main ul {margin: 1em 0px 1em 2em;}
+    #content_main ul li {line-height: 1.6em; font-size: 1.4em; margin-left: 2em; list-style-type:disc;}
+
+    article {
+      background-color: rgba(0,0,0, 0.05);
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      padding: 5px;
+      margin: 10px 0;
+    }
+
+    /* *************************************************************************************
+    Specific Styles
+    */
+    #body-header {
+    	position: relative;
+    	overflow: auto;
+      background: url(http://upload.wikimedia.org/wikipedia/commons/1/16/Ruby_on_Rails-logo.png) no-repeat left top;
+    	width:100%;
+      min-width:480px;
+    }
+
+    #header-logo {
+    	width:425px;
+    	float:left;
+    }
+    /* IE6 hack for floats */
+    *html #header-logo {
+    	display:inline;
+    }
+    #header-logo a {
+      display: block;
+      width: 425px;
+      height: 100px;
+    }
+
+    #body-header-info {
+    	float:right;
+    	color:#000;
+    	padding:10px 10px 10px 0;
+    }
+    #body-header-info a:link, #body-header-info a:visited {
+    	color: #000;
+    }
+    #body-header-info a:hover {
+    	color: #c23;
+    }
+    /* IE6 hack for floats */
+    *html #body-header-info {
+    	display:inline;
+    }
+
+    #pri-nav {
+    	width:12em;
+    	position: absolute;
+    	left:0;
+    	text-align: center;
+    }
+
+
+    #pri-nav ul {
+    	background-color:#eceae0;
+    	display: inline-block;
+    }
+
+    #pri-nav ul li {
+    	background-color: #cfc68d;
+    	width: 8em;
+    	height: 2em;
+    	line-height: 2em;
+    	margin: 1em;
+    	-webkit-border-radius: .5em;
+      -moz-border-radius: 0.5em;
+      border-radius: 0.5em;
+    	box-shadow: x-offset, y-offset, blur-px, color;
+    	-webkit-box-shadow: 0.2em 0.2em 0.4em #172632;
+    	-moz-box-shadow: 0.2em 0.2em 0.4em #172632;
+    	box-shadow: 0.2em 0.2em 0.4em #172632;
+    }
+
+    #pri-nav ul.nav_info li {
+    	width:18em;
+    	padding:1em 1em 0 1em;
+    }
+
+    #pri-nav ul li a {
+    	display: block;
+    }
+
+
+
+    #content_main {
+    	margin:1em 1em 0 14em;
+    	/* min-height:270.5em; */
+    	/* height:auto !important;	/* min-height fast hack */
+    	/* height:270.5em;	/* min-height fast hack */
+    }
+
+    #content_main ul {
+    	margin-left: 3em;
+    }
+
+    #content_main ul li {
+    	list-style-type: disc;
+    }
+
+    article p {
+    	margin: 0.5em;
+    }
+
+    #footer {
+    	/* color:#FFFFFF; */
+    	padding:1em 2em;
+    	/* background-color:#182633; */
+    	/* background-color:#eed; */
+
+    }
+
+    #footer a {
+    	/* color:#FFFFFF; */
+    }
+
+
+    /* *************************************************************************************
+    	Responsiveness via Media Queries
+    */
+
+
+    /*
+    	Responds to :
+    	- window size including DPR devices
+    	Impacts:
+    	- header info drops below header
+    	- changed to top navigation
+    	- content flows vertically (no floats)
+    */
+    @media
+    	only screen and (max-width: 1320px) and (-webkit-min-device-pixel-ratio: 2),
+    	only screen and (max-width: 1320px) and (min--moz-device-pixel-ratio: 2),
+    	only screen and (max-width: 1320px) and (-o-min-device-pixel-ratio: 2/1),
+    	only screen and (max-width: 1320px) and (min-device-pixel-ratio: 2),
+    	only screen and (max-width: 1320px) and (min-resolution: 192dpi),
+    	only screen and (max-width: 1320px) and (min-resolution: 2dppx),
+    	only screen and (max-width: 990px) and (-webkit-min-device-pixel-ratio: 1.5),
+    	only screen and (max-width: 990px) and (min--moz-device-pixel-ratio: 1.5),
+    	only screen and (max-width: 990px) and (-o-min-device-pixel-ratio: 3/2),
+    	only screen and (max-width: 990px) and (min-device-pixel-ratio: 1.5),
+    	only screen and (max-width: 990px) and (min-resolution: 144dpi),
+    	only screen and (max-width: 990px) and (min-resolution: 1.5dppx),
+    	only screen and (max-width: 660px)
+    {
+
+    	/* header */
+    	#header-logo {
+    		float:none;
+    	}
+
+    	#body-header-info {
+    		float:none;
+    		text-align: center;
+    		border-top: 1px solid #eceae0;
+    		font-size: 90%;
+    	}
+
+      /* primary nav - horozontal orientation with floats */
+    	#pri-nav {
+    		width:100%;
+    		padding:0;
+    		position: static;
+    		display:inline-block;
+    	}
+    	#pri-nav ul li {
+    		float: left;
+    	}
+    	#pri-nav:after {
+    	 display:block;
+    	 visibility:hidden;
+    	 clear:both;
+    	 height:0;
+    	 content: ".";
+    	}
+
+    	/* remove left margin from main content */
+    	#content_main {
+    		margin:0 1em 1em 1em;
+    	}
+
+    }
+
+    /* retina displays (not including androids) */
+
+    @media
+    	only screen and (-webkit-min-device-pixel-ratio: 2),
+    	only screen and (min--moz-device-pixel-ratio: 2),
+    	only screen and (-o-min-device-pixel-ratio: 2/1),
+    	only screen and (min-device-pixel-ratio: 2),
+    	only screen and (min-resolution: 192dpi),
+    	only screen and (min-resolution: 2dppx)
+    	{
+    		body {
+    			font-size: 187.5%;		/* layout font size 1em = 30px */
+    		}
+    		#body-header {
+    		  background-image: url(../images/logo@2x.png);
+      		background: url(../images/logo@2x.png) no-repeat left top, url(../images/anti-logo@2x.png) no-repeat right top, #182633;
+      		background-size: 425px 100px, 47px 100px;
+    		}
+      }
+
+    @media  and (max-width: 66em)
+    	{
+    		body {
+    			width: 660px;
+    		}
+
+      }
+
+    @media  and (max-width: 33em)
+    	{
+    		body {
+    			width: 330px;
+    		}
+
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
+    <header role="banner" id="body-header">
+      <span id="header-logo"><a href="#"><span class="offscreen">Taylored Web Sites</span></a></span>
+      <aside role="complementary" id="body-header-info" itemscope itemtype="http://schema.org/Person">
+        <p itemprop="name">Dave Taylor</p>
+        <p itemprop="telephone" href="tel:12032884074">(203)288-4074</p>
+        <p itemprop="email" ><a href="mailto:tayloredwebsites@me.com">tayloredwebsites@me.com</a></p>
+      </aside>
+    </header>
+    <nav role="navigation" id="pri-nav">
+      <ul class="nav-l1">
+        <li><a href="#"><span>Nav 1</span></a></li>
+        <li><a href="#"><span>Nav 2</span></a></li>
+        <li><a href="#"><span>Nav 3</span></a></li>
+      </ul>
+    </nav>
+    <h1>BiH OTC Curriculum</h1>
+    <section id="content_main">
+      <h2>Translations Section</h2>
+      <%= yield %>
+    </section>
+    <footer id="footer">
+      <a href="http://feeds.feedburner.com/TayloredWebSites" rel="alternate" type="application/rss+xml"><img src="http://www.feedburner.com/fb/images/pub/feed-icon16x16.png" alt="Subscribe in a Reader" style="vertical-align:middle;border:0"/></a>&nbsp;<a href="http://feeds.feedburner.com/TayloredWebSites" rel="alternate" type="application/rss+xml" class="nowrap">Subscribe in a reader</a>
+    </footer>
+  </body>
+</html>
