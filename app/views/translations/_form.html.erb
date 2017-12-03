@@ -1,0 +1,18 @@
+<%= form_for @translation, method: form_method, url: form_path do |form| %>
+  <fieldset>
+    <%= form.label :locale %>
+    <%= form.text_field :locale %>
+  </fieldset>
+  <fieldset>
+    <%= form.label :key %>
+    <%= form.text_field :key %>
+  </fieldset>
+  <fieldset>
+    <%= form.label :value %>
+    <%= form.text_area :value %>
+  </fieldset>
+  <fieldset>
+    <%= form.submit 'Save Translation' %>
+    <%= link_to "Cancel", locale_translations_url() %>
+  </fieldset>
+<% end %>
