@@ -4,7 +4,9 @@
     "repository": "https://github.com/user/project.git",
     "license": "BSD3",
     "source-directories": [
-        "app/javascript"
+        "app/javascript",
+        "app/javascript/src",
+        "app/javascript/src/Translations"
     ],
     "exposed-modules": [],
     "dependencies": {
