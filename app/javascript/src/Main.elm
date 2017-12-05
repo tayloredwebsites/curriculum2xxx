@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Html exposing (Html, h1, div, text, program)
-import Html.Attributes exposing (style)
 import Models exposing (Model, initialModel)
 import Msgs exposing (Msg)
 
