@@ -1,5 +1,5 @@
-<h1>Translations Listing</h1>
-<p><%= link_to "Create new Translation", new_locale_translation_url() %></p>
+<h1>Translations Listing 1</h1>
+<p><%= link_to "Create new Translation", new_translation_url() %></p>
 <table>
   <thead>
     <tr>
@@ -13,10 +13,10 @@
     <% @translations.each do |t| %>
       <tr id="<%= t.key %>">
         <td><%= t.locale %></td>
-        <td style='word-break: break-all; min-width: 150px;'><%= t.key %></td>
-        <td><%= t.value.blank? ? '' : t.value %></td>
+        <td style='word-break: break-all; min-width: 130px;'><%= t.key %></td>
+        <td style='min-width: 130px;'><%= t.value.blank? ? '' : t.value %></td>
         <td>
-          <%= link_to "Edit", edit_locale_translation_url(id: t.id) %>
+          <%= link_to "Edit", edit_translation_url(id: t.id) %>
         </td>
       </tr>
     <% end %>

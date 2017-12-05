@@ -1,2 +1,4 @@
 <h1>Create Translation</h1>
-<%= render partial: 'form', locals: {form_path: locale_translation_path, form_method: 'POST'} %>
+<%= form_for @translation, url: new_translation_path, :html => { :class => "translationForm", :id => "newTranslation" } do |form| %>
+  <%= render partial: 'form', :locals => {:form => form} %>
+<% end %>
