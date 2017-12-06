@@ -1,0 +1,17 @@
+
+.pageHeader .logoImage {
+  background-image: url(asset_path('logo.png'));
+  background-repeat: no-repeat;
+  background-position: 0px 10px;
+  width: 59px;
+  height: 84px;
+  display: inline-block;
+  position: relative;
+}
+.pageHeader .logoText {
+  font-size: 200%;
+  color: #000087;
+  position: relative;
+  top: 0px;
+  display: inline-block;
+}
