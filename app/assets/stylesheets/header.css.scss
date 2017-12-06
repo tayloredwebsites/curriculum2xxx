@@ -1,5 +1,16 @@
 
-.pageHeader .logoImage {
+#pageHeader #pageHeaderLogo {
+   padding-left: 45px;
+   text-decoration: none;
+   min-width: 250px;
+}
+#pageHeader #pageHeaderTitle {
+    text-align: center;
+}
+#pageHeader #pageHeaderShowNav {
+    margin-top: 15px;
+}
+#pageHeader .logoImage {
   background-image: url(asset_path('logo.png'));
   background-repeat: no-repeat;
   background-position: 0px 10px;
@@ -8,7 +19,7 @@
   display: inline-block;
   position: relative;
 }
-.pageHeader .logoText {
+#pageHeader .logoText {
   font-size: 200%;
   color: #000087;
   position: relative;

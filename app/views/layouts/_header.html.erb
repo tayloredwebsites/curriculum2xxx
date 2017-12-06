@@ -1,11 +1,16 @@
-<header class='pageHeader row'>
-  <a href='#' class='col-4' style='padding-left: 45px; text-decoration: none; min-width: 250px;'>
+<header id='pageHeader' class='row'>
+  <a id='pageHeaderLogo' href='#' class='col-3'>
     <span class='logoImage'></span>
     <span class='logoText'>BiH<br>ENABLE</span>
   </a>
-  <div class='col-8' style='text-align: center;'><h1><%= translate('header.site_title') %></h1></div>
+  <div id='pageHeaderTitle' class='col-8'>
+    <h1><%= translate('header.site_title') %></h1>
+  </div>
+  <div id='pageHeaderShowNav' class='col-1'>
+    <i class="fa fa-bars fa-2x"></i>
+  </div>
 </header>
-<nav class="navbar navbar-expand-sm bg-light">
+<nav id='topNav' class="navbar navbar-expand-sm bg-light">
   <ul class="navbar-nav">
     <li class="nav-item active" aria-selected='true'>
       <a class="nav-link">Curriculum</a>
