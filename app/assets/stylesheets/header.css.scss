@@ -1,16 +1,10 @@
 
 #pageHeader #pageHeaderLogo {
-   padding-left: 45px;
+   margin-left: 0px;
    text-decoration: none;
-   min-width: 250px;
+   min-width: 190px;
 }
-#pageHeader #pageHeaderTitle {
-    text-align: center;
-}
-#pageHeader #pageHeaderShowNav {
-    margin-top: 15px;
-}
-#pageHeader .logoImage {
+#pageHeader #pageHeaderLogo .logoImage {
   background-image: url(asset_path('logo.png'));
   background-repeat: no-repeat;
   background-position: 0px 10px;
@@ -19,10 +13,22 @@
   display: inline-block;
   position: relative;
 }
-#pageHeader .logoText {
+#pageHeader #pageHeaderLogo .logoText {
   font-size: 200%;
   color: #000087;
   position: relative;
   top: 0px;
   display: inline-block;
+}
+#pageHeader #pageHeaderTitle {
+    text-align: center;
+}
+#pageHeader #pageHeaderTitle h1.h2 {
+    font-size: 1.5rem;
+    margin-top: 15px;
+}
+
+
+#pageHeader #pageHeaderShowNav {
+    margin-top: 30px;
 }
