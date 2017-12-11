@@ -1,14 +1,14 @@
 module Models exposing (..)
 
+import RemoteData exposing (WebData)
+
 type alias Model =
-  { translations: List Translation
+  { translations: WebData (List Translation)
   }
 
 initialModel: Model
 initialModel =
-  { translations = [
-      Translation 1 "en" "test.key" "This is a test."
-    ]
+  { translations = RemoteData.Loading
   }
 
 type alias TranslationId =

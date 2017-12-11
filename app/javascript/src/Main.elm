@@ -1,10 +1,12 @@
 module Main exposing (..)
-
+import Http
 import Html exposing (Html, h1, div, text, program)
-import Models exposing (Model, initialModel)
+import Models exposing (Model, initialModel, Translation)
 import Msgs exposing (Msg)
-
-import Translations.Listing
+import Json.Decode as Decode
+import Json.Decode.Pipeline exposing (decode, required)
+import Translations.Listing exposing (nav, list)
+import RemoteData exposing (WebData)
 
 -- INIT
 
@@ -21,7 +23,8 @@ view model =
   -- h1 [style [("display", "flex"), ("justify-content", "center")]]
   --    [text "Hello Elm!"]
   div []
-    [page model]
+    [ -- page model
+    ]
 
 page: Model -> Html Msg
 page model =
@@ -33,7 +36,34 @@ page model =
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-  (model, Cmd.none)
+  case msg of
+    Msgs.OnFetchTranslations response ->
+      ({ model | translations = response}, Cmd.none)
+
+-- COMMANDS
+
+fetchTranslations : Cmd Msg
+fetchTranslations =
+  Http.get fetchTranslationsUrl translationsDecoder
+  |> RemoteData.sendRequest
+  |> Cmd.map Msgs.OnFetchTranslations
+
+fetchTranslationsUrl : String
+fetchTranslationsUrl =
+  "http://localhost:5000/translations"
+
+translationsDecoder : Decode.Decoder (List Translation)
+translationsDecoder =
+  Decode.list translationDecoder
+
+translationDecoder : Decode.Decoder Translation
+translationDecoder =
+  decode Translation
+    |> required "id" Decode.int
+    |> required "locale" Decode.string
+    |> required "code" Decode.string
+    |> required "message" Decode.string
+
 
 -- SUBSCRIPTIONS
 

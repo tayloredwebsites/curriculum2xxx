@@ -1,4 +1,7 @@
 module Msgs exposing (..)
 
+import Models exposing (Translation)
+import RemoteData exposing (WebData)
+
 type Msg
-  = None
+  = OnFetchTranslations (WebData (List Translation))
