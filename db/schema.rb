@@ -10,7 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171201223739) do
+ActiveRecord::Schema.define(version: 20171212220156) do
+
+  create_table "grade_bands", force: :cascade do |t|
+    t.integer "tree_type_id", null: false
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tree_type_id"], name: "index_grade_bands_on_tree_type_id"
+  end
+
+  create_table "locales", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.integer "tree_type_id", null: false
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
+  end
 
   create_table "translations", force: :cascade do |t|
     t.string "locale"
@@ -20,6 +43,39 @@ ActiveRecord::Schema.define(version: 20171201223739) do
     t.boolean "is_proc", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tree_types", force: :cascade do |t|
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trees", force: :cascade do |t|
+    t.integer "tree_type_id", null: false
+    t.integer "version_id", null: false
+    t.integer "subject_id", null: false
+    t.integer "grade_band_id", null: false
+    t.string "code"
+    t.integer "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
+    t.index ["subject_id"], name: "index_trees_on_subject_id"
+    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id"], name: "index_trees_on_keys"
+    t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
+    t.index ["version_id"], name: "index_trees_on_version_id"
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.integer "subject_id", null: false
+    t.integer "grade_band_id", null: false
+    t.integer "locale_id", null: false
+    t.integer "status"
+    t.index ["grade_band_id"], name: "index_uploads_on_grade_band_id"
+    t.index ["locale_id"], name: "index_uploads_on_locale_id"
+    t.index ["subject_id", "grade_band_id", "locale_id"], name: "index_uploads_on_keys"
+    t.index ["subject_id"], name: "index_uploads_on_subject_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -47,6 +103,12 @@ ActiveRecord::Schema.define(version: 20171201223739) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

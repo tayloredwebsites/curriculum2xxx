@@ -1,0 +1,2 @@
+class TreeType < ApplicationRecord
+end
