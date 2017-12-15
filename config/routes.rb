@@ -11,6 +11,15 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :uploads,
+    only: [:index, :new, :create, :show, :edit, :update] do
+
+    member do
+      get 'do_upload'
+    end
+  end
+
+
   devise_for :users
 
   root to: 'application#index'

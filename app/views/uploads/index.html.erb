@@ -1,0 +1,26 @@
+<h1>Uploads Management Page</h1>
+<p><%= link_to "Create new Upload", new_upload_url() %></p>
+<table id='uploadsTable'>
+  <thead>
+    <tr>
+      <th>Subject</th>
+      <th>Grade</th>
+      <th>Locale</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @uploads.each do |u| %>
+      <tr id="<%= u.id %>">
+        <td><%= u.subject.code %></td>
+        <td><%= u.grade_band.code %></td>
+        <td><%= u.locale.name %></td>
+        <td><%= Upload::UPLOAD_STATUS[u.status] %></td>
+        <td>
+          <%= link_to "Upload", do_upload_upload_url(id: u.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
