@@ -7,18 +7,14 @@
 #pageHeader #pageHeaderLogo .logoImage {
   background-image: url(asset_path('logo.png'));
   background-repeat: no-repeat;
-  background-position: 0px 10px;
-  width: 59px;
-  height: 84px;
-  display: inline-block;
-  position: relative;
+  width: 400px;
+  height: 60px;
 }
 #pageHeader #pageHeaderLogo .logoText {
-  font-size: 200%;
+  font-size: 300%;
+  line-height: 85%;
   color: #000087;
-  position: relative;
-  top: 0px;
-  display: inline-block;
+  margin-top: 10px;
 }
 #pageHeader #pageHeaderTitle {
     text-align: center;
@@ -30,5 +26,5 @@
 
 
 #pageHeader #pageHeaderShowNav {
-    margin-top: 30px;
+    margin-top: 20px;
 }
