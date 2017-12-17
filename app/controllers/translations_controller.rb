@@ -11,6 +11,11 @@ class TranslationsController < ApplicationController
     else
       @translations = Translation.all.order(:key, :locale)
     end
+    respond_to do |format|
+      format.html
+      format.json { render json: @translations}
+    end
+
   end
 
   def listing2

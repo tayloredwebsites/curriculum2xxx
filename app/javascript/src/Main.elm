@@ -3,16 +3,17 @@ import Http
 import Html exposing (Html, h1, div, text, program)
 import Models exposing (Model, initialModel, Translation)
 import Msgs exposing (Msg)
+import Translations.Listing exposing (nav, list)
+-- commands import
 import Json.Decode as Decode
 import Json.Decode.Pipeline exposing (decode, required)
-import Translations.Listing exposing (nav, list)
 import RemoteData exposing (WebData)
 
 -- INIT
 
 init : (Model, Cmd Msg)
 init =
-  (initialModel, Cmd.none)
+  (initialModel, fetchTranslations) --, Cmd.none) --
 
 -- VIEW
 
@@ -21,9 +22,9 @@ view model =
   -- The inline style is being used for example purposes in order to keep this example simple and
   -- avoid loading additional resources. Use a proper stylesheet when building your own app.
   -- h1 [style [("display", "flex"), ("justify-content", "center")]]
-  --    [text "Hello Elm!"]
+  --    [ text "Hello Elm!" ]
   div []
-    [ -- page model
+    [ page model
     ]
 
 page: Model -> Html Msg
@@ -50,7 +51,7 @@ fetchTranslations =
 
 fetchTranslationsUrl : String
 fetchTranslationsUrl =
-  "http://localhost:5000/translations"
+  "http://localhost:5000/translations.json"
 
 translationsDecoder : Decode.Decoder (List Translation)
 translationsDecoder =
@@ -61,8 +62,8 @@ translationDecoder =
   decode Translation
     |> required "id" Decode.int
     |> required "locale" Decode.string
-    |> required "code" Decode.string
-    |> required "message" Decode.string
+    |> required "key" Decode.string
+    |> required "value" Decode.string
 
 
 -- SUBSCRIPTIONS
