@@ -2,7 +2,15 @@ class UploadsController < ApplicationController
   before_action :find_upload, only: [:show, :edit, :update]
   def index
     @uploads = Upload.includes([:subject, :grade_band, :locale]).all.upload_listing
+    respond_to do |format|
+      format.html
+      format.json { render json: @uploads}
+    end
   end
+
+  # def index2
+  #   uploads = Upload.includes([:subject, :grade_band, :locale]).all.upload_listing
+  # end
 
   def new
     @upload = Upload.new()

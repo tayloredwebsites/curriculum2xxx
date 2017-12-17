@@ -13,7 +13,9 @@ Rails.application.routes.draw do
 
   resources :uploads,
     only: [:index, :new, :create, :show, :edit, :update] do
-
+    collection do
+      get 'index2', to: 'translations#index2'
+    end
     member do
       get 'do_upload'
     end
