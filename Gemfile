@@ -54,7 +54,11 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver' 
+  gem 'factory_bot_rails' # was factory_girl_rails
+  gem 'rails-controller-testing' # add assigns and assert template to controller testing
+  gem 'launchy' # for launching save_and_open_page to default browser
+
 end
 
 group :development do

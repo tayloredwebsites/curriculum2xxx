@@ -8,11 +8,16 @@ class Upload < ApplicationRecord
   validates :grade_band, presence: true
   validates :locale, presence: true
 
+  validates :status, presence: true, allow_blank: false
+
   scope :upload_listing, -> {
     order('subjects.code', 'grade_bands.code', 'locales.name')
     # where(active: true)
   }
 
-  UPLOAD_STATUS = ['Not Uploaded', 'Validated', 'Tree Uploaded', 'Indicators Uploaded', 'KBE Sectors related', 'Indicators related', 'Upload Done']
+  UPLOAD_STATUS = ['Not Uploaded', 'Tree Uploaded', 'Upload Done']
+  UPLOAD_STATUS_NOT_UPLOADED = 0
+  UPLOAD_STATUS_TREE_UPLOADED = 1
+  UPLOAD_STATUS_UPLOAD_DONE = 2
 
 end

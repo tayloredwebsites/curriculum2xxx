@@ -17,7 +17,10 @@ Rails.application.routes.draw do
       get 'index2', to: 'translations#index2'
     end
     member do
-      get 'do_upload'
+      get 'start_upload'
+      patch 'do_upload'
+      post 'do_upload'
+      get "do_upload" => "start_upload"
     end
   end
 

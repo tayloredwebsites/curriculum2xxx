@@ -12,13 +12,13 @@
   </thead>
   <tbody>
     <% @uploads.each do |u| %>
-      <tr id="<%= u.id %>">
+      <tr id="id_<%= u.id %>">
         <td><%= u.subject.code %></td>
         <td><%= u.grade_band.code %></td>
         <td><%= u.locale.name %></td>
         <td><%= Upload::UPLOAD_STATUS[u.status] %></td>
         <td>
-          <%= link_to "Upload", do_upload_upload_url(id: u.id) %>
+          <%= link_to "Upload", start_upload_upload_url(id: u.id) %>
         </td>
       </tr>
     <% end %>

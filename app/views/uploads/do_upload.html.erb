@@ -1,0 +1,6 @@
+<h1>Upload <%= @filename %></h1>
+<h2>Status: <%= Upload::UPLOAD_STATUS[@upload.status] %></h2>
+<%= form_tag do_upload_upload_path, multipart: true do |form| %>
+  <%= file_field(:upload, :file) %>
+  <button class='btn btn-primary' type='submit'>Upload</button>
+<% end %>

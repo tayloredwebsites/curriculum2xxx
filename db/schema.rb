@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212220156) do
+ActiveRecord::Schema.define(version: 20171219191340) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20171212220156) do
     t.datetime "updated_at", null: false
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["subject_id"], name: "index_trees_on_subject_id"
-    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id"], name: "index_trees_on_keys"
+    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys"
     t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
     t.index ["version_id"], name: "index_trees_on_version_id"
   end
