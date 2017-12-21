@@ -41,6 +41,7 @@ class UploadsController < ApplicationController
 
   def start_upload
     if @upload
+      @message = "Select file to upload to get to next step/"
       render :do_upload
     else
       flash[:notice] = 'Missing upload record.'
@@ -52,20 +53,28 @@ class UploadsController < ApplicationController
   def do_upload
     require 'csv'
     if @upload
+      # to do - refactor this
       case @upload.status
       when Upload::UPLOAD_STATUS_NOT_UPLOADED
         puts("status Upload::UPLOAD_STATUS_NOT_UPLOADED, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_NOT_UPLOADED]}")
         puts("method: #{request.method}")
         filename = 'Hem_09_transl_Eng.csv'
         puts("upload_params: #{upload_params}")
+
+        # infomation to send back to user after completion
+        count_adds = 0
+        count_errors = 0
+        row_num = 0
+        errs = []
+
         if upload_params['file'].original_filename == filename
           # process file to upload
 
           # these are the OCT headers we need (rest are for teacher uploads) in the spreadsheet
           long_headers = [ "Area", "Component ", "Outcome", "Indicator", "Grade band", "relevant KBE sectors (as determined from KBE spreadsheets)", "Explanation of how the indicator relates to KBE sector", "Closely related learning outcomes applicable to KBE sector", "Mathematics", "Geography", "Physics", "Biology", "ICT" ]
           # OCT headers as symbols
-          # todo - confirm that eighth header is chemistry - same subject as file ????
-          # todo - may need different set of arrays, or mappings for other subjects.
+          # to do - confirm that eighth header is chemistry - same subject as file ????
+          # to do - may need different set of arrays, or mappings for other subjects.
           short_headers = [ :area, :component, :outcome, :indicator, :gradeBand, :relevantKbe, :kbeRelation, :chemistry, :mathematics, :geography, :physics, :biology, :computers]
           long_to_short = Hash[long_headers.zip(short_headers)]
           short_to_long = Hash[short_headers.zip(long_headers)]
@@ -81,7 +90,9 @@ class UploadsController < ApplicationController
             # map original rows to short headers for standardized field lookup in row
             # new_row = Hash.new()
 
+
             row.each do |key, val|
+              row_num += 1
               new_key = long_to_short[key]
             #   new_row[long_to_short[key]] = val if new_key
             # end
@@ -95,8 +106,13 @@ class UploadsController < ApplicationController
                 raise "invalid area code: #{area_num.inspect}" if area_num.length != 1
 
                 # insert area into tree
-                node = Tree.find_or_add_code_in_tree(Tree::OTC_TREE_TYPE_ID, Tree::OTC_VERSION_ID, @upload.subject_id, @upload.grade_band_id, area_num.to_s, nil, (area_rec ? area_rec.code : ''), area_rec)
+                node, save_status, err_msg = Tree.find_or_add_code_in_tree(Tree::OTC_TREE_TYPE_ID, Tree::OTC_VERSION_ID, @upload.subject_id, @upload.grade_band_id, area_num.to_s, nil, (area_rec ? area_rec.code : ''), area_rec)
                 area_rec = node
+                count_adds += 1 if save_status == ApplicationRecord::SAVE_STATUS_ADDED
+                if save_status == ApplicationRecord::SAVE_STATUS_ERROR
+                  count_errors += 1
+                  errs <<  err_msg
+                end
 
                 # insert area name into translation table
                 # transl = Translation.find_or_add_translation(locale, "#{OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name", val)
@@ -106,13 +122,29 @@ class UploadsController < ApplicationController
         else
           flash[:notice] = 'Filename does not match this Upload!'
         end
+        if count_errors > 0
+          @message = <<-ENDMSG
+          Got the following errors:
+          #{err_msg.join(', ')}
+          Select file to upload to try again
+          ENDMSG
+        else
+          @message = <<-ENDMSG
+          Processed successfully:
+          Move to step xxxxx
+          Select file to upload for next step
+          ENDMSG
+        end
         render :do_upload
       when Upload::UPLOAD_STATUS_TREE_UPLOADED
         puts("status UPLOAD_STATUS_TREE_UPLOADED, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_TREE_UPLOADED]}")
+        render :index
       when Upload::UPLOAD_STATUS_UPLOAD_DONE
         puts("status UPLOAD_STATUS_UPLOAD_DONE, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_UPLOAD_DONE]}")
+        render :index
       else
         puts("invalid status")
+        render :index
       end
     end
   end

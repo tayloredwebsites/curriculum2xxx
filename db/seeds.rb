@@ -13,7 +13,6 @@ if Version.count < 1
 end
 throw "Invalid Version Count" if Version.count > 1
 v01 = Version.first
-puts "v01: #{v01.inspect}"
 
 if TreeType.count < 1
   TreeType.create(
@@ -22,7 +21,6 @@ if TreeType.count < 1
 end
 throw "Invalid TreeType Count" if TreeType.count > 1
 otc = TreeType.first
-puts "otc: #{otc.inspect}"
 
 if Locale.count < 1
   Locale.create(
@@ -44,7 +42,6 @@ if Locale.count < 1
 end
 throw "Invalid Locale Count" if Locale.count < 1 || Locale.count > 4
 loc_en = Locale.where(code: 'en').first
-puts "loc_en: #{loc_en.inspect}"
 
 if GradeBand.count < 1
   GradeBand.create(
@@ -54,7 +51,6 @@ if GradeBand.count < 1
 end
 throw "Invalid GradeBand Count" if GradeBand.count > 1
 gb_09 = GradeBand.first
-puts "gb_09: #{gb_09.inspect}"
 
 if Subject.count < 1
   Subject.create(
@@ -64,7 +60,6 @@ if Subject.count < 1
 end
 throw "Invalid Subject Count" if Subject.count > 1
 hem = Subject.first
-puts "hem: #{hem.inspect}"
 
 if Upload.count < 1
   Upload.create(
@@ -76,4 +71,3 @@ if Upload.count < 1
 end
 throw "Invalid Upload Count" if Upload.count > 1
 hem_09 = Upload.first
-puts "hem_09: #{hem_09.inspect}"

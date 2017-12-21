@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       get 'start_upload'
       patch 'do_upload'
       post 'do_upload'
-      get "do_upload" => "start_upload"
+      get "do_upload" => "uploads#start_upload"
     end
   end
 

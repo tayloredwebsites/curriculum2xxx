@@ -15,9 +15,13 @@ class Upload < ApplicationRecord
     # where(active: true)
   }
 
-  UPLOAD_STATUS = ['Not Uploaded', 'Tree Uploaded', 'Upload Done']
+  # to do - get these from translation table
+  UPLOAD_STATUS = ['Not Uploaded', 'Tree Upload Started', 'Tree Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Upload Done']
+  UPLOAD_PROGRESS_PCT = [0, 25, 50, 75, 100]
   UPLOAD_STATUS_NOT_UPLOADED = 0
   UPLOAD_STATUS_TREE_UPLOADED = 1
-  UPLOAD_STATUS_UPLOAD_DONE = 2
+  UPLOAD_STATUS_KBE_RELATED = 2
+  UPLOAD_STATUS_SUBJ_RELATED = 3
+  UPLOAD_STATUS_DONE = 4
 
 end

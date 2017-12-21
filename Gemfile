@@ -35,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# foreman to run servers
+# foreman to run servers - rails, and elm (through webpacker)
 gem 'foreman'
 
 # devise for authentication
@@ -44,7 +44,7 @@ gem 'devise'
 # internationalization tables in database
 gem 'i18n-active_record', :require => 'i18n/active_record'
 
-# bootstrap 4 - ToDo - update this
+# bootstrap 4 - To Do - update this when out of beta
 gem 'bootstrap', '~> 4.0.0.beta2.1'
 gem 'jquery-rails'
 gem 'font-awesome-sass'
@@ -54,7 +54,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
-  gem 'selenium-webdriver' 
+  gem 'selenium-webdriver'
   gem 'factory_bot_rails' # was factory_girl_rails
   gem 'rails-controller-testing' # add assigns and assert template to controller testing
   gem 'launchy' # for launching save_and_open_page to default browser

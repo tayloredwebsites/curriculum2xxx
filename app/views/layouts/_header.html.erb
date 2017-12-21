@@ -1,6 +1,5 @@
 <header id='pageHeader' class='d-flex flex-row justify-content-between'>
   <a id='pageHeaderLogo' class=' href='#'>
-    <div class='logoText'>ENABLE BiH</div>
     <div class='logoImage'></div>
   </a>
   <!-- div id='pageHeaderTitle' class=''>
@@ -10,19 +9,24 @@
     <i class="fa fa-bars fa-2x"></i>
   </div>
 </header>
-<nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
-  <ul class="navbar-nav mx-auto">
-    <li class="nav-item active" aria-selected='true'>
-      <a class="nav-link">Curriculum</a>
-    </li>
-    <li class="nav-item" role='menuitem'>
-      <a class="nav-link" href="#">Documents</a>
-    </li>
-    <li class="nav-item" role='menuitem'>
-      <a class="nav-link" href="#">Translations</a>
-    </li>
-    <li class="nav-item" role='menuitem'>
-      <a class="nav-link" href="#">Configuration</a>
-    </li>
-  </ul>
-</nav>
+<% if current_user.present? %>
+  <nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link">Curriculum</a>
+      </li>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link">Documents</a>
+      </li>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link" href="/uploads">Uploads</a>
+      </li>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link" href="/translations">Translations</a>
+      </li>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link">Configuration</a>
+      </li>
+    </ul>
+  </nav>
+<% end %>

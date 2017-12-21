@@ -32,7 +32,6 @@ class UserTest < ActiveSupport::TestCase
       password: 'password',
       password_confirmation: 'password'
     )
-    puts "user.valid?: #{user.errors.inspect}"
     assert user.valid?
   end
 

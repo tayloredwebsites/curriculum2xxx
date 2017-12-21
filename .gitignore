@@ -7,6 +7,10 @@
 # Ignore bundler config.
 /.bundle
 
+# ignore files involved in server configuration
+/config/setup/*
+/app/assets/images/logo.png
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal

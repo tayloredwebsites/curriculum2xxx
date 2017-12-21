@@ -1,20 +1,13 @@
 
 #pageHeader #pageHeaderLogo {
    margin-left: 0px;
-   text-decoration: none;
-   min-width: 190px;
+   min-width: 300px;
 }
 #pageHeader #pageHeaderLogo .logoImage {
   background-image: url(asset_path('logo.png'));
   background-repeat: no-repeat;
-  width: 400px;
-  height: 60px;
-}
-#pageHeader #pageHeaderLogo .logoText {
-  font-size: 300%;
-  line-height: 85%;
-  color: #000087;
-  margin-top: 10px;
+  width: 300px;
+  height: 70px;
 }
 #pageHeader #pageHeaderTitle {
     text-align: center;
@@ -27,4 +20,9 @@
 
 #pageHeader #pageHeaderShowNav {
     margin-top: 20px;
+}
+
+nav#topNav .nav-item a.nav-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
