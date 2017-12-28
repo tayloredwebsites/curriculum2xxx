@@ -19,6 +19,10 @@ class Tree < ApplicationRecord
   scope :otc_tree, -> {
     where(tree_type_id: OTC_TREE_TYPE_ID, version_id: OTC_VERSION_ID)
   }
+  scope :otc_listing, -> {
+    order('subjects.code', 'grade_bands.code', 'locales.name')
+    # where(active: true)
+  }
 
   # Tree.find_or_add_code_in_tree
   # - get hierarchy item, and add if necessary

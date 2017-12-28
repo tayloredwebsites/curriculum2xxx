@@ -9,24 +9,51 @@
     <i class="fa fa-bars fa-2x"></i>
   </div>
 </header>
-<% if current_user.present? %>
+<% if current_user.present?
+%>
   <nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
     <ul class="navbar-nav mx-auto">
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link">Curriculum</a>
-      </li>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link">Documents</a>
-      </li>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link" href="/uploads">Uploads</a>
-      </li>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link" href="/translations">Translations</a>
-      </li>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link">Configuration</a>
-      </li>
+      <% if controller.controller_name == 'trees' %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link">Curriculum</a>
+        </li>
+      <% else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link" href='/trees'>Curriculum</a>
+        </li>
+      <% end
+        if true
+      %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link">Documents</a>
+        </li>
+      <% end
+        if controller.controller_name == 'uploads'
+      %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link">Uploads</a>
+        </li>
+      <% else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link" href='/uploads'>Uploads</a>
+        </li>
+      <% end
+        if controller.controller_name == 'translations'
+      %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link">Translations</a>
+        </li>
+      <% else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link" href='/translations'>Translations</a>
+        </li>
+      <% end
+        if true
+      %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link">Configuration</a>
+        </li>
+      <% end %>
     </ul>
   </nav>
 <% end %>

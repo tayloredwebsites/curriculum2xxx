@@ -22,9 +22,9 @@ class ApplicationRecord < ActiveRecord::Base
 
   # hard coded variables - must match record 1 in database tables - see db/seeds.rb
   OTC_TREE_TYPE_ID = 1
-  OTC_TREE_TYPE_CODE = 'OTC.'
+  OTC_TREE_TYPE_CODE = 'OTC'
   OTC_VERSION_ID = 1
-  OTC_VERSION_CODE = 'v01.'
+  OTC_VERSION_CODE = 'v01'
   OTC_TRANSLATION_START = 'OTC.v01.'
 
   OTC_TREE_LABELS = ['Area', 'Component', 'Outcome', 'Indicator']

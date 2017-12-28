@@ -48,7 +48,19 @@ class UploadsSystemTest < ApplicationSystemTestCase
     @hem_09.reload
     assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING, @hem_09.status)
     assert_equal 4, page.find_all('#uploadReport tbody tr').count
-    
+
+    check_curriculum_page_after_upload
+
+  end
+
+  def check_curriculum_page_after_upload
+    visit trees_url
+    # uploads index page
+    assert_equal("/trees", current_path)
+    page.find("form.new_tree input[type='submit']").click
+    # uploads page, with status not uploaded
+    assert_equal("/trees/index_listing", current_path)
+    assert_equal 4, page.all('#curriculumListing tbody tr').count
   end
 
 end

@@ -4,13 +4,12 @@
 
 #uploadsTable {
   width: 100%;
+  th {
+    background-color: #ddd;
+  }
 }
 
-#uploadsTable th {
-  background-color: #ddd;
-}
-
-.titleList, statusList {
+.titleList, .statusList {
   list-style-type: none;
   width: 250px;
   margin: 0 auto;

@@ -24,6 +24,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :trees,
+    only: [:index, :new, :create, :show, :edit, :update] do
+    collection do
+      get 'index_listing'
+      post 'index_listing'
+    end
+  end
+
 
   devise_for :users
 

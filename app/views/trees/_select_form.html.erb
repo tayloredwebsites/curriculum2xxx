@@ -1,0 +1,13 @@
+<%= form_for @tree, url: index_listing_trees_path do |form| %>
+  <fieldset>
+    <label for='tree_subject'>Subject</label>
+    <%= form.collection_select(:subject_id, @subjects, :id, :code, include_blank: 'All') %>
+  </fieldset>
+  <fieldset>
+    <label for='tree_grade_band'>Grade Band</label>
+    <%= form.collection_select(:grade_band_id, @gbs, :id, :code, include_blank: 'All') %>
+  </fieldset>
+  <fieldset>
+    <%= form.submit 'List' %>
+  </fieldset>
+<% end %>

@@ -1,0 +1,66 @@
+<h1>OTC Listing</h1>
+<%= render partial: 'select_form' %>
+
+<table id='curriculumListing' class='table table-striped table-bordered'>
+  <thead>
+    <tr>
+      <th><%= ApplicationRecord::OTC_UPLOAD_RPT_LABELS[ApplicationRecord::OTC_UPLOAD_RPT_AREA] %></th>
+      <th><%= ApplicationRecord::OTC_UPLOAD_RPT_LABELS[ApplicationRecord::OTC_UPLOAD_RPT_COMPONENT] %></th>
+      <th><%= ApplicationRecord::OTC_UPLOAD_RPT_LABELS[ApplicationRecord::OTC_UPLOAD_RPT_OUTCOME] %></th>
+      <th><%= ApplicationRecord::OTC_UPLOAD_RPT_LABELS[ApplicationRecord::OTC_UPLOAD_RPT_INDICATOR] %></th>
+      <th><%= ApplicationRecord::OTC_UPLOAD_RPT_LABELS[ApplicationRecord::OTC_UPLOAD_RPT_CODE] %></th>
+      <th><%= ApplicationRecord::OTC_UPLOAD_RPT_LABELS[ApplicationRecord::OTC_UPLOAD_RPT_DESC] %></th>
+    </tr>
+  </thead>
+  <tbody>
+<%
+  @trees.each do |tree|
+    code_depth = tree.code.split('.')
+%>
+    <tr data-code='<%= tree.code %>'>
+<%
+    (0..3).each do |n|
+%>
+      <td class='col<%= ApplicationRecord::OTC_UPLOAD_RPT_COL[n] %>'><%= code_depth[-1] if n == code_depth.count-1 %></td>
+<%
+    end # col of rec
+%>
+      <td class='col<%= ApplicationRecord::OTC_UPLOAD_RPT_COL[4] %>'><%= tree.code %></td>
+      <td class='col<%= ApplicationRecord::OTC_UPLOAD_RPT_COL[5] %>'></td>
+    </tr>
+<%
+  end # each rec
+%>
+  </tbody>
+</table>
+<div class='container'>
+  <div id="tree"></div>
+</div>
+
+<script>
+var testTree = [
+  {
+    text: "Parent 1",
+    nodes: [
+      {
+        text: "Child 1",
+        nodes: [
+          {
+            text: "Grandchild 1"
+          },
+          {
+            text: "Grandchild 2"
+          }
+        ]
+      },
+      {
+        text: "Child 2"
+      }
+    ]
+  },
+  {
+    text: "Parent 2"
+  }
+];
+$('#tree').treeview({data: testTree});
+</script>
