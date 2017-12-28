@@ -15,17 +15,6 @@ class Upload < ApplicationRecord
     # where(active: true)
   }
 
-  # to do - get these from translation table
-  UPLOAD_STATUS = ['Not Uploaded', 'Tree Upload Started', 'Tree Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Subjects Related', 'Upload Done']
-  UPLOAD_PROGRESS_PCT = [0, 17, 33, 50, 67, 83, 100]
-  UPLOAD_STATUS_NOT_UPLOADED = 0
-  UPLOAD_STATUS_TREE_UPLOADING = 1
-  UPLOAD_STATUS_TREE_UPLOADED = 2
-  UPLOAD_STATUS_KBE_RELATED = 3
-  UPLOAD_STATUS_SUBJ_RELATING = 4
-  UPLOAD_STATUS_SUBJ_RELATED = 5
-  UPLOAD_STATUS_DONE = 6
-
   def self.get_long_to_short
     # these are the OCT headers we need (rest are for teacher uploads) in the spreadsheet
     # to do - get translated versions based upon language of upload

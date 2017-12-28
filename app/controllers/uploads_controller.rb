@@ -67,8 +67,8 @@ class UploadsController < ApplicationController
       tree_parent_id = ''
       # to do - refactor this
       case @upload.status
-      when Upload::UPLOAD_STATUS_NOT_UPLOADED || Upload::UPLOAD_STATUS_TREE_UPLOADING
-        puts("Upload tree, #{Upload::UPLOAD_STATUS[@upload.status]}")
+      when ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED, ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING
+        puts("Upload tree, #{ApplicationRecord::UPLOAD_STATUS[@upload.status]}")
         puts("method: #{request.method}")
         filename = 'Hem_09_transl_Eng.csv'
         puts("upload_params: #{upload_params}")
@@ -98,10 +98,8 @@ class UploadsController < ApplicationController
               row_num += 1
               new_key = long_to_short[key]
               # process this column for this row
-              puts "new_key: #{new_key}"
               case new_key
               when :area
-                puts ":area #{:area}"
                 # Area record formatting: "AREA #: <name>""
                 area_label = val.split(/:/).first
                 area_num = area_label.gsub(/[^0-9,.]/, "")
@@ -144,14 +142,16 @@ class UploadsController < ApplicationController
           flash[:alert] = 'Filename does not match this Upload!'
           abort = true
         end
-      when Upload::UPLOAD_STATUS_TREE_UPLOADED
-        puts("status UPLOAD_STATUS_TREE_UPLOADED, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_TREE_UPLOADED]}")
+      when ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
+        puts("status UPLOAD_STATUS_TREE_UPLOADED, #{ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED]}")
         abort = true
-      when Upload::UPLOAD_STATUS_UPLOAD_DONE
-        puts("status UPLOAD_STATUS_UPLOAD_DONE, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_UPLOAD_DONE]}")
+      when ApplicationRecord::UPLOAD_STATUS_DONE
+        puts("status UPLOAD_STATUS_DONE, #{ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_DONE]}")
         abort = true
       else
-        puts("invalid status")
+        puts("invalid status #{@upload.status}")
+        puts("ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED: #{ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED}")
+        puts("ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING: #{ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING}")
         abort = true
       end
     end
@@ -159,7 +159,7 @@ class UploadsController < ApplicationController
       render :index
     else
       if num_area_errors == 0 && area_ids.count > 0
-        @upload.status = Upload::UPLOAD_STATUS_TREE_UPLOADING
+        @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING
         @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_AREA]
         if num_component_errors == 0 && component_ids.count > 0
           @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_COMPONENT]
@@ -167,10 +167,11 @@ class UploadsController < ApplicationController
             @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_OUTCOME]
             if num_indicator_errors == 0 && indicator_ids.count > 0
               @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_INDICATOR]
-              @upload.status = Upload::UPLOAD_STATUS_TREE_UPLOADED
+              @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
             end
           end
         end
+        @upload.save
       end
       render :do_upload
     end

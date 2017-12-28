@@ -80,20 +80,22 @@ class TreeTest < ActiveSupport::TestCase
   end
 
   test "find_or_add_code_in_tree tests" do
-    # should add code 2
+    # should add area 2
     tree_count = Tree.count
-    ret = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, '', nil)
+    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, nil)
     assert_equal tree_count+1, Tree.count
 
-    # should not add code 2 again
+    # should not add area 2 again
     tree_count = Tree.count
-    ret = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, '', nil)
+    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, nil)
     assert_equal tree_count, Tree.count
+    assert_equal ApplicationRecord::SAVE_STATUS_NO_CHANGE, status
 
-    # should not add code 3 if it says there is a match
+    # should skip if matching record passed in
     tree_count = Tree.count
-    ret = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '3', nil, '3', ret)
+    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, match_rec)
     assert_equal tree_count, Tree.count
+    assert_equal ApplicationRecord::SAVE_STATUS_SKIP, status
 
   end
 end
