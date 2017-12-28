@@ -9,3 +9,16 @@
 #uploadsTable th {
   background-color: #ddd;
 }
+
+.titleList, statusList {
+  list-style-type: none;
+  width: 250px;
+  margin: 0 auto;
+  li {
+    text-align: left;
+  }
+}
+
+div.progress {
+  border: 2px solid black;
+}

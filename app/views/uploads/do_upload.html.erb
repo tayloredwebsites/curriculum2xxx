@@ -1,17 +1,69 @@
 <h1 class='h2'>Curriculum Uploads Management</h1>
-<h2 class='h3'>Upload Curriculum file for:</h2>
-<h3 class='h6'>Subject: <%= @upload.subject.code %></h3>
-<h3 class='h6'>Grade Band: <%= @upload.grade_band.code %></h3>
-<h3 class='h6'>Language: <%= @upload.locale.name %></h3>
+<h2 class='h4'>Upload Curriculum file for:</h2>
+<ul class='titleList'>
+  <li>Subject: <%= @upload.subject.code %></li>
+  <li>Grade Band: <%= @upload.grade_band.code %></li>
+  <li>Language: <%= @upload.locale.name %></li>
+</ul>
+<!-- h3 class='h6'></h3>
+<h3 class='h6'></h3>
+<h3 class='h6'></h3 -->
 <div class="col-lg-8 offset-lg-2 col-sm-10 offset-sm-1 col-xs-12">
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: <%= Upload::UPLOAD_PROGRESS_PCT[@upload.status] %>%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
 </div>
 <h4 class='h4'>Status: <%= Upload::UPLOAD_STATUS[@upload.status] %></h4>
+<h5 class='h5'>Status Detail: <%= @upload.status_detail %></h4>
+<% if @errs.count > 0 %>
+  <ul class='statusList'><%= @errs.count %> Errors</h5>
+<%
+    @errs.each do |msg|
+%>
+    <li><%= msg %></li>
+<%
+    end # if
+  end # each msg
+%>
+<div><%= @messages %></div>
 <h5 class='h6'><%= @message %></h5>
 <%= form_tag do_upload_upload_path, {multipart: true, class: 'text-center'} do |form| %>
   <%= file_field(:upload, :file, accept: 'text/csv', class: 'text-center') %>
   <br>
   <button class='btn btn-primary' type='submit'>Upload</button>
 <% end %>
+
+<% if @rptRecs.count > 0 %>
+  <table class='uploadReport table table-striped table-bordered'>
+    <thead>
+      <tr>
+        <th><%= ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_AREA] %></th>
+        <th><%= ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_COMPONENT] %></th>
+        <th><%= ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_OUTCOME] %></th>
+        <th><%= ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_INDICATOR] %></th>
+        <th><%= ApplicationRecord::UPLOAD_RPT_EXTRA_LABELS[ApplicationRecord::UPLOAD_RPT_CODE] %></th>
+        <th><%= ApplicationRecord::UPLOAD_RPT_EXTRA_LABELS[ApplicationRecord::UPLOAD_RPT_NAME] %></th>
+        <th><%= ApplicationRecord::UPLOAD_RPT_EXTRA_LABELS[ApplicationRecord::UPLOAD_RPT_MESSAGE] %></th>
+      </tr>
+    </thead>
+    <tbody>
+<%
+    @rptRecs.each do |rec|
+%>
+      <tr>
+<%
+      rec.each do |col|
+%>
+        <td><%= col.to_s %></td>
+<%
+      end # col of rec
+%>
+      </tr>
+<%
+    end # each rec
+%>
+    </tbody>
+  </table>
+<%
+  end # if @rptRecs
+%>

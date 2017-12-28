@@ -16,12 +16,36 @@ class Upload < ApplicationRecord
   }
 
   # to do - get these from translation table
-  UPLOAD_STATUS = ['Not Uploaded', 'Tree Upload Started', 'Tree Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Upload Done']
-  UPLOAD_PROGRESS_PCT = [0, 25, 50, 75, 100]
+  UPLOAD_STATUS = ['Not Uploaded', 'Tree Upload Started', 'Tree Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Subjects Related', 'Upload Done']
+  UPLOAD_PROGRESS_PCT = [0, 17, 33, 50, 67, 83, 100]
   UPLOAD_STATUS_NOT_UPLOADED = 0
-  UPLOAD_STATUS_TREE_UPLOADED = 1
-  UPLOAD_STATUS_KBE_RELATED = 2
-  UPLOAD_STATUS_SUBJ_RELATED = 3
-  UPLOAD_STATUS_DONE = 4
+  UPLOAD_STATUS_TREE_UPLOADING = 1
+  UPLOAD_STATUS_TREE_UPLOADED = 2
+  UPLOAD_STATUS_KBE_RELATED = 3
+  UPLOAD_STATUS_SUBJ_RELATING = 4
+  UPLOAD_STATUS_SUBJ_RELATED = 5
+  UPLOAD_STATUS_DONE = 6
+
+  def self.get_long_to_short
+    # these are the OCT headers we need (rest are for teacher uploads) in the spreadsheet
+    # to do - get translated versions based upon language of upload
+    long_headers = [ "Area", "Component ", "Outcome", "Indicator", "Grade band", "relevant KBE sectors (as determined from KBE spreadsheets)", "Explanation of how the indicator relates to KBE sector", "Closely related learning outcomes applicable to KBE sector", "Mathematics", "Geography", "Physics", "Biology", "ICT" ]
+    # OCT headers as symbols
+    # to do - confirm that eighth header is chemistry - same subject as file ????
+    # to do - may need different set of arrays, or mappings for other subjects.
+    short_headers = [ :area, :component, :outcome, :indicator, :gradeBand, :relevantKbe, :kbeRelation, :chemistry, :mathematics, :geography, :physics, :biology, :computers]
+    return Hash[long_headers.zip(short_headers)]
+  end
+
+  def self.get_short_to_long
+    # these are the OCT headers we need (rest are for teacher uploads) in the spreadsheet
+    # to do - get translated versions based upon language of upload
+    long_headers = [ "Area", "Component ", "Outcome", "Indicator", "Grade band", "relevant KBE sectors (as determined from KBE spreadsheets)", "Explanation of how the indicator relates to KBE sector", "Closely related learning outcomes applicable to KBE sector", "Mathematics", "Geography", "Physics", "Biology", "ICT" ]
+    # OCT headers as symbols
+    # to do - confirm that eighth header is chemistry - same subject as file ????
+    # to do - may need different set of arrays, or mappings for other subjects.
+    short_headers = [ :area, :component, :outcome, :indicator, :gradeBand, :relevantKbe, :kbeRelation, :chemistry, :mathematics, :geography, :physics, :biology, :computers]
+    return Hash[short_headers.zip(long_headers)]
+  end
 
 end

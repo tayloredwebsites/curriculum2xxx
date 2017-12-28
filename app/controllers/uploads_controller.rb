@@ -41,7 +41,9 @@ class UploadsController < ApplicationController
 
   def start_upload
     if @upload
-      @message = "Select file to upload to get to next step/"
+      @message = "Select file to upload to get to next step"
+      @errs = []
+      @rptRecs = []
       render :do_upload
     else
       flash[:notice] = 'Missing upload record.'
@@ -52,67 +54,86 @@ class UploadsController < ApplicationController
 
   def do_upload
     require 'csv'
+
+    # infomation to send back to user after completion
+    row_num = 0
+    @message = "Select file to upload to get to next step"
+    @errs = []
+    @rptRecs = []
+    abort = false
+
     if @upload
+      tree_parent_code = ''
+      tree_parent_id = ''
       # to do - refactor this
       case @upload.status
-      when Upload::UPLOAD_STATUS_NOT_UPLOADED
-        puts("status Upload::UPLOAD_STATUS_NOT_UPLOADED, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_NOT_UPLOADED]}")
+      when Upload::UPLOAD_STATUS_NOT_UPLOADED || Upload::UPLOAD_STATUS_TREE_UPLOADING
+        puts("Upload tree, #{Upload::UPLOAD_STATUS[@upload.status]}")
         puts("method: #{request.method}")
         filename = 'Hem_09_transl_Eng.csv'
         puts("upload_params: #{upload_params}")
 
-        # infomation to send back to user after completion
-        count_adds = 0
-        count_errors = 0
-        row_num = 0
-        errs = []
-
         if upload_params['file'].original_filename == filename
           # process file to upload
 
-          # these are the OCT headers we need (rest are for teacher uploads) in the spreadsheet
-          long_headers = [ "Area", "Component ", "Outcome", "Indicator", "Grade band", "relevant KBE sectors (as determined from KBE spreadsheets)", "Explanation of how the indicator relates to KBE sector", "Closely related learning outcomes applicable to KBE sector", "Mathematics", "Geography", "Physics", "Biology", "ICT" ]
-          # OCT headers as symbols
-          # to do - confirm that eighth header is chemistry - same subject as file ????
-          # to do - may need different set of arrays, or mappings for other subjects.
-          short_headers = [ :area, :component, :outcome, :indicator, :gradeBand, :relevantKbe, :kbeRelation, :chemistry, :mathematics, :geography, :physics, :biology, :computers]
-          long_to_short = Hash[long_headers.zip(short_headers)]
-          short_to_long = Hash[short_headers.zip(long_headers)]
+          # map csv headers to short symbols
+          long_to_short = Upload.get_long_to_short()
 
-          # saved records to avoid extra lookups
+          # saved parent records to avoid extra lookups
           area_rec = nil
+          area_ids = []
+          num_area_errors = 0
           component_rec = nil
+          component_ids = []
+          num_component_errors = 0
           outcome_rec = nil
+          outcome_ids = []
+          num_outcome_errors = 0
+          indicator_ids = []
+          num_indicator_errors = 0
 
-          # CSV.foreach(upload_params['file'].path, headers: short_headers) do |row|
           CSV.foreach(upload_params['file'].path, headers: true) do |row|
-            # puts "original row: #{row.inspect}"
-            # map original rows to short headers for standardized field lookup in row
-            # new_row = Hash.new()
-
-
+            # process this row
             row.each do |key, val|
               row_num += 1
               new_key = long_to_short[key]
-            #   new_row[long_to_short[key]] = val if new_key
-            # end
-            # puts "new row: #{new_row.inspect}"
-            # new_row.each do |new_key, val| do
+              # process this column for this row
+              puts "new_key: #{new_key}"
               case new_key
               when :area
+                puts ":area #{:area}"
                 # Area record formatting: "AREA #: <name>""
                 area_label = val.split(/:/).first
                 area_num = area_label.gsub(/[^0-9,.]/, "")
-                raise "invalid area code: #{area_num.inspect}" if area_num.length != 1
+                raise "row number #{row_num} has invalid area code at : #{area_num.inspect}" if area_num.length != 1
 
                 # insert area into tree
-                node, save_status, err_msg = Tree.find_or_add_code_in_tree(Tree::OTC_TREE_TYPE_ID, Tree::OTC_VERSION_ID, @upload.subject_id, @upload.grade_band_id, area_num.to_s, nil, (area_rec ? area_rec.code : ''), area_rec)
-                area_rec = node
-                count_adds += 1 if save_status == ApplicationRecord::SAVE_STATUS_ADDED
-                if save_status == ApplicationRecord::SAVE_STATUS_ERROR
-                  count_errors += 1
-                  errs <<  err_msg
+                new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
+                  ApplicationRecord::OTC_TREE_TYPE_ID,
+                  ApplicationRecord::OTC_VERSION_ID,
+                  @upload.subject_id,
+                  @upload.grade_band_id,
+                  area_num.to_s,
+                  nil,
+                  area_rec
+                )
+                if save_status != ApplicationRecord::SAVE_STATUS_SKIP
+                  # save this record for parent of component.
+                  area_rec = node
+                  area_ids << area_rec.id if !area_ids.include?(area_rec.id)
+                  puts "area_ids: #{area_ids.inspect}"
+                  rptRec = Array.new(4, '')
+                  rptRec[ApplicationRecord::OTC_TREE_AREA] = area_num.to_s
+                  rptRec << new_code
+                  rptRec << '' # translated name of item.
+                  rptRec << ApplicationRecord::SAVE_STATUS[save_status]
+                  @rptRecs << rptRec
+                  if save_status == ApplicationRecord::SAVE_STATUS_ERROR
+                    @errs << message
+                    num_area_errors += 1
+                  end
                 end
+              when :component
 
                 # insert area name into translation table
                 # transl = Translation.find_or_add_translation(locale, "#{OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name", val)
@@ -120,32 +141,38 @@ class UploadsController < ApplicationController
             end # row.each
           end
         else
-          flash[:notice] = 'Filename does not match this Upload!'
+          flash[:alert] = 'Filename does not match this Upload!'
+          abort = true
         end
-        if count_errors > 0
-          @message = <<-ENDMSG
-          Got the following errors:
-          #{err_msg.join(', ')}
-          Select file to upload to try again
-          ENDMSG
-        else
-          @message = <<-ENDMSG
-          Processed successfully:
-          Move to step xxxxx
-          Select file to upload for next step
-          ENDMSG
-        end
-        render :do_upload
       when Upload::UPLOAD_STATUS_TREE_UPLOADED
         puts("status UPLOAD_STATUS_TREE_UPLOADED, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_TREE_UPLOADED]}")
-        render :index
+        abort = true
       when Upload::UPLOAD_STATUS_UPLOAD_DONE
         puts("status UPLOAD_STATUS_UPLOAD_DONE, #{Upload::UPLOAD_STATUS[Upload::UPLOAD_STATUS_UPLOAD_DONE]}")
-        render :index
+        abort = true
       else
         puts("invalid status")
-        render :index
+        abort = true
       end
+    end
+    if abort
+      render :index
+    else
+      if num_area_errors == 0 && area_ids.count > 0
+        @upload.status = Upload::UPLOAD_STATUS_TREE_UPLOADING
+        @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_AREA]
+        if num_component_errors == 0 && component_ids.count > 0
+          @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_COMPONENT]
+          if num_outcome_errors == 0 && outcome_ids.count > 0
+            @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_OUTCOME]
+            if num_indicator_errors == 0 && indicator_ids.count > 0
+              @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_INDICATOR]
+              @upload.status = Upload::UPLOAD_STATUS_TREE_UPLOADED
+            end
+          end
+        end
+      end
+      render :do_upload
     end
   end
 

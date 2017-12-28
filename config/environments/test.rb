@@ -42,6 +42,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  Capybara.save_and_open_page_path = 'tmp/capybara'
-  
+  Capybara.save_path = 'tmp/capybara'
+
 end

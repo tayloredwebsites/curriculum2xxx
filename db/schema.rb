@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171219191340) do
+ActiveRecord::Schema.define(version: 20171227151033) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -72,6 +72,9 @@ ActiveRecord::Schema.define(version: 20171219191340) do
     t.integer "grade_band_id", null: false
     t.integer "locale_id", null: false
     t.integer "status"
+    t.string "status_detail"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["grade_band_id"], name: "index_uploads_on_grade_band_id"
     t.index ["locale_id"], name: "index_uploads_on_locale_id"
     t.index ["subject_id", "grade_band_id", "locale_id"], name: "index_uploads_on_keys"
