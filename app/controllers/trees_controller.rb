@@ -5,6 +5,7 @@ class TreesController < ApplicationController
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all.order(:code)
     @tree = Tree.new
+    @otcTree = ''
     respond_to do |format|
       format.html
       format.json { render json: {subjects: @subjects, grade_bands: @gbs}}
@@ -29,6 +30,30 @@ class TreesController < ApplicationController
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # listing = listing.otc_listing
     @trees = listing.all
+    otcArrHash = []
+
+    areaHash = nil
+    lastArea = nil
+    lastComponent = nil
+    lastOutcome = nil
+    lastIndicator = nil
+
+    # build json for treeview
+    @trees.each do |tree|
+      depth = tree.depth
+      case depth
+      when 1
+        otcArrHash << areaHash if tree.area != lastArea && areaHash.present?
+        areaHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: []}
+        lastArea = tree.area
+      else
+        raise "build treeview json code not an area??? #{tree.code} at id: #{tree.id}"
+      end
+    end
+    otcArrHash << areaHash if areaHash.present?
+    puts "otcArrHash: #{otcArrHash}"
+    @otcJson = otcArrHash.to_json
+    puts "@otcJson: #{@otcJson}"
 
     respond_to do |format|
       format.html

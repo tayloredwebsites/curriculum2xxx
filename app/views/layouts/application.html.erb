@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Curriculum</title>
+    <title><%= content_for?(:title) ? yield(:title) : "Curriculum" %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -17,7 +17,7 @@
         <p class="alert"><%= alert %></p>
       </div>
       <div id='elm-body'></div>
-      <div class='text-center'>
+      <div id='main-container' class='<%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
         <%= yield %>
       </div>
     </div>

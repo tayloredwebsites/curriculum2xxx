@@ -24,6 +24,66 @@ class Tree < ApplicationRecord
     # where(active: true)
   }
 
+  def codeArray
+    if self.code.present?
+      return self.code.split('.')
+    else
+      return nil
+    end
+  end
+
+  # return the depth of the code (return 3 from a.b.c)
+  def depth
+    if self.code.present?
+      return self.codeArray.count
+    else
+      return nil
+    end
+  end
+
+  # return the last code in the code string (return c from a.b.c)
+  def subCode
+    if self.code.present?
+      return self.codeArray[-1]
+    else
+      return nil
+    end
+  end
+
+  def area
+    if self.depth.present? && self.depth > 0
+      return self.codeArray[0]
+    else
+      return nil
+    end
+  end
+
+  def component
+    if self.depth.present? && self.depth > 1
+      return self.codeArray[1]
+    else
+      return nil
+    end
+  end
+
+  def outcome
+    if self.depth.present? && self.depth > 2
+      return self.codeArray[2]
+    else
+      return nil
+    end
+  end
+
+  def indicator
+    if self.depth.present? && self.depth > 3
+      return self.codeArray[3]
+    else
+      return nil
+    end
+  end
+
+
+
   # Tree.find_or_add_code_in_tree
   # - get hierarchy item, and add if necessary
   #   tree_type_id - lookup key

@@ -1,1 +1,15 @@
 // styles common throughout pages
+
+// use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)
+.treeview {
+  text-align: left;
+  .glyphicon {
+    @extend .fa;
+  }
+  .glyphicon-minus {
+    @extend .fa-minus;
+  }
+  .glyphicon-plus {
+    @extend .fa-plus;
+  }
+}
