@@ -1,23 +1,33 @@
-// Place all the styles related to the Uploads controller here.
+// Place all the styles related to the Uploads pages here.
+// to activate these classes in a page, include the following at the top:
+//   <% content_for(:page_class, 'uploads') %>
+//
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#uploadsTable {
-  width: 100%;
-  th {
-    background-color: #ddd;
-  }
-}
+// SCSS for uploads pages
+#main-container.uploads {
 
-.titleList, .statusList {
-  list-style-type: none;
-  width: 250px;
-  margin: 0 auto;
-  li {
-    text-align: left;
+  #uploadsTable {
+    width: 100%;
+    th {
+      background-color: #ddd;
+    }
   }
-}
 
-div.progress {
-  border: 2px solid black;
+  .titleList, .statusList {
+    list-style-type: none;
+    width: 250px;
+    margin: 0 auto;
+    li {
+      text-align: left;
+    }
+  }
+
+  div.progress {
+    border: 2px solid black;
+  }
+
+
+  // end of SCSS for uploads pages
 }

@@ -3,7 +3,7 @@
     <div class='logoImage'></div>
   </a>
   <!-- div id='pageHeaderTitle' class=''>
-    <h1 class='h2'><%= translate('header.site_title') %></h1>
+    <h1 class='h2'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('header.site_title') %></h1>
   </div -->
   <div id='pageHeaderShowNav' class=''>
     <i class="fa fa-bars fa-2x"></i>

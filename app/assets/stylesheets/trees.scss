@@ -1,0 +1,18 @@
+// styles only for curriculum (trees) pages
+// to activate these classes in a page, include the following at the top:
+//   <% content_for(:page_class, 'trees') %>
+//
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// SCSS for curriculum (trees) pages
+#main-container.trees {
+
+  // tighten up treeview item height by 20 pixels (10 off of top and bottom)
+  #tree .list-group .list-group-item {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
+// end of SCSS for curriculum (trees) pages
+}

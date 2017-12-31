@@ -1,3 +1,13 @@
-// Place all the styles related to the Translations controller here.
+// Place all the styles related to the Translations pages here.
+// to activate these classes in a page, include the following at the top:
+//   <% content_for(:page_class, 'translations') %>
+//
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// SCSS for translations pages
+#main-container.translations {
+
+
+// end of SCSS for translations pages
+}

@@ -1,3 +1,6 @@
+<% content_for(:title, 'Edit Translation') %>
+<% content_for(:page_class, 'translations') %>
+
 <h1>Edit Translation</h1>
 <%= form_for @translation, url: translation_path, :html => { :class => "translationForm", :id => "editTranslation_#{@translation.id}" } do |form| %>
   <%= render partial: 'form', :locals => {:form => form} %>

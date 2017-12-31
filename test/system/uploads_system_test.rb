@@ -17,6 +17,8 @@ class UploadsSystemTest < ApplicationSystemTestCase
 
     # uploads index page
     assert_equal("/uploads", current_path)
+    # to do - use translation when title is translated
+    assert_equal 'Uploads Listing', page.title
     assert_equal 1, page.all('#uploadsTable tbody tr').count
     page.find("#uploadsTable tbody tr#id_#{@hem_09.id} a").click
 
@@ -60,7 +62,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
     assert_equal("/trees/index_listing", current_path)
-    assert_equal 4, page.all('#curriculumListing tbody tr').count
+    assert_equal 4, page.all('#tree .node-tree').count
   end
 
 end
