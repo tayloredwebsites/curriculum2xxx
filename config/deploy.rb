@@ -42,7 +42,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # set :ssh_options, verify_host_key: :secure
 
 namespace :deploy do
-  # 21pstem custom hooks into the deploy lifecycle
+  # custom hooks into the deploy lifecycle
   before :starting, 'check_write_permissions'
   # before :updating, 'db:backup'
 
@@ -53,6 +53,6 @@ namespace :deploy do
     end
   end
 
-  # after :finishing, 'deploy:cleanup'
+  after :cleanup, :restart
 
 end
