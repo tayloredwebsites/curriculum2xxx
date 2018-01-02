@@ -30,28 +30,53 @@ class TreesController < ApplicationController
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # listing = listing.otc_listing
     @trees = listing.all
-    otcArrHash = []
+    otcHash = {}
+    areaHash = {}
+    newComponentHash = {}
 
-    areaHash = nil
-    lastArea = nil
-    lastComponent = nil
-    lastOutcome = nil
-    lastIndicator = nil
-
-    # build json for treeview
+    # ruby hash of tree records to build json for treeview
     @trees.each do |tree|
       depth = tree.depth
       case depth
       when 1
-        otcArrHash << areaHash if tree.area != lastArea && areaHash.present?
-        areaHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: []}
-        lastArea = tree.area
+        areaHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: {}}
+        # add area if not there already
+        otcHash[tree.area] = areaHash if !otcHash[tree.area].present?
+      when 2
+        areaHash = {}
+        # get area in report tree (miust be there see depth 1 code)
+        if otcHash[tree.area].present?
+          areaHash = otcHash[tree.area]
+          newComponentHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[1]}: #{tree.subCode}", nodes: {}}
+          # newComponentHash = {text: "#{tree.subCode}", nodes: {}}
+          # add nodes hash if not there already
+          if !otcHash[tree.area][:nodes].present?
+            otcHash[tree.area][:nodes] = {}
+          end
+          # add component if not there already
+          otcHash[tree.area][:nodes][tree.subCode] = newComponentHash if !otcHash[tree.area][:nodes][tree.subCode].present?
+        else
+          raise "ERROR: system error, missing area item in report tree."
+        end
+
       else
-        raise "build treeview json code not an area??? #{tree.code} at id: #{tree.id}"
+        raise "build treeview json code not an area or component #{tree.code} at id: #{tree.id}"
       end
     end
-    otcArrHash << areaHash if areaHash.present?
-    puts "otcArrHash: #{otcArrHash}"
+    # copy hash of areas, and all node hashes into arrays
+    otcArrHash = []
+    otcHash.each do |key, area|
+      a2 = {text: area[:text], nodes: []}
+      if area[:nodes]
+        area[:nodes].each do |key, comp|
+          a2[:nodes] << {text: "#{comp[:text]}"}
+        end
+      end
+      # done with area, append it to otcArrHash
+      otcArrHash << a2
+    end
+
+    # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
     puts "@otcJson: #{@otcJson}"
 

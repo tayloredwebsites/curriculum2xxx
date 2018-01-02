@@ -21,7 +21,7 @@
 !/log/.keep
 !/tmp/.keep
 **/.DS_Store
-**/.~lock
+**/.~lock*
 
 /elm-stuff
 /node_modules

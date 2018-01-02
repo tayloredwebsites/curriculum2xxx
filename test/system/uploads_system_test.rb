@@ -35,13 +35,18 @@ class UploadsSystemTest < ApplicationSystemTestCase
     find('button').click
     assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
     refute_equal(0, Tree.count)
-    # confirm 4 area records were added
-    assert_equal(4, Tree.where(parent_id: nil).count)
+    # confirm 4 area records were added, plus 4 components per area (4*4 = 16) 4 + 16 = 20
+    assert_equal(20, Tree.where(parent_id: nil).count)
     puts "@hem_09 status: #{@hem_09.status}"
     @hem_09.reload
     assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING, @hem_09.status)
     # confirm number of records returned is 4 (4 area records)
-    assert_equal 4, page.find_all('#uploadReport tbody tr').count
+    rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
+    assert_equal rpt_rows.count, 20
+    rpt_rows.each do |r|
+      assert_equal r.text, 'Added'
+    end
+
 
     # run it again, and should have the same report
     page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
@@ -49,7 +54,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
     @hem_09.reload
     assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING, @hem_09.status)
-    assert_equal 4, page.find_all('#uploadReport tbody tr').count
+    assert_equal 20, page.find_all('#uploadReport tbody tr').count
 
     check_curriculum_page_after_upload
 
@@ -62,7 +67,20 @@ class UploadsSystemTest < ApplicationSystemTestCase
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
     assert_equal("/trees/index_listing", current_path)
-    assert_equal 4, page.all('#tree .node-tree').count
+    tree_nodes = page.all('#tree .node-tree')
+    assert_equal 4, tree_nodes.count
+    ids = []
+    tree_nodes.each do |n|
+      ids << n['data-nodeid']
+    end
+
+    within('#tree') do
+      ids.each do |id|
+        page.find("li[data-nodeid='#{id}'] .glyphicon-plus").click
+      end
+    end
+    tree_nodes = page.all('#tree .node-tree')
+    assert_equal 20, tree_nodes.count
   end
 
 end

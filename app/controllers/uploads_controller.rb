@@ -93,9 +93,11 @@ class UploadsController < ApplicationController
           num_indicator_errors = 0
 
           CSV.foreach(upload_params['file'].path, headers: true) do |row|
+            codes_stack = Array.new(4) {''}
+            row_num += 1
+
             # process this row
             row.each do |key, val|
-              row_num += 1
               new_key = long_to_short[key]
               # process this column for this row
               case new_key
@@ -115,11 +117,11 @@ class UploadsController < ApplicationController
                   nil,
                   area_rec
                 )
+                codes_stack[0] = node.code # save curreant area in a new codes stack
                 if save_status != ApplicationRecord::SAVE_STATUS_SKIP
-                  # save this record for parent of component.
+                # save this record for parent of component.
                   area_rec = node
                   area_ids << area_rec.id if !area_ids.include?(area_rec.id)
-                  puts "area_ids: #{area_ids.inspect}"
                   rptRec = Array.new(4, '')
                   rptRec[ApplicationRecord::OTC_TREE_AREA] = area_num.to_s
                   rptRec << new_code
@@ -132,6 +134,38 @@ class UploadsController < ApplicationController
                   end
                 end
               when :component
+              # Component record formatting: "Component #: <name>""
+                component_label = val.split(/:/).first
+                component_num = component_label.split(/ /).last
+                raise "row number #{row_num} has invalid component code at : #{component_num.inspect}" if component_num.length != 1
+                component_code = "#{area_rec.code}.#{component_num.to_s}"
+
+                # insert component into tree
+                new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
+                  ApplicationRecord::OTC_TREE_TYPE_ID,
+                  ApplicationRecord::OTC_VERSION_ID,
+                  @upload.subject_id,
+                  @upload.grade_band_id,
+                  component_code,
+                  nil,
+                  component_rec
+                )
+                codes_stack[1] = node.subCode # save current component code (in the codes stack for the area)
+                if save_status != ApplicationRecord::SAVE_STATUS_SKIP
+                  # codes_stack[ApplicationRecord::OTC_TREE_COMPONENT] = [node.subCode] # save current component code (in the codes stack for the area)
+                  # save this record for parent of outcome.
+                  component_rec = node
+                  component_ids << node.id if !component_ids.include?(node.id)
+                  rptRec = codes_stack.clone # code stack for first four columns of report
+                  rptRec << new_code
+                  rptRec << '' # translated name of item.
+                  rptRec << ApplicationRecord::SAVE_STATUS[save_status]
+                  @rptRecs << rptRec
+                  if save_status == ApplicationRecord::SAVE_STATUS_ERROR
+                    @errs << message
+                    num_area_errors += 1
+                  end
+                end
 
                 # insert area name into translation table
                 # transl = Translation.find_or_add_translation(locale, "#{OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name", val)
