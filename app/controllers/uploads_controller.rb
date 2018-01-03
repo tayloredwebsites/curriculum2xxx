@@ -79,18 +79,11 @@ class UploadsController < ApplicationController
           # map csv headers to short symbols
           long_to_short = Upload.get_long_to_short()
 
-          # saved parent records to avoid extra lookups
-          area_rec = nil
-          area_ids = []
-          num_area_errors = 0
-          component_rec = nil
-          component_ids = []
-          num_component_errors = 0
-          outcome_rec = nil
-          outcome_ids = []
-          num_outcome_errors = 0
-          indicator_ids = []
-          num_indicator_errors = 0
+          # saved parent (tree stack) records to avoid extra lookups, etc.
+          recs_stack = Array.new(4) {nil} # replace area_rec, component_rec, ...
+          puts "recs_stack: #{recs_stack.inspect}"
+          num_errors_stack = Array.new(4) {0}
+          ids_stack = Array.new(4) {[]} # array of ids for tree stack array
 
           CSV.foreach(upload_params['file'].path, headers: true) do |row|
             codes_stack = Array.new(4) {''}
@@ -100,62 +93,40 @@ class UploadsController < ApplicationController
             row.each do |key, val|
               new_key = long_to_short[key]
               # process this column for this row
+              depth = nil
               case new_key
               when :area
+                puts "process area"
+                depth = 0
+              when :component
+                puts "process component"
+                depth = 1
+              when :outcome
+                puts "process outcome"
+                depth = 2
+              end
+              if depth.present?
                 # Area record formatting: "AREA #: <name>""
-                area_label = val.split(/:/).first
-                area_num = area_label.gsub(/[^0-9,.]/, "")
-                raise "row number #{row_num} has invalid area code at : #{area_num.inspect}" if area_num.length != 1
+                # label_str = parseLabel(val)
+                # code_str = parseSubCode(label_str)
+                code_str = parseSubCode(val, depth)
+                raise "row number #{row_num} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
 
                 # insert area into tree
-                new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
-                  ApplicationRecord::OTC_TREE_TYPE_ID,
-                  ApplicationRecord::OTC_VERSION_ID,
-                  @upload.subject_id,
-                  @upload.grade_band_id,
-                  area_num.to_s,
-                  nil,
-                  area_rec
-                )
-                codes_stack[0] = node.code # save curreant area in a new codes stack
-                if save_status != ApplicationRecord::SAVE_STATUS_SKIP
-                # save this record for parent of component.
-                  area_rec = node
-                  area_ids << area_rec.id if !area_ids.include?(area_rec.id)
-                  rptRec = Array.new(4, '')
-                  rptRec[ApplicationRecord::OTC_TREE_AREA] = area_num.to_s
-                  rptRec << new_code
-                  rptRec << '' # translated name of item.
-                  rptRec << ApplicationRecord::SAVE_STATUS[save_status]
-                  @rptRecs << rptRec
-                  if save_status == ApplicationRecord::SAVE_STATUS_ERROR
-                    @errs << message
-                    num_area_errors += 1
-                  end
-                end
-              when :component
-              # Component record formatting: "Component #: <name>""
-                component_label = val.split(/:/).first
-                component_num = component_label.split(/ /).last
-                raise "row number #{row_num} has invalid component code at : #{component_num.inspect}" if component_num.length != 1
-                component_code = "#{area_rec.code}.#{component_num.to_s}"
 
-                # insert component into tree
+                codes_stack[depth] = code_str # save curreant code in codes stack
                 new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
                   ApplicationRecord::OTC_TREE_TYPE_ID,
                   ApplicationRecord::OTC_VERSION_ID,
                   @upload.subject_id,
                   @upload.grade_band_id,
-                  component_code,
+                  buildFullCode(codes_stack, depth),
                   nil,
-                  component_rec
+                  recs_stack[depth]
                 )
-                codes_stack[1] = node.subCode # save current component code (in the codes stack for the area)
                 if save_status != ApplicationRecord::SAVE_STATUS_SKIP
-                  # codes_stack[ApplicationRecord::OTC_TREE_COMPONENT] = [node.subCode] # save current component code (in the codes stack for the area)
-                  # save this record for parent of outcome.
-                  component_rec = node
-                  component_ids << node.id if !component_ids.include?(node.id)
+                  recs_stack[depth] = node
+                  ids_stack[depth] << node.id if !ids_stack[depth].include?(node.id)
                   rptRec = codes_stack.clone # code stack for first four columns of report
                   rptRec << new_code
                   rptRec << '' # translated name of item.
@@ -163,7 +134,7 @@ class UploadsController < ApplicationController
                   @rptRecs << rptRec
                   if save_status == ApplicationRecord::SAVE_STATUS_ERROR
                     @errs << message
-                    num_area_errors += 1
+                    num_errors_stack[depth] += 1
                   end
                 end
 
@@ -192,14 +163,16 @@ class UploadsController < ApplicationController
     if abort
       render :index
     else
-      if num_area_errors == 0 && area_ids.count > 0
+      puts "num_errors_stack: #{num_errors_stack.inspect}"
+      puts "ids_stack[0]: #{ids_stack[0].inspect}"
+      if num_errors_stack[0] == 0 && ids_stack[0].count > 0
         @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING
         @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_AREA]
-        if num_component_errors == 0 && component_ids.count > 0
+        if num_errors_stack[1] == 0 && ids_stack[1].count > 0
           @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_COMPONENT]
-          if num_outcome_errors == 0 && outcome_ids.count > 0
+          if num_errors_stack[2] == 0 && ids_stack[2].count > 0
             @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_OUTCOME]
-            if num_indicator_errors == 0 && indicator_ids.count > 0
+            if num_errors_stack[3] == 0 && ids_stack[3].count > 0
               @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_INDICATOR]
               @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
             end
@@ -223,6 +196,28 @@ class UploadsController < ApplicationController
 
   def index_prep
     @uploads = Upload.includes([:subject, :grade_band, :locale]).all.upload_listing
+  end
+
+  def parseLabel(str)
+    return str.split(/:/).first
+  end
+
+  def parseSubCode(str)
+    return str.gsub(/[^0-9,.]/, "")
+  end
+
+  def parseSubCode(str, depth)
+    if depth == 0 || depth == 1
+      label = str.split(/:/).first
+      return str.gsub(/[^0-9,.]/, "")
+    elsif depth == 2
+      label = str.split(/\./).first
+      return label.gsub(/[^0-9,.]/, "")
+    end
+  end
+
+  def buildFullCode(codes_stack, depth)
+    return codes_stack[0..depth].join('.')
   end
 
 end

@@ -18,8 +18,6 @@ class TreesController < ApplicationController
     @gbs = GradeBand.all.order(:code)
     @tree = Tree.new
 
-    # @otc = Version.find(ApplicationRecord::OTC_TREE_TYPE_ID)
-    # @ver = Version.find(ApplicationRecord::OTC_VERSION_ID)
     @subj = params[:subject_id].present? ? Subject.find(params[:subject_id]) : nil
     @gb = params[:grade_band_id].present? ? GradeBand.find(params[:grade_band_id]) : nil
     listing = Tree.where(
@@ -32,32 +30,33 @@ class TreesController < ApplicationController
     @trees = listing.all
     otcHash = {}
     areaHash = {}
-    newComponentHash = {}
+    componentHash = {}
+    newHash = {}
 
-    # ruby hash of tree records to build json for treeview
+    # create ruby hash from tree records, to build json for treeview
     @trees.each do |tree|
+      areaHash = {}
       depth = tree.depth
       case depth
       when 1
-        areaHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: {}}
         # add area if not there already
-        otcHash[tree.area] = areaHash if !otcHash[tree.area].present?
+        otcHash[tree.area] = newHash if !otcHash[tree.area].present?
       when 2
-        areaHash = {}
-        # get area in report tree (miust be there see depth 1 code)
-        if otcHash[tree.area].present?
-          areaHash = otcHash[tree.area]
-          newComponentHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[1]}: #{tree.subCode}", nodes: {}}
-          # newComponentHash = {text: "#{tree.subCode}", nodes: {}}
-          # add nodes hash if not there already
-          if !otcHash[tree.area][:nodes].present?
-            otcHash[tree.area][:nodes] = {}
-          end
-          # add component if not there already
-          otcHash[tree.area][:nodes][tree.subCode] = newComponentHash if !otcHash[tree.area][:nodes][tree.subCode].present?
-        else
+        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[1]}: #{tree.subCode}", nodes: {}}
+        if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         end
+        addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
+
+      when 3
+        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[2]}: #{tree.subCode}", nodes: {}}
+        if otcHash[tree.area].blank?
+          raise "ERROR: system error, missing area item in report tree."
+        elsif otcHash[tree.area][:nodes][tree.component].blank?
+          raise "ERROR: system error, missing component item in report tree."
+        end
+        addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
       else
         raise "build treeview json code not an area or component #{tree.code} at id: #{tree.id}"
@@ -65,11 +64,18 @@ class TreesController < ApplicationController
     end
     # copy hash of areas, and all node hashes into arrays
     otcArrHash = []
-    otcHash.each do |key, area|
-      a2 = {text: area[:text], nodes: []}
+    otcHash.each do |key1, area|
+      a2 = {text: area[:text]}
       if area[:nodes]
-        area[:nodes].each do |key, comp|
-          a2[:nodes] << {text: "#{comp[:text]}"}
+        area[:nodes].each do |key2, comp|
+          a3 = {text: "#{comp[:text]}"}
+          comp[:nodes].each do |key3, outc|
+            a4 = {text: "#{outc[:text]}"}
+            a3[:nodes] = [] if a3[:nodes].blank?
+            a3[:nodes] << a4
+          end
+          a2[:nodes] = [] if a2[:nodes].blank?
+          a2[:nodes] << a3
         end
       end
       # done with area, append it to otcArrHash
@@ -133,6 +139,16 @@ class TreesController < ApplicationController
       :code,
       :parent_id
     )
+  end
+
+  def addNodeToArrHash (parent, subCode, newHash)
+    if !parent[:nodes].present?
+      parent[:nodes] = {}
+    end
+    # add hash if not there already
+    if !parent[:nodes][subCode].present?
+      parent[:nodes][subCode] = newHash
+    end
   end
 
 end
