@@ -67,11 +67,10 @@ class UploadsController < ApplicationController
       tree_parent_id = ''
       # to do - refactor this
       case @upload.status
-      when ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED, ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING
-        puts("Upload tree, #{ApplicationRecord::UPLOAD_STATUS[@upload.status]}")
-        puts("method: #{request.method}")
+      when ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED,
+        ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING,
+        ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
         filename = 'Hem_09_transl_Eng.csv'
-        puts("upload_params: #{upload_params}")
 
         if upload_params['file'].original_filename == filename
           # process file to upload
@@ -81,7 +80,6 @@ class UploadsController < ApplicationController
 
           # saved parent (tree stack) records to avoid extra lookups, etc.
           recs_stack = Array.new(4) {nil} # replace area_rec, component_rec, ...
-          puts "recs_stack: #{recs_stack.inspect}"
           num_errors_stack = Array.new(4) {0}
           ids_stack = Array.new(4) {[]} # array of ids for tree stack array
 
@@ -96,21 +94,17 @@ class UploadsController < ApplicationController
               depth = nil
               case new_key
               when :area
-                puts "process area"
                 depth = 0
               when :component
-                puts "process component"
                 depth = 1
               when :outcome
-                puts "process outcome"
                 depth = 2
+              when :indicator
+                depth = 3
               end
               if depth.present?
-                # Area record formatting: "AREA #: <name>""
-                # label_str = parseLabel(val)
-                # code_str = parseSubCode(label_str)
                 code_str = parseSubCode(val, depth)
-                raise "row number #{row_num} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
+                raise "row number #{row_num}, depth: #{depth} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
 
                 # insert area into tree
 
@@ -147,17 +141,16 @@ class UploadsController < ApplicationController
           flash[:alert] = 'Filename does not match this Upload!'
           abort = true
         end
-      when ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
-        puts("status UPLOAD_STATUS_TREE_UPLOADED, #{ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED]}")
-        abort = true
       when ApplicationRecord::UPLOAD_STATUS_DONE
         puts("status UPLOAD_STATUS_DONE, #{ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_DONE]}")
         abort = true
+        @upload = []
       else
         puts("invalid status #{@upload.status}")
         puts("ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED: #{ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED}")
         puts("ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING: #{ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING}")
         abort = true
+        @upload = []
       end
     end
     if abort
@@ -198,21 +191,21 @@ class UploadsController < ApplicationController
     @uploads = Upload.includes([:subject, :grade_band, :locale]).all.upload_listing
   end
 
-  def parseLabel(str)
-    return str.split(/:/).first
-  end
-
-  def parseSubCode(str)
-    return str.gsub(/[^0-9,.]/, "")
-  end
-
   def parseSubCode(str, depth)
     if depth == 0 || depth == 1
+      # Area formatting: "AREA #: <name>""
+      # Component formatting: "Component #: <name>""
       label = str.split(/:/).first
       return str.gsub(/[^0-9,.]/, "")
     elsif depth == 2
+      # Outcome formatting: "Outcome: #. <name>""
       label = str.split(/\./).first
       return label.gsub(/[^0-9,.]/, "")
+    elsif depth == 3
+      # Indicator formatting: "<area>.<component>.<outcome>.<indicator>. <name>""
+      codes = str.split(/ /).first.split(/\./)
+      puts "Indicator codes: #{codes.inspect}"
+      return codes[3]
     end
   end
 

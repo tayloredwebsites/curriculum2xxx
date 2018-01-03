@@ -58,6 +58,17 @@ class TreesController < ApplicationController
         end
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
+      when 4
+        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[3]}: #{tree.subCode}", nodes: {}}
+        if otcHash[tree.area].blank?
+          raise "ERROR: system error, missing area item in report tree."
+        elsif otcHash[tree.area][:nodes][tree.component].blank?
+          raise "ERROR: system error, missing component item in report tree."
+        elsif otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome].blank?
+          raise "ERROR: system error, missing component item in report tree."
+        end
+        addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
+
       else
         raise "build treeview json code not an area or component #{tree.code} at id: #{tree.id}"
       end
@@ -71,6 +82,11 @@ class TreesController < ApplicationController
           a3 = {text: "#{comp[:text]}"}
           comp[:nodes].each do |key3, outc|
             a4 = {text: "#{outc[:text]}"}
+            outc[:nodes].each do |key3, indic|
+              a5 = {text: "#{indic[:text]}"}
+              a4[:nodes] = [] if a4[:nodes].blank?
+              a4[:nodes] << a5
+            end
             a3[:nodes] = [] if a3[:nodes].blank?
             a3[:nodes] << a4
           end

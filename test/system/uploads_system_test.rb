@@ -39,13 +39,13 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # 4 area records were added
     # 16 components (4 per area +(4*4 = 16)
     # 48 outcomes (avg. 3 per component)
-    assert_equal(68, Tree.where(parent_id: nil).count)
+    assert_equal(186, Tree.where(parent_id: nil).count)
     puts "@hem_09 status: #{@hem_09.status}"
     @hem_09.reload
-    assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING, @hem_09.status)
+    assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED, @hem_09.status)
     # confirm number of records returned is 4 (4 area records)
     rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
-    assert_equal rpt_rows.count, 68
+    assert_equal rpt_rows.count, 186
     rpt_rows.each do |r|
       assert_equal r.text, 'Added'
     end
@@ -56,8 +56,8 @@ class UploadsSystemTest < ApplicationSystemTestCase
     find('button').click
     assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
     @hem_09.reload
-    assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING, @hem_09.status)
-    assert_equal 68, page.find_all('#uploadReport tbody tr').count
+    assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED, @hem_09.status)
+    assert_equal 186, page.find_all('#uploadReport tbody tr').count
 
     check_curriculum_page_after_upload
 
@@ -70,37 +70,41 @@ class UploadsSystemTest < ApplicationSystemTestCase
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
     assert_equal("/trees/index_listing", current_path)
-    tree_nodes = page.all('#tree .node-tree')
-    assert_equal 4, tree_nodes.count
-    idas = []
-    tree_nodes.each do |n|
-      id = n['data-nodeid']
-      idas << id
-    end
-    within('#tree') do
-      idas.each do |id|
-        page.find("li[data-nodeid='#{id}'] .glyphicon-plus").click
-      end
-    end
-    puts "area ids: #{idas.inspect}"
-    idcs = []
-    tree_nodes = page.all('#tree .node-tree')
-    puts "tree_nodes.count: #{tree_nodes.count}"
-    tree_nodes.each do |o|
-      idcs << o['data-nodeid']
-    end
-    puts "area & component ids: #{idcs.inspect}"
+    assert_equal 4, page.all('#tree .node-tree').count
+    openAllVisibleNodes
+    assert_equal 20, page.all('#tree .node-tree').count
+    openAllVisibleNodes
+    assert_equal 68, page.all('#tree .node-tree').count
+    openAllVisibleNodes
+    assert_equal 186, page.all('#tree .node-tree').count
 
+    page.find("#main-container.trees #showAreas").click
+    assert_equal 4, page.all('#tree .node-tree').count
+    page.find("#main-container.trees #showComponents").click
+    assert_equal 20, page.all('#tree .node-tree').count
+    page.find("#main-container.trees #showOutcomes").click
+    assert_equal 68, page.all('#tree .node-tree').count
+    page.find("#main-container.trees #showIndicators").click
+    assert_equal 186, page.all('#tree .node-tree').count
+
+  end
+
+  def clickArrayIds(ids)
     within('#tree') do
-      idcs.each do |id|
+      ids.each do |id|
         icon = page.first("li[data-nodeid='#{id}'] .glyphicon-plus")
         icon.click if icon.present?
       end
     end
+  end
+
+  def openAllVisibleNodes
+    idas = []
     tree_nodes = page.all('#tree .node-tree')
-    # sleep 5
-    # save_and_open_page
-    assert_equal 68, tree_nodes.count
+    tree_nodes.each do |n|
+      idas << n['data-nodeid']
+    end
+    clickArrayIds(idas)
   end
 
 end
