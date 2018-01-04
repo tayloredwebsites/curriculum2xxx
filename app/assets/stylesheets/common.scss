@@ -12,4 +12,10 @@
   .glyphicon-plus {
     @extend .fa-plus;
   }
+  .glyphicon-unchecked {
+    @extend .fa-square-o;
+  }
+  .glyphicon-check {
+    @extend .fa-check-square-o;
+  }
 }

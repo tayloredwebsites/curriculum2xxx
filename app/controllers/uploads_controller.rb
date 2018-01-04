@@ -204,7 +204,6 @@ class UploadsController < ApplicationController
     elsif depth == 3
       # Indicator formatting: "<area>.<component>.<outcome>.<indicator>. <name>""
       codes = str.split(/ /).first.split(/\./)
-      puts "Indicator codes: #{codes.inspect}"
       return codes[3]
     end
   end
