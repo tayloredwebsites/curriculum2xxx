@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+class User < BaseRec
   # Include default devise modules. Others available are:
   # :rememberable and :omniauthable
   devise :database_authenticatable, :confirmable, :lockable,

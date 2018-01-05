@@ -33,7 +33,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
         subject_id: @hem.id,
         grade_band_id: @gb_09.id,
         locale_id: @loc_en.id,
-        status: ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED]
+        status: BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
       } }
     end
   end
@@ -47,7 +47,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
     patch do_upload_upload_url(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
-    assert_equal ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING, assigns(:upload).status
+    assert_equal BaseRec::UPLOAD_TREE_UPLOADED, assigns(:upload).status
   end
 
 end

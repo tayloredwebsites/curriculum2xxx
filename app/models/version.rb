@@ -1,2 +1,2 @@
-class Version < ApplicationRecord
+class Version < BaseRec
 end

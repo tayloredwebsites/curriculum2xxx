@@ -23,7 +23,7 @@ class TreeTest < ActiveSupport::TestCase
     up.subject_id = @hem.id
     up.grade_band_id = @gb_09.id
     # up.locale_id = @loc_en.id
-    up.status = ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED]
+    up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
     refute up.valid?, 'missing upload locale should not be valid'
   end
 
@@ -32,7 +32,7 @@ class TreeTest < ActiveSupport::TestCase
     up.subject_id = @hem.id
     # up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
-    up.status = ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED]
+    up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
     refute up.valid?, 'missing upload grade band should not be valid'
   end
 
@@ -41,7 +41,7 @@ class TreeTest < ActiveSupport::TestCase
     # up.subject_id = @hem.id
     up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
-    up.status = ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED]
+    up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
     refute up.valid?, 'missing upload subject should not be valid'
   end
 
@@ -50,7 +50,7 @@ class TreeTest < ActiveSupport::TestCase
     up.subject_id = @hem.id
     up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
-    up.status = ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED]
+    up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
     assert up.valid?, 'upload with all fields should not be valid'
   end
 

@@ -67,9 +67,9 @@ class UploadsController < ApplicationController
       tree_parent_id = ''
       # to do - refactor this
       case @upload.status
-      when ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED,
-        ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING,
-        ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
+      when BaseRec::UPLOAD_NOT_UPLOADED,
+        BaseRec::UPLOAD_TREE_UPLOADING,
+        BaseRec::UPLOAD_TREE_UPLOADED
 
         # to do - get filename from uploads record
         filename = 'Hem_09_transl_Eng.csv'
@@ -111,22 +111,22 @@ class UploadsController < ApplicationController
                 # insert record into tree
                 codes_stack[depth] = code_str # save curreant code in codes stack
                 new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
-                  ApplicationRecord::OTC_TREE_TYPE_ID,
-                  ApplicationRecord::OTC_VERSION_ID,
+                  BaseRec::TREE_TYPE_ID,
+                  BaseRec::VERSION_ID,
                   @upload.subject_id,
                   @upload.grade_band_id,
                   buildFullCode(codes_stack, depth),
                   nil, # to do - set parent record for all records below area
                   recs_stack[depth]
                 )
-                if save_status != ApplicationRecord::REC_STATUS_SKIP
+                if save_status != BaseRec::REC_SKIP
 
                   # update text translation for this locale (if not skipped)
-                  if save_status == ApplicationRecord::REC_STATUS_ERROR
+                  if save_status == BaseRec::REC_ERROR
                     # Note: no update of translation if error
                     transl, text_status, text_msg = Translation.find_translation(
                       locale,
-                      "#{ApplicationRecord::OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
+                      "#{BaseRec::TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
                     )
                     @errs << message
                     num_errors_stack[depth] += 1
@@ -134,7 +134,7 @@ class UploadsController < ApplicationController
                     # update translation if not an error and value changed
                     transl, text_status, text_msg = Translation.find_or_update_translation(
                       locale,
-                      "#{ApplicationRecord::OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
+                      "#{BaseRec::TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
                       text
                     )
                   end # if save_status ...
@@ -145,7 +145,7 @@ class UploadsController < ApplicationController
                   rptRec = codes_stack.clone # code stack for first four columns of report
                   rptRec << new_code
                   rptRec << ( transl.value.present? ? transl.value : '' )
-                  rptRec << "#{ApplicationRecord::SAVE_CODE_STATUS[save_status]} #{ApplicationRecord::SAVE_TEXT_STATUS[text_status]}"
+                  rptRec << "#{BaseRec::SAVE_CODE_STATUS[save_status]} #{BaseRec::SAVE_TEXT_STATUS[text_status]}"
                   @rptRecs << rptRec
 
                 end # if not skipped record
@@ -156,14 +156,14 @@ class UploadsController < ApplicationController
           flash[:alert] = 'Filename does not match this Upload!'
           abort = true
         end
-      when ApplicationRecord::UPLOAD_STATUS_DONE
-        puts("status UPLOAD_STATUS_DONE, #{ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_DONE]}")
+      when BaseRec::UPLOAD_DONE
+        puts("status UPLOAD_DONE, #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_DONE]}")
         abort = true
         @upload = []
       else
         puts("invalid status #{@upload.status}")
-        puts("ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED: #{ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED}")
-        puts("ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING: #{ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING}")
+        puts("BaseRec::UPLOAD_NOT_UPLOADED: #{BaseRec::UPLOAD_NOT_UPLOADED}")
+        puts("BaseRec::UPLOAD_TREE_UPLOADING: #{BaseRec::UPLOAD_TREE_UPLOADING}")
         abort = true
         @upload = []
       end
@@ -171,20 +171,17 @@ class UploadsController < ApplicationController
     if abort
       render :index
     else
-      puts "num_errors_stack: #{num_errors_stack.inspect}"
-      puts "ids_stack[0]: #{ids_stack[0].inspect}"
-
       # update status detail message
       if num_errors_stack[0] == 0 && ids_stack[0].count > 0
-        @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING
-        @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_AREA]
+        @upload.status = BaseRec::UPLOAD_TREE_UPLOADING
+        @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_AREA]
         if num_errors_stack[1] == 0 && ids_stack[1].count > 0
-          @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_COMPONENT]
+          @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_COMPONENT]
           if num_errors_stack[2] == 0 && ids_stack[2].count > 0
-            @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_OUTCOME]
+            @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_OUTCOME]
             if num_errors_stack[3] == 0 && ids_stack[3].count > 0
-              @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_INDICATOR]
-              @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
+              @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_INDICATOR]
+              @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
             end
           end
         end

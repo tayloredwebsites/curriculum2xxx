@@ -1,2 +1,2 @@
-class GradeBand < ApplicationRecord
+class GradeBand < BaseRec
 end

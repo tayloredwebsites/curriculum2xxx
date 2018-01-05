@@ -89,13 +89,13 @@ class TreeTest < ActiveSupport::TestCase
     tree_count = Tree.count
     new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, nil)
     assert_equal tree_count, Tree.count
-    assert_equal ApplicationRecord::REC_STATUS_NO_CHANGE, status
+    assert_equal BaseRec::REC_NO_CHANGE, status
 
     # should skip if matching record passed in
     tree_count = Tree.count
     new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc.id, @v01.id, @hem.id, @gb_09.id, '2', nil, match_rec)
     assert_equal tree_count, Tree.count
-    assert_equal ApplicationRecord::REC_STATUS_SKIP, status
+    assert_equal BaseRec::REC_SKIP, status
 
   end
 end

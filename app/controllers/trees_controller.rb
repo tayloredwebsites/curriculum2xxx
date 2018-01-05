@@ -21,8 +21,8 @@ class TreesController < ApplicationController
     @subj = params[:subject_id].present? ? Subject.find(params[:subject_id]) : nil
     @gb = params[:grade_band_id].present? ? GradeBand.find(params[:grade_band_id]) : nil
     listing = Tree.where(
-      tree_type_id: ApplicationRecord::OTC_TREE_TYPE_ID,
-      version_id: ApplicationRecord::OTC_VERSION_ID
+      tree_type_id: BaseRec::TREE_TYPE_ID,
+      version_id: BaseRec::VERSION_ID
     )
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
@@ -39,18 +39,18 @@ class TreesController < ApplicationController
       depth = tree.depth
       case depth
       when 1
-        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: {}}
         # add area if not there already
         otcHash[tree.area] = newHash if !otcHash[tree.area].present?
       when 2
-        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[1]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[1]}: #{tree.subCode}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         end
         addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[2]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[2]}: #{tree.subCode}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -59,7 +59,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{ApplicationRecord::OTC_UPLOAD_RPT_LABELS[3]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[3]}: #{tree.subCode}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -100,8 +100,6 @@ class TreesController < ApplicationController
 
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
-    puts "@otcJson: #{@otcJson}"
-
     respond_to do |format|
       format.html
       format.json { render json: {trees: @trees, subjects: @subjects, grade_bands: @gbs}}

@@ -1,2 +1,2 @@
-class Locale < ApplicationRecord
+class Locale < BaseRec
 end

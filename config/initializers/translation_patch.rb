@@ -5,20 +5,20 @@ Translation.class_eval do
   def self.find_translation(locale, code, checkDefault = true)
     recs = Translation.where(locale: locale, key: code)
     if recs.count == 1
-      return recs.first, ApplicationRecord::REC_STATUS_NO_CHANGE, ''
+      return recs.first, BaseRec::REC_NO_CHANGE, ''
     elsif recs.count < 1
       if checkDefault
         # lookup the value using the default locale, if not found
         recsD = Translation.where(locale: DEFAULT_LOCALE, key: code)
         if recsD.count == 1
-          return recsD.first, ApplicationRecord::REC_STATUS_NO_CHANGE, ''
+          return recsD.first, BaseRec::REC_NO_CHANGE, ''
         elsif recsD.count < 1
-          return nil, ApplicationRecord::REC_STATUS_ERROR, "Missing translation for #{code}"
+          return nil, BaseRec::REC_ERROR, "Missing translation for #{code}"
         else
-          return nil, ApplicationRecord::REC_STATUS_ERROR, "System Error, too many default translations for #{code}"
+          return nil, BaseRec::REC_ERROR, "System Error, too many default translations for #{code}"
         end
       else # if checkDefault
-        return nil, ApplicationRecord::REC_STATUS_NO_CHANGE, ''
+        return nil, BaseRec::REC_NO_CHANGE, ''
       end # if checkDefault
     else # if recs.count ...
       raise "System Error, too many translations for locale: #{locale}, code: #{code}"
@@ -31,9 +31,9 @@ Translation.class_eval do
       # no matching record, create it
       rec = Translation.create(locale: locale, key: code, value: val)
       if rec.errors.count > 0
-        return nil, ApplicationRecord::REC_STATUS_ERROR, "ERROR creating translation for #{code} to: #{val}"
+        return nil, BaseRec::REC_ERROR, "ERROR creating translation for #{code} to: #{val}"
       end
-      return rec, ApplicationRecord::REC_STATUS_ADDED, ''
+      return rec, BaseRec::REC_ADDED, ''
     else
       # found existing record, check if value changed
       if rec.value != val
@@ -41,11 +41,11 @@ Translation.class_eval do
         rec.value = val
         rec.save
         if rec.errors.count > 0
-          return nil, ApplicationRecord::REC_STATUS_ERROR, "ERROR updating translation for #{code} to #{val}"
+          return nil, BaseRec::REC_ERROR, "ERROR updating translation for #{code} to #{val}"
         end
-        return rec, ApplicationRecord::REC_STATUS_UPDATED, ''
+        return rec, BaseRec::REC_UPDATED, ''
       else
-        return rec, ApplicationRecord::REC_STATUS_NO_CHANGE, ''
+        return rec, BaseRec::REC_NO_CHANGE, ''
       end # if rec.val != val
     end # rec.present
   end

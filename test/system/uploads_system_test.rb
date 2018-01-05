@@ -25,11 +25,11 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # uploads page, with status not uploaded
     assert_equal("/uploads/#{@hem_09.id}/start_upload", current_path)
     within('h4') do
-      assert page.has_content?("Status: #{ApplicationRecord::UPLOAD_STATUS[ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED]}")
+      assert page.has_content?("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]}")
     end
 
     # do upload
-    assert_equal(ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED, @hem_09.status)
+    assert_equal(BaseRec::UPLOAD_NOT_UPLOADED, @hem_09.status)
     assert_equal(0, Tree.count)
     page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
     find('button').click
@@ -42,7 +42,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal(186, Tree.where(parent_id: nil).count)
     puts "@hem_09 status: #{@hem_09.status}"
     @hem_09.reload
-    assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED, @hem_09.status)
+    assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
     # confirm number of records returned is 4 (4 area records)
     rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
     assert_equal rpt_rows.count, 186
@@ -57,7 +57,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     find('button').click
     assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
     @hem_09.reload
-    assert_equal(ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED, @hem_09.status)
+    assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
     assert_equal 186, page.find_all('#uploadReport tbody tr').count
 
     check_curriculum_page_after_upload

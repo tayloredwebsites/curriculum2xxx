@@ -1,2 +1,2 @@
-class TreeType < ApplicationRecord
+class TreeType < BaseRec
 end

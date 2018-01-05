@@ -19,7 +19,7 @@
         <td><%= u.subject.code %></td>
         <td><%= u.grade_band.code %></td>
         <td><%= u.locale.name %></td>
-        <td><%= ApplicationRecord::UPLOAD_STATUS[u.status] %></td>
+        <td><%= BaseRec::UPLOAD_STATUS[u.status] %></td>
         <td>
           <%= link_to "Upload", start_upload_upload_url(id: u.id) %>
         </td>

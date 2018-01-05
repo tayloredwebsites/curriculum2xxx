@@ -1,4 +1,4 @@
-class Upload < ApplicationRecord
+class Upload < BaseRec
 
   belongs_to :subject
   belongs_to :grade_band
