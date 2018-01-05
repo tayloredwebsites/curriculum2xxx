@@ -1,13 +1,15 @@
 class TranslationsController < ApplicationController
-  before_action :find_locale
+
+  before_action :authenticate_user!
+  before_action :get_locale
   before_action :find_translation, only: [:show, :edit, :update]
 
   # TRANSLATION_PARAMS = 'i18n_backend_active_record_translation'
   TRANSLATION_PARAMS = 'translation'
 
   def index
-    if @locale
-      @translations = Translation.where(locale: @locale).order('key')
+    if @locale_code
+      @translations = Translation.where(locale: @locale_code).order('key')
     else
       @translations = Translation.all.order(:key, :locale)
     end
@@ -35,7 +37,7 @@ class TranslationsController < ApplicationController
       if @translation.save
         flash[:success] = "Translation for #{ @key } updated."
         # I18n.backend.reload!
-        redirect_to translations_url(@locale)
+        redirect_to translations_url(@locale_code)
       else
         render :new
       end
@@ -52,7 +54,7 @@ class TranslationsController < ApplicationController
     if @translation.update(translation_params)
       flash[:notice] = "Translation for #{ @key } updated."
       # I18n.backend.reload!
-      redirect_to translations_url(@locale)
+      redirect_to translations_url(@locale_code)
     else
       render :edit
     end
@@ -65,15 +67,11 @@ class TranslationsController < ApplicationController
   def new_layout
     params[:locale_id] = 'en'
     find_locale
-    @translations = Translation.where(locale: @locale).order('key')
+    @translations = Translation.where(locale: @locale_code).order('key')
     render layout: 'responsive1'
   end
 
   private
-
-  def find_locale
-    @locale = params[:locale_id]
-  end
 
   def find_translation
     @translation = Translation.find(params[:id])

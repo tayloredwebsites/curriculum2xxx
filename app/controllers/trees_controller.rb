@@ -1,4 +1,7 @@
 class TreesController < ApplicationController
+
+  before_action :authenticate_user!
+  before_action :get_locale
   before_action :find_tree, only: [:show, :edit, :update]
 
   def index
@@ -21,9 +24,12 @@ class TreesController < ApplicationController
     @subj = params[:subject_id].present? ? Subject.find(params[:subject_id]) : nil
     @gb = params[:grade_band_id].present? ? GradeBand.find(params[:grade_band_id]) : nil
     listing = Tree.where(
-      tree_type_id: BaseRec::TREE_TYPE_ID,
-      version_id: BaseRec::VERSION_ID
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
     )
+    # note: Active Record had problems with placeholder conditions in join clause.
+    #  - Since @Locale_code is from code, placing it directly in condition is safe (see application_controller.rb)
+    listing = listing.joins("LEFT JOIN translations ON (trees.translation_key = translations.key AND translations.locale = '#{@locale_code}')")
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # listing = listing.otc_listing
@@ -33,24 +39,26 @@ class TreesController < ApplicationController
     componentHash = {}
     newHash = {}
 
-    # create ruby hash from tree records, to build json for treeview
+    # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
+      trans = Translation.where(locale: @locale_code, key: tree.translation_key)
+      translation = trans.count > 0 ? trans.first.value : '*missing*'
       areaHash = {}
       depth = tree.depth
       case depth
       when 1
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[0]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[0]} #{tree.subCode}: #{translation}", nodes: {}}
         # add area if not there already
         otcHash[tree.area] = newHash if !otcHash[tree.area].present?
       when 2
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[1]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[1]} #{tree.subCode}: #{translation}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         end
         addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[2]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[2]} #{tree.subCode}: #{translation}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -59,7 +67,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[3]}: #{tree.subCode}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[3]} #{tree.subCode}: #{translation}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -73,7 +81,7 @@ class TreesController < ApplicationController
         raise "build treeview json code not an area or component #{tree.code} at id: #{tree.id}"
       end
     end
-    # copy hash of areas, and all node hashes into arrays
+    # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
     otcArrHash = []
     otcHash.each do |key1, area|
       a2 = {text: area[:text]}

@@ -23,9 +23,19 @@ FactoryBot.define do
   end
 
   factory :tree do
-    tree_type_id 1
-    version_id 1
+    tree_type_id BaseRec::TREE_TYPE_ID
+    version_id BaseRec::VERSION_ID
     subject
     grade_band
   end
+
+  factory :upload do
+    subject
+    grade_band
+    trait :english do
+      locale 'en'
+    end
+    status BaseRec::UPLOAD_NOT_UPLOADED
+  end
+
 end

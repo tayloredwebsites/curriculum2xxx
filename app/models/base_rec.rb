@@ -26,7 +26,12 @@ class BaseRec < ActiveRecord::Base
   TREE_TYPE_CODE = 'OTC'
   VERSION_ID = 1
   VERSION_CODE = 'v01'
-  TRANSLATION_START = 'OTC.v01'
+  LOCALE_BS = 'bs'
+  LOCALE_HR = 'hr'
+  LOCALE_SR = 'sr'
+  LOCALE_EN = 'en'
+  DEFAULT_LOCALE = LOCALE_BS
+
 
   TREE_LABELS = ['Area', 'Component', 'Outcome', 'Indicator']
   TREE_AREA = 0

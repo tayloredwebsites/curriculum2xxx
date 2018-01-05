@@ -1,7 +1,5 @@
 Translation.class_eval do
 
-  DEFAULT_LOCALE = 'bs'
-
   def self.find_translation(locale, code, checkDefault = true)
     recs = Translation.where(locale: locale, key: code)
     if recs.count == 1

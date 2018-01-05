@@ -1,5 +1,9 @@
 class UploadsController < ApplicationController
+
+  before_action :authenticate_user!
+  before_action :get_locale
   before_action :find_upload, only: [:show, :edit, :update, :start_upload, :do_upload]
+
   def index
     index_prep
     respond_to do |format|
@@ -63,6 +67,8 @@ class UploadsController < ApplicationController
     abort = false
 
     if @upload
+      @subject = Subject.find(@upload.subject_id)
+      @gradeBand = GradeBand.find(@upload.grade_band_id)
       tree_parent_code = ''
       tree_parent_id = ''
       # to do - refactor this
@@ -111,10 +117,10 @@ class UploadsController < ApplicationController
                 # insert record into tree
                 codes_stack[depth] = code_str # save curreant code in codes stack
                 new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
-                  BaseRec::TREE_TYPE_ID,
-                  BaseRec::VERSION_ID,
-                  @upload.subject_id,
-                  @upload.grade_band_id,
+                  @treeTypeRec,
+                  @versionRec,
+                  @subject,
+                  @gradeBand,
                   buildFullCode(codes_stack, depth),
                   nil, # to do - set parent record for all records below area
                   recs_stack[depth]
@@ -126,7 +132,7 @@ class UploadsController < ApplicationController
                     # Note: no update of translation if error
                     transl, text_status, text_msg = Translation.find_translation(
                       locale,
-                      "#{BaseRec::TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
+                      "#{@treeTypeRec.code}.#{@versionRec.code}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
                     )
                     @errs << message
                     num_errors_stack[depth] += 1
@@ -134,7 +140,7 @@ class UploadsController < ApplicationController
                     # update translation if not an error and value changed
                     transl, text_status, text_msg = Translation.find_or_update_translation(
                       locale,
-                      "#{BaseRec::TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
+                      "#{@treeTypeRec.code}.#{@versionRec.code}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
                       text
                     )
                   end # if save_status ...

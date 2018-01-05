@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180104212143) do
+ActiveRecord::Schema.define(version: 20180105162455) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 20180104212143) do
     t.boolean "is_proc", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_translations_on_key"
     t.index ["locale", "key"], name: "index_translations_on_keys"
     t.index ["value"], name: "index_translations_on_value"
+    t.index [nil], name: "index_translations_on_translation_key"
   end
 
   create_table "tree_types", force: :cascade do |t|
@@ -62,8 +64,10 @@ ActiveRecord::Schema.define(version: 20180104212143) do
     t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "translation_key"
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["subject_id"], name: "index_trees_on_subject_id"
+    t.index ["translation_key"], name: "index_trees_on_translation_key"
     t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys"
     t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
     t.index ["version_id"], name: "index_trees_on_version_id"
