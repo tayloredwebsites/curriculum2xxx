@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171227151033) do
+ActiveRecord::Schema.define(version: 20180104212143) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 20171227151033) do
     t.boolean "is_proc", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["locale", "key"], name: "index_translations_on_keys"
+    t.index ["value"], name: "index_translations_on_value"
   end
 
   create_table "tree_types", force: :cascade do |t|

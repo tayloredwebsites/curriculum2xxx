@@ -70,6 +70,8 @@ class UploadsController < ApplicationController
       when ApplicationRecord::UPLOAD_STATUS_NOT_UPLOADED,
         ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING,
         ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADED
+
+        # to do - get filename from uploads record
         filename = 'Hem_09_transl_Eng.csv'
 
         if upload_params['file'].original_filename == filename
@@ -103,11 +105,10 @@ class UploadsController < ApplicationController
                 depth = 3
               end
               if depth.present?
-                code_str = parseSubCode(val, depth)
+                code_str, text = parseSubCodeText(val, depth)
                 raise "row number #{row_num}, depth: #{depth} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
 
-                # insert area into tree
-
+                # insert record into tree
                 codes_stack[depth] = code_str # save curreant code in codes stack
                 new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
                   ApplicationRecord::OTC_TREE_TYPE_ID,
@@ -115,25 +116,39 @@ class UploadsController < ApplicationController
                   @upload.subject_id,
                   @upload.grade_band_id,
                   buildFullCode(codes_stack, depth),
-                  nil,
+                  nil, # to do - set parent record for all records below area
                   recs_stack[depth]
                 )
-                if save_status != ApplicationRecord::SAVE_STATUS_SKIP
+                if save_status != ApplicationRecord::REC_STATUS_SKIP
+
+                  # update text translation for this locale (if not skipped)
+                  if save_status == ApplicationRecord::REC_STATUS_ERROR
+                    # Note: no update of translation if error
+                    transl, text_status, text_msg = Translation.find_translation(
+                      locale,
+                      "#{ApplicationRecord::OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
+                    )
+                    @errs << message
+                    num_errors_stack[depth] += 1
+                  else # if save_status ...
+                    # update translation if not an error and value changed
+                    transl, text_status, text_msg = Translation.find_or_update_translation(
+                      locale,
+                      "#{ApplicationRecord::OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
+                      text
+                    )
+                  end # if save_status ...
+
+                  # generate report record if not skipped
                   recs_stack[depth] = node
                   ids_stack[depth] << node.id if !ids_stack[depth].include?(node.id)
                   rptRec = codes_stack.clone # code stack for first four columns of report
                   rptRec << new_code
-                  rptRec << '' # translated name of item.
-                  rptRec << ApplicationRecord::SAVE_STATUS[save_status]
+                  rptRec << ( transl.value.present? ? transl.value : '' )
+                  rptRec << "#{ApplicationRecord::SAVE_CODE_STATUS[save_status]} #{ApplicationRecord::SAVE_TEXT_STATUS[text_status]}"
                   @rptRecs << rptRec
-                  if save_status == ApplicationRecord::SAVE_STATUS_ERROR
-                    @errs << message
-                    num_errors_stack[depth] += 1
-                  end
-                end
 
-                # insert area name into translation table
-                # transl = Translation.find_or_add_translation(locale, "#{OTC_TRANSLATION_START}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name", val)
+                end # if not skipped record
               end # case new_key
             end # row.each
           end
@@ -158,6 +173,8 @@ class UploadsController < ApplicationController
     else
       puts "num_errors_stack: #{num_errors_stack.inspect}"
       puts "ids_stack[0]: #{ids_stack[0].inspect}"
+
+      # update status detail message
       if num_errors_stack[0] == 0 && ids_stack[0].count > 0
         @upload.status = ApplicationRecord::UPLOAD_STATUS_TREE_UPLOADING
         @upload.status_detail = ApplicationRecord::OTC_TREE_LABELS[ApplicationRecord::OTC_TREE_AREA]
@@ -191,20 +208,26 @@ class UploadsController < ApplicationController
     @uploads = Upload.includes([:subject, :grade_band, :locale]).all.upload_listing
   end
 
-  def parseSubCode(str, depth)
+  def parseSubCodeText(str, depth)
     if depth == 0 || depth == 1
       # Area formatting: "AREA #: <name>""
       # Component formatting: "Component #: <name>""
-      label = str.split(/:/).first
-      return str.gsub(/[^0-9,.]/, "")
+      strArray = str.split(/:/)
+      label = strArray.first
+      text = str[(label.length+1)..-1].lstrip
+      return str.gsub(/[^0-9,.]/, ""), text
     elsif depth == 2
       # Outcome formatting: "Outcome: #. <name>""
-      label = str.split(/\./).first
-      return label.gsub(/[^0-9,.]/, "")
+      strArray = str.split(/\./)
+      label = strArray.first
+      text = str[(label.length+1)..-1].lstrip
+      return label.gsub(/[^0-9,.]/, ""), text
     elsif depth == 3
       # Indicator formatting: "<area>.<component>.<outcome>.<indicator>. <name>""
-      codes = str.split(/ /).first.split(/\./)
-      return codes[3]
+      strArray = str.split(/ /)
+      codes = strArray.first.split(/\./)
+      text = str[(strArray.first.length)..-1].lstrip
+      return codes[3], text
     end
   end
 

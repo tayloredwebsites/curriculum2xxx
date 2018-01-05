@@ -46,8 +46,9 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # confirm number of records returned is 4 (4 area records)
     rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
     assert_equal rpt_rows.count, 186
+    save_and_open_page
     rpt_rows.each do |r|
-      assert_equal r.text, 'Added'
+      assert_equal 'Code Added Text Added', r.text
     end
 
 

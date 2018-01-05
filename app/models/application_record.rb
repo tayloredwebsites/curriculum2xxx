@@ -2,12 +2,13 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   # to do - get these from translations table
-  SAVE_STATUS = ['No Change', 'Added', 'Updated', 'Error']
-  SAVE_STATUS_NO_CHANGE = 0
-  SAVE_STATUS_ADDED = 1
-  SAVE_STATUS_UPDATED = 2
-  SAVE_STATUS_ERROR = 3
-  SAVE_STATUS_SKIP = 4
+  SAVE_CODE_STATUS = ['', 'Code Added', 'Code Updated', 'Code Error']
+  SAVE_TEXT_STATUS = ['', 'Text Added', 'Text Updated', 'Text Error']
+  REC_STATUS_NO_CHANGE = 0
+  REC_STATUS_ADDED = 1
+  REC_STATUS_UPDATED = 2
+  REC_STATUS_ERROR = 3
+  REC_STATUS_SKIP = 4
 
   # to do - get these from translation table
   UPLOAD_STATUS = ['Not Uploaded', 'Tree Upload Started', 'Tree Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Subjects Related', 'Upload Done']
@@ -25,7 +26,7 @@ class ApplicationRecord < ActiveRecord::Base
   OTC_TREE_TYPE_CODE = 'OTC'
   OTC_VERSION_ID = 1
   OTC_VERSION_CODE = 'v01'
-  OTC_TRANSLATION_START = 'OTC.v01.'
+  OTC_TRANSLATION_START = 'OTC.v01'
 
   OTC_TREE_LABELS = ['Area', 'Component', 'Outcome', 'Indicator']
   OTC_TREE_AREA = 0

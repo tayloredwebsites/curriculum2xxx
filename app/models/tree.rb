@@ -102,7 +102,7 @@ class Tree < ApplicationRecord
     new_code = parent_code_prepend + code
 
     if code == match_code
-      return new_code, match_rec, ApplicationRecord::SAVE_STATUS_SKIP, "#{new_code}"
+      return new_code, match_rec, ApplicationRecord::REC_STATUS_SKIP, "#{new_code}"
     else
       # get the tree records for this hierarchy item
       matched_codes = Tree.otc_tree.where(subject_id: subject_id, grade_band_id: grade_band_id, code: new_code)
@@ -121,18 +121,18 @@ class Tree < ApplicationRecord
         # end
         if tree.errors.count > 0
           Rails.logger.error("ERROR: saving hierarchy item: #{new_code} returned errors: #{tree.errors.full_messages}")
-          return new_code, nil, ApplicationRecord::SAVE_STATUS_ERROR, tree.errors.full_messages
+          return new_code, nil, ApplicationRecord::REC_STATUS_ERROR, tree.errors.full_messages
         else
-          return new_code, tree, ApplicationRecord::SAVE_STATUS_ADDED, "#{new_code}"
+          return new_code, tree, ApplicationRecord::REC_STATUS_ADDED, "#{new_code}"
         end
       elsif matched_codes.count == 1
         # it already exists, skip
-        return new_code, matched_codes.first, ApplicationRecord::SAVE_STATUS_NO_CHANGE, "#{new_code}"
+        return new_code, matched_codes.first, ApplicationRecord::REC_STATUS_NO_CHANGE, "#{new_code}"
       else
         # too many matching items in database: system error.
         err_str = "Too Many items match in tree: #{@upload.subject_id}, grade_band_id: #{@upload.grade_band_id}, code: #{new_code}"
         Rails.logger.error("ERROR: #{err_str} ")
-        return new_code, nil, ApplicationRecord::SAVE_STATUS_ERROR, err_str
+        return new_code, nil, ApplicationRecord::REC_STATUS_ERROR, err_str
       end # if
     end # if code == match_code
   end
