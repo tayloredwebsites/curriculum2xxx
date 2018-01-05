@@ -29,5 +29,13 @@
   }
 
 
+  // tighten up report item height by 20 pixels (10 off of top and bottom)
+  #uploadReport tbody td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
+
+
   // end of SCSS for uploads pages
 }
