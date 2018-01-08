@@ -128,8 +128,8 @@ class Tree < BaseRec
         tree = Tree.new
         tree.tree_type_id = treeTypeRec.id
         tree.version_id = versionRec.id
-        tree.subject_id = subjectRed.id
-        tree.grade_band_id = grade_band.id
+        tree.subject_id = subjectRec.id
+        tree.grade_band_id = gradeBandRec.id
         tree.code = fullCode
         # fill in parent id if parent passed in, and parent codes match.
         tree.parent_id = (parentRec.present? && tree.parentCode == parentRec.code) ? parentRec.id : nil

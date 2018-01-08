@@ -31,8 +31,8 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference('Tree.count', 1) do
       post trees_url, params: { tree: {
-        tree_type_id: @treeTypeRec.id,
-        version_id: @versionRec.id,
+        tree_type_id: @otc.id,
+        version_id: @v01.id,
         subject_id: @hem.id,
         grade_band_id: @gb_09.id,
         code: '1'
