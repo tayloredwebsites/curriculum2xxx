@@ -1,17 +1,16 @@
-<% content_for(:title, 'Translations Listing 2') %>
+<% content_for(:title_code, 'translations.labels.listing_by_key') %>
 <% content_for(:page_class, 'translations') %>
 
-<h1>Translations Listing 2</h1>
-<p><%= link_to "Translations Listing 2", new_translation_url() %></p>
+<p><%= link_to translate('app.labels.create'), new_translation_url() %></p>
 <table>
   <thead>
     <tr>
-      <th colspan='3' style='text-align: left; background-color: #eee;'>Key</th>
+      <th colspan='3' style='text-align: left; background-color: #eee;'><%= translate('translations.labels.key') %></th>
     </tr>
     <tr>
       <th style='text-align: left;'></th>
-      <th style='text-align: left;'>Locale</th>
-      <th style='text-align: left;'>Translated</th>
+      <th style='text-align: left;'><%= translate('translations.labels.locale') %></th>
+      <th style='text-align: left;'><%= translate('translations.labels.value') %></th>
     </tr>
   </thead>
   <tbody>
@@ -19,7 +18,7 @@
     <% @translations.each do |t| %>
       <% if t.key != @last_key %>
         <tr data_key="<%= t.key %>">
-          <th colspan="3" style='text-align: left; background-color: #eee;'><%= t.key %>&nbsp;("Edit All?")</th>
+          <th colspan="3" style='text-align: left; background-color: #eee;'><%= t.key %></th>
         </tr>
         <% @last_key = t.key %>
       <% end %>
@@ -28,7 +27,7 @@
         <td><%= t.locale %></td>
         <td>
           <%= t.value.blank? ? '' : t.value %>
-          <a href="<%= link_to 'Edit', edit_translation_url(id: t.id) %>">
+          <a href="<%= link_to translate('app.labels.edit'), edit_translation_url(id: t.id) %>">
         </td>
       </tr>
     <% end %>

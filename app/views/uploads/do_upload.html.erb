@@ -2,20 +2,17 @@
 <% content_for(:page_class, 'uploads') %>
 <h2 class='h4'><%= translate('uploads.upload.h2') %></h2>
 <ul class='titleList'>
-  <li>Subject: <%= @upload.subject.code %></li>
-  <li>Grade Band: <%= @upload.grade_band.code %></li>
-  <li>Language: <%= @upload.locale.name %></li>
+  <li><%= "#{translate('app.labels.subject')}: #{@upload.subject.code}" %></li>
+  <li><%= "#{translate('app.labels.grade_band')}: #{@upload.grade_band.code}" %></li>
+  <li><%= "#{translate('app.labels.language')}: #{@upload.locale.name}" %></li>
 </ul>
-<!-- h3 class='h6'></h3>
-<h3 class='h6'></h3>
-<h3 class='h6'></h3 -->
 <div class="col-lg-8 offset-lg-2 col-sm-10 offset-sm-1 col-xs-12">
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: <%= BaseRec::UPLOAD_PROGRESS_PCT[@upload.status] %>%" aria-valuenow="<%= BaseRec::UPLOAD_PROGRESS_PCT[@upload.status] %>" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
 </div>
-<h4 class='h4'>Status: <%= BaseRec::UPLOAD_STATUS[@upload.status] %></h4>
-<h5 class='h5'>Status Detail: <%= @upload.status_detail %> Uploaded</h4>
+<h4><%= "#{translate('uploads.labels.status')}: #{BaseRec::UPLOAD_STATUS[@upload.status]}" %></h4>
+<h5><%= "#{translate('uploads.labels.status_detail')}: #{@upload.status_detail} #{translate('uploads.labels.uploaded')}" %></h5>
 <% if @errs.count > 0 %>
   <ul class='statusList'><%= @errs.count %> Errors</h5>
 <%
@@ -38,13 +35,13 @@
   <table id='uploadReport' class='table table-striped table-bordered'>
     <thead>
       <tr>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_AREA] %></th>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_COMPONENT] %></th>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_OUTCOME] %></th>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_INDICATOR] %></th>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_CODE] %></th>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_DESC] %></th>
-        <th><%= BaseRec::UPLOAD_RPT_LABELS[BaseRec::UPLOAD_RPT_MSG] %></th>
+        <th><%= translate('app.labels.area') %></th>
+        <th><%= translate('app.labels.component') %></th>
+        <th><%= translate('app.labels.outcome') %></th>
+        <th><%= translate('app.labels.indicator')  %></th>
+        <th><%= translate('app.labels.code') %></th>
+        <th><%= translate('app.labels.description') %></th>
+        <th><%= translate('app.labels.message') %></th>
       </tr>
     </thead>
     <tbody>

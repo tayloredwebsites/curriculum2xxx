@@ -1,15 +1,15 @@
 <% content_for(:title_code, 'uploads.index.name') %>
 <% content_for(:page_class, 'uploads') %>
 
-<p><%= link_to "Create new Upload", new_upload_url() %></p>
+<p><%= link_to translate('uploads.labels.new_upload'), new_upload_url() %></p>
 <table id='uploadsTable'>
   <thead>
     <tr>
-      <th>Subject</th>
-      <th>Grade</th>
-      <th>Locale</th>
-      <th>Status</th>
-      <th>Actions</th>
+      <th><%= translate('app.labels.subject') %></th>
+      <th><%= translate('app.labels.grade') %></th>
+      <th><%= translate('app.labels.language') %></th>
+      <th><%= translate('app.labels.status') %></th>
+      <th><%= translate('app.labels.action') %></th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +20,7 @@
         <td><%= u.locale.name %></td>
         <td><%= BaseRec::UPLOAD_STATUS[u.status] %></td>
         <td>
-          <%= link_to "Upload", start_upload_upload_url(id: u.id) %>
+          <%= link_to translate('uploads.labels.upload'), start_upload_upload_url(id: u.id) %>
         </td>
       </tr>
     <% end %>

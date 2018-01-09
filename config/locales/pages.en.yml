@@ -2,6 +2,23 @@
 en:
   app:
     title: "ENABLE BIH Curriculum App."
+    labels:
+      save: "Save"
+      cancel: "Cancel"
+      edit: "Edit"
+      create: "Create"
+      subject: "Subject"
+      grade_band: "Grade Band"
+      action: "Action"
+      actions: "Actions"
+      language: "Language"
+      area: "Area"
+      component: "Component"
+      outcome: "Outcome"
+      indicator: "Indicator"
+      code: "Code"
+      description: 'Description'
+      message: "Message"
   nav_bar:
     curriculum:
       name: "Curriculum"
@@ -27,14 +44,33 @@ en:
       name: "Edit Translation"
     create:
       name: "Create Translation"
+    labels:
+      save_translation: 'Save Translation'
+      listing: "Translation Listing"
+      listing_by_key: "Translation Listing by Key"
+      locale: "Locale"
+      key: "Key"
+      value: "Value"
   trees:
     index:
       name: "OTC Listing Filter"
     index_listing:
       name: "OTC Listing"
+    labels:
+      gen_list: "Generate List"
+      show_areas: "Show Areas"
+      show_components: "Show Components"
+      show_outcomes: "Show Outcomes"
+      show_indicators: "Show Indicators"
   uploads:
     index:
-      name: "OTC Listing"
+      name: "Uploads Listing"
     upload:
       name: "Upload OTC Curriculum"
       h2: "Spreadsheet file for:"
+    labels:
+      new_upload: "Create new Upload"
+      upload: "Upload"
+      status: "Status"
+      status_detail: "Status Detail"
+      uploaded: "Uploaded"

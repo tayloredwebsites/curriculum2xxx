@@ -1,16 +1,16 @@
 <fieldset>
-  <label for='translation_locale'>Locale</label>
+  <label for='translation_locale'><%= translate('app.labels.language') %></label>
   <%= form.text_field :locale, name: 'translation[locale]', id: 'translation_locale' %>
 </fieldset>
 <fieldset>
-  <label for='translation_key'>Code</label>
+  <label for='translation_key'><%= translate('app.labels.code') %></label>
   <%= form.text_field :key, name: 'translation[key]', id: 'translation_key' %>
 </fieldset>
 <fieldset>
-  <label for='translation_value'>Message</label>
+  <label for='translation_value'><%= translate('app.labels.message') %></label>
   <%= form.text_area :value, name: 'translation[value]', id: 'translation_value' %>
 </fieldset>
 <fieldset>
-  <%= form.submit 'Save Translation' %>
-  <%= link_to "Cancel", translations_url() %>
+  <%= form.submit translate('app.labels.save_translation') %>
+  <%= link_to translate('app.labels.cancel'), translations_url() %>
 </fieldset>

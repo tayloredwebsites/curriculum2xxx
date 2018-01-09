@@ -1,13 +1,17 @@
 <%= form_for @tree, url: index_listing_trees_path do |form| %>
-  <fieldset>
-    <label for='tree_subject'>Subject</label>
-    <%= form.collection_select(:subject_id, @subjects, :id, :code, include_blank: 'All') %>
-  </fieldset>
-  <fieldset>
-    <label for='tree_grade_band'>Grade Band</label>
-    <%= form.collection_select(:grade_band_id, @gbs, :id, :code, include_blank: 'All') %>
-  </fieldset>
-  <fieldset>
-    <%= form.submit 'List' %>
-  </fieldset>
+  <div class='row'>
+    <div class='col col-md-3'></div>
+    <div class='col col-md-2 border-left border-top'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
+    <div class='col col-md-2 border-top'><label for='tree_grade_band'><%= translate('app.labels.grade_band') %></label></div>
+    <div class='col col-md-2 border-top border-right'><%= translate('app.labels.actions') %></div>
+    <div class='col col-md-3'></div>
+  </div>
+  <div class='row'>
+    <div class='col col-md-3'></div>
+    <div class='col col-md-2 border-left border-bottom'><%= form.collection_select(:subject_id, @subjects, :id, :code, include_blank: 'All') %></div>
+    <div class='col col-md-2 border-bottom'><%= form.collection_select(:grade_band_id, @gbs, :id, :code, include_blank: 'All') %></div>
+    <div class='col col-md-2 border-bottom border-right'><%= form.submit translate('trees.labels.gen_list') %></div>
+    <div class='col col-md-3'></div>
+  </div>
+
 <% end %>

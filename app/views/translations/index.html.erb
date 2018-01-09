@@ -1,15 +1,15 @@
-<% content_for(:title, 'Translations Listing 1') %>
+<% content_for(:title_code, 'translations.labels.listing') %>
 <% content_for(:page_class, 'translations') %>
 
-<h1>Translations Listing 1</h1>
-<p><%= link_to "Translations Listing 1", new_translation_url() %></p>
+<h1><%= translate('translations.labels.listing') %></h1>
+<p><%= link_to translate('translations.labels.listing'), new_translation_url() %></p>
 <table>
   <thead>
     <tr>
-      <th>Locale</th>
-      <th>Key</th>
-      <th>Translated</th>
-      <th>Actions</th>
+      <th><%= translate('translations.labels.locale') %></th>
+      <th><%= translate('translations.labels.key') %></th>
+      <th><%= translate('translations.labels.value') %></th>
+      <th><%= translate('app.labels.actions') %></th>
     </tr>
   </thead>
   <tbody>
@@ -19,7 +19,7 @@
         <td style='word-break: break-all; min-width: 130px;'><%= t.key %></td>
         <td style='min-width: 130px;'><%= t.value.blank? ? '' : t.value %></td>
         <td>
-          <%= link_to "Edit", edit_translation_url(id: t.id) %>
+          <%= link_to translate('app.labels.edit'), edit_translation_url(id: t.id) %>
         </td>
       </tr>
     <% end %>

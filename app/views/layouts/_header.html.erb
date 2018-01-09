@@ -3,7 +3,7 @@
     <div class='logoImage'></div>
   </a>
   <div id='pageHeaderTitle' class=''>
-    <h1><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
+    <h1 class='text-center'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
   </div>
   <div id='pageHeaderShowNav' class=''>
     <i class="fa fa-bars fa-2x"></i>
@@ -58,5 +58,5 @@
   </nav>
 <% end %>
 <div id='pageSubHeaderTitle' class=''>
-  <h1><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
+  <h1 class='text-center'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
 </div>
