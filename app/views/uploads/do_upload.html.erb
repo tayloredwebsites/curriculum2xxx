@@ -1,8 +1,6 @@
-<% content_for(:title, 'Upload Spreadsheet') %>
+<% content_for(:title_code, 'uploads.upload.name') %>
 <% content_for(:page_class, 'uploads') %>
-
-<h1 class='h2'>Upload Spreadsheet</h1>
-<h2 class='h4'>Upload Curriculum file for:</h2>
+<h2 class='h4'><%= translate('uploads.upload.h2') %></h2>
 <ul class='titleList'>
   <li>Subject: <%= @upload.subject.code %></li>
   <li>Grade Band: <%= @upload.grade_band.code %></li>

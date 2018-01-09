@@ -29,11 +29,22 @@ class TreesController < ApplicationController
     )
     # note: Active Record had problems with placeholder conditions in join clause.
     #  - Since @Locale_code is from code, placing it directly in condition is safe (see application_controller.rb)
-    listing = listing.joins("LEFT JOIN translations ON (trees.translation_key = translations.key AND translations.locale = '#{@locale_code}')")
+    # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
+    # listing = listing.joins("LEFT JOIN translations ON (trees.translation_key = translations.key AND translations.locale = '#{@locale_code}')")
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # listing = listing.otc_listing
     @trees = listing.all
+
+    # pre-fetch the translations for this listing:
+    # each translation lookup still takes one or two tenths of a millisecond even after pre-fetch
+    # total for development testing file is 2.6 seconds, with or without pre-fecth.
+    # leaving code in, in case it helps in production.
+    translation_keys= @trees.pluck(:translation_key)
+    puts "@locale_code: #{@locale_code}, translation_keys: #{translation_keys.inspect}"
+    @translations = Translation.where(locale: @locale_code, key: translation_keys).all
+    puts "first translation: #{@translations.first.inspect}"
+    puts "last translation: #{@translations.last.inspect}"
     otcHash = {}
     areaHash = {}
     componentHash = {}

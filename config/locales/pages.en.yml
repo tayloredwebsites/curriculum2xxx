@@ -1,0 +1,40 @@
+
+en:
+  app:
+    title: "ENABLE BIH Curriculum App."
+  nav_bar:
+    curriculum:
+      name: "Curriculum"
+      hover: "Lists the OTC Curriculum Tree"
+    documents:
+      name: "Documents"
+      hover: "Documents Management for Administrators"
+    uploads:
+      name: "Uploads"
+      hover: "OTC Curriculum Spreadsheet Uploads"
+    translations:
+      name: "Translations"
+      hover: "Translations Management for Administrators"
+    configurations:
+      name: "Configuration"
+      hover: "User Configuration Management"
+  translations:
+    index:
+      name: "Translations Listing"
+    index_by_code:
+      name: "Translations Listing by Code"
+    edit:
+      name: "Edit Translation"
+    create:
+      name: "Create Translation"
+  trees:
+    index:
+      name: "OTC Listing Filter"
+    index_listing:
+      name: "OTC Listing"
+  uploads:
+    index:
+      name: "OTC Listing"
+    upload:
+      name: "Upload OTC Curriculum"
+      h2: "Spreadsheet file for:"

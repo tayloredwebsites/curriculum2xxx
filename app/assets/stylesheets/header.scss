@@ -10,13 +10,6 @@
        height: 77px;
      }
   }
-  #pageHeaderTitle {
-      text-align: center;
-      h1.h2 {
-          font-size: 1.5rem;
-          margin-top: 15px;
-      }
-  }
   #pageHeaderShowNav {
       margin-top: 20px;
   }
@@ -32,3 +25,33 @@ nav#topNav {
     background-color: #ddd;
   }
 }
+
+@media only screen and (max-width: 660px)
+	{
+		#pageHeaderTitle {
+			display: none;
+		}
+    #pageSubHeaderTitle {
+      margin: 0 auto;
+      max-width: 300px;
+      h1 {
+          font-size: 1.5rem;
+          margin-top: 15px;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 661px)
+  	{
+  		#pageSubHeaderTitle {
+  			display: none;
+  		}
+      #pageHeaderTitle {
+        margin: 0 auto;
+  			min-width: 300px;
+        h1 {
+            font-size: 1.5rem;
+            margin-top: 15px;
+        }
+  		}
+    }

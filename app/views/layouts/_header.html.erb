@@ -2,9 +2,9 @@
   <a id='pageHeaderLogo' class=' href='#'>
     <div class='logoImage'></div>
   </a>
-  <!-- div id='pageHeaderTitle' class=''>
-    <h1 class='h2'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('header.site_title') %></h1>
-  </div -->
+  <div id='pageHeaderTitle' class=''>
+    <h1><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
+  </div>
   <div id='pageHeaderShowNav' class=''>
     <i class="fa fa-bars fa-2x"></i>
   </div>
@@ -15,45 +15,48 @@
     <ul class="navbar-nav mx-auto">
       <% if controller.controller_name == 'trees' %>
         <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link">Curriculum</a>
+          <a class="nav-link"><%= translate('nav_bar.curriculum.name') %></a>
         </li>
       <% else %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link" href='/trees'>Curriculum</a>
+          <a class="nav-link" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
         </li>
       <% end
         if true
       %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link">Documents</a>
+          <a class="nav-link"><%= translate('nav_bar.documents.name') %></a>
         </li>
       <% end
         if controller.controller_name == 'uploads'
       %>
         <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link">Uploads</a>
+          <a class="nav-link"><%= translate('nav_bar.uploads.name') %></a>
         </li>
       <% else %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link" href='/uploads'>Uploads</a>
+          <a class="nav-link" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
         </li>
       <% end
         if controller.controller_name == 'translations'
       %>
         <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link">Translations</a>
+          <a class="nav-link"><%= translate('nav_bar.translations.name') %></a>
         </li>
       <% else %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link" href='/translations'>Translations</a>
+          <a class="nav-link" href='/translations'><%= translate('nav_bar.translations.name') %></a>
         </li>
       <% end
         if true
       %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link">Configuration</a>
+          <a class="nav-link"><%= translate('nav_bar.configurations.name') %></a>
         </li>
       <% end %>
     </ul>
   </nav>
 <% end %>
+<div id='pageSubHeaderTitle' class=''>
+  <h1><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
+</div>
