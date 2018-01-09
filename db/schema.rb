@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105162455) do
+ActiveRecord::Schema.define(version: 20180109212555) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -25,6 +25,21 @@ ActiveRecord::Schema.define(version: 20180105162455) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "sectors", force: :cascade do |t|
+    t.string "code"
+    t.string "translation_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_sectors_on_code"
+  end
+
+  create_table "sectors_trees", id: false, force: :cascade do |t|
+    t.integer "sector_id", null: false
+    t.integer "tree_id", null: false
+    t.index ["sector_id", "tree_id"], name: "index_sectors_trees_on_sector_id_and_tree_id"
+    t.index ["tree_id", "sector_id"], name: "index_sectors_trees_on_tree_id_and_sector_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -46,7 +61,6 @@ ActiveRecord::Schema.define(version: 20180105162455) do
     t.index ["key"], name: "index_translations_on_key"
     t.index ["locale", "key"], name: "index_translations_on_keys"
     t.index ["value"], name: "index_translations_on_value"
-    t.index [nil], name: "index_translations_on_translation_key"
   end
 
   create_table "tree_types", force: :cascade do |t|
