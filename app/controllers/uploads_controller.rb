@@ -78,14 +78,15 @@ class UploadsController < ApplicationController
         BaseRec::UPLOAD_TREE_UPLOADED
 
         # to do - get filename from uploads record
-        filename = 'Hem_09_transl_Eng.csv'
+        val_filename = 'Hem_09_transl_Eng.csv'
+        val_grade_band = '9'
 
-        if upload_params['file'].original_filename == filename
+        if upload_params['file'].original_filename == val_filename
           # process file to upload
 
+          # to do - match to final upload layout when determined.
           # map csv headers to short symbols
           long_to_short = Upload.get_long_to_short()
-
           # saved parent (tree stack) records to avoid extra lookups, etc.
           recs_stack = Array.new(4) {nil} # replace area_rec, component_rec, ...
           num_errors_stack = Array.new(4) {0}
@@ -94,6 +95,11 @@ class UploadsController < ApplicationController
           CSV.foreach(upload_params['file'].path, headers: true) do |row|
             codes_stack = Array.new(4) {''}
             row_num += 1
+
+            # validate grade band in this row matches this upload
+            # do not process this row if it is for the wrong grade level
+            grade_band = row[Upload::LONG_HEADERS[4]]
+            raise "invalid grade level #{grade_band.inspect} on row: #{row_num}" if grade_band != val_grade_band
 
             # process this row
             row.each do |key, val|
@@ -157,7 +163,7 @@ class UploadsController < ApplicationController
                 end # if not skipped record
               end # case new_key
             end # row.each
-          end
+          end # CSV.foreach
         else
           flash[:alert] = 'Filename does not match this Upload!'
           abort = true
