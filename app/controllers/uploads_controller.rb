@@ -1,5 +1,10 @@
 class UploadsController < ApplicationController
 
+  RECS_STACK = 0
+  NUM_ERRORS_STACK = 1
+  IDS_STACK = 2
+  CODES_STACK = 3
+
   before_action :authenticate_user!
   before_action :get_locale
   before_action :find_upload, only: [:show, :edit, :update, :start_upload, :do_upload]
@@ -87,13 +92,15 @@ class UploadsController < ApplicationController
           # to do - match to final upload layout when determined.
           # map csv headers to short symbols
           long_to_short = Upload.get_long_to_short()
-          # saved parent (tree stack) records to avoid extra lookups, etc.
-          recs_stack = Array.new(4) {nil} # replace area_rec, component_rec, ...
-          num_errors_stack = Array.new(4) {0}
-          ids_stack = Array.new(4) {[]} # array of ids for tree stack array
+          # stacks is an array whose elements correspond to the depth of the code tree
+          #  - (e.g. 0 - Area, 1 - Component, 2 - Outcome, ...)
+          stacks = Array.new
+          stacks[RECS_STACK] = Array.new(4) {nil} # current records at each level of the code tree
+          stacks[NUM_ERRORS_STACK] = Array.new(4) {0} # count of errors at each level of the code tree
+          stacks[IDS_STACK] = Array.new(4) {[]} # ids of records at each level of tree stack array (i.e. gets counts of Areas, ...)
 
           CSV.foreach(upload_params['file'].path, headers: true) do |row|
-            codes_stack = Array.new(4) {''}
+            stacks[CODES_STACK] = Array.new(4) {''}
             row_num += 1
 
             # validate grade band in this row matches this upload
@@ -105,63 +112,18 @@ class UploadsController < ApplicationController
             row.each do |key, val|
               new_key = long_to_short[key]
               # process this column for this row
-              depth = nil
               case new_key
               when :area
-                depth = 0
+                stacks = process_otc_tree(0, val, row_num, stacks)
               when :component
-                depth = 1
+                stacks = process_otc_tree(1, val, row_num, stacks)
               when :outcome
-                depth = 2
+                stacks = process_otc_tree(2, val, row_num, stacks)
               when :indicator
-                depth = 3
+                stacks = process_otc_tree(3, val, row_num, stacks)
+              when :relevantKbe
+                process_kbe(key, val)
               end
-              if depth.present?
-                code_str, text = parseSubCodeText(val, depth)
-                raise "row number #{row_num}, depth: #{depth} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
-
-                # insert record into tree
-                codes_stack[depth] = code_str # save curreant code in codes stack
-                new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
-                  @treeTypeRec,
-                  @versionRec,
-                  @subject,
-                  @gradeBand,
-                  buildFullCode(codes_stack, depth),
-                  nil, # to do - set parent record for all records below area
-                  recs_stack[depth]
-                )
-                if save_status != BaseRec::REC_SKIP
-
-                  # update text translation for this locale (if not skipped)
-                  if save_status == BaseRec::REC_ERROR
-                    # Note: no update of translation if error
-                    transl, text_status, text_msg = Translation.find_translation(
-                      locale,
-                      "#{@treeTypeRec.code}.#{@versionRec.code}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
-                    )
-                    @errs << message
-                    num_errors_stack[depth] += 1
-                  else # if save_status ...
-                    # update translation if not an error and value changed
-                    transl, text_status, text_msg = Translation.find_or_update_translation(
-                      locale,
-                      "#{@treeTypeRec.code}.#{@versionRec.code}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
-                      text
-                    )
-                  end # if save_status ...
-
-                  # generate report record if not skipped
-                  recs_stack[depth] = node
-                  ids_stack[depth] << node.id if !ids_stack[depth].include?(node.id)
-                  rptRec = codes_stack.clone # code stack for first four columns of report
-                  rptRec << new_code
-                  rptRec << ( transl.value.present? ? transl.value : '' )
-                  rptRec << "#{BaseRec::SAVE_CODE_STATUS[save_status]} #{BaseRec::SAVE_TEXT_STATUS[text_status]}"
-                  @rptRecs << rptRec
-
-                end # if not skipped record
-              end # case new_key
             end # row.each
           end # CSV.foreach
         else
@@ -184,14 +146,14 @@ class UploadsController < ApplicationController
       render :index
     else
       # update status detail message
-      if num_errors_stack[0] == 0 && ids_stack[0].count > 0
+      if stacks[NUM_ERRORS_STACK][0] == 0 && stacks[IDS_STACK][0].count > 0
         @upload.status = BaseRec::UPLOAD_TREE_UPLOADING
         @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_AREA]
-        if num_errors_stack[1] == 0 && ids_stack[1].count > 0
+        if stacks[NUM_ERRORS_STACK][1] == 0 && stacks[IDS_STACK][1].count > 0
           @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_COMPONENT]
-          if num_errors_stack[2] == 0 && ids_stack[2].count > 0
+          if stacks[NUM_ERRORS_STACK][2] == 0 && stacks[IDS_STACK][2].count > 0
             @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_OUTCOME]
-            if num_errors_stack[3] == 0 && ids_stack[3].count > 0
+            if stacks[NUM_ERRORS_STACK][3] == 0 && stacks[IDS_STACK][3].count > 0
               @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_INDICATOR]
               @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
             end
@@ -244,4 +206,54 @@ class UploadsController < ApplicationController
     return codes_stack[0..depth].join('.')
   end
 
+  def process_otc_tree(depth, val, row_num, stacks)
+    code_str, text = parseSubCodeText(val, depth)
+    raise "row number #{row_num}, depth: #{depth} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
+
+    # insert record into tree
+    stacks[CODES_STACK][depth] = code_str # save curreant code in codes stack
+    new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
+      @treeTypeRec,
+      @versionRec,
+      @subject,
+      @gradeBand,
+      buildFullCode(stacks[CODES_STACK], depth),
+      nil, # to do - set parent record for all records below area
+      stacks[RECS_STACK][depth]
+    )
+    if save_status != BaseRec::REC_SKIP
+
+      # update text translation for this locale (if not skipped)
+      if save_status == BaseRec::REC_ERROR
+        # Note: no update of translation if error
+        transl, text_status, text_msg = Translation.find_translation(
+          locale,
+          "#{@treeTypeRec.code}.#{@versionRec.code}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name"
+        )
+        @errs << message
+        stacks[NUM_ERRORS_STACK][depth] += 1
+      else # if save_status ...
+        # update translation if not an error and value changed
+        transl, text_status, text_msg = Translation.find_or_update_translation(
+          locale,
+          "#{@treeTypeRec.code}.#{@versionRec.code}.#{@upload.subject.code}.#{@upload.grade_band.code}.#{node.code}.name",
+          text
+        )
+      end # if save_status ...
+
+      # generate report record if not skipped
+      stacks[RECS_STACK][depth] = node
+      stacks[IDS_STACK][depth] << node.id if !stacks[IDS_STACK][depth].include?(node.id)
+      rptRec = stacks[CODES_STACK].clone # code stack for first four columns of report
+      rptRec << new_code
+      rptRec << ( transl.value.present? ? transl.value : '' )
+      rptRec << "#{BaseRec::SAVE_CODE_STATUS[save_status]} #{BaseRec::SAVE_TEXT_STATUS[text_status]}"
+      @rptRecs << rptRec
+
+    end # if not skipped record
+    return stacks
+  end # process_otc_tree
+
+  def process_kbe(key, val)
+  end
 end

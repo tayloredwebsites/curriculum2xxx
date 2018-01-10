@@ -17,12 +17,12 @@ class TreesSystemTest < ApplicationSystemTestCase
     # uploads index page
     assert_equal("/trees", current_path)
     # to do - use translation when title is translated
-    assert_equal 'OTC Listing Filter', page.title
+    assert_equal I18n.translate('trees.index.name'), page.title
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
     assert_equal("/trees/index_listing", current_path)
     # to do - use translation when title is translated
-    assert_equal 'OTC Listing', page.title
+    assert_equal I18n.translate('trees.index.name'), page.title
     assert_equal 0, page.all('#tree .node-tree').count
   end
 
