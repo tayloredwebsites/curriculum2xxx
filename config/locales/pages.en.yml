@@ -19,6 +19,9 @@ en:
       code: "Code"
       description: 'Description'
       message: "Message"
+      related_to_kbe: "Related to KBE %{kbe}"
+    errors:
+      too_many_matched_key: "Too many matches for %{key}"
   nav_bar:
     curriculum:
       name: "Curriculum"
@@ -72,3 +75,7 @@ en:
       status: "Status"
       status_detail: "Status Detail"
       uploaded: "Uploaded"
+    errors:
+      invalid_kbe_code_for_kbe: "Invalid KBE code %{code} for KBE %{kbe}"
+      no_matching_kbe: "No matching KBE Sector found for %{kbe}"
+      exception_relating_sector_to_tree: "Exception occurred relating sector to tree: %{e}"

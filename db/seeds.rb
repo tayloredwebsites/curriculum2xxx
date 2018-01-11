@@ -12,7 +12,7 @@ if Version.count < 1
   )
 end
 throw "Invalid Version Count" if Version.count > 1
-v01 = Version.first
+@v01 = Version.first
 
 if TreeType.count < 1
   TreeType.create(
@@ -20,7 +20,7 @@ if TreeType.count < 1
   )
 end
 throw "Invalid TreeType Count" if TreeType.count > 1
-otc = TreeType.first
+@otc = TreeType.first
 
 if Locale.count < 1
   Locale.create(
@@ -41,36 +41,36 @@ if Locale.count < 1
   )
 end
 throw "Invalid Locale Count" if Locale.count < 1 || Locale.count > 4
-loc_en = Locale.where(code: 'en').first
+@loc_en = Locale.where(code: 'en').first
 
 if GradeBand.count < 1
   GradeBand.create(
-    tree_type_id: otc.id,
-    code: '09'
+    tree_type_id: @otc.id,
+    code: '9'
   )
 end
 throw "Invalid GradeBand Count" if GradeBand.count > 1
-gb_09 = GradeBand.first
+@gb_09 = GradeBand.first
 
 if Subject.count < 1
   Subject.create(
-    tree_type_id: otc.id,
+    tree_type_id: @otc.id,
     code: 'Hem'
   )
 end
 throw "Invalid Subject Count" if Subject.count > 1
-hem = Subject.first
+@hem = Subject.first
 
 if Upload.count < 1
   Upload.create(
-    subject_id: hem.id,
-    grade_band_id: gb_09.id,
-    locale_id: loc_en.id,
+    subject_id: @hem.id,
+    grade_band_id: @gb_09.id,
+    locale_id: @loc_en.id,
     status: 0
   )
 end
 throw "Invalid Upload Count" if Upload.count > 1
-hem_09 = Upload.first
+@hem_09 = Upload.first
 
 
 ################################
@@ -78,7 +78,7 @@ hem_09 = Upload.first
 if Sector.count > 0 && Sector.count != 10
   throw "Invalid KBE Sector count #{Sector.count}"
 elsif Sector.count == 10
-  puts "Sectors entered already!"
+  # puts "Sectors entered already!"
   # entered already
 else
   Sector.create(code: '1', translation_key: 'kbe.1.name')
@@ -171,7 +171,7 @@ rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'kbe.7.name', 'Sport')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'kbe.8.name', 'TurTourismizam')
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'kbe.8.name', 'Tourism')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'kbe.9.name', 'Entrepreneurship')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR

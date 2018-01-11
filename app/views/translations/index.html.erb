@@ -2,6 +2,7 @@
 <% content_for(:page_class, 'translations') %>
 
 <h1><%= translate('translations.labels.listing') %></h1>
+<p><%= link_to translate('translations.labels.listing_by_key'), listing2_translations_url() %></p>
 <p><%= link_to translate('translations.labels.listing'), new_translation_url() %></p>
 <table>
   <thead>

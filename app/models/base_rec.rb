@@ -50,4 +50,7 @@ class BaseRec < ActiveRecord::Base
   UPLOAD_RPT_DESC = 5
   UPLOAD_RPT_MSG = 6
 
+  ALL_KBE_SECTORS = ['1','2','3','4','5','6','7','8','9','10']
+
+
 end

@@ -40,15 +40,21 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # 16 components (4 per area +(4*4 = 16)
     # 48 outcomes (avg. 3 per component)
     assert_equal(186, Tree.where(parent_id: nil).count)
-    puts "@hem_09 status: #{@hem_09.status}"
     @hem_09.reload
     assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
     # confirm number of records returned is 4 (4 area records)
     rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
-    assert_equal rpt_rows.count, 186
+    assert_equal rpt_rows.count, 305 # 186 tree items + 119 KBE report records
+    countTreeRecs = 0
+    countKbeRecs = 0
     rpt_rows.each do |r|
-      assert_equal 'Code Added Text Added', r.text
+      # assert r.text == 'Code Added Text Added' || r.text == 'Related to KBE'
+      assert r.text == 'Code Added Text Added' || r.text == BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_KBE_RELATED]
+      countTreeRecs += 1 if r.text == 'Code Added Text Added'
+      countKbeRecs += 1 if r.text == BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_KBE_RELATED]
     end
+    assert_equal countTreeRecs, 186
+    assert_equal countKbeRecs, 119
 
 
     # run it again, and should have the same report
@@ -57,7 +63,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
     @hem_09.reload
     assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
-    assert_equal 186, page.find_all('#uploadReport tbody tr').count
+    assert_equal 305, page.find_all('#uploadReport tbody tr').count
 
     check_curriculum_page_after_upload
 

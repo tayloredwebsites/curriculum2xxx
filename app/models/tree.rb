@@ -7,6 +7,8 @@ class Tree < BaseRec
   belongs_to :grade_band
   belongs_to :parent, class_name: "Tree", foreign_key: "parent_id", optional: true
 
+  has_and_belongs_to_many :sectors
+  
   # does not seem to be working ?
   # has_many :my_translations
 
@@ -149,6 +151,7 @@ class Tree < BaseRec
           matched.translation_key = matched.buildTranslationKey
           matched.parent_id = parentRec.id if (parentRec.present? && matched.parentCode == parentRec.code)
           matched.save
+          # to do - do we need error checking here?
         end
         return fullCode, matched_codes.first, BaseRec::REC_NO_CHANGE, "#{fullCode}"
       else
