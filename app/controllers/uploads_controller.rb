@@ -297,10 +297,10 @@ class UploadsController < ApplicationController
           if BaseRec::ALL_KBE_SECTORS.include?(sectorCode)
             relations << sectorCode
           else
-            errs << I18n.translate('app.errors.invalid_kbe_code_for_kbe', code: kbeCode, kbe: s.strip)
+            errs << I18n.translate('uploads.errors.invalid_kbe_code_for_kbe', code: kbeCode, kbe: s.strip)
           end
         elsif matchingSectors.count == 0
-          errs << I18n.translate('app.errors.no_matching_kbe', kbe: s.strip)
+          errs << I18n.translate('uploads.errors.no_matching_kbe', kbe: s.strip)
         else
           errs << I18n.translate('app.errors.too_many_matched_key', key: s.strip)
         end
@@ -317,7 +317,7 @@ class UploadsController < ApplicationController
         # if not, join them
         sector.trees.create(id: tree_rec.id) if matchedTrees.count == 0
       rescue ActiveRecord::ActiveRecordError => e
-        errs << I18n.translate('app.errors.exception_relating_sector_to_tree', e: e)
+        errs << I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
       end
     end
     # generate report record
