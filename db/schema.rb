@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180109212555) do
+ActiveRecord::Schema.define(version: 20180111201201) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20180109212555) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_translations_on_key"
-    t.index ["locale", "key"], name: "index_translations_on_keys"
+    t.index ["locale", "key"], name: "index_translations_on_locale_and_key", unique: true
     t.index ["value"], name: "index_translations_on_value"
   end
 
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20180109212555) do
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["subject_id"], name: "index_trees_on_subject_id"
     t.index ["translation_key"], name: "index_trees_on_translation_key"
-    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys"
+    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys", unique: true
     t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
     t.index ["version_id"], name: "index_trees_on_version_id"
   end
