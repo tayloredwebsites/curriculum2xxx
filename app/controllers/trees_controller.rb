@@ -56,18 +56,18 @@ class TreesController < ApplicationController
       depth = tree.depth
       case depth
       when 1
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[0]} #{tree.subCode}: #{translation}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[0]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         # add area if not there already
         otcHash[tree.area] = newHash if !otcHash[tree.area].present?
       when 2
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[1]} #{tree.subCode}: #{translation}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[1]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         end
         addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[2]} #{tree.subCode}: #{translation}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[2]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -76,7 +76,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[3]} #{tree.subCode}: #{translation}", nodes: {}}
+        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[3]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -93,14 +93,14 @@ class TreesController < ApplicationController
     # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
     otcArrHash = []
     otcHash.each do |key1, area|
-      a2 = {text: area[:text]}
+      a2 = {text: area[:text], href: "javascript:void(0);"}
       if area[:nodes]
         area[:nodes].each do |key2, comp|
-          a3 = {text: "#{comp[:text]}"}
+          a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            a4 = {text: "#{outc[:text]}"}
+            a4 = {text: outc[:text], href: "/trees/#{outc[:id]}", setting: 'set'}
             outc[:nodes].each do |key3, indic|
-              a5 = {text: "#{indic[:text]}"}
+              a5 = {text: indic[:text], href: "/trees/#{indic[:id]}", setting: 'set'}
               a4[:nodes] = [] if a4[:nodes].blank?
               a4[:nodes] << a5
             end

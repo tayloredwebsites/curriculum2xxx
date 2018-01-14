@@ -315,7 +315,9 @@ class UploadsController < ApplicationController
         # check the sectors_trees table to see if it is joined already
         matchedTrees = sector.trees.where(id: tree_rec.id)
         # if not, join them
-        sector.trees.create(id: tree_rec.id) if matchedTrees.count == 0
+        if matchedTrees.count == 0
+          sector.trees << tree_rec
+        end
       rescue ActiveRecord::ActiveRecordError => e
         errs << I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
       end

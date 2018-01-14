@@ -57,6 +57,8 @@ en:
   trees:
     index:
       name: "OTC Listing Filter"
+    show:
+      name: "OTC Detail Page"
     labels:
       gen_list: "Generate List"
       show_areas: "Show Areas"

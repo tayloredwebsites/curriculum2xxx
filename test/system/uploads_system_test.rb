@@ -57,14 +57,14 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal countKbeRecs, 119
 
 
-    # run it again, and should have the same report
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
-    find('button').click
-    assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
-    @hem_09.reload
-    assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
-    assert_equal 305, page.find_all('#uploadReport tbody tr').count
-
+    # # run it again, and should have the same report
+    # page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
+    # find('button').click
+    # assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
+    # @hem_09.reload
+    # assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
+    # assert_equal 305, page.find_all('#uploadReport tbody tr').count
+    #
     check_curriculum_page_after_upload
 
   end
@@ -77,39 +77,39 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # uploads page, with status not uploaded
     assert_equal("/trees/index_listing", current_path)
     assert_equal 4, page.all('#tree .node-tree').count
-    within("#tree li[data-nodeid='0']") do
-      # ensure user can check and uncheck checkbox
-      assert_equal 1, page.find_all("span.glyphicon-unchecked").count
-      assert_equal 0, page.find_all("span.glyphicon-check").count
-      page.find("span.glyphicon-unchecked").click
-      assert_equal 0, page.find_all("span.glyphicon-unchecked").count
-      assert_equal 1, page.find_all("span.glyphicon-check").count
-      page.find("span.glyphicon-check").click
-      assert_equal 1, page.find_all("span.glyphicon-unchecked").count
-      assert_equal 0, page.find_all("span.glyphicon-check").count
-    end
-    openAllVisibleNodes
-    assert_equal 20, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
-    openAllVisibleNodes
-    assert_equal 68, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
-    openAllVisibleNodes
-    assert_equal 186, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
-
+    # if we want checkboxes
+    # within("#tree li[data-nodeid='0']") do
+    #   # ensure user can check and uncheck checkbox
+    #   assert_equal 1, page.find_all("span.glyphicon-unchecked").count
+    #   assert_equal 0, page.find_all("span.glyphicon-check").count
+    #   page.find("span.glyphicon-unchecked").click
+    #   assert_equal 0, page.find_all("span.glyphicon-unchecked").count
+    #   assert_equal 1, page.find_all("span.glyphicon-check").count
+    #   page.find("span.glyphicon-check").click
+    #   assert_equal 1, page.find_all("span.glyphicon-unchecked").count
+    #   assert_equal 0, page.find_all("span.glyphicon-check").count
+    # end
+    openAllVisibleNodes(2)
+    assert_equal 12, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    openAllVisibleNodes(3)
+    assert_equal 19, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    openAllVisibleNodes(4)
+    assert_equal 23, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
     page.find("#main-container.trees #showAreas").click
     assert_equal 4, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
     page.find("#main-container.trees #showComponents").click
     assert_equal 20, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
     page.find("#main-container.trees #showOutcomes").click
     assert_equal 68, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
     page.find("#main-container.trees #showIndicators").click
     assert_equal 186, page.all('#tree .node-tree').count
-    assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
 
   end
 
@@ -122,11 +122,14 @@ class UploadsSystemTest < ApplicationSystemTestCase
     end
   end
 
-  def openAllVisibleNodes
+  def openAllVisibleNodes(limit)
     idas = []
     tree_nodes = page.all('#tree .node-tree')
+    counter = 0
     tree_nodes.each do |n|
       idas << n['data-nodeid']
+      counter += 1
+      break if counter + 1 > limit
     end
     clickArrayIds(idas)
   end

@@ -12,20 +12,45 @@
   #tree .list-group .list-group-item {
     padding-top: 2px;
     padding-bottom: 2px;
+
+    // attempts to indent not working
+    // note all items are in a single depth ul.
+    // a {
+    //   text-indent:2em;
+    //   margin-left:-3em;
+    //   line-height:1;
+    // }
+
+    // prevent underline on area and component links
+    a[href='javascript:void(0);'] {
+      color:inherit;
+      text-decoration:none;
+      pointer-events:none;
+    }
   }
 
   form#new_tree {
     .border-bottom {
-      border-bottom: 2px solid black;
+      border-bottom: 1px solid black;
     }
     .border-top {
-      border-top: 2px solid black;
+      border-top: 1px solid black;
     }
     .border-left {
-      border-left: 2px solid black;
+      border-left: 1px solid black;
     }
     .border-right {
-      border-right: 2px solid black;
+      border-right: 1px solid black;
+    }
+  }
+
+  .detail-page {
+    .col {
+      border: 1px solid black;
+      text-align: left;
+    }
+    .label {
+      background-color: #ddd;
     }
   }
 

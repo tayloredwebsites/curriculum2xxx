@@ -7,10 +7,10 @@
 <br>
 <div class='container'>
   <div class='text-center'>
-    <button id='showAreas' onclick="$('#tree').treeview({data: otcTree, levels: 1, showCheckbox: true})"><%= translate('trees.labels.show_areas') %></button>
-    <button id='showComponents' onclick="$('#tree').treeview({data: otcTree, levels: 2, showCheckbox: true})"><%= translate('trees.labels.show_components') %></button>
-    <button id='showOutcomes' onclick="$('#tree').treeview({data: otcTree, levels: 3, showCheckbox: true})"><%= translate('trees.labels.show_outcomes') %></button>
-    <button id='showIndicators' onclick="$('#tree').treeview({data: otcTree, levels: 4, showCheckbox: true})"><%= translate('trees.labels.show_indicators') %></button>
+    <button id='showAreas' onclick="$('#tree').treeview({data: otcTree, levels: 1, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_areas') %></button>
+    <button id='showComponents' onclick="$('#tree').treeview({data: otcTree, levels: 2, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_components') %></button>
+    <button id='showOutcomes' onclick="$('#tree').treeview({data: otcTree, levels: 3, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_outcomes') %></button>
+    <button id='showIndicators' onclick="$('#tree').treeview({data: otcTree, levels: 4, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
   </div>
   <div id="tree"></div>
 </div>
@@ -20,6 +20,7 @@ var otcTree = <%= raw @otcJson %>;
 $('#tree').treeview({
   data: otcTree,
   levels: 1,
-  showCheckbox: true
+  enableLinks: true // ,
+  // showCheckbox: true
 });
 </script>

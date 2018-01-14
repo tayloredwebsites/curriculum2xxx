@@ -1,0 +1,112 @@
+<% content_for(:title_code, 'trees.show.name') %>
+<% content_for(:page_class, 'trees') %>
+
+<div class='container'>
+  <div class='detail-page'>
+    <div class='row subject-grade-row'><%= @tree.subject.code %> <%= @tree.grade_band.code %></div>
+    <div class='row area-row'>Area</div>
+    <div class='row component-row'>Component</div>
+    <div class='row outcome-row'>Outcome</div>
+    <div class='row indicator-row'>
+      <div class='col col-lg-3 indicator-col'>
+        <%= @tree.code %> Indicator Translation Goes Here
+      </div>
+      <div class='col col-lg-9 indicator-info-col'>
+        <div class='row'>
+          <div class='col col-lg-6 rel-sector-col label'>
+            Related Sectors KBE.
+          </div>
+          <div class='col col-lg-6 rel-reason-col label'>
+            How Sector KBE is related.
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col col-lg-6 rel-sector-col'>
+            <% @tree.sectors.each do |s|
+              sectorNames = Translation.where(locale: @locale_code, key: Sector.KbeCodeFromsectorCode(s.code))
+              if sectorNames.count == 1
+                sectorName = sectorNames.first.value
+              else
+                sectorName = 'err'
+              end
+            %>
+              <div class='row'>
+                <div class='col col-lg-12'>
+                  <%= s.code %> - <%= sectorName %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class='col col-lg-6 rel-reason-col'>
+            Reasons here.
+          </div>
+        </div>
+        <div class='row subject-relations label'>
+          <div class='col col-lg-12'>
+            Connections to Other Indicators
+          </div>
+        </div>
+        <div class='row subject-relations'>
+          <div class='col col-lg-12'>
+            Current Subject (Chemistry)
+          </div>
+        </div>
+        <div class='row subject-relations'>
+          <div class='col col-lg-12'>
+            Math
+          </div>
+        </div>
+        <div class='row subject-relations'>
+          <div class='col col-lg-12'>
+            Geography
+          </div>
+        </div>
+        <div class='row subject-relations'>
+          <div class='col col-lg-12'>
+            Physics
+          </div>
+        </div>
+        <div class='row subject-relations'>
+          <div class='col col-lg-12'>
+            Biology
+          </div>
+        </div>
+        <div class='row subject-relations'>
+          <div class='col col-lg-12'>
+            ICT
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='row teacher-field'>
+      <div class='col col-lg-12'>
+        Teacher Field
+      </div>
+    </div>
+    <div class='row teacher-field'>
+      <div class='col col-lg-12'>
+        Teacher Field
+      </div>
+    </div>
+    <div class='row teacher-field'>
+      <div class='col col-lg-12'>
+        Teacher Field
+      </div>
+    </div>
+    <div class='row teacher-field'>
+      <div class='col col-lg-12'>
+        Teacher Field
+      </div>
+    </div>
+    <div class='row teacher-field'>
+      <div class='col col-lg-12'>
+        Teacher Field
+      </div>
+    </div>
+    <div class='row teacher-field'>
+      <div class='col col-lg-12'>
+        Teacher Field
+      </div>
+    </div>
+  </div>
+</div>

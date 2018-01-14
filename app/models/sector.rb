@@ -11,4 +11,12 @@ class Sector < BaseRec
     end
   end
 
+  def self.KbeCodeFromsectorCode(sectorCode)
+    if ALL_KBE_SECTORS.include?(sectorCode)
+      return "kbe.#{sectorCode}.name"
+    else
+      return ''
+    end
+  end
+
 end

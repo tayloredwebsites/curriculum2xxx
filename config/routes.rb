@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
 
   # root to: 'application#index'
-  root to: 'uploads#index'
+  root to: 'trees#index'
   get '/elm', to: 'application#index'
 
 end
