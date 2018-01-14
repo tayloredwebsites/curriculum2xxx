@@ -1,4 +1,4 @@
-require 'application_system_test_case'
+require 'helpers/test_system_helper'
 require 'helpers/seeds_testing_helper'
 
 class TreesSystemTest < ApplicationSystemTestCase

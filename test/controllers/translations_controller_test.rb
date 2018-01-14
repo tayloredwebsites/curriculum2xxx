@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'helpers/test_controllers_helper'
 
 class TranslationsControllerTest < ActionDispatch::IntegrationTest
   # test "should get index" do

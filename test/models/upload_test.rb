@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'helpers/test_models_helper'
 require 'helpers/seeds_testing_helper'
 
 include SeedsTestingHelper

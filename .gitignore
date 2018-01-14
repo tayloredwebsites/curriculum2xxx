@@ -23,6 +23,15 @@
 **/.DS_Store
 **/.~lock*
 
+# simplecov working files
+coverage
+test/**/.last_run.json
+test/**/.resultset.json
+test/**/.resultset.json.lock
+test/**/index.html
+test/**/assets
+
+
 /elm-stuff
 /node_modules
 /yarn-error.log
