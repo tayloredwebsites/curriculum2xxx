@@ -12,6 +12,8 @@ en:
       action: "Action"
       actions: "Actions"
       language: "Language"
+      row: "Row Number"
+      row_num: "Row: %{num} - "
       area: "Area"
       component: "Component"
       outcome: "Outcome"
@@ -19,9 +21,13 @@ en:
       code: "Code"
       description: 'Description'
       message: "Message"
-      related_to_kbe: "Related to KBE %{kbe}"
+      related_to_sectors: "Related to sectors: %{sectors}"
+      new_sector_relations: "Newly related sectors: %{sectors}"
     errors:
       too_many_matched_key: "Too many matches for %{key}"
+      incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
+      invalid_grade_band: "Invalid grade band %{grade_band}"
+      invalid_code: "invalid code: %{code}"
   nav_bar:
     curriculum:
       name: "Curriculum"
@@ -77,6 +83,8 @@ en:
       status: "Status"
       status_detail: "Status Detail"
       uploaded: "Uploaded"
+      num_added_sector_of_numall: "%{num} relations added to "
+      saved_code: 'Saved code: %{code}'
     errors:
       invalid_kbe_code_for_kbe: "Invalid KBE code %{code} for KBE %{kbe}"
       no_matching_kbe: "No matching KBE Sector found for %{kbe}"

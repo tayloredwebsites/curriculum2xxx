@@ -75,11 +75,14 @@ class UploadsController < ApplicationController
     require 'csv'
 
     # infomation to send back to user after completion
-    row_num = 0
+    row_num = 1
     @message = "Select file to upload to get to next step"
     @errs = []
+    @rowErrs = []
     @rptRecs = []
-    abort = false
+    abortRun = false
+    @abortRow = false
+
 
     if @upload
       @subjectRec = Subject.find(@upload.subject_id)
@@ -93,10 +96,10 @@ class UploadsController < ApplicationController
         BaseRec::UPLOAD_TREE_UPLOADING,
         BaseRec::UPLOAD_TREE_UPLOADED
 
-        # to do - get filename from uploads record
-        val_filename = 'Hem_09_transl_Eng.csv'
-
-        if upload_params['file'].original_filename == val_filename
+        if upload_params['file'].original_filename != @upload.filename
+          flash[:alert] = I18n.translate('app.errors.incorrect_filename', filename: @upload.filename)
+          abortRun = true
+        else
           # process file to upload
 
           # to do - match to final upload layout when determined.
@@ -110,17 +113,26 @@ class UploadsController < ApplicationController
           stacks[IDS_STACK] = Array.new(PROCESSING_DEPTH) {[]} # ids of records at each level of procesing (Areas, ..., sectors, relations)
 
           CSV.foreach(upload_params['file'].path, headers: true) do |row|
+            @rowErrs = []
             stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
             row_num += 1
 
-            # validate grade band in this row matches this upload
-            # do not process this row if it is for the wrong grade level
-            grade_band = row[Upload::LONG_HEADERS[4]]
-            raise "invalid grade level #{grade_band.inspect} on row: #{row_num}" if grade_band != @gradeBandRec.code
+            # process each column of this row
+            row.each_with_index do |(key, val), ix|
+              @abortRow = false
+              # validate grade band in this row matches this upload
+              # do not process this row if it is for the wrong grade level
+              grade_band = row[Upload::LONG_HEADERS[4]]
+              if grade_band != @gradeBandRec.code
+                @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_grade_band', grade_band: grade_band)
+                @abortRow = true
+              end
 
-            # process this row
-            row.each do |key, val|
-              new_key = long_to_short[key]
+              new_key = long_to_short[key.strip]
+              # if new_key.blank?
+              #   @rowErrs << I18n.translate('app.errors.invalid_code', code: key) if new_key.blank? || new_key.length != 1
+              #   break
+              # end
               # process this column for this row
               case new_key
               when :area
@@ -134,25 +146,21 @@ class UploadsController < ApplicationController
               when :relevantKbe
                 process_kbe(val, row_num, stacks)
               end
+              break if @abortRow || @rowErrs.count > 0
             end # row.each
+            @errs.concat(@rowErrs)
           end # CSV.foreach
-        else
-          flash[:alert] = 'Filename does not match this Upload!'
-          abort = true
         end
       when BaseRec::UPLOAD_DONE
-        puts("status UPLOAD_DONE, #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_DONE]}")
-        abort = true
+        abortRun = true
         @upload = []
       else
-        puts("invalid status #{@upload.status}")
-        puts("BaseRec::UPLOAD_NOT_UPLOADED: #{BaseRec::UPLOAD_NOT_UPLOADED}")
-        puts("BaseRec::UPLOAD_TREE_UPLOADING: #{BaseRec::UPLOAD_TREE_UPLOADING}")
-        abort = true
+        abortRun = true
         @upload = []
       end
     end
-    if abort
+    if abortRun
+      index_prep
       render :index
     else
       # update status detail message
@@ -199,20 +207,24 @@ class UploadsController < ApplicationController
       # Component formatting: "Component #: <name>""
       strArray = str.split(/:/)
       label = strArray.first
-      text = str[(label.length+1)..-1].lstrip
-      return str.gsub(/[^0-9,.]/, ""), text
+      desc = str[(label.length+1)..-1]
+      text = desc.present? ? desc.lstrip : ''
+      return label.gsub(/[^0-9,.]/, ""), text, ''
     elsif depth == 2
       # Outcome formatting: "Outcome: #. <name>""
       strArray = str.split(/\./)
       label = strArray.first
-      text = str[(label.length+1)..-1].lstrip
-      return label.gsub(/[^0-9,.]/, ""), text
+      desc = str[(label.length+1)..-1]
+      text = desc.present? ? desc.lstrip : ''
+      return label.gsub(/[^0-9,.]/, ""), text, ''
     elsif depth == 3
       # Indicator formatting: "<area>.<component>.<outcome>.<indicator>. <name>""
       strArray = str.split(/ /)
       codes = strArray.first.split(/\./)
-      text = str[(strArray.first.length)..-1].lstrip
-      return codes[3], text
+      desc = str[(strArray.first.length)..-1]
+      text = desc.present? ? desc.lstrip : ''
+      code = codes.length > 3 ? codes[3] : ''
+      return code, text, codes[0..3].join('.')
     end
   end
 
@@ -221,47 +233,68 @@ class UploadsController < ApplicationController
   end
 
   def process_otc_tree(depth, val, row_num, stacks)
-    code_str, text = parseSubCodeText(val, depth)
-    raise "row number #{row_num}, depth: #{depth} has invalid area code at : #{code_str.inspect}" if code_str.length != 1
+    code_str, text, indicatorCode = parseSubCodeText(val, depth)
 
-    # insert record into tree
     stacks[CODES_STACK][depth] = code_str # save curreant code in codes stack
-    new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
-      @treeTypeRec,
-      @versionRec,
-      @subjectRec,
-      @gradeBandRec,
-      buildFullCode(stacks[CODES_STACK], depth),
-      nil, # to do - set parent record for all records below area
-      stacks[RECS_STACK][depth]
-    )
+    builtCode = buildFullCode(stacks[CODES_STACK], depth)
+    if depth == 3 && indicatorCode != builtCode
+      # indicator code does not match code from Area, Component and Outcome.
+      @abortRow = true
+      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
+    elsif code_str.length != 1
+      @abortRow = true
+      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: val)
+    end
+    if @abortRow
+      # don't process record if to be aborted.
+      save_status = BaseRec::REC_ERROR
+      message = ''
+    else
+      # insert record into tree
+      new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
+        @treeTypeRec,
+        @versionRec,
+        @subjectRec,
+        @gradeBandRec,
+        builtCode,
+        nil, # to do - set parent record for all records below area
+        stacks[RECS_STACK][depth]
+      )
+    end
+
     if save_status != BaseRec::REC_SKIP
 
       # update text translation for this locale (if not skipped)
       if save_status == BaseRec::REC_ERROR
-        # Note: no update of translation if error
-        transl, text_status, text_msg = Translation.find_translation(
-          @localeRec.code,
-          "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name"
-        )
-        @errs << message
+        @rowErrs << message if message.present?
         stacks[NUM_ERRORS_STACK][depth] += 1
+        # Note: no update of translation if error
+        translation_val = ''
       else # if save_status ...
+        # update current node in records stack, and save off id.
+        stacks[RECS_STACK][depth] = node
+        stacks[IDS_STACK][depth] << node.id if !stacks[IDS_STACK][depth].include?(node.id)
         # update translation if not an error and value changed
         transl, text_status, text_msg = Translation.find_or_update_translation(
           @localeRec.code,
           "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name",
           text
         )
+        if text_status == BaseRec::REC_ERROR
+          @rowErrs << text_msg
+        end
+        translation_val = transl.value.present? ? transl.value : ''
       end # if save_status ...
+      # statMsg = "#{BaseRec::SAVE_CODE_STATUS[save_status]}"
+      statMsg = I18n.translate('uploads.labels.saved_code', code: builtCode) if save_status == BaseRec::REC_ADDED || save_status == BaseRec::REC_UPDATED
+      statMsg = statMsg.blank? ? "#{@rowErrs.join(', ')}" : statMsg + ", #{@rowErrs.join(', ')}" if @rowErrs.count > 0
 
       # generate report record if not skipped
-      stacks[RECS_STACK][depth] = node
-      stacks[IDS_STACK][depth] << node.id if !stacks[IDS_STACK][depth].include?(node.id)
-      rptRec = stacks[CODES_STACK].clone # code stack for first four columns of report
+      rptRec = [row_num]
+      rptRec.concat(stacks[CODES_STACK].clone)  # code stack for first four columns of report
       rptRec << new_code
-      rptRec << ( transl.value.present? ? transl.value : '' )
-      rptRec << "#{BaseRec::SAVE_CODE_STATUS[save_status]} #{BaseRec::SAVE_TEXT_STATUS[text_status]}"
+      rptRec << translation_val
+      rptRec << statMsg
       @rptRecs << rptRec
 
     end # if not skipped record
@@ -306,6 +339,7 @@ class UploadsController < ApplicationController
         end
       end
     end
+    sectorsAdded = []
     relations.each do |r|
       # get the KBE code from the looked up sector description in the translation table
       begin
@@ -317,16 +351,25 @@ class UploadsController < ApplicationController
         # if not, join them
         if matchedTrees.count == 0
           sector.trees << tree_rec
+          sectorsAdded << r
         end
       rescue ActiveRecord::ActiveRecordError => e
         errs << I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
       end
     end
+    # get current list of related sector for this tree
+    allSectors = []
+    tree_rec.sectors.each do |s|
+      allSectors << s.code
+    end
+    statMsg = I18n.translate('app.labels.new_sector_relations', sectors: sectorsAdded.join(', ') )
+    statMsg += ', '+ errs.join(', ') if errs.count > 0
     # generate report record
-    rptRec = Array.new(CODE_DEPTH) {''} # blank out the first four columns of report
+    rptRec = [row_num]
+    rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
     rptRec << '' # blank out the code column of report
-    rptRec << ((relations.count > 0) ? I18n.translate('app.labels.related_to_kbe', kbe: relations.join(', ')) : 'No KBE relations.')
-    rptRec << 'Related to KBE '+errs.join(', ')
+    rptRec << ((allSectors.count > 0) ? I18n.translate('app.labels.related_to_sectors', sectors: allSectors.join(', ')) : 'No related sectors.')
+    rptRec << statMsg
     @rptRecs << rptRec
 
   end

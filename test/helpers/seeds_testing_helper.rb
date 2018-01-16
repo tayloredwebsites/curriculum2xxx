@@ -45,8 +45,15 @@ module SeedsTestingHelper
         code: '9'
       )
     end
-    throw "Invalid GradeBand Count" if GradeBand.count > 1
+    if GradeBand.count < 2
+      GradeBand.create(
+        tree_type_id: @otc.id,
+        code: '13'
+      )
+    end
+    throw "Invalid GradeBand Count" if GradeBand.count != 2
     @gb_09 = GradeBand.first
+    @gb_13 = GradeBand.second
 
     if Subject.count < 1
       Subject.create(
@@ -62,11 +69,22 @@ module SeedsTestingHelper
         subject_id: @hem.id,
         grade_band_id: @gb_09.id,
         locale_id: @loc_en.id,
-        status: 0
+        status: 0,
+        filename: 'Hem_09_transl_Eng.csv'
       )
     end
-    throw "Invalid Upload Count" if Upload.count > 1
+    if Upload.count < 2
+      Upload.create(
+        subject_id: @hem.id,
+        grade_band_id: @gb_13.id,
+        locale_id: @loc_en.id,
+        status: 0,
+        filename: 'Hem_13_transl_Eng.csv'
+      )
+    end
+    throw "Invalid Upload Count" if Upload.count != 2
     @hem_09 = Upload.first
+    @hem_13 = Upload.second
 
 
     ################################

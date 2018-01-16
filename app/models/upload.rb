@@ -1,6 +1,6 @@
 class Upload < BaseRec
 
-  LONG_HEADERS = [ "Area", "Component ", "Outcome", "Indicator", "Grade band", "relevant KBE sectors (as determined from KBE spreadsheets)", "Explanation of how the indicator relates to KBE sector", "Closely related learning outcomes applicable to KBE sector", "Mathematics", "Geography", "Physics", "Biology", "ICT" ]
+  LONG_HEADERS = [ "Area", "Component", "Outcome", "Indicator", "Grade band", "relevant KBE sectors (as determined from KBE spreadsheets)", "Explanation of how the indicator relates to KBE sector", "Closely related learning outcomes applicable to KBE sector", "Mathematics", "Geography", "Physics", "Biology", "ICT" ]
   SHORT_HEADERS = [ :area, :component, :outcome, :indicator, :gradeBand, :relevantKbe, :kbeRelation, :chemistry, :mathematics, :geography, :physics, :biology, :computers]
 
   belongs_to :subject

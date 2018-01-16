@@ -41,14 +41,15 @@ class BaseRec < ActiveRecord::Base
 
   UPLOAD_RPT_LABELS = ['Area', 'Component', 'Outcome', 'Indicator', 'Code','Description','Status Message']
   # Not to be translated - used in HTML
-  UPLOAD_RPT_COL = ['Area', 'Component', 'Outcome', 'Indicator', 'Code','Desc','StatusMsg']
-  UPLOAD_RPT_AREA = 0
-  UPLOAD_RPT_COMPONENT = 1
-  UPLOAD_RPT_OUTCOME = 2
-  UPLOAD_RPT_INDICATOR = 3
-  UPLOAD_RPT_CODE = 4
-  UPLOAD_RPT_DESC = 5
-  UPLOAD_RPT_MSG = 6
+  UPLOAD_RPT_COL = ['Row', 'Area', 'Component', 'Outcome', 'Indicator', 'Code','Desc','StatusMsg']
+  UPLOAD_RPT_ROW = 0
+  UPLOAD_RPT_AREA = 1
+  UPLOAD_RPT_COMPONENT = 2
+  UPLOAD_RPT_OUTCOME = 3
+  UPLOAD_RPT_INDICATOR = 4
+  UPLOAD_RPT_CODE = 5
+  UPLOAD_RPT_DESC = 6
+  UPLOAD_RPT_MSG = 7
 
   ALL_KBE_SECTORS = ['1','2','3','4','5','6','7','8','9','10']
 

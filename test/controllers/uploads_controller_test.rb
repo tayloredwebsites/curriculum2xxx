@@ -11,14 +11,13 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     @user1 = FactoryBot.create(:user)
     @user1.confirm # do a devise confirmation of new user
     sign_in @user1
-    Rails.logger.debug("+++ setup completed +++")
     testing_db_seeds
   end
 
   test "should get uploads index" do
     get uploads_url
     assert_response :success
-    assert_equal 1, assigns(:uploads).count
+    assert_equal 2, assigns(:uploads).count
   end
 
   test "should get uploads create fail with missing args" do
@@ -43,11 +42,20 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should successfully do_upload of file" do
+  test "should successfully do_upload of good file" do
     up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
     patch do_upload_upload_url(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADED, assigns(:upload).status
+    assert_equal 0, assigns(:errs).count
+  end
+
+  test "should get errors do_upload of file with errors" do
+    up_file = fixture_file_upload('files/Hem_13_transl_Eng.csv','text/csv')
+    patch do_upload_upload_url(id: @hem_13.id), params: {upload: {file: up_file}}
+    assert_response :success
+    assert_equal BaseRec::UPLOAD_NOT_UPLOADED, assigns(:upload).status
+    assert_equal 4, assigns(:errs).count
   end
 
 end
