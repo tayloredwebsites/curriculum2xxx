@@ -2,9 +2,9 @@ class Sector < BaseRec
 
   has_and_belongs_to_many :trees
 
-  def self.sectorCodeFromKbeCode(kbeCode)
-    matches = kbeCode.split('.')
-    if matches.length == 3 && matches[0] == 'kbe' && matches[2] == 'name'
+  def self.sectorCodeFromKbeCode(sectorCode)
+    matches = sectorCode.split('.')
+    if matches.length == 3 && matches[0] == 'sector' && matches[2] == 'name'
       return matches[1]
     else
       return ''
@@ -12,8 +12,8 @@ class Sector < BaseRec
   end
 
   def self.KbeCodeFromsectorCode(sectorCode)
-    if ALL_KBE_SECTORS.include?(sectorCode)
-      return "kbe.#{sectorCode}.name"
+    if ALL_SECTORS.include?(sectorCode)
+      return "sector.#{sectorCode}.name"
     else
       return ''
     end

@@ -6,7 +6,7 @@ class UploadsController < ApplicationController
   ROCESSING_COMPONENT = 1
   ROCESSING_OUTCOME = 2
   ROCESSING_INDICATOR = 3
-  ROCESSING_KBE = 4
+  PROCESSING_SECTOR = 4
 
   # types of stacks
   RECS_STACK = 0
@@ -79,6 +79,8 @@ class UploadsController < ApplicationController
     @message = "Select file to upload to get to next step"
     @errs = []
     @rowErrs = []
+    @treeErrs = false
+    @sectorErrs = false
     @rptRecs = []
     abortRun = false
     @abortRow = false
@@ -94,7 +96,8 @@ class UploadsController < ApplicationController
       case @upload.status
       when BaseRec::UPLOAD_NOT_UPLOADED,
         BaseRec::UPLOAD_TREE_UPLOADING,
-        BaseRec::UPLOAD_TREE_UPLOADED
+        BaseRec::UPLOAD_TREE_UPLOADED,
+        BaseRec::UPLOAD_SECTOR_RELATED
 
         if upload_params['file'].original_filename != @upload.filename
           flash[:alert] = I18n.translate('app.errors.incorrect_filename', filename: @upload.filename)
@@ -144,7 +147,7 @@ class UploadsController < ApplicationController
               when :indicator
                 stacks = process_otc_tree(3, val, row_num, stacks)
               when :relevantKbe
-                process_kbe(val, row_num, stacks)
+                process_sector(val, row_num, stacks)
               end
               break if @abortRow || @rowErrs.count > 0
             end # row.each
@@ -163,22 +166,13 @@ class UploadsController < ApplicationController
       index_prep
       render :index
     else
-      # update status detail message
-      if stacks[NUM_ERRORS_STACK][ROCESSING_AREA] == 0 && stacks[IDS_STACK][ROCESSING_AREA].count > 0
+      # Update status level
+      if stacks[IDS_STACK][ROCESSING_AREA].count > 0
         @upload.status = BaseRec::UPLOAD_TREE_UPLOADING
-        @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_AREA]
-        if stacks[NUM_ERRORS_STACK][ROCESSING_COMPONENT] == 0 && stacks[IDS_STACK][ROCESSING_COMPONENT].count > 0
-          @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_COMPONENT]
-          if stacks[NUM_ERRORS_STACK][ROCESSING_OUTCOME] == 0 && stacks[IDS_STACK][ROCESSING_OUTCOME].count > 0
-            @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_OUTCOME]
-            if stacks[NUM_ERRORS_STACK][ROCESSING_INDICATOR] == 0 && stacks[IDS_STACK][ROCESSING_INDICATOR].count > 0
-              @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_INDICATOR]
-              @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
-              if stacks[NUM_ERRORS_STACK][ROCESSING_KBE] == 0 && stacks[IDS_STACK][ROCESSING_KBE].count > 0
-                @upload.status_detail = BaseRec::TREE_LABELS[BaseRec::TREE_INDICATOR]
-                @upload.status = BaseRec::UPLOAD_KBE_RELATED
-              end
-            end
+        if !@treeErrs
+          @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
+          if stacks[IDS_STACK][PROCESSING_SECTOR].count > 0 && !@sectorErrs
+            @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
           end
         end
         @upload.save
@@ -267,7 +261,7 @@ class UploadsController < ApplicationController
       # update text translation for this locale (if not skipped)
       if save_status == BaseRec::REC_ERROR
         @rowErrs << message if message.present?
-        stacks[NUM_ERRORS_STACK][depth] += 1
+        # stacks[NUM_ERRORS_STACK][depth] += 1
         # Note: no update of translation if error
         translation_val = ''
       else # if save_status ...
@@ -298,10 +292,11 @@ class UploadsController < ApplicationController
       @rptRecs << rptRec
 
     end # if not skipped record
+    @treeErrs = true if @rowErrs.count > 0
     return stacks
   end # process_otc_tree
 
-  def process_kbe(val, row_num, stacks)
+  def process_sector(val, row_num, stacks)
     tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
@@ -310,7 +305,7 @@ class UploadsController < ApplicationController
     sectorNames.each do |s|
       # custom matching of descriptions (that do not correspond with what is in the database)
       if s.upcase.include? 'ALL KBE SECTORS'
-        relations = BaseRec::ALL_KBE_SECTORS
+        relations = BaseRec::ALL_SECTORS
         break
       elsif s.upcase.strip == 'IT'
         relations << '1'
@@ -324,16 +319,16 @@ class UploadsController < ApplicationController
         # not a custom match, get sector code from translation records for sectors.
         matchingSectors = Translation.where('locale = ? AND value LIKE (?)', @localeRec.code, "%#{s.strip}%")
         if matchingSectors.count == 1 # matched description in translation table
-          # get the sector record from the kbe code
-          kbeCode = matchingSectors.first.key
-          sectorCode = Sector.sectorCodeFromKbeCode(kbeCode)
-          if BaseRec::ALL_KBE_SECTORS.include?(sectorCode)
+          # get the sector record from the sector code
+          sectorCode = matchingSectors.first.key
+          sectorCode = Sector.sectorCodeFromKbeCode(sectorCode)
+          if BaseRec::ALL_SECTORS.include?(sectorCode)
             relations << sectorCode
           else
-            errs << I18n.translate('uploads.errors.invalid_kbe_code_for_kbe', code: kbeCode, kbe: s.strip)
+            errs << I18n.translate('uploads.errors.invalid_sector_code_for_sector', code: sectorCode, sector: s.strip)
           end
         elsif matchingSectors.count == 0
-          errs << I18n.translate('uploads.errors.no_matching_kbe', kbe: s.strip)
+          errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
         else
           errs << I18n.translate('app.errors.too_many_matched_key', key: s.strip)
         end
@@ -360,7 +355,9 @@ class UploadsController < ApplicationController
     # get current list of related sector for this tree
     allSectors = []
     tree_rec.sectors.each do |s|
+      # join tree and sector
       allSectors << s.code
+      stacks[IDS_STACK][PROCESSING_SECTOR] << "#{tree_rec.id}-#{s.id}" if !stacks[IDS_STACK][PROCESSING_SECTOR].include?("#{tree_rec.id}-#{s.id}")
     end
     statMsg = I18n.translate('app.labels.new_sector_relations', sectors: sectorsAdded.join(', ') )
     statMsg += ', '+ errs.join(', ') if errs.count > 0
@@ -371,6 +368,8 @@ class UploadsController < ApplicationController
     rptRec << ((allSectors.count > 0) ? I18n.translate('app.labels.related_to_sectors', sectors: allSectors.join(', ')) : 'No related sectors.')
     rptRec << statMsg
     @rptRecs << rptRec
+
+    @sectorErrs = true if @rowErrs.count > 0
 
   end
 end

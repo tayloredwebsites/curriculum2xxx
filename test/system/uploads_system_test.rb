@@ -44,8 +44,9 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # 16 components (4 per area +(4*4 = 16)
     # 48 outcomes (avg. 3 per component)
     assert_equal(186, Tree.where(parent_id: nil).count)
+    assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
     @hem_09.reload
-    assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
+    assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)
     # confirm number of records returned is 4 (4 area records)
     rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
     assert_equal rpt_rows.count, 305 # 186 tree items + 119 KBE report records
@@ -53,9 +54,9 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # countKbeRecs = 0
     # rpt_rows.each do |r|
     #   # assert r.text == 'Code Added Text Added' || r.text == 'Related to KBE'
-    #   assert r.text == 'Code Added Text Added' || r.text == BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_KBE_RELATED]
+    #   assert r.text == 'Code Added Text Added' || r.text == BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]
     #   countTreeRecs += 1 if r.text == 'Code Added Text Added'
-    #   countKbeRecs += 1 if r.text == BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_KBE_RELATED]
+    #   countKbeRecs += 1 if r.text == BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]
     # end
     # assert_equal countTreeRecs, 186
     # assert_equal countKbeRecs, 119
@@ -66,8 +67,9 @@ class UploadsSystemTest < ApplicationSystemTestCase
     page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
     find('button').click
     assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
+    assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
     @hem_09.reload
-    assert_equal(BaseRec::UPLOAD_TREE_UPLOADED, @hem_09.status)
+    assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)
     assert_equal 305, page.find_all('#uploadReport tbody tr').count
     assert_equal 0, page.find_all('div.error').count
 
@@ -162,6 +164,12 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal 19, rows.count
     assert_equal(49, Translation.count)  # translations for nine items added to tree
     assert_equal 5, page.find_all('div.error').count # row for each of four error rows and count row
+
+    # we got errors uploading tree.
+    assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_TREE_UPLOADING]}", page.find('h4').text)
+    @hem_13.reload
+    assert_equal(BaseRec::UPLOAD_TREE_UPLOADING, @hem_13.status)
+
   end
 
 

@@ -46,7 +46,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
     patch do_upload_upload_url(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
-    assert_equal BaseRec::UPLOAD_TREE_UPLOADED, assigns(:upload).status
+    assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
   end
 
@@ -54,7 +54,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     up_file = fixture_file_upload('files/Hem_13_transl_Eng.csv','text/csv')
     patch do_upload_upload_url(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
-    assert_equal BaseRec::UPLOAD_NOT_UPLOADED, assigns(:upload).status
+    assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
     assert_equal 4, assigns(:errs).count
   end
 

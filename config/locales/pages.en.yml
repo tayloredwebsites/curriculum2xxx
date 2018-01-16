@@ -86,6 +86,6 @@ en:
       num_added_sector_of_numall: "%{num} relations added to "
       saved_code: 'Saved code: %{code}'
     errors:
-      invalid_kbe_code_for_kbe: "Invalid KBE code %{code} for KBE %{kbe}"
-      no_matching_kbe: "No matching KBE Sector found for %{kbe}"
+      invalid_sector_code_for_sector: "Invalid KBE code %{code} for KBE %{sector}"
+      no_matching_sector: "No matching KBE Sector found for %{sector}"
       exception_relating_sector_to_tree: "Exception occurred relating sector to tree: %{e}"

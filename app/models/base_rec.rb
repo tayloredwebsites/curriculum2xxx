@@ -16,7 +16,7 @@ class BaseRec < ActiveRecord::Base
   UPLOAD_NOT_UPLOADED = 0
   UPLOAD_TREE_UPLOADING = 1
   UPLOAD_TREE_UPLOADED = 2
-  UPLOAD_KBE_RELATED = 3
+  UPLOAD_SECTOR_RELATED = 3
   UPLOAD_SUBJ_RELATING = 4
   UPLOAD_SUBJ_RELATED = 5
   UPLOAD_DONE = 6
@@ -33,13 +33,13 @@ class BaseRec < ActiveRecord::Base
   DEFAULT_LOCALE = LOCALE_BS
 
 
-  TREE_LABELS = ['Area', 'Component', 'Outcome', 'Indicator']
-  TREE_AREA = 0
-  TREE_COMPONENT = 1
-  TREE_OUTCOME = 2
-  TREE_INDICATOR = 3
+  # TREE_LABELS = ['Area', 'Component', 'Outcome', 'Indicator']
+  # TREE_AREA = 0
+  # TREE_COMPONENT = 1
+  # TREE_OUTCOME = 2
+  # TREE_INDICATOR = 3
 
-  UPLOAD_RPT_LABELS = ['Area', 'Component', 'Outcome', 'Indicator', 'Code','Description','Status Message']
+  UPLOAD_RPT_LABELS = ['Row', 'Area', 'Component', 'Outcome', 'Indicator', 'Code','Description','Status Message']
   # Not to be translated - used in HTML
   UPLOAD_RPT_COL = ['Row', 'Area', 'Component', 'Outcome', 'Indicator', 'Code','Desc','StatusMsg']
   UPLOAD_RPT_ROW = 0
@@ -51,7 +51,7 @@ class BaseRec < ActiveRecord::Base
   UPLOAD_RPT_DESC = 6
   UPLOAD_RPT_MSG = 7
 
-  ALL_KBE_SECTORS = ['1','2','3','4','5','6','7','8','9','10']
+  ALL_SECTORS = ['1','2','3','4','5','6','7','8','9','10']
 
 
 end
