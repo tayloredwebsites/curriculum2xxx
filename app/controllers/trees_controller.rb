@@ -21,27 +21,29 @@ class TreesController < ApplicationController
     @gbs = GradeBand.all.order(:code)
     @tree = Tree.new
 
-    @subj = params[:subject_id].present? ? Subject.find(params[:subject_id]) : nil
-    @gb = params[:grade_band_id].present? ? GradeBand.find(params[:grade_band_id]) : nil
+    @subj = params[:tree].present? && params[:tree][:subject_id].present? ? Subject.find(params[:tree][:subject_id]) : nil
+    @gb = params[:tree].present? && params[:tree][:grade_band_id].present? ? GradeBand.find(params[:tree][:grade_band_id]) : nil
+
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
-    # note: Active Record had problems with placeholder conditions in join clause.
-    #  - Since @Locale_code is from code, placing it directly in condition is safe (see application_controller.rb)
-    # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
-    # listing = listing.joins("LEFT JOIN translations ON (trees.translation_key = translations.key AND translations.locale = '#{@locale_code}')")
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # listing = listing.otc_listing
     @trees = listing.all
 
-    # to do - review the pre-fetch the translations for this listing:
-    # each translation lookup still takes one or two tenths of a millisecond even after pre-fetch
-    # total for development testing file is 2.6 seconds, with or without pre-fecth.
-    # leaving code in, in case it helps in production.
+    # translation includes not working.
+    # note: Active Record had problems with placeholder conditions in join clause.
+    # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
+    # possibly create own Translation model to allow includes, or join I18n Translation table somehow
+    # Current solution: creating hash for pre-cached translations.
     translation_keys= @trees.pluck(:translation_key)
-    @translations = Translation.where(locale: @locale_code, key: translation_keys).all
+    @translations = Hash.new
+    translations = Translation.where(locale: @locale_code, key: translation_keys).all
+    translations.each do |t|
+      @translations[t.key] = t.value
+    end
 
     otcHash = {}
     areaHash = {}
@@ -50,8 +52,9 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      trans = Translation.where(locale: @locale_code, key: tree.translation_key)
-      translation = trans.count > 0 ? trans.first.value : '*missing*'
+      # trans = translation.where(locale: @locale_code, key: tree.translation_key)
+      # translation = trans.count > 0 ? trans.first.value : '*missing*'
+      translation = @translations[tree.translation_key]
       areaHash = {}
       depth = tree.depth
       case depth

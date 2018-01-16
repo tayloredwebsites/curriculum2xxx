@@ -8,8 +8,8 @@
   </div>
   <div class='row'>
     <div class='col col-md-3'></div>
-    <div class='col col-md-2 border-left border-bottom'><%= form.collection_select(:subject_id, @subjects, :id, :code, include_blank: 'All') %></div>
-    <div class='col col-md-2 border-bottom'><%= form.collection_select(:grade_band_id, @gbs, :id, :code, include_blank: 'All') %></div>
+    <div class='col col-md-2 border-left border-bottom'><%= collection_select(:tree, :subject_id, @subjects, :id, :code, include_blank: 'All') %></div>
+    <div class='col col-md-2 border-bottom'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: 'All') %></div>
     <div class='col col-md-2 border-bottom border-right'><%= form.submit translate('trees.labels.gen_list') %></div>
     <div class='col col-md-3'></div>
   </div>
