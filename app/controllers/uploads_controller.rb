@@ -321,7 +321,7 @@ class UploadsController < ApplicationController
         if matchingSectors.count == 1 # matched description in translation table
           # get the sector record from the sector code
           sectorCode = matchingSectors.first.key
-          sectorCode = Sector.sectorCodeFromKbeCode(sectorCode)
+          sectorCode = Sector.sectorCodeFromTranslationCode(sectorCode)
           if BaseRec::ALL_SECTORS.include?(sectorCode)
             relations << sectorCode
           else
