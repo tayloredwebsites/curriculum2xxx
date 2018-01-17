@@ -169,6 +169,11 @@ class TreesController < ApplicationController
   end
 
   def show
+    transKeys = @tree.getAllTransKeys
+    @tree.sectors.each do |s|
+      transKeys << s.translation_key
+    end
+    @translations = Translation.translationsByKeys(@locale_code, transKeys)
   end
 
   def edit

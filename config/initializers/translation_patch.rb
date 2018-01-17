@@ -48,4 +48,13 @@ Translation.class_eval do
     end # rec.present
   end
 
+  def self.translationsByKeys(locale_code, keys)
+    ret = Hash.new
+    translations = Translation.where(locale: locale_code, key: keys).all
+    translations.each do |t|
+      ret[t.key] = t.value
+    end
+    return ret
+  end
+
 end

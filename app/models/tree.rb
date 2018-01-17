@@ -8,7 +8,7 @@ class Tree < BaseRec
   belongs_to :parent, class_name: "Tree", foreign_key: "parent_id", optional: true
 
   has_and_belongs_to_many :sectors
-  
+
   # does not seem to be working ?
   # has_many :my_translations
 
@@ -59,8 +59,6 @@ class Tree < BaseRec
     arr = self.codeArray
     if arr && arr.length > 0
       arr.pop(1)
-      puts "arr: #{arr.inspect}"
-      puts "arr.join('.'): #{arr.join('.').inspect}"
       return arr.join('.')
     else
       return ''
@@ -105,6 +103,40 @@ class Tree < BaseRec
 
   def buildTranslationKey
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}.name"
+  end
+
+  # get parent record for this item (by hierarchy code as appropriate)
+  def getParentRec
+    outcomes = Tree.where(
+      tree_type_id: BaseRec::TREE_TYPE_ID,
+      version_id: BaseRec::VERSION_ID,
+      subject_id: self.subject_id,
+      grade_band_id: self.grade_band_id,
+      code: self.parentCode
+    )
+    if outcomes.count == 0
+      return nil
+    else
+      return outcomes.first
+    end
+  end
+
+  # get all parent records for this item as appropriate (e.g. Area, Componrnt, and Outcome for indicator record)
+  def getAllParents
+    parents = []
+    parent = self.getParentRec
+    while parent.present? do
+      parents << parent
+      parent = parent.getParentRec
+    end
+    return parents
+  end
+
+  # get all translation keys needed for this record and parents (Area, Component and Outcome)
+  def getAllTransKeys
+    parents = self.getAllParents
+    allRecs = parents.concat([self])
+    treeKeys = (allRecs).map { |rec| rec.translation_key}
   end
 
 
