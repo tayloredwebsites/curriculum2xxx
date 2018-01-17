@@ -23,11 +23,16 @@
         <div class='row'>
           <div class='col col-lg-6 rel-sector-col'>
             <% @tree.sectors.each do |s|
+              # refactor this so it is out of view code.
               sectorNames = Translation.where(locale: @locale_code, key: Sector.KbeCodeFromsectorCode(s.code))
               if sectorNames.count == 1
                 sectorName = sectorNames.first.value
+              elsif sectorNames.count == 0
+                sectorName = "Missing: #{@locale_code}, #{Sector.KbeCodeFromsectorCode(s.code)}"
               else
-                sectorName = 'err'
+                # indicate multiple values problem, without disrupting user
+                Rails.logger.error("ERROR: multiple translations at: #{@locale_code}, #{Sector.KbeCodeFromsectorCode(s.code)}")
+                sectorName = "** #{sectorNames.first.value} **"
               end
             %>
               <div class='row'>

@@ -10,7 +10,11 @@
     <button id='showAreas' onclick="$('#tree').treeview({data: otcTree, levels: 1, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_areas') %></button>
     <button id='showComponents' onclick="$('#tree').treeview({data: otcTree, levels: 2, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_components') %></button>
     <button id='showOutcomes' onclick="$('#tree').treeview({data: otcTree, levels: 3, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_outcomes') %></button>
-    <button id='showIndicators' onclick="$('#tree').treeview({data: otcTree, levels: 4, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
+    <% if @gb.present? %>
+      <button id='showIndicators' onclick="$('#tree').treeview({data: otcTree, levels: 4, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
+    <% else %>
+      <button id='showIndicators' onclick="$('#tree').treeview({data: otcTree, levels: 5, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
+    <% end %>
   </div>
   <div id="tree"></div>
 </div>

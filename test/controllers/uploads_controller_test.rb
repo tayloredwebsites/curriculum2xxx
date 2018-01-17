@@ -48,6 +48,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
+    assert_equal 186, Tree.count
   end
 
   test "should get errors do_upload of file with errors" do
@@ -56,6 +57,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
     assert_equal 4, assigns(:errs).count
+    assert_equal 9, Tree.count
   end
 
 end

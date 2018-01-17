@@ -81,6 +81,53 @@ class UploadsSystemTest < ApplicationSystemTestCase
     visit trees_url
     # uploads index page
     assert_equal("/trees", current_path)
+
+    # list all grade levels (9 & 13)
+    page.find("form.new_tree input[type='submit']").click
+    # uploads page, with status not uploaded
+    assert_equal("/trees/index_listing", current_path)
+    assert_equal 4, page.all('#tree .node-tree').count
+    # if we want checkboxes
+    # within("#tree li[data-nodeid='0']") do
+    #   # ensure user can check and uncheck checkbox
+    #   assert_equal 1, page.find_all("span.glyphicon-unchecked").count
+    #   assert_equal 0, page.find_all("span.glyphicon-check").count
+    #   page.find("span.glyphicon-unchecked").click
+    #   assert_equal 0, page.find_all("span.glyphicon-unchecked").count
+    #   assert_equal 1, page.find_all("span.glyphicon-check").count
+    #   page.find("span.glyphicon-check").click
+    #   assert_equal 1, page.find_all("span.glyphicon-unchecked").count
+    #   assert_equal 0, page.find_all("span.glyphicon-check").count
+    # end
+    openAllVisibleNodes(2)
+    assert_equal 12, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    openAllVisibleNodes(3)
+    assert_equal 19, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    openAllVisibleNodes(4)
+    assert_equal 21, page.all('#tree .node-tree').count
+    openAllVisibleNodes(5)
+    assert_equal 24, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    page.find("#main-container.trees #showAreas").click
+    assert_equal 4, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    page.find("#main-container.trees #showComponents").click
+    # 4 Area rows plus 16 Component Rows
+    assert_equal 20, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    page.find("#main-container.trees #showOutcomes").click
+    # 20 Area & Component rows + 48 Outcome rows
+    assert_equal 68, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+    page.find("#main-container.trees #showIndicators").click
+    # 186 Area, Component, Outcome rows,  plus 48 grade band rows, plus 118 Indicator rows
+    assert_equal 234, page.all('#tree .node-tree').count
+    # assert_equal 1, page.find_all("#tree li[data-nodeid='0'] span.glyphicon-unchecked").count
+
+    # list grade level 9
+    select('9', from: "tree_grade_band_id")
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
     assert_equal("/trees/index_listing", current_path)

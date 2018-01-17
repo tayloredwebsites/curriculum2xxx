@@ -6,6 +6,19 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+if User.count < 1
+  User.create(
+    email: 'bih@sample.com',
+    password: 'password',
+    password_confirmation: 'password',
+    given_name: 'BiH',
+    family_name: 'Web App',
+    confirmed_at: DateTime.now
+  )
+end
+throw "Invalid User Count" if User.count < 1
+@bih = User.where(email: 'bih@sample.com').first
+
 if Version.count < 1
   Version.create(
     code: 'v01'

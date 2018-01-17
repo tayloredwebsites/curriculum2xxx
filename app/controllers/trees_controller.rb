@@ -17,6 +17,7 @@ class TreesController < ApplicationController
   end
 
   def index_listing
+    # to do - refactor this
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all.order(:code)
     @tree = Tree.new
@@ -30,14 +31,14 @@ class TreesController < ApplicationController
     )
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
-    # listing = listing.otc_listing
+    # Note: sort order does not matter, it is ordered correctly in the conversion to the treeview json.
     @trees = listing.all
 
-    # translation includes not working.
+    # translation 'includes' not working due to Translations table belonging to I18n Active record gem.
     # note: Active Record had problems with placeholder conditions in join clause.
     # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
     # possibly create own Translation model to allow includes, or join I18n Translation table somehow
-    # Current solution: creating hash for pre-cached translations.
+    # Current solution: get translation from hash of pre-cached translations.
     translation_keys= @trees.pluck(:translation_key)
     @translations = Hash.new
     translations = Translation.where(locale: @locale_code, key: translation_keys).all
@@ -52,25 +53,23 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      # trans = translation.where(locale: @locale_code, key: tree.translation_key)
-      # translation = trans.count > 0 ? trans.first.value : '*missing*'
       translation = @translations[tree.translation_key]
       areaHash = {}
       depth = tree.depth
       case depth
       when 1
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[0]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         # add area if not there already
         otcHash[tree.area] = newHash if !otcHash[tree.area].present?
       when 2
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[1]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         end
         addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[2]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -79,7 +78,8 @@ class TreesController < ApplicationController
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{BaseRec::UPLOAD_RPT_LABELS[3]} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        # to do - looi into refactoring this
+        # check to make sure parent in hash exists.
         if otcHash[tree.area].blank?
           raise "ERROR: system error, missing area item in report tree."
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -87,7 +87,17 @@ class TreesController < ApplicationController
         elsif otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome].blank?
           raise "ERROR: system error, missing component item in report tree."
         end
-        addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
+        if @gb.present?
+          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+          addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
+        else
+          # add grade band level item
+          newGradeBand = {text: "#{I18n.translate('app.labels.grade_band_num', num: tree.grade_band.code)}", id: "#{tree.grade_band.id}", nodes: {}}
+          addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.grade_band.code, newGradeBand)
+          # add indicator level item
+          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+          addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome][:nodes][tree.grade_band.code], tree.subCode, newHash)
+        end
 
       else
         raise "build treeview json code not an area or component #{tree.code} at id: #{tree.id}"
@@ -101,14 +111,30 @@ class TreesController < ApplicationController
         area[:nodes].each do |key2, comp|
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            a4 = {text: outc[:text], href: "/trees/#{outc[:id]}", setting: 'set'}
-            outc[:nodes].each do |key3, indic|
-              a5 = {text: indic[:text], href: "/trees/#{indic[:id]}", setting: 'set'}
-              a4[:nodes] = [] if a4[:nodes].blank?
-              a4[:nodes] << a5
+            a4 = {text: outc[:text], href: "/trees/#{outc[:id]}", setting: 'outcome'}
+            if @gb.present?
+              outc[:nodes].each do |key4, indic|
+                a5 = {text: indic[:text], href: "/trees/#{indic[:id]}", setting: 'indicator'}
+                a4[:nodes] = [] if a4[:nodes].blank?
+                a4[:nodes] << a5
+              end
+              a3[:nodes] = [] if a3[:nodes].blank?
+              a3[:nodes] << a4
+            else
+              # all gradebands selected - list gradebands under outcomes (with indicators below)
+              outc[:nodes].each do |key4, gb|
+                a5 = {text: gb[:text], href: "javascript:void(0);", setting: 'grade_band'}
+                gb[:nodes].each do |key5, indic|
+                  a6 = {text: indic[:text], href: "/trees/#{indic[:id]}", setting: 'indicator'}
+                  a5[:nodes] = [] if a5[:nodes].blank?
+                  a5[:nodes] << a6
+                end
+                a4[:nodes] = [] if a4[:nodes].blank?
+                a4[:nodes] << a5
+              end
+              a3[:nodes] = [] if a3[:nodes].blank?
+              a3[:nodes] << a4
             end
-            a3[:nodes] = [] if a3[:nodes].blank?
-            a3[:nodes] << a4
           end
           a2[:nodes] = [] if a2[:nodes].blank?
           a2[:nodes] << a3

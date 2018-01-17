@@ -12,7 +12,6 @@
   </div>
 </div>
 <h4><%= "#{translate('uploads.labels.status')}: #{BaseRec::UPLOAD_STATUS[@upload.status]}" %></h4>
-<h5><%= " #{@upload.status}" %></h5>
 <% if @errs.count > 0 %>
   <div class='error'><%= @errs.count %> Errors</div>
   <% @errs.each do |e| %>

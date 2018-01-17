@@ -9,6 +9,7 @@ en:
       create: "Create"
       subject: "Subject"
       grade_band: "Grade Band"
+      grade_band_num: "Grade Band %{num}"
       action: "Action"
       actions: "Actions"
       language: "Language"
