@@ -63,9 +63,9 @@ en:
       value: "Value"
   trees:
     index:
-      name: "OTC Listing Filter"
+      name: "Operational Teaching Curriculum Listing Filter"
     show:
-      name: "OTC Detail Page"
+      name: "Operational Teaching Curriculum Detail Page"
     labels:
       gen_list: "Generate List"
       show_areas: "Show Areas"

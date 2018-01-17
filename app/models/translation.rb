@@ -1,5 +1,7 @@
 class Translation < BaseRec
 
+  # to do - add associations
+
   def self.find_translation(locale, code, checkDefault = true)
     recs = Translation.where(locale: locale, key: code)
     if recs.count == 1
@@ -49,6 +51,15 @@ class Translation < BaseRec
   end
 
   def self.translationsByKeys(locale_code, keys)
+    ret = Hash.new
+    translations = Translation.where(locale: locale_code, key: keys).all
+    translations.each do |t|
+      ret[t.key] = t.value
+    end
+    return ret
+  end
+
+  def translationsByKeys(locale_code, keys)
     ret = Hash.new
     translations = Translation.where(locale: locale_code, key: keys).all
     translations.each do |t|

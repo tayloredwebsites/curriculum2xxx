@@ -30,7 +30,7 @@
           <div class='col col-lg-6 rel-sector-col'>
             <% @tree.sectors.each do |s| %>
               <div class='row'>
-                <div class='col col-lg-12'>
+                <div class='col col-lg-12 rel-sectors'>
                   <%= s.code %> - <%= @translations[s.translation_key] %>
                 </div>
               </div>
