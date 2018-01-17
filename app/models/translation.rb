@@ -1,4 +1,4 @@
-Translation.class_eval do
+class Translation < BaseRec
 
   def self.find_translation(locale, code, checkDefault = true)
     recs = Translation.where(locale: locale, key: code)
