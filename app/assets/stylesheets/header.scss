@@ -26,7 +26,7 @@ nav#topNav {
   }
 }
 
-@media only screen and (max-width: 660px) {
+@media only screen and (max-width: 767px) {
   #pageHeaderTitle {
     display: none;
   }
@@ -40,7 +40,7 @@ nav#topNav {
   }
 }
 
-@media only screen and (min-width: 661px) {
+@media only screen and (min-width: 768px) {
   #pageSubHeaderTitle {
     display: none;
   }

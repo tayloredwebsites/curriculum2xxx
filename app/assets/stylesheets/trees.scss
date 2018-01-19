@@ -50,11 +50,60 @@
 
   .detail-page {
     .col {
-      border: 1px solid black;
       text-align: left;
     }
     .label {
       background-color: #ddd;
+    }
+    .indicator-table {
+      overflow: hidden;
+      margin-right: -15px;
+      margin-left: -15px;
+      border-top: 1px solid black;
+      border-right: 1px solid black;
+    }
+    .rel-sector-col, .rel-reason-col, .subject-relations {
+      border-left: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+    .subject-relations:last-child {
+      border-bottom: none;
+    }
+    .teacher-field {
+      border-left: 1px solid black;
+      border-top: 1px solid black;
+      border-right: 1px solid black;
+      &:last-child {
+        border-bottom: 1px solid black;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .indicator-name {
+      float: none;
+      width: 100%;
+      border-bottom:1px solid black;
+      border-left: 1px solid black;
+    }
+    .indicator-info {
+      float: none;
+      width: 100%;
+    }
+  }
+
+  @media only screen and (min-width: 768px) {
+    .indicator-table {
+      border-left: 1px solid black;
+    }
+    .indicator-name {
+      float: left;
+      min-width: 200px;
+      width: 30%;
+    }
+    .indicator-info {
+      float: left;
+      width: 70%;
     }
   }
 

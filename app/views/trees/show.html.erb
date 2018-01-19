@@ -13,11 +13,11 @@
     <div class='row area-row'><%= "#{I18n.translate('app.labels.area')} #{@tree.area}: #{@translations[area.buildTranslationKey]}" %></div>
     <div class='row component-row'><%= "#{I18n.translate('app.labels.component')} #{@tree.component}: #{@translations[component.buildTranslationKey]}" %></div>
     <div class='row outcome-row'><%= "#{I18n.translate('app.labels.outcome')} #{@tree.outcome}: #{@translations[outcome.buildTranslationKey]}" %></div>
-    <div class='row indicator-row'>
-      <div class='col col-lg-3 indicator-col'>
+    <div class='indicator-table'>
+      <div class='indicator-name' style=''>
         <%= "#{@tree.code}: #{I18n.translate('app.labels.indicator')} #{@tree.indicator}: #{@translations[@tree.buildTranslationKey]}" %>
       </div>
-      <div class='col col-lg-9 indicator-info-col'>
+      <div class='col indicator-info'>
         <div class='row'>
           <div class='col col-lg-6 rel-sector-col label'>
             Related Sectors KBE.
