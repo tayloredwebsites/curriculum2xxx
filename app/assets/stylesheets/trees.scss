@@ -34,18 +34,7 @@
   }
 
   form#new_tree {
-    .border-bottom {
-      border-bottom: 1px solid black;
-    }
-    .border-top {
-      border-top: 1px solid black;
-    }
-    .border-left {
-      border-left: 1px solid black;
-    }
-    .border-right {
-      border-right: 1px solid black;
-    }
+    border: 1px solid black;
   }
 
   .detail-page {
