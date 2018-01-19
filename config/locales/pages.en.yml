@@ -45,6 +45,12 @@ en:
     configurations:
       name: "Configuration"
       hover: "User Configuration Management"
+    signin:
+      name: "Sign In"
+      hover: "Sign in to Enable BiH Curritulum Web App"
+    signout:
+      name: "Sign Out"
+      hover: "Sign in to Enable BiH Curritulum Web App"
   translations:
     index:
       name: "Translations Listing"

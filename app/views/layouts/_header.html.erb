@@ -9,54 +9,71 @@
     <i class="fa fa-bars fa-2x"></i>
   </div>
 </header>
-<% if current_user.present?
-%>
-  <nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
-    <ul class="navbar-nav mx-auto">
-      <% if controller.controller_name == 'trees' %>
-        <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
-        </li>
-      <% else %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
-        </li>
-      <% end
-        if true
-      %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link"><%= translate('nav_bar.documents.name') %></a>
-        </li>
-      <% end
+<nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
+  <ul class="navbar-nav mx-auto">
+    <% if controller.controller_name == 'trees' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
+      </li>
+    <% end %>
+    <%
+      if current_user.present?
+    %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link"><%= translate('nav_bar.documents.name') %></a>
+      </li>
+    <% 
+      end
+    %>
+    <%
+      if current_user.present?
         if controller.controller_name == 'uploads'
-      %>
-        <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
-        </li>
-      <% else %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
-        </li>
-      <% end
+    %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
+      </li>
+    <%  else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
+      </li>
+    <%
+        end
+      end
+
+      if current_user.present?
         if controller.controller_name == 'translations'
-      %>
-        <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link" href='/translations'><%= translate('nav_bar.translations.name') %></a>
-        </li>
-      <% else %>
+    %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link" href='/translations'><%= translate('nav_bar.translations.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link" href='/translations'><%= translate('nav_bar.translations.name') %></a>
+      </li>
+    <%
+        end
+      end
+    %>
+    <li class="nav-item" role='menuitem'>
+      <a class="nav-link"><%= translate('nav_bar.configurations.name') %></a>
+    </li>
+    <% if current_user.present? %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link" href='/users/sign_out'><%= translate('nav_bar.signout.name') %></a>
+      </li>
+    <% else %>
+      <ul class="navbar-nav mx-auto">
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link" href='/translations'><%= translate('nav_bar.translations.name') %></a>
+          <a class="nav-link" href='/users/sign_in'><%= translate('nav_bar.signin.name') %></a>
         </li>
-      <% end
-        if true
-      %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link"><%= translate('nav_bar.configurations.name') %></a>
-        </li>
-      <% end %>
-    </ul>
-  </nav>
-<% end %>
+      </ul>
+    <% end %>
+  </ul>
+</nav>
 <div id='pageSubHeaderTitle' class=''>
   <h1 class='text-center'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
 </div>
