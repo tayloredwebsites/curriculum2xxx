@@ -16,7 +16,7 @@ class UploadsController < ApplicationController
 
 
   before_action :authenticate_user!
-  before_action :get_locale
+  before_action :getLocaleCode
   before_action :find_upload, only: [:show, :edit, :update, :start_upload, :do_upload]
 
   def index

@@ -19,11 +19,15 @@ en:
       component: "Component"
       outcome: "Outcome"
       indicator: "Indicator"
+      indicators: "Indicators"
       code: "Code"
       description: 'Description'
       message: "Message"
+      gen_list: "Generate List"
+      sector: "KBE Sector"
       related_to_sectors: "Related to sectors: %{sectors}"
       new_sector_relations: "Newly related sectors: %{sectors}"
+      sectors-listing: "Knowledge Based Education (KBE) Sectors"
     errors:
       too_many_matched_key: "Too many matches for %{key}"
       incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
@@ -69,15 +73,24 @@ en:
       value: "Value"
   trees:
     index:
-      name: "Operational Teaching Curriculum Listing Filter"
+      name: "Operational Teaching Curriculum (OTC) Listing"
+      title: "OTC Listing"
     show:
       name: "Operational Teaching Curriculum Detail Page"
     labels:
-      gen_list: "Generate List"
       show_areas: "Show Areas"
       show_components: "Show Components"
       show_outcomes: "Show Outcomes"
       show_indicators: "Show Indicators"
+      otc_listing_filter: "OTC Listing Filter"
+      sectors_listing: "KBE Sectors"
+      sectors_listing_hover: "Knowledge Based Education (KBE) Sectors"
+  sectors:
+    index:
+      name: "Knowledge Based Education (KBE) Sectors"
+      title: "KBE Sectors Listing"
+    labels:
+      sectors_listing_filter: "KBE Sectors Filter"
   uploads:
     index:
       name: "Uploads Listing"

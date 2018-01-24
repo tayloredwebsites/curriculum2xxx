@@ -1,0 +1,66 @@
+<% content_for(:title_code, 'sectors.index.title') %>
+<% content_for(:title, 'sectors.index.name') %>
+<% content_for(:page_class, 'sectors') %>
+
+<div class='filter-container'>
+  <div class='filter-selects'>
+    <%= form_for @sector, url: sectors_path, :html => { :method => 'GET' } do |form| %>
+      <div class='row'>
+        <div class='col col-md-12'><%= translate('sectors.labels.sectors_listing_filter') %></div>
+      </div>
+      <div class='row'>
+        <div class='col col-md-3 border-left border-top'><label for='tree_subject_id'><%= translate('app.labels.subject') %></label></div>
+        <div class='col col-md-3 border-top'><label for='tree_grade_band_id'><%= translate('app.labels.grade_band') %></label></div>
+        <div class='col col-md-3 border-top'><label for='tree_sector_id'><%= translate('app.labels.sector') %></label></div>
+        <div class='col col-md-3 border-top border-right'><%= translate('app.labels.actions') %></div>
+      </div>
+      <div class='row'>
+        <div class='col col-md-3 border-left border-bottom'>
+          <select name='tree[subject_id]' id='tree_subject_id'>
+            <%= options_for_select(@subjectOptions, @selectedSubjectName) %>
+          </select>
+        </div>
+        <div class='col col-md-3 border-bottom'>
+          <select name='tree[grade_band_id]' id='tree_grade_band_id'>
+            <%= options_for_select(@gradeBandOptions, @selectedGradeBandName) %>
+          </select>
+        </div>
+        <div class='col col-md-3 border-bottom'>
+          <select name='tree[sector_id]' id='tree_sector_id'>
+            <%= options_for_select(@sectorsOptions, @selectedSectorName) %>
+          </select>
+        </div>
+        <div class='col col-md-3 border-bottom border-right'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class='container'>
+  <table class='tree-listing'>
+    <thead>
+      <tr class='rpt-header'>
+        <th colspan="3"><%= translate('app.labels.sector') %></th>
+      </tr>
+      <tr class='rpt-header'>
+        <th class='sector-col'>&nbsp;</th>
+        <th class='code-col'><%= translate('app.labels.code') %></th>
+        <th class='translation-col'><%= translate('app.labels.indicators') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @rptRows.each_with_index do |r, ix|
+        if r[0].present?
+      %>
+        <tr class='rpt' data-sector='<%= r[0] %>' data-row='<%= ix %>'>
+          <td colspan='3' class='sector-row'><%= r[0] %> - <%= r[2] %></td>
+        </tr>
+      <% else %>
+        <tr class='rpt' data-tree='<%= r[1] %>' data-row='<%= ix %>'>
+          <td class='sector-col'>&nbsp;</td>
+          <td class='code-col'><%= r[1] %></td>
+          <td class='translation-col'><%= r[2] %></td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>

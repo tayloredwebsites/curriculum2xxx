@@ -4,12 +4,12 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # set the locale codes in controllers: 'before_action :get_locale'
-  def get_locale
+  # set the locale codes in controllers: 'before_action :getLocaleCode'
+  def getLocaleCode
     I18n.default_locale = BaseRec::LOCALE_EN
     # to do - set the locale to the user's locale (to be found in the users table)
     I18n.locale = BaseRec::LOCALE_EN
-    @locale_code = BaseRec::LOCALE_EN # params[:locale_id] or user.get_locale
+    @locale_code = BaseRec::LOCALE_EN # params[:locale_id] or user.getLocaleCode
   end
 
   def set_type_and_version

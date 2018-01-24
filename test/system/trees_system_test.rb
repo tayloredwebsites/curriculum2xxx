@@ -151,11 +151,8 @@ class TreesSystemTest < ApplicationSystemTestCase
     within('.area-row') { assert page.has_content?('Area 1: MATTER'), 'missing matching area row' }
     within('.component-row') { assert page.has_content?('Component 1: Structure and property of matter'), 'missing matching component row' }
     within('.outcome-row') { assert page.has_content?('Outcome 1: differentiates composition and type of matter'), 'missing matching outcome row' }
-    within('.indicator-col') { assert page.has_content?("1.1.1.a: Indicator a:"), 'missing indicator' }
+    within('.indicator-name') { assert page.has_content?("1.1.1.a: Indicator a:"), 'missing indicator' }
     within('.rel-sectors') { assert page.has_content?("3 - "), 'missing related sector' }
-    # within('rel-sector-col') { assert page.has_content?(""), '' }
-    # within('rel-sector-col') { assert page.has_content?(""), '' }
-    # within('rel-sector-col') { assert page.has_content?(""), '' }
   end
 
 

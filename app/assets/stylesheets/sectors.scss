@@ -1,0 +1,39 @@
+// styles only for sectors pages
+// to activate these classes in a page, include the following at the top:
+//   <% content_for(:page_class, 'sectors') %>
+//
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// SCSS for curriculum (sectors) pages
+#main-container.sectors {
+
+  .filter-container {
+    overflow: hidden;
+    border: 1px solid black;
+    .filter-sectors {
+      float: left;
+    }
+  }
+
+  table.tree-listing {
+    text-align: left;
+    tr {
+      background-color: #fff;
+    }
+    tr.rpt:nth-child(even) {
+      background-color: #e5ffff;
+    }
+    tr.rpt-header {
+      background-color: #cff;
+    }
+    .sector-row{
+      font-weight: bold;
+    }
+    .sector-col{
+      min-width: 50px;
+    }
+  }
+
+// end of SCSS for sectors pages
+}

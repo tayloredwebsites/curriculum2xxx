@@ -1,6 +1,6 @@
 class TreesController < ApplicationController
 
-  before_action :get_locale
+  before_action :getLocaleCode
   before_action :find_tree, only: [:show, :edit, :update]
 
   def index

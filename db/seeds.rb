@@ -124,6 +124,16 @@ else
   Sector.create(code: '10', translation_key: 'sector.10.name')
 end
 throw "Invalid Sector Count" if Sector.count != 10
+@sector1 = Sector.find(1)
+@sector2 = Sector.find(2)
+@sector3 = Sector.find(3)
+@sector4 = Sector.find(4)
+@sector5 = Sector.find(5)
+@sector6 = Sector.find(6)
+@sector7 = Sector.find(7)
+@sector8 = Sector.find(8)
+@sector9 = Sector.find(9)
+@sector10 = Sector.find(10)
 
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.1.name', 'Informacione komunikacione tehnologije (ICT)')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR

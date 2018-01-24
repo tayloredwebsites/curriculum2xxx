@@ -17,14 +17,17 @@
 
 nav#topNav {
   .nav-item a.nav-link {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
   }
   li.nav-item.active {
     font-weight: bold;
     background-color: #ddd;
   }
 }
+
 
 @media only screen and (max-width: 767px) {
   #pageHeaderTitle {
