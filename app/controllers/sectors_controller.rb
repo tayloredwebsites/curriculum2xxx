@@ -28,7 +28,7 @@ class SectorsController < ApplicationController
     end
     @subjectOptions, @selectedSubjectName = helpers.subjectsOptions(@subject_id)
     @gradeBandOptions, @selectedGradeBandName = helpers.gradeBandsOptions(@grade_band_id)
-    @sectorsOptions, @selectedSectorName = helpers.sectorsOptions(@sector_id)
+    @sectorsOptions, @selectedSectorName = helpers.sectorsOptions(@sector_id, @translations)
 
     @rptRows = []
     if params[:tree].present?

@@ -27,11 +27,11 @@ module ApplicationHelper
   end
 
   # sectors select options built for options_for_select
-  def sectorsOptions(selected_id)
+  def sectorsOptions(selected_id, transl)
     ret = [['All', '']]
     retSelName = ''
     Sector.all.each do |s|
-      ret << [ @translations["sector.#{s.code}.name"], s.id ]
+      ret << [ transl["sector.#{s.code}.name"], s.id ]
       retSelName = s.code if s.id.to_s == selected_id.to_s
     end
     return ret, retSelName
