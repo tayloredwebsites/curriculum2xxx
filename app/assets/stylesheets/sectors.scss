@@ -16,16 +16,30 @@
     }
   }
 
+  #new_sector {
+    padding-bottom: 5px;
+  }
+
   table.tree-listing {
     text-align: left;
     tr {
       background-color: #fff;
     }
-    tr.rpt:nth-child(even) {
-      background-color: #e5ffff;
+    tr.rpt {
+      td {
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+      &:nth-child(even) {
+        background-color: #e5ffff;
+      }
     }
     tr.rpt-header {
       background-color: #cff;
+      th {
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
     }
     .sector-row{
       font-weight: bold;

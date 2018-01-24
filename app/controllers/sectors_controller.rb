@@ -26,9 +26,9 @@ class SectorsController < ApplicationController
       @grade_band_id = params[:tree][:grade_band_id].present? ? params[:tree][:grade_band_id] : nil
       @sector_id = params[:tree][:sector_id].present? ? params[:tree][:sector_id] : nil
     end
-    @subjectOptions, @selectedSubjectName = helpers.subjectsOptions(@subject_id)
-    @gradeBandOptions, @selectedGradeBandName = helpers.gradeBandsOptions(@grade_band_id)
-    @sectorsOptions, @selectedSectorName = helpers.sectorsOptions(@sector_id, @translations)
+    @subjectOptions = helpers.subjectsOptions(@subject_id)
+    @gradeBandOptions = helpers.gradeBandsOptions(@grade_band_id)
+    @sectorsOptions = helpers.sectorsOptions(@sector_id, @translations)
 
     @rptRows = []
     if params[:tree].present?
@@ -81,6 +81,7 @@ class SectorsController < ApplicationController
         end
       end
     end # if params[:tree].present? (generating report)
+
   end
 
   private
