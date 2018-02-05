@@ -34,6 +34,7 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
 
     get sectors_url
     assert_response :success
+    # confirm select options have the right number of items
     assert_equal 1, assigns(:subjects).count
     assert_equal 2, assigns(:gbs).count
     assert_equal 10, assigns(:sectors).count

@@ -152,7 +152,16 @@ class TreesSystemTest < ApplicationSystemTestCase
     within('.component-row') { assert page.has_content?('Component 1: Structure and property of matter'), 'missing matching component row' }
     within('.outcome-row') { assert page.has_content?('Outcome 1: differentiates composition and type of matter'), 'missing matching outcome row' }
     within('.indicator-name') { assert page.has_content?("1.1.1.a: Indicator a:"), 'missing indicator' }
-    within('.rel-sectors') { assert page.has_content?("3 - "), 'missing related sector' }
+    within('.rel-sectors') do
+      assert page.text("3 - Technology of materials and high-tech production")
+      # link to related sector(s) work
+      assert_equal 1, page.find_all("a[data-sector='3']").count
+      page.find("a[data-sector='3']").click
+    end
+    assert_equal '/sectors/index', current_path
+    within("table.tree-listing tbody tr[data-row='0']") do
+      assert page.text "3 - Technology of materials and high-tech productionx"
+    end
   end
 
 

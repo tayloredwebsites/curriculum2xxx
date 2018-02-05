@@ -31,7 +31,19 @@
             <% @tree.sectors.each do |s| %>
               <div class='row'>
                 <div class='col col-lg-12 rel-sectors'>
-                  <%= s.code %> - <%= @translations[s.translation_key] %>
+                  <%= link_to(
+                    "#{s.code} - #{@translations[s.translation_key]}",
+                    sectors_path(
+                      controller: 'sector',
+                      action: 'index',
+                      tree: {
+                        sector_id: "#{s.id}",
+                        grade_band_id: "#{@tree.grade_band_id}",
+                        subject_id: "#{@tree.subject_id}"
+                      }
+                    ),
+                    html_options = {data: { :sector => s.id }}
+                  ) %>
                 </div>
               </div>
             <% end %>

@@ -16,7 +16,10 @@ class SectorsSystemTest < ApplicationSystemTestCase
     visit sectors_url
     assert_equal("/sectors/index", current_path)
     assert_equal I18n.translate('sectors.index.title'), page.title
-    assert_equal 0, page.all('table.tree-listing tr.rpt').count # 2 thead rows and Sector row.
+    # assert the report header does not show if report has not been generated yet
+    assert_equal(0, page.find_all('table.tree-listing thead tr.rpt-header').count)
+    # asset no report records yet
+    assert_equal 0, page.all('table.tree-listing tbody tr.rpt').count
     # page.find("form.new_sector input[type='submit']").click
     page.find("form#new_sector input[name='commit']").click
     assert_equal("/sectors/index", current_path)
