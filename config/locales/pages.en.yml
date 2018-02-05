@@ -30,7 +30,6 @@ en:
       sectors-listing: "Knowledge Based Education (KBE) Sectors"
     errors:
       too_many_matched_key: "Too many matches for %{key}"
-      incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
       invalid_code: "invalid code: %{code}"
   nav_bar:
@@ -109,3 +108,6 @@ en:
       invalid_sector_code_for_sector: "Invalid KBE code %{code} for KBE %{sector}"
       no_matching_sector: "No matching KBE Sector found for %{sector}"
       exception_relating_sector_to_tree: "Exception occurred relating sector to tree: %{e}"
+      incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
+    warnings:
+      already_completed: "The upload for  %{filename} has already been completed."

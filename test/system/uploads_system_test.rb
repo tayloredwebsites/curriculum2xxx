@@ -88,7 +88,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
     find('button').click
     assert_equal("/uploads/#{@hem_13.id}/do_upload", current_path)
-    assert page.has_content?(I18n.translate('app.errors.incorrect_filename', filename: @hem_13.filename))
+    assert page.has_content?(I18n.translate('uploads.errors.incorrect_filename', filename: @hem_13.filename))
     assert_equal 'Uploads Listing', page.title
     assert_equal(0, Tree.count)
 

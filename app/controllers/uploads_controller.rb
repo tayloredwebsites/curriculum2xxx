@@ -85,6 +85,11 @@ class UploadsController < ApplicationController
     abortRun = false
     @abortRow = false
 
+    # fully process flag (currently how processed)
+    # this flag will allow skipping the processing of columns based upon status
+    # could be an option on the file upload screen
+    @process_fully = true
+
 
     if @upload
       @subjectRec = Subject.find(@upload.subject_id)
@@ -92,76 +97,87 @@ class UploadsController < ApplicationController
       @localeRec = Locale.find(@upload.locale_id)
       tree_parent_code = ''
       tree_parent_id = ''
-      # to do - refactor this
-      case @upload.status
-      when BaseRec::UPLOAD_NOT_UPLOADED,
-        BaseRec::UPLOAD_TREE_UPLOADING,
-        BaseRec::UPLOAD_TREE_UPLOADED,
-        BaseRec::UPLOAD_SECTOR_RELATED
 
-        if upload_params['file'].original_filename != @upload.filename
-          flash[:alert] = I18n.translate('app.errors.incorrect_filename', filename: @upload.filename)
-          abortRun = true
-        else
-          # process file to upload
+      # set up for csv file row loop
+      # CSV row loop
 
-          # to do - match to final upload layout when determined.
-          # map csv headers to short symbols
-          long_to_short = Upload.get_long_to_short()
-          # stacks is an array whose elements correspond to the depth of the code tree and for
-          #  - (e.g. 0 - Area, 1 - Component, 2 - Outcome, ...)
-          stacks = Array.new
-          stacks[RECS_STACK] = Array.new(CODE_DEPTH) {nil} # current records at each level of procesing
-          stacks[NUM_ERRORS_STACK] = Array.new(PROCESSING_DEPTH) {0} # count of errors at each level of procesing
-          stacks[IDS_STACK] = Array.new(PROCESSING_DEPTH) {[]} # ids of records at each level of procesing (Areas, ..., sectors, relations)
+      # # to do - refactor this
+      # case @upload.status
+      # when BaseRec::UPLOAD_NOT_UPLOADED,
+      #   BaseRec::UPLOAD_TREE_UPLOADING,
+      #   BaseRec::UPLOAD_TREE_UPLOADED,
+      #   BaseRec::UPLOAD_SECTOR_RELATED
 
-          CSV.foreach(upload_params['file'].path, headers: true) do |row|
-            @rowErrs = []
-            stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
-            row_num += 1
+      # check filename
+      if upload_params['file'].original_filename != @upload.filename
+        flash[:alert] = I18n.translate('uploads.errors.incorrect_filename', filename: @upload.filename)
+        abortRun = true
+      elsif @upload.status == BaseRec::UPLOAD_DONE
+        # skip processing if already done, otherwise process)
+        flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
+        abortRun = true
+      else
+        # process file to upload
 
-            # process each column of this row
-            row.each_with_index do |(key, val), ix|
-              @abortRow = false
-              # validate grade band in this row matches this upload
-              # do not process this row if it is for the wrong grade level
-              grade_band = row[Upload::LONG_HEADERS[4]]
-              if grade_band != @gradeBandRec.code
-                @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_grade_band', grade_band: grade_band)
-                @abortRow = true
-              end
+        # to do - match to final upload layout when determined.
+        # map csv headers to short symbols
+        long_to_short = Upload.get_long_to_short()
+        # stacks is an array whose elements correspond to the depth of the code tree (level of processing)
+        #  - (e.g. 0 - Area, 1 - Component, 2 - Outcome, ...)
+        stacks = Array.new
+        stacks[RECS_STACK] = Array.new(CODE_DEPTH) {nil} # current records at each level of procesing
+        stacks[NUM_ERRORS_STACK] = Array.new(PROCESSING_DEPTH) {0} # count of errors at each level of procesing
+        stacks[IDS_STACK] = Array.new(PROCESSING_DEPTH) {[]} # ids of records at each level of procesing (Areas, ..., sectors, relations)
 
-              new_key = long_to_short[key.strip]
-              # if new_key.blank?
-              #   @rowErrs << I18n.translate('app.errors.invalid_code', code: key) if new_key.blank? || new_key.length != 1
-              #   break
-              # end
-              # process this column for this row
-              case new_key
-              when :area
+        CSV.foreach(upload_params['file'].path, headers: true) do |row|
+          @rowErrs = []
+          stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
+          row_num += 1
+
+          # process each column of this row
+          row.each_with_index do |(key, val), ix|
+            @abortRow = false
+
+            # validate grade band in this row matches this upload
+            # do not process this row if it is for the wrong grade level
+            # note this is processed within the column loop so it gets reported in the report
+            # to do - refactor this out of the loop
+            grade_band = row[Upload::LONG_HEADERS[4]]
+            if grade_band != @gradeBandRec.code
+              @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_grade_band', grade_band: grade_band)
+              @abortRow = true
+            end
+
+            new_key = long_to_short[key.strip]
+            # process this column for this row
+            case new_key
+            when :area
+              if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
                 stacks = process_otc_tree(0, val, row_num, stacks)
-              when :component
+              end
+            when :component
+              if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
                 stacks = process_otc_tree(1, val, row_num, stacks)
-              when :outcome
+              end
+            when :outcome
+              if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
                 stacks = process_otc_tree(2, val, row_num, stacks)
-              when :indicator
+              end
+            when :indicator
+              if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
                 stacks = process_otc_tree(3, val, row_num, stacks)
-              when :relevantKbe
+              end
+            when :relevantKbe
+              if @process_fully || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
                 process_sector(val, row_num, stacks)
               end
-              break if @abortRow || @rowErrs.count > 0
-            end # row.each
-            @errs.concat(@rowErrs)
-          end # CSV.foreach
-        end
-      when BaseRec::UPLOAD_DONE
-        abortRun = true
-        @upload = []
-      else
-        abortRun = true
-        @upload = []
+            end
+            break if @abortRow || @rowErrs.count > 0
+          end # row.each
+          @errs.concat(@rowErrs)
+        end # CSV.foreach
       end
-    end
+    end # if upload
     if abortRun
       index_prep
       render :index
