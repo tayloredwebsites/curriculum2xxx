@@ -10,12 +10,12 @@ class SectorsController < ApplicationController
     @sector = Sector.new
 
     # get translation from hash of pre-cached translations.
-    translation_keys = @sectors.pluck(:translation_key)
+    name_keys = @sectors.pluck(:name_key)
     # to do - add translations for grade bands and sectors into translations table
-    translation_keys.concat(@subjects.map {|s| "subject.#{s.code}.name"} )
-    translation_keys.concat(@gbs.map { |g| "grade_band.#{g.code}.name"} )
+    name_keys.concat(@subjects.map {|s| "subject.#{s.code}.name"} )
+    name_keys.concat(@gbs.map { |g| "grade_band.#{g.code}.name"} )
     @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: translation_keys).all
+    translations = Translation.where(locale: @locale_code, key: name_keys).all
     translations.each do |t|
       @translations[t.key] = t.value
     end
@@ -60,8 +60,8 @@ class SectorsController < ApplicationController
       # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
       # possibly create own Translation model to allow includes, or join I18n Translation table somehow
       # Current solution: get translation from hash of pre-cached translations.
-      translation_keys= @trees.pluck(:translation_key)
-      translations = Translation.where(locale: @locale_code, key: translation_keys).all
+      name_keys= @trees.pluck(:name_key)
+      translations = Translation.where(locale: @locale_code, key: name_keys).all
       translations.each do |t|
         @translations[t.key] = t.value
       end
@@ -88,23 +88,23 @@ class SectorsController < ApplicationController
 
   def outputRowsForSector(sector)
     rptRows = []
-    rptRows << [sector.code, '', @translations[sector.translation_key]]
+    rptRows << [sector.code, '', @translations[sector.name_key]]
     # filter out records when pulling from the join
     if @grade_band_id.present? && @subject_id.present?
       sector.trees.where(grade_band_id: @grade_band_id, subject_id: @subject_id ).each do |t|
-        rptRows << ['', t.code, @translations[t.translation_key]] if t.indicator.present?
+        rptRows << ['', t.code, @translations[t.name_key]] if t.indicator.present?
       end
     elsif @grade_band_id.present?
       sector.trees.where(grade_band_id: @grade_band_id).each do |t|
-        rptRows << ['', t.code, @translations[t.translation_key]] if t.indicator.present?
+        rptRows << ['', t.code, @translations[t.name_key]] if t.indicator.present?
       end
     elsif @subject_id.present?
       sector.trees.where(subject_id: @subject_id ).each do |t|
-        rptRows << ['', t.code, @translations[t.translation_key]] if t.indicator.present?
+        rptRows << ['', t.code, @translations[t.name_key]] if t.indicator.present?
       end
     else
       sector.trees.each do |t|
-        rptRows << ['', t.code, @translations[t.translation_key]] if t.indicator.present?
+        rptRows << ['', t.code, @translations[t.name_key]] if t.indicator.present?
       end
     end
     return  rptRows

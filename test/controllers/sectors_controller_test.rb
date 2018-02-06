@@ -51,7 +51,7 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 367, assigns(:rptRows).count
 
-    post sectors_url, params: { tree: { subject_id: '', grade_band_id: '', grade_band_id: '' } }
+    post sectors_url, params: { tree: { subject_id: '', grade_band_id: '', sector_id: '' } }
     assert_response :success
     assert_equal 372, assigns(:rptRows).count
 

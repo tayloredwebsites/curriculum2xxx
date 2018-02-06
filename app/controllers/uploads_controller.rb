@@ -98,16 +98,6 @@ class UploadsController < ApplicationController
       tree_parent_code = ''
       tree_parent_id = ''
 
-      # set up for csv file row loop
-      # CSV row loop
-
-      # # to do - refactor this
-      # case @upload.status
-      # when BaseRec::UPLOAD_NOT_UPLOADED,
-      #   BaseRec::UPLOAD_TREE_UPLOADING,
-      #   BaseRec::UPLOAD_TREE_UPLOADED,
-      #   BaseRec::UPLOAD_SECTOR_RELATED
-
       # check filename
       if upload_params['file'].original_filename != @upload.filename
         flash[:alert] = I18n.translate('uploads.errors.incorrect_filename', filename: @upload.filename)
@@ -170,6 +160,10 @@ class UploadsController < ApplicationController
             when :relevantKbe
               if @process_fully || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
                 process_sector(val, row_num, stacks)
+              end
+            when :sectorRelation
+              if @process_fully || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
+                process_sector_relation(val, row_num, stacks)
               end
             end
             break if @abortRow || @rowErrs.count > 0
@@ -388,4 +382,8 @@ class UploadsController < ApplicationController
     @sectorErrs = true if @rowErrs.count > 0
 
   end
+
+  def process_sector_relation(val, row_num, stacks)
+  end
+
 end

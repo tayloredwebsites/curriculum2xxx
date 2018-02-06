@@ -38,9 +38,9 @@ class TreesController < ApplicationController
     # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
     # possibly create own Translation model to allow includes, or join I18n Translation table somehow
     # Current solution: get translation from hash of pre-cached translations.
-    translation_keys= @trees.pluck(:translation_key)
+    name_keys= @trees.pluck(:name_key)
     @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: translation_keys).all
+    translations = Translation.where(locale: @locale_code, key: name_keys).all
     translations.each do |t|
       @translations[t.key] = t.value
     end
@@ -52,7 +52,7 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.translation_key]
+      translation = @translations[tree.name_key]
       areaHash = {}
       depth = tree.depth
       case depth
@@ -168,9 +168,9 @@ class TreesController < ApplicationController
   end
 
   def show
-    treeKeys = @tree.getAllTransKeys
+    treeKeys = @tree.getAllTransNameKeys
     @tree.sectors.each do |s|
-      treeKeys << s.translation_key
+      treeKeys << s.name_key
     end
     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
   end

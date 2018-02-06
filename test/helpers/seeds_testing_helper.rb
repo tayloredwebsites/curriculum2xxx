@@ -1,6 +1,9 @@
 module SeedsTestingHelper
 
+  #######################################
   # test version of db/seeds.rb
+  # code below is copied from db/seeds.rb
+
   def testing_db_seeds
     if Version.count < 1
       Version.create(
@@ -95,16 +98,16 @@ module SeedsTestingHelper
       # puts "Sectors entered already!"
       # entered already
     else
-      Sector.create(code: '1', translation_key: 'sector.1.name')
-      Sector.create(code: '2', translation_key: 'sector.2.name')
-      Sector.create(code: '3', translation_key: 'sector.3.name')
-      Sector.create(code: '4', translation_key: 'sector.4.name')
-      Sector.create(code: '5', translation_key: 'sector.5.name')
-      Sector.create(code: '6', translation_key: 'sector.6.name')
-      Sector.create(code: '7', translation_key: 'sector.7.name')
-      Sector.create(code: '8', translation_key: 'sector.8.name')
-      Sector.create(code: '9', translation_key: 'sector.9.name')
-      Sector.create(code: '10', translation_key: 'sector.10.name')
+      Sector.create(code: '1', name_key: 'sector.1.name', base_key: 'sector.1')
+      Sector.create(code: '2', name_key: 'sector.2.name', base_key: 'sector.2')
+      Sector.create(code: '3', name_key: 'sector.3.name', base_key: 'sector.3')
+      Sector.create(code: '4', name_key: 'sector.4.name', base_key: 'sector.4')
+      Sector.create(code: '5', name_key: 'sector.5.name', base_key: 'sector.5')
+      Sector.create(code: '6', name_key: 'sector.6.name', base_key: 'sector.6')
+      Sector.create(code: '7', name_key: 'sector.7.name', base_key: 'sector.7')
+      Sector.create(code: '8', name_key: 'sector.8.name', base_key: 'sector.8')
+      Sector.create(code: '9', name_key: 'sector.9.name', base_key: 'sector.9')
+      Sector.create(code: '10', name_key: 'sector.10.name', base_key: 'sector.10')
     end
     throw "Invalid Sector Count" if Sector.count != 10
     @sector1 = Sector.find(1)
@@ -201,6 +204,10 @@ module SeedsTestingHelper
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.10.name', 'Contemporary agricultural production')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+    #######################################
+    # code above is copied from db/seeds.rb
+
   end # self.seed
 
 end # class

@@ -97,12 +97,18 @@ class Tree < BaseRec
     end
   end
 
-  def self.buildTranslationKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+  def self.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
     return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}.name"
   end
-
-  def buildTranslationKey
+  def buildNameKey
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}.name"
+  end
+
+  def self.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+    return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}"
+  end
+  def buildBaseKey
+    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}"
   end
 
   # get parent record for this item (by hierarchy code as appropriate)
@@ -132,11 +138,11 @@ class Tree < BaseRec
     return parents
   end
 
-  # get all translation keys needed for this record and parents (Area, Component and Outcome)
-  def getAllTransKeys
+  # get all translation name keys needed for this record and parents (Area, Component and Outcome)
+  def getAllTransNameKeys
     parents = self.getAllParents
     allRecs = parents.concat([self])
-    treeKeys = (allRecs).map { |rec| rec.translation_key}
+    treeKeys = (allRecs).map { |rec| rec.name_key}
   end
 
 
@@ -151,7 +157,7 @@ class Tree < BaseRec
   def self.find_or_add_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode, parentRec, matchRec)
     # if this record is the same as matchRec, then it was already updated.
     matchCode = (matchRec ? matchRec.code : '')
-    translation_key = Tree.buildTranslationKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+    # name_key = Tree.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
     if fullCode == matchCode
       return fullCode, matchRec, BaseRec::REC_SKIP, "#{fullCode}"
     else
@@ -167,7 +173,8 @@ class Tree < BaseRec
         tree.code = fullCode
         # fill in parent id if parent passed in, and parent codes match.
         tree.parent_id = (parentRec.present? && tree.parentCode == parentRec.code) ? parentRec.id : nil
-        tree.translation_key = Tree.buildTranslationKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+        tree.name_key = Tree.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+        tree.base_key = Tree.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
         ret = tree.save
         if tree.errors.count > 0
           Rails.logger.error("ERROR: saving hierarchy item: #{fullCode} returned errors: #{tree.errors.full_messages}")
@@ -178,9 +185,10 @@ class Tree < BaseRec
       elsif matched_codes.count == 1
         # it already exists, skip
         matched = matched_codes.first
-        if matched.translation_key.blank? || matched.parent_id.blank?
+        if matched.name_key.blank? || matched.parent_id.blank?
           # fixed if existing record is missing translation key or parent record id
-          matched.translation_key = matched.buildTranslationKey
+          matched.name_key = matched.buildNameKey
+          matched.base_key = matched.buildBaseKey
           matched.parent_id = parentRec.id if (parentRec.present? && matched.parentCode == parentRec.code)
           matched.save
           # to do - do we need error checking here?
