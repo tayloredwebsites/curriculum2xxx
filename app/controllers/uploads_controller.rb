@@ -163,7 +163,7 @@ class UploadsController < ApplicationController
               end
             when :sectorRelation
               if @process_fully || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
-                process_sector_relation(val, row_num, stacks)
+                process_sector_relation(val, row_num, stacks) if val.present?
               end
             end
             break if @abortRow || @rowErrs.count > 0
@@ -181,6 +181,7 @@ class UploadsController < ApplicationController
         @upload.status = BaseRec::UPLOAD_TREE_UPLOADING
         if !@treeErrs
           @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
+          # to do - update this to wait till sector explanation done.
           if stacks[IDS_STACK][PROCESSING_SECTOR].count > 0 && !@sectorErrs
             @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
           end
@@ -327,7 +328,8 @@ class UploadsController < ApplicationController
         relations << '4'
       else
         # not a custom match, get sector code from translation records for sectors.
-        matchingSectors = Translation.where('locale = ? AND value LIKE (?)', @localeRec.code, "%#{s.strip}%")
+        # look for matching tranlations for sector sector names, matching the locale, and text
+        matchingSectors = Translation.where('locale = ? AND key like (?) AND value LIKE (?)', @localeRec.code, "sector.%", "%#{s.strip}%")
         if matchingSectors.count == 1 # matched description in translation table
           # get the sector record from the sector code
           sectorCode = matchingSectors.first.key
@@ -384,6 +386,30 @@ class UploadsController < ApplicationController
   end
 
   def process_sector_relation(val, row_num, stacks)
+    # to do - ensure this is run if the @process_fully flag is not set
+    errs = []
+    tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
+    explain, text_status, text_msg = Translation.find_or_update_translation(
+      @localeRec.code,
+      "#{tree_rec.base_key}.explain",
+      val
+    )
+    if text_status == BaseRec::REC_ERROR
+      err_str = text_msg
+      errs << err_str
+      @rowErrs << err_str
+    end
+
+    # generate report record
+    rptRec = [row_num]
+    rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
+    rptRec << '' # blank out the code column of report
+    rptRec << "#{I18n.translate('app.labels.sector_related_explain')}: #{explain.value}"
+    rptRec << ((errs.count > 0) ? errs.to_s : '')
+    @rptRecs << rptRec
+
+    @sectorErrs = true if errs.count > 0
+
   end
 
 end

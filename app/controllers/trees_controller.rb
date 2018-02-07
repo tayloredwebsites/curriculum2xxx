@@ -168,10 +168,14 @@ class TreesController < ApplicationController
   end
 
   def show
+    # get all translation keys for this record and above
     treeKeys = @tree.getAllTransNameKeys
+    # get all translation keys for all sectors related to it
     @tree.sectors.each do |s|
       treeKeys << s.name_key
     end
+    # get the translation key for the related sectors explanation
+    treeKeys << "#{@tree.base_key}.explain"
     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
   end
 

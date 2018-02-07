@@ -44,7 +44,7 @@ class TreesSystemTest < ApplicationSystemTestCase
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
     @hem_09.reload
     assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)
-    assert_equal 305, page.find_all('#uploadReport tbody tr').count
+    assert_equal 390, page.find_all('#uploadReport tbody tr').count
     assert_equal 0, page.find_all('div.error').count
   end
 
@@ -152,15 +152,16 @@ class TreesSystemTest < ApplicationSystemTestCase
     within('.component-row') { assert page.has_content?('Component 1: Structure and property of matter'), 'missing matching component row' }
     within('.outcome-row') { assert page.has_content?('Outcome 1: differentiates composition and type of matter'), 'missing matching outcome row' }
     within('.indicator-name') { assert page.has_content?("1.1.1.a: Indicator a:"), 'missing indicator' }
-    within('.rel-sectors') do
-      assert page.text("3 - Technology of materials and high-tech production")
+    assert_equal 'Knowing properties of materials is a basis for modern production of materials', page.find('.rel-reason-col.val').text
+    within('.rel-sector-col.val') do
+      assert page.has_content?("3 - Technology of materials and high-tech production")
       # link to related sector(s) work
       assert_equal 1, page.find_all("a[data-sector='3']").count
       page.find("a[data-sector='3']").click
     end
     assert_equal '/sectors/index', current_path
     within("table.tree-listing tbody tr[data-row='0']") do
-      assert page.text "3 - Technology of materials and high-tech productionx"
+      assert page.has_content? "3 - Technology of materials and high-tech production"
     end
   end
 

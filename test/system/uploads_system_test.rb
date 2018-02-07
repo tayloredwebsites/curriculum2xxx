@@ -49,7 +49,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)
     # confirm number of records returned is 4 (4 area records)
     rpt_rows = page.find_all('#uploadReport tbody tr .colStatusMsg')
-    assert_equal rpt_rows.count, 305 # 186 tree items + 119 KBE report records
+    assert_equal 390, rpt_rows.count # 186 tree items + 119 KBE report records + 85 sector explanations
     assert_equal 0, page.find_all('div.error').count
 
 
@@ -60,7 +60,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
     @hem_09.reload
     assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)
-    assert_equal 305, page.find_all('#uploadReport tbody tr').count
+    assert_equal 390, page.find_all('#uploadReport tbody tr').count
     assert_equal 0, page.find_all('div.error').count
   end
 
@@ -106,8 +106,8 @@ class UploadsSystemTest < ApplicationSystemTestCase
 
     assert_equal(9, Tree.count)
     rows =  page.find_all('#uploadReport tbody tr')
-    assert_equal 19, rows.count
-    assert_equal(49, Translation.count)  # translations for nine items added to tree
+    assert_equal 25, rows.count # 19 + 6 sector explanations
+    assert_equal(54, Translation.count)  # nine items added to tree = 49 + 6 explanations
     assert_equal 5, page.find_all('div.error').count # row for each of four error rows and count row
 
     # we got errors uploading tree.

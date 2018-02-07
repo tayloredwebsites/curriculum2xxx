@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class='row'>
-          <div class='col col-lg-6 rel-sector-col'>
+          <div class='col col-lg-6 rel-sector-col val'>
             <% @tree.sectors.each do |s| %>
               <div class='row'>
                 <div class='col col-lg-12 rel-sectors'>
@@ -48,8 +48,8 @@
               </div>
             <% end %>
           </div>
-          <div class='col col-lg-6 rel-reason-col'>
-            Reasons here.
+          <div class='col col-lg-6 rel-reason-col val'>
+            <%= @translations["#{@tree.base_key}.explain"] %>
           </div>
         </div>
         <div class='row subject-relations label'>

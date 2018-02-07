@@ -28,10 +28,14 @@ en:
       related_to_sectors: "Related to sectors: %{sectors}"
       new_sector_relations: "Newly related sectors: %{sectors}"
       sectors-listing: "Knowledge Based Education (KBE) Sectors"
+      sector_related_explain: "Sectors Related Explanation"
     errors:
       too_many_matched_key: "Too many matches for %{key}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
       invalid_code: "invalid code: %{code}"
+      unsaved_rec: "cannot update unsaved record"
+      missing_base_key: "cannot update translation without base key"
+      invalid_lang: "Invalid language %{lang}"
   nav_bar:
     curriculum:
       name: "Curriculum"
@@ -70,6 +74,8 @@ en:
       locale: "Locale"
       key: "Key"
       value: "Value"
+    errors:
+      too_many_translations_lang_key: "too many translations for locale: %{lang}, key: %{key}"
   trees:
     index:
       name: "Operational Teaching Curriculum (OTC) Listing"

@@ -2,7 +2,7 @@ class Translation < BaseRec
 
   # to do - add associations
 
-  def self.find_translation(locale, code, checkDefault = true)
+  def self.find_translation(locale, code, checkDefault = true, allow_none = false)
     recs = Translation.where(locale: locale, key: code)
     if recs.count == 1
       return recs.first, BaseRec::REC_NO_CHANGE, ''
@@ -13,7 +13,11 @@ class Translation < BaseRec
         if recsD.count == 1
           return recsD.first, BaseRec::REC_NO_CHANGE, ''
         elsif recsD.count < 1
-          return nil, BaseRec::REC_ERROR, "Missing translation for #{code}"
+          if allow_none
+            return nil, BaseRec::REC_NO_CHANGE, ""
+          else
+            return nil, BaseRec::REC_ERROR, "Missing translation for #{code}"
+          end
         else
           return nil, BaseRec::REC_ERROR, "System Error, too many default translations for #{code}"
         end
@@ -26,14 +30,28 @@ class Translation < BaseRec
   end
 
   def self.find_or_update_translation(locale, code, val)
-    rec, status, message = self.find_translation(locale, code, false)
-    if rec.blank?
+    errors = []
+    rec, status, message = self.find_translation(locale, code, false, true)
+    if status == BaseRec::REC_ERROR
+      errors << message
+    elsif rec.blank?
       # no matching record, create it
-      rec = Translation.create(locale: locale, key: code, value: val)
-      if rec.errors.count > 0
-        return nil, BaseRec::REC_ERROR, "ERROR creating translation for #{code} to: #{val}"
+      if !VALID_LOCALES.include?(locale)
+        err_str = I18n.translate('app.errors.invalid_lang')
+        Rails.logger.error("ERROR: #{err_str}")
+        errors << err_str
+      elsif code.blank?
+        err_str = I18n.translate('app.errors.invalid_code', code)
+        Rails.logger.error("ERROR: #{err_str}")
+        errors << err_str
+      else
+        rec = Translation.create(locale: locale, key: code, value: val)
+        if rec.errors.count > 0
+          errors << "ERROR creating translation for #{code} to: #{val}"
+          return nil, BaseRec::REC_ERROR, errors.to_s
+        end
+        return rec, BaseRec::REC_ADDED, ''
       end
-      return rec, BaseRec::REC_ADDED, ''
     else
       # found existing record, check if value changed
       if rec.value != val
@@ -41,7 +59,8 @@ class Translation < BaseRec
         rec.value = val
         rec.save
         if rec.errors.count > 0
-          return nil, BaseRec::REC_ERROR, "ERROR updating translation for #{code} to #{val}"
+          errors << "ERROR updating translation for #{code} to #{val}"
+          return nil, BaseRec::REC_ERROR, errors.to_s
         end
         return rec, BaseRec::REC_UPDATED, ''
       else

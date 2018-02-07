@@ -26,10 +26,12 @@ class BaseRec < ActiveRecord::Base
   TREE_TYPE_CODE = 'OTC'
   VERSION_ID = 1
   VERSION_CODE = 'v01'
+
   LOCALE_BS = 'bs'
   LOCALE_HR = 'hr'
   LOCALE_SR = 'sr'
   LOCALE_EN = 'en'
+  VALID_LOCALES = [LOCALE_BS, LOCALE_HR, LOCALE_SR, LOCALE_EN]
   DEFAULT_LOCALE = LOCALE_BS
 
 
