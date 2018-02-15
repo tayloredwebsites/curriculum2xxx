@@ -1,34 +1,33 @@
 require 'helpers/test_controllers_helper'
 require 'helpers/seeds_testing_helper'
 
-
 class UploadsControllerTest < ActionDispatch::IntegrationTest
 
   include Devise::Test::IntegrationHelpers
   include SeedsTestingHelper
 
   setup do
-    @user1 = FactoryBot.create(:user)
+    @user1 = FactoryBot.create(:user, roles: 'admin')
     @user1.confirm # do a devise confirmation of new user
     sign_in @user1
     testing_db_seeds
   end
 
   test "should get uploads index" do
-    get uploads_url
+    get uploads_path
     assert_response :success
     assert_equal 2, assigns(:uploads).count
   end
 
   test "should get uploads create fail with missing args" do
     assert_difference('Upload.count', 0) do
-      post uploads_url, params: { upload: { subject_id: @hem.id } }
+      post uploads_path, params: { upload: { subject_id: @hem.id } }
     end
   end
 
   test "should get uploads create" do
     assert_difference('Upload.count', 1) do
-      post uploads_url, params: { upload: {
+      post uploads_path, params: { upload: {
         subject_id: @hem.id,
         grade_band_id: @gb_09.id,
         locale_id: @loc_en.id,
@@ -38,13 +37,13 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should successfully start_upload of file" do
-    get start_upload_upload_url(id: @hem_09.id)
+    get start_upload_upload_path(id: @hem_09.id)
     assert_response :success
   end
 
   test "should successfully do_upload of good file" do
     up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
-    patch do_upload_upload_url(id: @hem_09.id), params: {upload: {file: up_file}}
+    patch do_upload_upload_path(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
@@ -53,7 +52,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get errors do_upload of file with errors" do
     up_file = fixture_file_upload('files/Hem_13_transl_Eng.csv','text/csv')
-    patch do_upload_upload_url(id: @hem_13.id), params: {upload: {file: up_file}}
+    patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
     assert_equal 4, assigns(:errs).count

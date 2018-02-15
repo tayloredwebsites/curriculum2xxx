@@ -1,0 +1,5 @@
+<% content_for(:title_code, 'users.index.name') %>
+<% content_for(:page_class, 'users') %>
+
+<p><%= link_to translate('users.labels.index'), new_upload_path() %></p>
+<%= render partial: 'listing' %>

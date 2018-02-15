@@ -2,8 +2,8 @@
 <% content_for(:page_class, 'translations') %>
 
 <h1><%= translate('translations.labels.listing') %></h1>
-<p><%= link_to translate('translations.labels.listing_by_key'), listing2_translations_url() %></p>
-<p><%= link_to translate('translations.labels.listing'), new_translation_url() %></p>
+<p><%= link_to translate('translations.labels.listing_by_key'), listing2_translations_path() %></p>
+<p><%= link_to translate('translations.labels.listing'), new_translation_path() %></p>
 <table>
   <thead>
     <tr>
@@ -20,7 +20,7 @@
         <td style='word-break: break-all; min-width: 130px;'><%= t.key %></td>
         <td style='min-width: 130px;'><%= t.value.blank? ? '' : t.value %></td>
         <td>
-          <%= link_to translate('app.labels.edit'), edit_translation_url(id: t.id) %>
+          <%= link_to translate('app.labels.edit'), edit_translation_path(id: t.id) %>
         </td>
       </tr>
     <% end %>

@@ -1,0 +1,29 @@
+
+<div id='edit-user'>
+  <div class='col-md-12'>
+    <div class='text-center'>
+      User: <%= @user.full_name %> (<%= @user.email %>)
+    </div>
+    <div class='page-form alternate-highlight'>
+      <%=
+        form_for @user, url: user_path(@user.id), :html => { :class => "registrationForm" } do |form|
+        %>
+          <%= render partial: 'form', :locals => {:form => form} %>
+          <div class='reg-container row'>
+            <div class='col-sm-0 col-md-3'>
+            </div>
+            <div class='col-sm-12 col-md-6'>
+              <div class='input-form row'>
+                <button class='btn btn-default' name='cancel'>Cancel</button>
+                <button class='btn btn-primary' type='submit' name='submit'>Submit</button>
+              </div>
+            </div>
+            <div class='col-sm-0 col-md-3'>
+            </div>
+          </div>
+        <%
+        end
+      %>
+    </div>
+  </div>
+</div>

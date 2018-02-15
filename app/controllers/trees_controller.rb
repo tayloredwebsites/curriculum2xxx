@@ -161,7 +161,7 @@ class TreesController < ApplicationController
     if @tree.save
       flash[:success] = "tree created."
       # I18n.backend.reload!
-      redirect_to trees_url
+      redirect_to trees_path
     else
       render :new
     end
@@ -186,7 +186,7 @@ class TreesController < ApplicationController
     if @tree.update(tree_params)
       flash[:notice] = "Tree  updated."
       # I18n.backend.reload!
-      redirect_to trees_url
+      redirect_to trees_path
     else
       render :edit
     end

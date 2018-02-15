@@ -13,7 +13,7 @@
     <div class="container-fluid">
       <%= render 'layouts/header' %>
       <% if flash[:notice].present? || flash[:alert].present? %>
-        <div class='container-fluid'>
+        <div class=''>
           <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
           <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
         </div>

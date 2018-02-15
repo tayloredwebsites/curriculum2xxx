@@ -29,6 +29,17 @@ en:
       new_sector_relations: "Newly related sectors: %{sectors}"
       sectors-listing: "Knowledge Based Education (KBE) Sectors"
       sector_related_explain: "Sectors Related Explanation"
+    roles:
+      name: 'Roles'
+      admin:
+        abbrev: 'Admin.'
+        name: 'Administrator'
+      teacher:
+        abbrev: 'Teacher'
+        name: 'Teacher'
+      req_teacher:
+        abbrev: 'Requested?'
+        name: 'Request for Teacher Access'
     errors:
       too_many_matched_key: "Too many matches for %{key}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
@@ -36,7 +47,14 @@ en:
       unsaved_rec: "cannot update unsaved record"
       missing_base_key: "cannot update translation without base key"
       invalid_lang: "Invalid language %{lang}"
+      unauthorized: "You are not authorized to access requested page."
+  home:
+    name: "Enable BiH Web App Home Page"
+    title: "Home Page"
   nav_bar:
+    home:
+      name: "Home"
+      hover: "Home Page"
     curriculum:
       name: "Curriculum"
       hover: "Lists the OTC Curriculum Tree"
@@ -49,9 +67,12 @@ en:
     translations:
       name: "Translations"
       hover: "Translations Management for Administrators"
-    configurations:
-      name: "Configuration"
-      hover: "User Configuration Management"
+    users:
+      name: "Users"
+      hover: "User Management"
+    my_account:
+      name: "My Account"
+      hover: "Change my account information"
     signin:
       name: "Sign In"
       hover: "Sign in to Enable BiH Curritulum Web App"
@@ -117,3 +138,26 @@ en:
       incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
     warnings:
       already_completed: "The upload for  %{filename} has already been completed."
+  users:
+    nav:
+      my_account: 'My Account'
+      registrations: 'Registrations'
+      all_users: 'All Users'
+    index:
+      name: "Users Listing"
+      title: "Users Listing Page"
+    registrations:
+      name: 'Registrations'
+      label: 'User Registration Requests Page'
+    my_account:
+      name: 'My Account'
+      label: 'My Account Page'
+    edit:
+      name: 'Edit User'
+      label: 'Edit User Page'
+    labels:
+      signup_form: "Signup Information Form"
+      web_admin: 'Web Admin:'
+      teacher: 'Teacher:'
+      fill_signup_form: "Please fill out this form to continue the signup process."
+      req_teacher: "Teacher Request:"

@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# create an initial admin user to get things going.
+# to do - change this user or deactivate it for production.
 if User.count < 1
   User.create(
     email: 'bih@sample.com',
@@ -13,6 +15,7 @@ if User.count < 1
     password_confirmation: 'password',
     given_name: 'BiH',
     family_name: 'Web App',
+    roles: ['admin'],
     confirmed_at: DateTime.now
   )
 end

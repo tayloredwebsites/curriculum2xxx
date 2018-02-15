@@ -6,14 +6,14 @@ class TreesSystemTest < ApplicationSystemTestCase
   include SeedsTestingHelper
 
   setup do
-    @one = create(:user)
+    @one = create(:user, roles: 'admin')
     @one.confirm
     sign_in @one
     testing_db_seeds
   end
 
   test "Trees (Curriculum) index page" do
-    visit trees_url
+    visit trees_path
     # uploads index page
     assert_equal("/trees", current_path)
     # to do - use translation when title is translated
@@ -33,7 +33,7 @@ class TreesSystemTest < ApplicationSystemTestCase
   end
 
   def load_curriculum_file
-    visit uploads_url
+    visit uploads_path
     # uploads index page
     assert_equal("/uploads", current_path)
     page.find("#uploadsTable tbody tr#id_#{@hem_09.id} a").click
@@ -50,7 +50,7 @@ class TreesSystemTest < ApplicationSystemTestCase
 
 
   def good_upload_check_curriculum
-    visit trees_url
+    visit trees_path
     # uploads index page
     assert_equal("/trees", current_path)
 
@@ -140,7 +140,7 @@ class TreesSystemTest < ApplicationSystemTestCase
   end
 
   def good_detail_page
-    visit trees_url
+    visit trees_path
     assert_equal("/trees", current_path)
     # list all grade levels (9 & 13)
     page.find("form.new_tree input[type='submit']").click

@@ -1,0 +1,21 @@
+
+<table id='usersTable' class='table'>
+  <thead>
+    <tr>
+      <th><%= translate('app.labels.email') %></th>
+      <th><%= translate('app.labels.name') %></th>
+      <th><%= translate('app.labels.action') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr id="id_<%= u.id %>">
+        <td><%= u.email %></td>
+        <td><%= u.full_name %></td>
+        <td>
+          <%= link_to translate('app.labels.edit'), edit_user_path(id: u.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

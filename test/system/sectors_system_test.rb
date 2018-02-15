@@ -6,14 +6,14 @@ class SectorsSystemTest < ApplicationSystemTestCase
   include SeedsTestingHelper
 
   setup do
-    @one = create(:user)
+    @one = create(:user, roles: 'admin')
     @one.confirm
     sign_in @one
     testing_db_seeds
   end
 
   test "Sectors index page" do
-    visit sectors_url
+    visit sectors_path
     assert_equal("/sectors/index", current_path)
     assert_equal I18n.translate('sectors.index.title'), page.title
     # assert the report header does not show if report has not been generated yet
@@ -28,7 +28,7 @@ class SectorsSystemTest < ApplicationSystemTestCase
   end
 
   test "Test curriculum from chemistry 09 english upload file" do
-    visit uploads_url
+    visit uploads_path
     assert_equal("/uploads", current_path)
     page.find("#uploadsTable tbody tr#id_#{@hem_09.id} a").click
     assert_equal("/uploads/#{@hem_09.id}/start_upload", current_path)
@@ -41,7 +41,7 @@ class SectorsSystemTest < ApplicationSystemTestCase
     assert_equal 390, page.find_all('#uploadReport tbody tr').count
     assert_equal 0, page.find_all('div.error').count
 
-    visit sectors_url
+    visit sectors_path
     assert_equal("/sectors/index", current_path)
     assert_equal I18n.translate('sectors.index.title'), page.title
     page.find("form#new_sector input[name='commit']").click

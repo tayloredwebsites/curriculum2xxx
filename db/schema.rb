@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206131855) do
+ActiveRecord::Schema.define(version: 20180207201847) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -107,8 +107,8 @@ ActiveRecord::Schema.define(version: 20180206131855) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "given_name", null: false
-    t.string "family_name", null: false
+    t.string "given_name", default: ""
+    t.string "family_name", default: ""
     t.string "roles", default: "", null: false
     t.string "confirmation_token"
     t.datetime "confirmed_at"

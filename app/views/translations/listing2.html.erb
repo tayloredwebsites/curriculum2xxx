@@ -1,7 +1,7 @@
 <% content_for(:title_code, 'translations.labels.listing_by_key') %>
 <% content_for(:page_class, 'translations') %>
 
-<p><%= link_to translate('app.labels.create'), new_translation_url() %></p>
+<p><%= link_to translate('app.labels.create'), new_translation_path() %></p>
 <table>
   <thead>
     <tr>
@@ -27,7 +27,7 @@
         <td><%= t.locale %></td>
         <td>
           <%= t.value.blank? ? '' : t.value %>
-          <a href="<%= link_to translate('app.labels.edit'), edit_translation_url(id: t.id) %>">
+          <a href="<%= link_to translate('app.labels.edit'), edit_translation_path(id: t.id) %>">
         </td>
       </tr>
     <% end %>

@@ -20,6 +20,7 @@ class UploadsController < ApplicationController
   before_action :find_upload, only: [:show, :edit, :update, :start_upload, :do_upload]
 
   def index
+    unauthorized() and return if !user_is_admin?(current_user)
     index_prep
     respond_to do |format|
       format.html
@@ -32,33 +33,39 @@ class UploadsController < ApplicationController
   # end
 
   def new
+    unauthorized() and return if !user_is_admin?(current_user)
     @upload = Upload.new()
   end
 
   def create
+    unauthorized() and return if !user_is_admin?(current_user)
     @upload = Upload.new(upload_params)
     if @upload.save
       flash[:success] = "Upload for #{ @upload.subject.code } #{ @upload.grade_band.code } #{ @upload.locale.name } updated."
-      redirect_to uploads_url()
+      redirect_to uploads_path()
     end
   end
 
   def show
+    unauthorized() and return if !user_is_admin?(current_user)
   end
 
   def edit
+    unauthorized() and return if !user_is_admin?(current_user)
   end
 
   def update
+    unauthorized() and return if !user_is_admin?(current_user)
     if @upload.update(upload_params)
       flash[:notice] = "Upload for #{ @upload.subject.code } #{ @upload.grade_band.code } #{ @upload.locale.name } updated."
-      redirect_to uploads_url()
+      redirect_to uploads_path()
     else
       render :edit
     end
   end
 
   def start_upload
+    unauthorized() and return if !user_is_admin?(current_user)
     if @upload
       @message = "Select file to upload to get to next step"
       @errs = []
@@ -72,6 +79,7 @@ class UploadsController < ApplicationController
   end
 
   def do_upload
+    unauthorized() and return if !user_is_admin?(current_user)
     require 'csv'
 
     # infomation to send back to user after completion

@@ -34,11 +34,11 @@ Rails.application.routes.draw do
 
 
   resources :sectors, only: [:index] do
-  collection do
-    post 'index'
-    get 'index'
+    collection do
+      post 'index'
+      get 'index'
+    end
   end
-end
 
 
   devise_for :users
@@ -49,10 +49,20 @@ end
     get '/log_out' => 'devise/sessions#destroy'
     get '/logout' => 'devise/sessions#destroy'
   end
+  resources :users,
+    only: [:index, :new, :create, :show, :edit, :update ] do
+    collection do
+      get 'registrations'
+      get 'index'
+    end
+    member do
+      get 'configuration'
+    end
+  end
 
 
   # root to: 'application#index'
-  root to: 'trees#index'
+  root to: 'users#home'
   get '/elm', to: 'application#index'
 
 end

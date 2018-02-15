@@ -1,7 +1,7 @@
 <% content_for(:title_code, 'uploads.index.name') %>
 <% content_for(:page_class, 'uploads') %>
 
-<p><%= link_to translate('uploads.labels.new_upload'), new_upload_url() %></p>
+<p><%= link_to translate('uploads.labels.new_upload'), new_upload_path() %></p>
 <table id='uploadsTable'>
   <thead>
     <tr>
@@ -20,7 +20,7 @@
         <td><%= u.locale.name %></td>
         <td><%= BaseRec::UPLOAD_STATUS[u.status] %></td>
         <td>
-          <%= link_to translate('uploads.labels.upload'), start_upload_upload_url(id: u.id) %>
+          <%= link_to translate('uploads.labels.upload'), start_upload_upload_path(id: u.id) %>
         </td>
       </tr>
     <% end %>

@@ -3,7 +3,7 @@
     <div class='logoImage'></div>
   </a>
   <div id='pageHeaderTitle' class=''>
-    <h1 class='text-center'><%= content_for?(:title) ? translate(yield(:title)) : (content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') ) %></h1>
+    <h1 class='text-center'><%= content_for?(:title) ? yield(:title) : (content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') ) %></h1>
   </div>
   <div id='pageHeaderShowNav' class=''>
     <i class="fa fa-bars fa-2x"></i>
@@ -11,7 +11,18 @@
 </header>
 <nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
   <ul class="navbar-nav mx-auto">
-    <% if controller.controller_name == 'trees' %>
+    <%
+    if controller.controller_name == 'users' && action_name == 'home' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href='/'><%= translate('nav_bar.home.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href='/'><%= translate('nav_bar.home.name') %></a>
+      </li>
+    <%
+    end
+    if controller.controller_name == 'trees' %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
       </li>
@@ -19,19 +30,10 @@
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
       </li>
-    <% end %>
     <%
-      if current_user.present?
-    %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary"><%= translate('nav_bar.documents.name') %></a>
-      </li>
-    <%
-      end
-    %>
-    <%
-      if current_user.present?
-        if controller.controller_name == 'uploads'
+    end
+    if current_user.present? && current_user.is_admin?
+      if controller.controller_name == 'uploads'
     %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
@@ -42,35 +44,31 @@
       </li>
     <%
         end
-      end
-
-      if current_user.present?
-        if controller.controller_name == 'translations'
+        if controller.controller_name == 'users'
     %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href='/translations'><%= translate('nav_bar.translations.name') %></a>
+        <a class="nav-link btn btn-primary" href='/users'><%= translate('nav_bar.users.name') %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/translations'><%= translate('nav_bar.translations.name') %></a>
+        <a class="nav-link btn btn-primary" href='/users'><%= translate('nav_bar.users.name') %></a>
       </li>
     <%
         end
       end
+
+      if current_user.present?
     %>
-    <li class="nav-item" role='menuitem'>
-      <a class="nav-link btn btn-primary"><%= translate('nav_bar.configurations.name') %></a>
-    </li>
-    <% if current_user.present? %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href='/users/<%= current_user.id %>/edit'><%= translate('nav_bar.my_account.name') %></a>
+      </li>
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href='/users/sign_out'><%= translate('nav_bar.signout.name') %></a>
       </li>
     <% else %>
-      <ul class="navbar-nav mx-auto">
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href='/users/sign_in'><%= translate('nav_bar.signin.name') %></a>
-        </li>
-      </ul>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href='/users/sign_in'><%= translate('nav_bar.signin.name') %></a>
+      </li>
     <% end %>
   </ul>
 </nav>

@@ -7,7 +7,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
 
 
   setup do
-    @one = create(:user)
+    @one = create(:user, roles: 'admin')
     @one.confirm
     sign_in @one
     testing_db_seeds
@@ -15,7 +15,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
 
 
   test "good upload" do
-    visit uploads_url
+    visit uploads_path
 
     # uploads index page
     assert_equal("/uploads", current_path)
@@ -66,7 +66,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
 
 
   test "errors upload" do
-    visit uploads_url
+    visit uploads_path
 
     # uploads index page
     assert_equal("/uploads", current_path)
