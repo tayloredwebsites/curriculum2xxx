@@ -33,11 +33,6 @@ class UsersSystemTest < ApplicationSystemTestCase
     can_see_self(@unauth)
     cannot_see_teacher_pages
     cannot_see_admin_pages(false)
-    sign_in @req_teacher
-    can_see_public_pages(false)
-    can_see_self(@req_teacher)
-    cannot_see_teacher_pages
-    cannot_see_admin_pages(false)
     sign_in @teacher
     can_see_public_pages(false)
     can_see_self(@teacher)
@@ -71,13 +66,31 @@ class UsersSystemTest < ApplicationSystemTestCase
     fill_in "user_password_confirmation", with: 'password'
 
     # confirm email sent with click of sign up button
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+      click_button "Sign up"
+    end
+
+    fill_in "user_email", with: 'me@example.com'
+    fill_in "user_password", with: 'password'
+    fill_in "user_password_confirmation", with: 'password'
+    fill_in "user_given_name", with: 'Help'
+    fill_in "user_family_name", with: 'Me'
+
+    # confirm email sent with click of sign up button
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       click_button "Sign up"
-      email = ActionMailer::Base.deliveries.last
-      assert_equal "Confirmation instructions", email.subject
-      assert_equal 'me@example.com', email.to[0]
-      assert_match(/Welcome me@example.com!/, email.body.to_s)
     end
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal "Confirmation instructions", email.subject
+    assert_equal 'me@example.com', email.to[0]
+    assert_match(/Welcome me@example.com!/, email.body.to_s)
+
+    assert_equal("/", current_path)
+    assert_equal I18n.translate('home.title'), page.title
+    assert page.has_content?(
+      'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.'
+    )
 
     # activate the new user
     new_user = User.where(email: 'me@example.com').first
@@ -85,13 +98,7 @@ class UsersSystemTest < ApplicationSystemTestCase
     new_user.confirm
     new_user.save
 
-    # fill in registration form and submit
-    system_sign_in(new_user, 'password') # note password must be given, because non-temporary password has not been set yet ???
-    page.find("#main-container form.registrationForm input[name='user[role_req_teacher]']").set(true)
-    page.find("#main-container form.registrationForm button[name='submit']").click
-
     # sign out and sign in as web admin
-    page.find("#topNav a[href='/users/sign_out']").click
     system_sign_in(@admin)
 
     page.find("#topNav a[href='/users']").click
@@ -102,7 +109,6 @@ class UsersSystemTest < ApplicationSystemTestCase
 
     # make newly registered user a teacher and web admin (note teacher has subtle differences from public)
     within("form[action='/users/#{new_user.id}']") do
-      page.find("input[name='user[role_req_teacher]']").set(false)
       page.find("input[name='user[role_teacher]']").set(true)
       page.find("input[name='user[role_admin]']").set(true)
       page.find("button[name='submit']").click

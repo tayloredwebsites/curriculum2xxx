@@ -1,0 +1,45 @@
+
+
+<% if @user.present? && @user.id.present? %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :current_password %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>*</span>
+      <%= form.password_field :current_password, autocomplete: "off" %>
+      <span>(only required if changing password)</span>
+      <% if @user.errors.present? && @user.errors[:password].present? %>
+        <span class='ui-error'><%= @user.errors[:password].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% end %>
+
+<div class="row">
+  <span class='col col-md-4 label-col'>
+    <%= form.label :password %>
+  </span>
+  <span class='col col-md-8 input-col'>
+    <span class='required'>*</span>
+    <%= form.password_field :password, autocomplete: "off" %>
+    <% if @minimum_password_length %>
+      <span>(<%= @minimum_password_length %> characters minimum)</span>
+    <% elsif @user.errors.present? && @user.errors[:password].present? %>
+      <span class='ui-error'><%= @user.errors[:password].join(', ') %></span>
+    <% end %>
+  </span>
+</div>
+
+<div class="row">
+  <span class='col col-md-4 label-col'>
+    <%= form.label :password_confirmation %>
+  </span>
+  <span class='col col-md-8 input-col'>
+    <span class='required'>*</span>
+    <%= form.password_field :password_confirmation, autocomplete: "off" %>
+    <% if @user.errors.present? && @user.errors[:password_confirmation].present? %>
+      <span class='ui-error'><%= @user.errors[:password_confirmation].join(', ') %></span>
+    <% end %>
+  </span>
+</div>

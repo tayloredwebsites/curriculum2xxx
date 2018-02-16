@@ -1,31 +1,19 @@
 
 <h2><%= I18n.translate('users.labels.signup_form') %></h2>
 <p><%= I18n.translate('users.labels.fill_signup_form') %></p>
-<div id='registration'>
-  <div class='col-md-12'>
-    <div class='text-center'>
-      <%= @user.full_name %>
+<div id='registration' class='reg-container row'>
+  <div class='col-sm-0 col-md-3'>
+  </div>
+  <div class='col-sm-12 col-md-6'>
+    <%=
+    form_for @user, url: user_path(@user.id), :html => { :class => "registrationForm" } do |form|
+    %>
+    <div class='row-stripes'>
+      <%= render partial: 'users/form_email', :locals => {:form => form} %>
+      <%= render partial: 'users/form_other', :locals => {:form => form} %>
+      <%= render partial: 'users/form_flags', :locals => {:form => form} %>
+      <%= render partial: 'users/form_submit_cancel', :locals => {:form => form} %>
     </div>
-    <div class='page-form alternate-highlight'>
-      <%=
-        form_for @user, url: user_path(@user.id), :html => { :class => "registrationForm" } do |form|
-        %>
-          <%= render partial: 'form', :locals => {:form => form} %>
-          <div class='reg-container row'>
-            <div class='col-sm-0 col-md-3'>
-            </div>
-            <div class='col-sm-12 col-md-6'>
-              <div class='input-form row'>
-                <button class='btn btn-default' name='cancel'>Cancel</button>
-                <button class='btn btn-primary' type='submit' name='submit'>Submit</button>
-              </div>
-            </div>
-            <div class='col-sm-0 col-md-3'>
-            </div>
-          </div>
-        <%
-        end
-      %>
-    </div>
+    <% end %>
   </div>
 </div>

@@ -22,7 +22,7 @@
 #main-container {
   text-align: center;
 }
-.error, .alert {
+.error, .alert, #error_explanation {
   color: red;
   font-size: larger;
   text-align: left;
@@ -32,6 +32,28 @@
   font-size: larger;
   text-align: left;
 }
+form {
+  .label-col {
+    text-align: right;
+  }
+  .input-col {
+    text-align: left;
+  }
+  .button-row {
+    text-align: center;
+  }
+  .required {
+    color: red;
+    font-size: larger;
+  }
+  .field_with_errors {
+    display: inline-block;
+    color: red;
+  }
+  .ui-error {
+    color: red;
+  }
+}
 
 .sub-menu a.btn {
   padding-top: 2px;
@@ -40,4 +62,10 @@
   margin-right: 4px;
   margin-top: 4px;
   margin-bottom: 4px;
+}
+
+.row-stripes {
+  .row:nth-child(even) {
+    background-color: #e5ffff;
+  }
 }

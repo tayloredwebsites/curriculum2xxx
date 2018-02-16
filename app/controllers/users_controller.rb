@@ -101,8 +101,7 @@ class UsersController < ApplicationController
       :password,
       :password_confirmation,
       :given_name,
-      :family_name,
-      :role_req_teacher
+      :family_name
     )
   end
 

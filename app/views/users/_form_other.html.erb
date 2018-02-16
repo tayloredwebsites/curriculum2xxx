@@ -1,0 +1,26 @@
+
+<div class="row">
+  <span class='col col-md-4 label-col'>
+    <%= form.label :given_name %>
+  </span>
+  <span class='col col-md-8 input-col'>
+    <span class='required'>*</span>
+    <%= form.text_field :given_name, autofocus: true %>
+    <% if @user.errors.present? && @user.errors[:given_name].present? %>
+      <span class='ui-error'><%= @user.errors[:given_name].join(', ') %></span>
+    <% end %>
+  </span>
+</div>
+
+<div class="row">
+  <span class='col col-md-4 label-col'>
+    <%= form.label :family_name %>
+  </span>
+  <span class='col col-md-8 input-col'>
+    <span class='required'>*</span>
+    <%= form.text_field :family_name, autofocus: true %>
+    <% if @user.errors.present? && @user.errors[:family_name].present? %>
+      <span class='ui-error'><%= @user.errors[:family_name].join(', ') %></span>
+    <% end %>
+  </span>
+</div>

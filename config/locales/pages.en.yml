@@ -5,6 +5,7 @@ en:
     labels:
       save: "Save"
       cancel: "Cancel"
+      submit: "Submit"
       edit: "Edit"
       create: "Create"
       subject: "Subject"
@@ -143,6 +144,7 @@ en:
       my_account: 'My Account'
       registrations: 'Registrations'
       all_users: 'All Users'
+      change_pwd: 'Change Password'
     index:
       name: "Users Listing"
       title: "Users Listing Page"
@@ -161,3 +163,13 @@ en:
       teacher: 'Teacher:'
       fill_signup_form: "Please fill out this form to continue the signup process."
       req_teacher: "Teacher Request:"
+  activerecord:
+    attributes:
+      user:
+        role_req_teacher: "Requesting to be Teacher"
+        role_teacher: "Teacher"
+        role_admin: "BiH Web Admin"
+        email: "E-Mail Address"
+        password: "Password"
+        password_confirmation: "Password Confirmation"
+        current_password: "Current Password"

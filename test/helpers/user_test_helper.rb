@@ -4,9 +4,8 @@ module UserTestHelper
     setup_admin
     setup_unauthorized_user
     setup_teacher
-    setup_requesting_teacher
   end
-  
+
   def setup_unauthorized_user
     @unauth = FactoryBot.create(:user, roles: '')
     @unauth.confirm # do a devise confirmation of new user

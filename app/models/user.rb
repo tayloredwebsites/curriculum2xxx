@@ -4,6 +4,10 @@ class User < BaseRec
   devise :database_authenticatable, :confirmable, :lockable,
          :recoverable, :registerable, :timeoutable, :trackable, :validatable
 
+  validates :given_name, presence: true
+  validates :family_name, presence: true
+
+
   ADMIN_ROLE = 'admin'
   TEACHER_ROLE = 'teacher'
   REQ_TEACHER_ROLE = 'req_teacher'
@@ -21,6 +25,8 @@ class User < BaseRec
   ROLES_ADMIN = 0
   ROLES_TEACHER = 1
   ROLES_REQ = 2
+
+  IS_CHECKED_VALUES = ['true', 'on', '1']
 
   scope :requesting_teachers, -> {
     where(roles: "#{REQ_TEACHER_ROLE}")
@@ -50,12 +56,16 @@ class User < BaseRec
 
   def role_admin=(val)
     roles_array = get_roles_array
-    if ['true', 'on'].include?(val) && !roles_array.include?(ADMIN_ROLE)
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(ADMIN_ROLE)
       roles_array << ADMIN_ROLE if !roles_array.include?(ADMIN_ROLE)
-    elsif !['true', 'on'].include?(val) && roles_array.include?(ADMIN_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(ADMIN_ROLE)
       roles_array = roles_array - ["#{ADMIN_ROLE}"]
     end
     self.roles = roles_array.join(',')
+  end
+  def role_admin
+    roles_array = get_roles_array
+    return roles_array.include?(ADMIN_ROLE)
   end
   def is_admin?
     roles_array = get_roles_array
@@ -64,12 +74,16 @@ class User < BaseRec
 
   def role_teacher=(val)
     roles_array = get_roles_array
-    if ['true', 'on'].include?(val) && !roles_array.include?(TEACHER_ROLE)
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(TEACHER_ROLE)
       roles_array << TEACHER_ROLE if !roles_array.include?(TEACHER_ROLE)
-    elsif !['true', 'on'].include?(val) && roles_array.include?(TEACHER_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(TEACHER_ROLE)
       roles_array = roles_array - ["#{TEACHER_ROLE}"]
     end
     self.roles = roles_array.join(',')
+  end
+  def role_teacher
+    roles_array = get_roles_array
+    return roles_array.include?(TEACHER_ROLE)
   end
   def is_teacher?
     roles_array = get_roles_array
@@ -78,12 +92,16 @@ class User < BaseRec
 
   def role_req_teacher=(val)
     roles_array = get_roles_array
-    if ['true', 'on'].include?(val) && !roles_array.include?(REQ_TEACHER_ROLE)
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(REQ_TEACHER_ROLE)
       roles_array << REQ_TEACHER_ROLE if !roles_array.include?(REQ_TEACHER_ROLE)
-    elsif !['true', 'on'].include?(val) && roles_array.include?(REQ_TEACHER_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(REQ_TEACHER_ROLE)
       roles_array = roles_array - ["#{REQ_TEACHER_ROLE}"]
     end
     self.roles = roles_array.join(',')
+  end
+  def role_req_teacher
+    roles_array = get_roles_array
+    return roles_array.include?(REQ_TEACHER_ROLE)
   end
   def is_req_teacher?
     roles_array = get_roles_array
