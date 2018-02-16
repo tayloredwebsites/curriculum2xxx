@@ -1,7 +1,6 @@
 require 'helpers/test_system_helper'
 require 'helpers/seeds_testing_helper'
 require 'helpers/user_test_helper'
-require 'helpers/user_system_helper'
 # require 'helpers/upload_data_test_helper'
 
 class UsersSystemTest < ApplicationSystemTestCase
@@ -113,8 +112,6 @@ class UsersSystemTest < ApplicationSystemTestCase
     # confirm
     page.find("#topNav a[href='/users/sign_out']").click
     system_sign_in(new_user, 'password')
-    sleep 10
-    save_and_open_page
     can_see_admin_pages
   end
 
@@ -145,7 +142,6 @@ class UsersSystemTest < ApplicationSystemTestCase
     # via navbar
     page.find("#topNav a[href='/trees']").click
     assert_equal("/trees", current_path)
-    assert_equal 'Operational Teaching Curriculum (OTC) Listing', page.title
     if public
       page.find("#topNav a[href='/users/sign_in']").click
       assert_equal("/users/sign_in", current_path)

@@ -1,4 +1,4 @@
-require 'helpers/test_integration_helper'
+require 'helpers/test_components_helper'
 
 class DbSeedTest < ActionDispatch::IntegrationTest
   # include Devise::Test::IntegrationHelpers

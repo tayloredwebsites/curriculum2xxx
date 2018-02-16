@@ -1,4 +1,4 @@
-require 'helpers/test_controllers_helper'
+require 'helpers/test_components_helper'
 require 'helpers/seeds_testing_helper'
 
 

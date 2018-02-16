@@ -1,4 +1,4 @@
-require 'helpers/test_models_helper'
+require 'helpers/test_components_helper'
 
 class UserTest < ActiveSupport::TestCase
 

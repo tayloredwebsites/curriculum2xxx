@@ -1,8 +1,8 @@
 # require simplecov first so everything else is tracked by it.
 require 'simplecov'
 SimpleCov.start
+# end simplecov
 
-# Previous content of test helper now starts here
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
