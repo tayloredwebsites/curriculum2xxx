@@ -6,6 +6,18 @@ class User < BaseRec
 
   validates :given_name, presence: true
   validates :family_name, presence: true
+  validates :govt_level, presence: true
+  validates :govt_level_name, presence: true
+  validates :municipality, presence: true
+  validates :institute_type, presence: true
+  validates :institute_name_loc, presence: true
+  validates :position_type, presence: true
+  validates :subject1, presence: true
+  validates :subject2, presence: true
+  validates :gender, presence: true
+  validates :education_level, presence: true
+  validates :work_address, presence: true
+  validates :terms_accepted, presence: true
 
 
   ADMIN_ROLE = 'admin'
@@ -25,6 +37,43 @@ class User < BaseRec
   ROLES_ADMIN = 0
   ROLES_TEACHER = 1
   ROLES_REQ = 2
+
+  GOVT_LEVELS = [
+    I18n.translate('activerecord.attributes.user.govt_level_val0'),
+    I18n.translate('activerecord.attributes.user.govt_level_val1'),
+    I18n.translate('activerecord.attributes.user.govt_level_val2'),
+    I18n.translate('activerecord.attributes.user.govt_level_val3'),
+    I18n.translate('activerecord.attributes.user.govt_level_val4'),
+    I18n.translate('activerecord.attributes.user.govt_level_val5')
+  ]
+  INSTITUTE_TYPE = [
+    I18n.translate('activerecord.attributes.user.institute_type_val0'),
+    I18n.translate('activerecord.attributes.user.institute_type_val1'),
+    I18n.translate('activerecord.attributes.user.institute_type_val2'),
+    I18n.translate('activerecord.attributes.user.institute_type_val3'),
+    I18n.translate('activerecord.attributes.user.institute_type_val4'),
+    I18n.translate('activerecord.attributes.user.institute_type_val5'),
+    I18n.translate('activerecord.attributes.user.institute_type_val6')
+  ]
+  POSITION_TYPE = [
+    I18n.translate('activerecord.attributes.user.position_type_val0'),
+    I18n.translate('activerecord.attributes.user.position_type_val1'),
+    I18n.translate('activerecord.attributes.user.position_type_val2'),
+    I18n.translate('activerecord.attributes.user.position_type_val3'),
+    I18n.translate('activerecord.attributes.user.position_type_val4'),
+    I18n.translate('activerecord.attributes.user.position_type_val5'),
+    I18n.translate('activerecord.attributes.user.position_type_val6'),
+    I18n.translate('activerecord.attributes.user.position_type_val7')
+  ]
+  GENDER = [
+    I18n.translate('activerecord.attributes.user.gender_val0'),
+    I18n.translate('activerecord.attributes.user.gender_val1')
+  ]
+  EDUCATION_LEVEL = [
+    I18n.translate('activerecord.attributes.user.education_level_val0'),
+    I18n.translate('activerecord.attributes.user.education_level_val1'),
+    I18n.translate('activerecord.attributes.user.education_level_val2')
+  ]
 
   IS_CHECKED_VALUES = ['true', 'on', '1']
 

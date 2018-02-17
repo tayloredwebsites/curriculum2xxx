@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207201847) do
+ActiveRecord::Schema.define(version: 20180217205351) do
 
   create_table "grade_bands", force: :cascade do |t|
     t.integer "tree_type_id", null: false
@@ -126,6 +126,19 @@ ActiveRecord::Schema.define(version: 20180207201847) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "govt_level"
+    t.string "govt_level_name"
+    t.string "municipality"
+    t.string "institute_type"
+    t.string "institute_name_loc"
+    t.string "position_type"
+    t.string "subject1"
+    t.string "subject2"
+    t.string "gender"
+    t.string "education_level"
+    t.string "work_phone"
+    t.string "work_address"
+    t.boolean "terms_accepted"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
