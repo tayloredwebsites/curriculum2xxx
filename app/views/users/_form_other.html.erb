@@ -133,7 +133,7 @@
     <%= form.label :subject2 %>
   </span>
   <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
+    <span class='required'>&nbsp;</span>
     <%= form.text_field :subject2 %>
     <% if @user.errors.present? && @user.errors[:subject2].present? %>
       <span class='ui-error'><%= @user.errors[:subject2].join(', ') %></span>

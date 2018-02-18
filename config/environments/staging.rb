@@ -14,7 +14,7 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
-  # set default url option for devise and other mailings.
+  # set default url option for devise.
   config.action_mailer.default_url_options = { host: 'https://curriculum.parloproject.org' }
 
   # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
@@ -52,7 +52,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :info
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]

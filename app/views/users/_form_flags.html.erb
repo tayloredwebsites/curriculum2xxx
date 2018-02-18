@@ -5,6 +5,7 @@
       <%= form.label :role_admin %>
     </span>
     <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
       <%= form.check_box :role_admin %>
       <% if @user.errors.present? && @user.errors[:role_admin].present? %>
         <span class='ui-error'><%= @user.errors[:role_admin].join(', ') %></span>
@@ -16,6 +17,7 @@
       <%= form.label :role_teacher %>
     </span>
     <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
       <%= form.check_box :role_teacher %>
       <% if @user.errors.present? && @user.errors[:role_teacher].present? %>
         <span class='ui-error'><%= @user.errors[:role_teacher].join(', ') %></span>
