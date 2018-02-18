@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # create an initial admin user to get things going.
-# to do - change this user or deactivate it for production.
+# to do - turn off admin flag for production.
 if User.count < 1
   User.create(
     email: 'bih@sample.com',
@@ -16,6 +16,19 @@ if User.count < 1
     given_name: 'BiH',
     family_name: 'Web App',
     roles: ['admin'],
+    govt_level: "1",
+    govt_level_name: "govt_level_name",
+    municipality: "municipality",
+    institute_type: "1",
+    institute_name_loc: "institute_name_loc",
+    position_type: "1",
+    subject1: "subject1",
+    subject2: "subject2",
+    gender: "2",
+    education_level: "1",
+    work_phone: "work_phone",
+    work_address: "work_address",
+    terms_accepted: true,
     confirmed_at: DateTime.now
   )
 end

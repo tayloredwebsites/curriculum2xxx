@@ -65,9 +65,25 @@ class UsersSystemTest < ApplicationSystemTestCase
     fill_in "user_password", with: 'password'
     fill_in "user_password_confirmation", with: 'password'
 
-    # confirm email sent with click of sign up button
+    # confirm no email sent without extra fields and confirmation checked
     assert_difference 'ActionMailer::Base.deliveries.size', 0 do
       click_button "Sign up"
+    end
+    within 'form #error_explanation' do
+      assert page.has_content?("First (Given) Name can't be blank")
+      assert page.has_content?("Last (Family) Name can't be blank")
+      assert page.has_content?("Government Level can't be blank")
+      assert page.has_content?("Government Level Name can't be blank")
+      assert page.has_content?("Municipality Name can't be blank")
+      assert page.has_content?("Institutiion Type can't be blank")
+      assert page.has_content?("Institution Name can't be blank")
+      assert page.has_content?("Position Type can't be blank")
+      assert page.has_content?("Subject Teaching can't be blank")
+      assert page.has_content?("Other Subject Teaching can't be blank")
+      assert page.has_content?("Gender can't be blank")
+      assert page.has_content?("Education Level Attained can't be blank")
+      assert page.has_content?("Work Address can't be blank")
+      assert page.has_content?("Terms and condition of use can't be blank")
     end
 
     fill_in "user_email", with: 'me@example.com'
@@ -75,6 +91,19 @@ class UsersSystemTest < ApplicationSystemTestCase
     fill_in "user_password_confirmation", with: 'password'
     fill_in "user_given_name", with: 'Help'
     fill_in "user_family_name", with: 'Me'
+    select 'Entity', from: "user_govt_level"
+    fill_in "user_govt_level_name", with: "user_govt_level_name"
+    fill_in "user_municipality", with: "municipality"
+    select 'Pedagogical Institute (PI)', from: "user_institute_type"
+    fill_in "user_institute_name_loc", with: "institute_name_loc"
+    select 'Educational professional', from: "user_position_type"
+    fill_in "user_subject1", with: "subject1"
+    fill_in "user_subject2", with: "subject2"
+    select 'Female', from: "user_gender"
+    select 'MA/MSc', from: "user_education_level"
+    fill_in "user_work_phone", with: "work_phone"
+    fill_in "user_work_address", with: "work_address"
+    check 'user_terms_accepted'
 
     # confirm email sent with click of sign up button
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do

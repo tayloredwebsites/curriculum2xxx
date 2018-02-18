@@ -4,6 +4,19 @@ FactoryBot.define do
     sequence(:password) { |n| "user-password#{n}" }
     sequence(:given_name) { |n| "given-name#{n}"}
     sequence(:family_name) { |n| "family-name#{n}"}
+    sequence(:govt_level) { |n| "govt_level#{n}" }
+    sequence(:govt_level_name) { |n| "govt_level_name#{n}" }
+    sequence(:municipality) { |n| "municipality#{n}" }
+    sequence(:institute_type) { |n| "institute_type#{n}" }
+    sequence(:institute_name_loc) { |n| "institute_name_loc#{n}" }
+    sequence(:position_type) { |n| "position_type#{n}" }
+    sequence(:subject1) { |n| "subject1#{n}" }
+    sequence(:subject2) { |n| "subject2#{n}" }
+    sequence(:gender) { |n| "gender#{n}" }
+    sequence(:education_level) { |n| "education_level#{n}" }
+    sequence(:work_phone) { |n| "work_phone#{n}" }
+    sequence(:work_address) { |n| "work_address#{n}" }
+    sequence(:terms_accepted) { |n| "terms_accepted#{n}" }
   end
 
   # factory :tree_type do
