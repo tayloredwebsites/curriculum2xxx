@@ -28,7 +28,7 @@ en:
       sector: "KBE Sector"
       related_to_sectors: "Related to sectors: %{sectors}"
       new_sector_relations: "Newly related sectors: %{sectors}"
-      sectors-listing: "Knowledge Based Education (KBE) Sectors"
+      sectors_listing: "Knowledge Based Education (KBE) Sectors"
       sector_related_explain: "Sectors Related Explanation"
     roles:
       name: 'Roles'
@@ -49,6 +49,8 @@ en:
       missing_base_key: "cannot update translation without base key"
       invalid_lang: "Invalid language %{lang}"
       unauthorized: "You are not authorized to access requested page."
+      invalid_sheetID: "Row number does not match sheetID"
+      missing_req_field: "Row is missing required field"
   home:
     name: "Enable BiH Web App Home Page"
     title: "Home Page"

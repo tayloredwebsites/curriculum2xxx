@@ -83,7 +83,7 @@ class UploadsController < ApplicationController
     require 'csv'
 
     # infomation to send back to user after completion
-    row_num = 1
+    row_num = 0
     @message = "Select file to upload to get to next step"
     @errs = []
     @rowErrs = []
@@ -100,9 +100,9 @@ class UploadsController < ApplicationController
 
 
     if @upload
-      @subjectRec = Subject.find(@upload.subject_id)
-      @gradeBandRec = GradeBand.find(@upload.grade_band_id)
-      @localeRec = Locale.find(@upload.locale_id)
+      @subjectRec = @upload.subject
+      @gradeBandRec = @upload.grade_band
+      @localeRec = @upload.locale
       tree_parent_code = ''
       tree_parent_id = ''
 
@@ -117,9 +117,6 @@ class UploadsController < ApplicationController
       else
         # process file to upload
 
-        # to do - match to final upload layout when determined.
-        # map csv headers to short symbols
-        long_to_short = Upload.get_long_to_short()
         # stacks is an array whose elements correspond to the depth of the code tree (level of processing)
         #  - (e.g. 0 - Area, 1 - Component, 2 - Outcome, ...)
         stacks = Array.new
@@ -127,7 +124,24 @@ class UploadsController < ApplicationController
         stacks[NUM_ERRORS_STACK] = Array.new(PROCESSING_DEPTH) {0} # count of errors at each level of procesing
         stacks[IDS_STACK] = Array.new(PROCESSING_DEPTH) {[]} # ids of records at each level of procesing (Areas, ..., sectors, relations)
 
-        CSV.foreach(upload_params['file'].path, headers: true) do |row|
+
+        # Create a stream using the original file.
+        file = File.open upload_params['file'].path
+        # Consume the first two CSV rows.
+        line = file.gets
+        line = file.gets
+        infoLine = line.split(',')
+        grade_band = 0
+        begin
+          grade_band = Integer(infoLine[3])
+        rescue ArgumentError
+          grade_band = 0
+        end
+        raise "Invalid grade band on second header row: #{infoLine[2]}: #{infoLine[3]}" if infoLine[2] != 'Raspon:' || grade_band ==  0
+        # Create your CSV object using the remainder of the stream.
+        csv = CSV.new file, headers: true
+        csv.each do |row|
+
           @rowErrs = []
           stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
           row_num += 1
@@ -139,16 +153,29 @@ class UploadsController < ApplicationController
             # validate grade band in this row matches this upload
             # do not process this row if it is for the wrong grade level
             # note this is processed within the column loop so it gets reported in the report
-            # to do - refactor this out of the loop
-            grade_band = row[Upload::LONG_HEADERS[4]]
+            grade_band = get_grade_band(@localeRec.code, row)
             if grade_band != @gradeBandRec.code
               @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_grade_band', grade_band: grade_band)
               @abortRow = true
             end
 
-            new_key = long_to_short[key.strip]
+            # map csv headers to short symbols
+            new_key = Upload.get_short(@localeRec.code, key.strip)
+
+            # ensure required rows have data
+            if new_key.present? && Upload::SHORT_REQ[new_key.to_sym] && val.blank?
+              @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.missing_req_field', field: new_key)
+              @abortRow = true
+            end
+
             # process this column for this row
             case new_key
+            when :row
+              if val.to_s != row_num.to_s
+                # Rails.logger.error "ERROR: mismatched row num: #{val} != #{row_num}"
+                @abortRow = true
+                @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_sheetID', code: val)
+              end
             when :area
               if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
                 stacks = process_otc_tree(0, val, row_num, stacks)
@@ -211,10 +238,13 @@ class UploadsController < ApplicationController
   end
 
   def index_prep
-    @uploads = Upload.includes([:subject, :grade_band, :locale]).all.upload_listing
+    @uploads = Upload.order(:id).includes([:subject, :grade_band, :locale]).all.upload_listing
   end
 
   def parseSubCodeText(str, depth)
+    if !str.present?
+      return "BLANK"
+    end
     if depth == 0 || depth == 1
       # Area formatting: "AREA #: <name>""
       # Component formatting: "Component #: <name>""
@@ -418,6 +448,16 @@ class UploadsController < ApplicationController
 
     @sectorErrs = true if errs.count > 0
 
+  end
+
+  def get_grade_band(locale, row)
+    row.each do |key, val|
+      if Upload.get_short(locale, key) == :gradeBand
+        return val
+      end
+    end
+    Rails.logger.error "ERROR: GradeBand - locale: #{locale} - row: #{row.inspect}"
+    return "Cannot match :gradeBand"
   end
 
 end
