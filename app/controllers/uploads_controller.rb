@@ -146,6 +146,10 @@ class UploadsController < ApplicationController
           stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
           row_num += 1
 
+          # skip rows if missing required fields (beside row number and grade band)
+          # otherwise blank rows produce errors stopping the upload
+          break if !validUploadRow?(@localeRec.code, row)
+
           # process each column of this row
           row.each_with_index do |(key, val), ix|
             @abortRow = false
@@ -458,6 +462,21 @@ class UploadsController < ApplicationController
     end
     Rails.logger.error "ERROR: GradeBand - locale: #{locale} - row: #{row.inspect}"
     return "Cannot match :gradeBand"
+  end
+
+
+  def validUploadRow?(locale, row)
+    puts "check upload row: #{row.inspect}"
+    row.each do |key, val|
+      shortKey = Upload.get_short(locale, key)
+      if shortKey.present? && Upload::SHORT_REQ[shortKey.to_sym]
+        if val.blank? && shortKey != :row && shortKey != :gradeBand
+          puts "invalid upload row: #{shortKey} - #{row.inspect}"
+          return false
+        end
+      end
+    end
+    return true
   end
 
 end
