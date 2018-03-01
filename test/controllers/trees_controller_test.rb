@@ -18,15 +18,15 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get trees_path
     assert_response :success
-    assert_equal 1, assigns(:subjects).count
-    assert_equal 2, assigns(:gbs).count
+    assert_equal 6, assigns(:subjects).count
+    assert_equal 4, assigns(:gbs).count
   end
 
   test "should get index_listing, added items are then listed" do
     post index_listing_trees_path
     assert_response :success
-    assert_equal 1, assigns(:subjects).count
-    assert_equal 2, assigns(:gbs).count
+    assert_equal 6, assigns(:subjects).count
+    assert_equal 4, assigns(:gbs).count
     assert_equal 0, assigns(:trees).count
 
     assert_difference('Tree.count', 1) do

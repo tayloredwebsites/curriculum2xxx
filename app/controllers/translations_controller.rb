@@ -1,7 +1,6 @@
 class TranslationsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :getLocaleCode
   before_action :find_translation, only: [:show, :edit, :update]
 
   # TRANSLATION_PARAMS = 'i18n_backend_active_record_translation'

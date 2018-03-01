@@ -13,17 +13,22 @@ class TreesSystemTest < ApplicationSystemTestCase
   end
 
   test "Trees (Curriculum) index page" do
-    visit trees_path
-    # uploads index page
-    assert_equal("/trees", current_path)
-    # to do - use translation when title is translated
-    assert_equal I18n.translate('trees.index.name'), page.title
+    # nav to trees index page
+    visit root_path
+    page.find("ul#locale-select a[href='/users/lang/en']").click
+    # assert_equal "/users/lang/en", current_path
+    # assert_equal home_users_path("en"), current_path
+    page.find("#topNav a[href='/en/trees']").click
+    sleep 1
+    assert_equal(trees_path('en'), current_path)
+    # at trees index page
+    assert_equal I18n.translate('trees.index.name', locale: 'en'), page.title
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
-    assert_equal("/trees/index_listing", current_path)
-    # to do - use translation when title is translated
-    assert_equal I18n.translate('trees.index.name'), page.title
+    assert_equal(index_listing_trees_path('en'), current_path)
+    assert_equal I18n.translate('trees.index.name', locale: 'en'), page.title
     assert_equal 0, page.all('#tree .node-tree').count
+
   end
 
   test "Test curriculum from uploaded file" do
@@ -35,12 +40,11 @@ class TreesSystemTest < ApplicationSystemTestCase
   def load_curriculum_file
     visit uploads_path
     # uploads index page
-    assert_equal("/uploads", current_path)
     page.find("#uploadsTable tbody tr#id_#{@hem_09.id} a").click
-    assert_equal("/uploads/#{@hem_09.id}/start_upload", current_path)
+    assert_equal(start_upload_upload_path('bs', @hem_09.id), current_path)
     page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
     find('button').click
-    assert_equal("/uploads/#{@hem_09.id}/do_upload", current_path)
+    assert_equal(do_upload_upload_path('bs', @hem_09.id), current_path)
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
     @hem_09.reload
     assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)
@@ -50,14 +54,20 @@ class TreesSystemTest < ApplicationSystemTestCase
 
 
   def good_upload_check_curriculum
-    visit trees_path
-    # uploads index page
-    assert_equal("/trees", current_path)
+    # nav to trees index page
+    visit root_path
+    page.find("ul#locale-select a[href='/users/lang/en']").click
+    # assert_equal "/users/lang/en", current_path
+    assert_equal home_users_path("en"), current_path
+    page.find("#topNav a[href='/en/trees']").click
+    assert_equal(trees_path('en'), current_path)
+    # at trees index page
+    assert_equal I18n.translate('trees.index.name', locale: 'en'), page.title
 
     # list all grade levels (9 & 13)
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
-    assert_equal("/trees/index_listing", current_path)
+    assert_equal(index_listing_trees_path('bs'), current_path)
     assert_equal 4, page.all('#tree .node-tree').count
     # if we want checkboxes
     # within("#tree li[data-nodeid='0']") do
@@ -102,7 +112,7 @@ class TreesSystemTest < ApplicationSystemTestCase
     select('9', from: "tree_grade_band_id")
     page.find("form.new_tree input[type='submit']").click
     # uploads page, with status not uploaded
-    assert_equal("/trees/index_listing", current_path)
+    assert_equal(index_listing_trees_path('bs'), current_path)
     assert_equal 4, page.all('#tree .node-tree').count
     # if we want checkboxes
     # within("#tree li[data-nodeid='0']") do
@@ -140,11 +150,19 @@ class TreesSystemTest < ApplicationSystemTestCase
   end
 
   def good_detail_page
-    visit trees_path
-    assert_equal("/trees", current_path)
+    # nav to trees index page
+    visit root_path
+    page.find("ul#locale-select a[href='/users/lang/en']").click
+    # assert_equal "/users/lang/en", current_path
+    # assert_equal home_users_path("en"), current_path
+    page.find("#topNav a[href='/en/trees']").click
+    sleep 1
+    assert_equal(trees_path('en'), current_path)
+    # at trees index page
+    assert_equal I18n.translate('trees.index.name', locale: 'en'), page.title
     # list all grade levels (9 & 13)
     page.find("form.new_tree input[type='submit']").click
-    assert_equal("/trees/index_listing", current_path)
+    assert_equal(index_listing_trees_path('en'), current_path)
     page.find("#main-container.trees #showIndicators").click
     assert_equal 234, page.all('#tree .node-tree').count
     page.find("li[data-nodeid='4'] a").click
@@ -159,7 +177,7 @@ class TreesSystemTest < ApplicationSystemTestCase
       assert_equal 1, page.find_all("a[data-sector='3']").count
       page.find("a[data-sector='3']").click
     end
-    assert_equal '/sectors/index', current_path
+    assert_equal sectors_path('en'), current_path
     within("table.tree-listing tbody tr[data-row='0']") do
       assert page.has_content? "3 - Technology of materials and high-tech production"
     end

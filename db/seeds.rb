@@ -57,7 +57,7 @@ throw "Invalid TreeType Count" if TreeType.count > 1
 if Locale.count < 1
   Locale.create(
     code: 'bs',
-    name: 'bosanski / босански'
+    name: 'bosanski'
   )
   Locale.create(
     code: 'hr',
@@ -65,7 +65,7 @@ if Locale.count < 1
   )
   Locale.create(
     code: 'sr',
-    name: 'српски / srpski'
+    name: 'српски'
   )
   loc_en = Locale.create(
     code: 'en',
@@ -105,6 +105,7 @@ throw "Invalid GradeBand Count" if GradeBand.count != 4
 @gb_13 = GradeBand.second
 @gb_03 = GradeBand.third
 @gb_06 = GradeBand.fourth
+@grade_bands = GradeBand.all
 
 # for production
 # if GradeBand.count != 4

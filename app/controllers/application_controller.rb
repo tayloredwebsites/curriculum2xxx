@@ -1,18 +1,37 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_action :getLocaleCode
   before_action :set_type_and_version
   before_action :config_devise_params, if: :devise_controller?
 
   include ApplicationHelper
 
+  # put locale in url
+  # - see: http://guides.rubyonrails.org/i18n.html#setting-the-locale-from-url-params
+  # - see config/routes.rb locale scope, placing the locale after domain name and before rest of path (not in query string)
+  # - now *_path and *_url now place locale in url
+  def default_url_options
+    { locale: I18n.locale }
+  end
+
   private
 
   # set the locale codes in controllers: 'before_action :getLocaleCode'
   def getLocaleCode
-    I18n.default_locale = BaseRec::LOCALE_EN
-    # to do - set the locale to the user's locale (to be found in the users table)
-    I18n.locale = BaseRec::LOCALE_EN
-    @locale_code = BaseRec::LOCALE_EN # params[:locale_id] or user.getLocaleCode
+    # first default locale to default locale
+    @locale_code = Rails.application.config.i18n.default_locale
+    # next set locale to the locale in user record
+    @locale_code = current_user.try(:locale) || @locale_code
+    # next set locale to the locale passed as the locale param
+    if (params.present? &&
+      params['locale'].present? &&
+      BaseRec::VALID_LOCALES.include?(params['locale'].to_s)
+    )
+      @locale_code = params['locale']
+    end
+    # set the locale in I18n
+    I18n.locale = @locale_code
+    Rails.logger.debug "@locale_code: #{@locale_code.inspect}"
   end
 
   def set_type_and_version

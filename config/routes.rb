@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+scope "(:locale)", locale: /bs|hr|sr|en/ do
+
   get 'new_layout', to: 'translations#new_layout'
   resources :translations,
     only: [:index, :new, :create, :show, :edit, :update] do #, constraints: { :id => /[^\/]+/ }
@@ -49,11 +51,13 @@ Rails.application.routes.draw do
     get '/log_out' => 'devise/sessions#destroy'
     get '/logout' => 'devise/sessions#destroy'
   end
+  get '/users/lang/:locale', to: 'users#lang', as: :lang_user
   resources :users,
     only: [:index, :new, :create, :show, :edit, :update ] do
     collection do
       get 'registrations'
       get 'index'
+      get 'home'
     end
     member do
       get 'configuration'
@@ -65,4 +69,6 @@ Rails.application.routes.draw do
   root to: 'users#home'
   get '/elm', to: 'application#index'
 
-end
+end # end routes scope
+
+end # end route.draw

@@ -35,13 +35,13 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     get sectors_path
     assert_response :success
     # confirm select options have the right number of items
-    assert_equal 1, assigns(:subjects).count
-    assert_equal 2, assigns(:gbs).count
+    assert_equal 6, assigns(:subjects).count
+    assert_equal 4, assigns(:gbs).count
     assert_equal 10, assigns(:sectors).count
 
     post sectors_path, params: { tree: { subject_id: @hem.id } }
     assert_response :success
-    assert_equal 372, assigns(:rptRows).count
+    assert_equal 326, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { sector_id: @sector1.id } }
     assert_response :success
@@ -49,11 +49,11 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
 
     post sectors_path, params: { tree: { grade_band_id: @gb_09.id } }
     assert_response :success
-    assert_equal 367, assigns(:rptRows).count
+    assert_equal 321, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { subject_id: '', grade_band_id: '', sector_id: '' } }
     assert_response :success
-    assert_equal 372, assigns(:rptRows).count
+    assert_equal 326, assigns(:rptRows).count
 
 
   end

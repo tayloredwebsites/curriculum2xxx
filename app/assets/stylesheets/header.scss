@@ -11,7 +11,19 @@
      }
   }
   #pageHeaderShowNav {
-      margin-top: 20px;
+  }
+  #locale-select {
+    text-decoration: none;
+    list-style: none;
+    margin: 0;
+    .cur-locale {
+      font-weight: bold;
+      color: blue;
+    }
+    .locale-opt {
+      font-size: smaller;
+      line-height: 20px;
+    }
   }
 }
 

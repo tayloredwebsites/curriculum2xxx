@@ -16,7 +16,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
   test "should get uploads index" do
     get uploads_path
     assert_response :success
-    assert_equal 2, assigns(:uploads).count
+    assert_equal 62, assigns(:uploads).count
   end
 
   test "should get uploads create fail with missing args" do

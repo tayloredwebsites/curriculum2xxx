@@ -6,6 +6,7 @@ module SeedsTestingHelper
     # test version of db/seeds.rb
     # code below is copied from db/seeds.rb
 
+
 if Version.count < 1
   Version.create(
     code: 'v01'
@@ -25,7 +26,7 @@ throw "Invalid TreeType Count" if TreeType.count > 1
 if Locale.count < 1
   Locale.create(
     code: 'bs',
-    name: 'bosanski / босански'
+    name: 'bosanski'
   )
   Locale.create(
     code: 'hr',
@@ -33,7 +34,7 @@ if Locale.count < 1
   )
   Locale.create(
     code: 'sr',
-    name: 'српски / srpski'
+    name: 'српски'
   )
   loc_en = Locale.create(
     code: 'en',
@@ -73,6 +74,7 @@ throw "Invalid GradeBand Count" if GradeBand.count != 4
 @gb_13 = GradeBand.second
 @gb_03 = GradeBand.third
 @gb_06 = GradeBand.fourth
+@grade_bands = GradeBand.all
 
 # for production
 # if GradeBand.count != 4
@@ -105,7 +107,6 @@ if Subject.count < 1
     code: 'Hem'
   )
 end
-throw "Invalid Subject Count" if Subject.count > 1
 @hem = Subject.first
 if Subject.count < 2
   Subject.create(
@@ -129,6 +130,7 @@ if Subject.count < 2
     code: 'Mat'
   )
 end
+Rails.logger.debug("Subject.count: #{Subject.count}")
 throw "Invalid Subject Count" if Subject.count != 6
 @hem = Subject.first
 @bio = Subject.second

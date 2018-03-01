@@ -44,4 +44,7 @@ Rails.application.configure do
 
   Capybara.save_path = 'tmp/capybara'
 
+  # to output debugging statements output during test runs
+  # see test/test_helper.rb
+
 end

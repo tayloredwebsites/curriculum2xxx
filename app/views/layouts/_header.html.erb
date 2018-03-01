@@ -6,7 +6,44 @@
     <h1 class='text-center'><%= content_for?(:title) ? yield(:title) : (content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') ) %></h1>
   </div>
   <div id='pageHeaderShowNav' class=''>
-    <i class="fa fa-bars fa-2x"></i>
+    <ul id='locale-select'>
+      <% if @locale_code == 'bs' %>
+        <li class='cur-locale'>
+          <span>bosanski</span>
+        </li>
+      <% else %>
+        <li class='locale-opt'>
+          <a href='/users/lang/bs'>bosanski</a>
+        </li>
+      <% end %>
+      <% if @locale_code == 'hr' %>
+        <li class='cur-locale'>
+          <span>hrvatski</span>
+        </li>
+      <% else %>
+        <li class='locale-opt'>
+          <a href='/users/lang/hr'>hrvatski</a>
+        </li>
+      <% end %>
+      <% if @locale_code == 'sr' %>
+        <li class='cur-locale'>
+          <span>српски</span>
+        </li>
+      <% else %>
+        <li class='locale-opt'>
+          <a href='/users/lang/sr'>српски</a>
+        </li>
+      <% end %>
+      <% if @locale_code == 'en' %>
+        <li class='cur-locale'>
+          <span>English</span>
+        </li>
+      <% else %>
+        <li class='locale-opt'>
+          <a href='/users/lang/en'>English</a>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </header>
 <nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
@@ -14,21 +51,21 @@
     <%
     if controller.controller_name == 'users' && action_name == 'home' %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href='/'><%= translate('nav_bar.home.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= home_users_path %>><%= translate('nav_bar.home.name') %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/'><%= translate('nav_bar.home.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= home_users_path %>><%= translate('nav_bar.home.name') %></a>
       </li>
     <%
     end
     if controller.controller_name == 'trees' %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/trees'><%= translate('nav_bar.curriculum.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
       </li>
     <%
     end
@@ -36,22 +73,22 @@
       if controller.controller_name == 'uploads'
     %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
       </li>
     <%  else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/uploads'><%= translate('nav_bar.uploads.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
       </li>
     <%
         end
         if controller.controller_name == 'users'
     %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href='/users'><%= translate('nav_bar.users.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/users'><%= translate('nav_bar.users.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
       </li>
     <%
         end
@@ -60,14 +97,14 @@
       if current_user.present?
     %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/users/<%= current_user.id %>/edit'><%= translate('nav_bar.my_account.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= edit_user_path(current_user.id) %>><%= translate('nav_bar.my_account.name') %></a>
       </li>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/users/sign_out'><%= translate('nav_bar.signout.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= sign_out_path %>><%= translate('nav_bar.signout.name') %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href='/users/sign_in'><%= translate('nav_bar.signin.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= new_user_session_path %>><%= translate('nav_bar.signin.name') %></a>
       </li>
     <% end %>
   </ul>

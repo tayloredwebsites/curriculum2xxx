@@ -16,7 +16,6 @@ class UploadsController < ApplicationController
 
 
   before_action :authenticate_user!
-  before_action :getLocaleCode
   before_action :find_upload, only: [:show, :edit, :update, :start_upload, :do_upload]
 
   def index
@@ -134,7 +133,7 @@ class UploadsController < ApplicationController
         grade_band = 0
         begin
           grade_band = Integer(infoLine[3])
-        rescue ArgumentError
+        rescue ArgumentError, TypeError
           grade_band = 0
         end
         raise "Invalid grade band on second header row: #{infoLine[2]}: #{infoLine[3]}" if infoLine[2] != 'Raspon:' || grade_band ==  0
@@ -466,7 +465,6 @@ class UploadsController < ApplicationController
 
 
   def validUploadRow?(locale, row)
-    puts "check upload row: #{row.inspect}"
     row.each do |key, val|
       shortKey = Upload.get_short(locale, key)
       if shortKey.present? && Upload::SHORT_REQ[shortKey.to_sym]

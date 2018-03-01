@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
 
-  before_action :getLocaleCode
   before_action :find_user, only: [:show, :edit, :update]
   before_action :set_current_user_instance
 
@@ -30,9 +29,27 @@ class UsersController < ApplicationController
     :role_req_teacher
   ]
 
+  # update the the locale (language), and return to current page
+  def lang
+    # get current page url hash
+    back_hash = Rails.application.routes.recognize_path request.referer
+    Rails.logger.debug("original back_hash: #{back_hash.inspect}")
+    # change the locale code in the current page url hash
+    back_hash[:locale] = @locale_code
+    Rails.logger.debug("redirect to: #{back_hash.inspect}")
+    # see current page in new locale!
+    redirect_to back_hash
+  end
+
   def home
     @user = current_user
     @users = get_auth_users_list(true)
+    if params[:locale].present?
+      render :home
+    else
+      # no locale set, use config/route.rb locale scoping to set to url with locale
+      redirect_to root_path
+    end
   end
 
   def index

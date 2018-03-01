@@ -1,7 +1,5 @@
 class SectorsController < ApplicationController
 
-  before_action :getLocaleCode
-
   def index
 
     @subjects = Subject.all.order(:code)

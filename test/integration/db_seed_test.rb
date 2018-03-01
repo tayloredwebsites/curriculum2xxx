@@ -11,9 +11,9 @@ class DbSeedTest < ActionDispatch::IntegrationTest
     assert_equal(1, Version.count)
     assert_equal(1, TreeType.count)
     assert_equal(4, Locale.count)
-    assert_equal(2, GradeBand.count)
-    assert_equal(1, Subject.count)
-    assert_equal(2, Upload.count)
+    assert_equal(4, GradeBand.count)
+    assert_equal(6, Subject.count)
+    assert_equal(62, Upload.count)
   end
 
 end

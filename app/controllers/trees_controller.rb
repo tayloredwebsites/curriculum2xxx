@@ -1,6 +1,5 @@
 class TreesController < ApplicationController
 
-  before_action :getLocaleCode
   before_action :find_tree, only: [:show, :edit, :update]
 
   def index
@@ -110,10 +109,10 @@ class TreesController < ApplicationController
         area[:nodes].each do |key2, comp|
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            a4 = {text: outc[:text], href: "/trees/#{outc[:id]}", setting: 'outcome'}
+            a4 = {text: outc[:text], href: tree_path(outc[:id]), setting: 'outcome'}
             if @gb.present?
               outc[:nodes].each do |key4, indic|
-                a5 = {text: indic[:text], href: "/trees/#{indic[:id]}", setting: 'indicator'}
+                a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
                 a4[:nodes] = [] if a4[:nodes].blank?
                 a4[:nodes] << a5
               end
@@ -124,7 +123,7 @@ class TreesController < ApplicationController
               outc[:nodes].each do |key4, gb|
                 a5 = {text: gb[:text], href: "javascript:void(0);", setting: 'grade_band'}
                 gb[:nodes].each do |key5, indic|
-                  a6 = {text: indic[:text], href: "/trees/#{indic[:id]}", setting: 'indicator'}
+                  a6 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
                   a5[:nodes] = [] if a5[:nodes].blank?
                   a5[:nodes] << a6
                 end
