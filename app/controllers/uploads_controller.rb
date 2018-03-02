@@ -103,7 +103,6 @@ class UploadsController < ApplicationController
       @gradeBandRec = @upload.grade_band
       @localeRec = @upload.locale
       tree_parent_code = ''
-      tree_parent_id = ''
 
       # check filename
       if upload_params['file'].original_filename != @upload.filename
@@ -372,17 +371,26 @@ class UploadsController < ApplicationController
       else
         # not a custom match, get sector code from translation records for sectors.
         # look for matching tranlations for sector sector names, matching the locale, and text
-        matchingSectors = Translation.where('locale = ? AND key like (?) AND value LIKE (?)', @localeRec.code, "sector.%", "%#{s.strip}%")
-        if matchingSectors.count == 1 # matched description in translation table
+        textMatchingSectors = Translation.where("value LIKE ?", "%#{s.strip}%")
+        countMatches = 0
+        last_match = nil
+        textMatchingSectors.each do |m|
+          if m.locale == @localeRec.code && m.key.include?(s.strip)
+            countMatches += 1
+            last_match = m
+          end
+        end
+        matchingSectors = Translation.where("locale = ? AND key like ? AND value LIKE ?", @localeRec.code, "sector.%", "%#{s.strip}%")
+        if countMatches == 1 # matched description in translation table
           # get the sector record from the sector code
-          sectorCode = matchingSectors.first.key
+          sectorCode = last_match.key
           sectorCode = Sector.sectorCodeFromTranslationCode(sectorCode)
           if BaseRec::ALL_SECTORS.include?(sectorCode)
             relations << sectorCode
           else
             errs << I18n.translate('uploads.errors.invalid_sector_code_for_sector', code: sectorCode, sector: s.strip)
           end
-        elsif matchingSectors.count == 0
+        elsif countMatches == 0
           errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
         else
           errs << I18n.translate('app.errors.too_many_matched_key', key: s.strip)

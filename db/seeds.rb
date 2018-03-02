@@ -78,19 +78,7 @@ throw "Invalid Locale Count" if Locale.count != 4
 @loc_sr = Locale.third
 @loc_en = Locale.fourth
 
-if GradeBand.count < 1
-  GradeBand.create(
-    tree_type_id: @otc.id,
-    code: '9'
-  )
-end
-if GradeBand.count < 2
-  GradeBand.create(
-    tree_type_id: @otc.id,
-    code: '13'
-  )
-end
-if GradeBand.count < 3
+if GradeBand.count < 4
   GradeBand.create(
     tree_type_id: @otc.id,
     code: '3'
@@ -99,48 +87,24 @@ if GradeBand.count < 3
     tree_type_id: @otc.id,
     code: '6'
   )
-end
-throw "Invalid GradeBand Count" if GradeBand.count != 4
-@gb_09 = GradeBand.first
-@gb_13 = GradeBand.second
-@gb_03 = GradeBand.third
-@gb_06 = GradeBand.fourth
-@grade_bands = GradeBand.all
-
-# for production
-# if GradeBand.count != 4
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '3'
-#   )
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '6'
-#   )
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '9'
-#   )
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '13'
-#   )
-# end
-# throw "Invalid GradeBand Count" if GradeBand.count != 4
-# @gb_03 = GradeBand.first
-# @gb_06 = GradeBand.second
-# @gb_09 = GradeBand.third
-# @gb_13 = GradeBand.fourth
-
-if Subject.count < 1
-  Subject.create(
+  GradeBand.create(
     tree_type_id: @otc.id,
-    code: 'Hem'
+    code: '9'
+  )
+  GradeBand.create(
+    tree_type_id: @otc.id,
+    code: '13'
   )
 end
-throw "Invalid Subject Count" if Subject.count > 1
-@hem = Subject.first
-if Subject.count < 2
+
+throw "Invalid GradeBand Count" if GradeBand.count != 4
+@gb_03 = GradeBand.first
+@gb_06 = GradeBand.second
+@gb_09 = GradeBand.third
+@gb_13 = GradeBand.fourth
+@grade_bands = GradeBand.all
+
+if Subject.count != 6
   Subject.create(
     tree_type_id: @otc.id,
     code: 'Bio'
@@ -155,6 +119,10 @@ if Subject.count < 2
   )
   Subject.create(
     tree_type_id: @otc.id,
+    code: 'Hem'
+  )
+  Subject.create(
+    tree_type_id: @otc.id,
     code: 'IT'
   )
   Subject.create(
@@ -163,83 +131,16 @@ if Subject.count < 2
   )
 end
 throw "Invalid Subject Count" if Subject.count != 6
-@hem = Subject.first
-@bio = Subject.second
-@fiz = Subject.third
-@geo = Subject.fourth
+@bio = Subject.first
+@fiz = Subject.second
+@geo = Subject.third
+@hem = Subject.fourth
 @it = Subject.fifth
 @mat = Subject.last
 @subjects = Subject.all
 
-# if Subject.count != 6
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Bio'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Fiz'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Geo'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Hem'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'IT'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Mat'
-#   )
-# end
-# throw "Invalid Subject Count" if Subject.count != 6
-# @bio = Subject.first
-# @fiz = Subject.second
-# @geo = Subject.third
-# @hem = Subject.fourth
-# @it = Subject.fifth
-# @mat = Subject.last
-# @subjects = Subject.all
-
-if Upload.count < 1
-  Upload.create(
-    subject_id: @hem.id,
-    grade_band_id: @gb_09.id,
-    locale_id: @loc_en.id,
-    status: 0,
-    filename: 'Hem_09_transl_Eng.csv'
-  )
-end
-if Upload.count < 2
-  Upload.create(
-    subject_id: @hem.id,
-    grade_band_id: @gb_13.id,
-    locale_id: @loc_en.id,
-    status: 0,
-    filename: 'Hem_13_transl_Eng.csv'
-  )
-end
 
 if Upload.count != 62
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_09.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_9_en.csv'
-  # )
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_13.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_13_en.csv'
-  # )
   @subjects.each do |s|
     @grade_bands.each do |gb|
       # don't create grades 3 and 6 for Hem (Chemistry) and Fiz (Physics)
@@ -271,20 +172,20 @@ if Upload.count != 62
       end
     end
   end
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_09.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_9_en.csv'
-  # )
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_13.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_13_en.csv'
-  # )
+  Upload.create(
+    subject_id: @hem.id,
+    grade_band_id: @gb_09.id,
+    locale_id: @loc_en.id,
+    status: 0,
+    filename: 'Hem_9_en.csv'
+  )
+  Upload.create(
+    subject_id: @hem.id,
+    grade_band_id: @gb_13.id,
+    locale_id: @loc_en.id,
+    status: 0,
+    filename: 'Hem_13_en.csv'
+  )
 end
 # valid count:
 #   2 english
@@ -292,8 +193,8 @@ end
 #   - 12 physics and chemistry for grades 3 and 6 for 3 languages
 #   = 62 valid uploads
 throw "Invalid Upload Count" if Upload.count != 62
-@hem_09 = Upload.first
-@hem_13 = Upload.second
+@hem_09 = Upload.where(filename: 'Hem_9_en.csv').first
+@hem_13 = Upload.where(filename: 'Hem_13_en.csv').first
 
 
 

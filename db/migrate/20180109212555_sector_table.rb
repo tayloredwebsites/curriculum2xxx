@@ -10,7 +10,6 @@ class SectorTable < ActiveRecord::Migration[5.1]
     #   t.integer "subject_id", null: false
     #   t.integer "grade_band_id", null: false
     #   t.string "code"
-    #   t.integer "parent_id"
     #   t.datetime "created_at", null: false
     #   t.datetime "updated_at", null: false
     #   t.string "translation_key"

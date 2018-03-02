@@ -203,8 +203,7 @@ class TreesController < ApplicationController
       :version_id,
       :subject_id,
       :grade_band_id,
-      :code,
-      :parent_id
+      :code
     )
   end
 

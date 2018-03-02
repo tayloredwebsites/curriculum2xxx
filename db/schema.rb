@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20180217205351) do
 
-  create_table "grade_bands", force: :cascade do |t|
+  create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
     t.string "code"
     t.datetime "created_at", null: false
@@ -20,14 +20,14 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.index ["tree_type_id"], name: "index_grade_bands_on_tree_type_id"
   end
 
-  create_table "locales", force: :cascade do |t|
+  create_table "locales", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "sectors", force: :cascade do |t|
+  create_table "sectors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.string "name_key"
     t.datetime "created_at", null: false
@@ -36,14 +36,14 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.index ["code"], name: "index_sectors_on_code"
   end
 
-  create_table "sectors_trees", id: false, force: :cascade do |t|
-    t.integer "sector_id", null: false
-    t.integer "tree_id", null: false
+  create_table "sectors_trees", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "sector_id", null: false
+    t.bigint "tree_id", null: false
     t.index ["sector_id", "tree_id"], name: "index_sectors_trees_on_sector_id_and_tree_id"
     t.index ["tree_id", "sector_id"], name: "index_sectors_trees_on_tree_id_and_sector_id"
   end
 
-  create_table "subjects", force: :cascade do |t|
+  create_table "subjects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
     t.string "code"
     t.datetime "created_at", null: false
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
   end
 
-  create_table "translations", force: :cascade do |t|
+  create_table "translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "locale"
     t.string "key"
     t.text "value"
@@ -60,23 +60,22 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_translations_on_key"
-    t.index ["locale", "key"], name: "index_translations_on_locale_and_key", unique: true
-    t.index ["value"], name: "index_translations_on_value"
+    t.index ["locale", "key"], name: "index_translations_on_keys"
+    t.index ["value"], name: "index_translations_on_value", length: { value: 256 }
   end
 
-  create_table "tree_types", force: :cascade do |t|
+  create_table "tree_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "trees", force: :cascade do |t|
+  create_table "trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
     t.integer "version_id", null: false
     t.integer "subject_id", null: false
     t.integer "grade_band_id", null: false
     t.string "code"
-    t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name_key"
@@ -84,12 +83,12 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["name_key"], name: "index_trees_on_name_key"
     t.index ["subject_id"], name: "index_trees_on_subject_id"
-    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys", unique: true
+    t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys"
     t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
     t.index ["version_id"], name: "index_trees_on_version_id"
   end
 
-  create_table "uploads", force: :cascade do |t|
+  create_table "uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "subject_id", null: false
     t.integer "grade_band_id", null: false
     t.integer "locale_id", null: false
@@ -104,7 +103,7 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.index ["subject_id"], name: "index_uploads_on_subject_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "given_name", default: ""
@@ -144,7 +143,7 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "versions", force: :cascade do |t|
+  create_table "versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

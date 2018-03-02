@@ -43,7 +43,6 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # 4 area records were added
     # 16 components (4 per area +(4*4 = 16)
     # 48 outcomes (avg. 3 per component)
-    assert_equal(186, Tree.where(parent_id: nil).count)
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
     @hem_09.reload
     assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @hem_09.status)

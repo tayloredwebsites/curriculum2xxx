@@ -1,5 +1,5 @@
 class MainTables < ActiveRecord::Migration[5.1]
-  def self.up
+  def change
     create_table :versions do |t|
       t.string :code
       t.timestamps
@@ -31,7 +31,6 @@ class MainTables < ActiveRecord::Migration[5.1]
       t.integer :subject_id, null: false
       t.integer :grade_band_id, null: false
       t.string :code
-      t.integer :parent_id, null: true
       t.timestamps
     end
     add_index :trees, :tree_type_id
@@ -39,7 +38,6 @@ class MainTables < ActiveRecord::Migration[5.1]
     add_index :trees, :subject_id
     add_index :trees, :grade_band_id
     add_index :trees, [:tree_type_id, :version_id, :subject_id, :grade_band_id], name: 'index_trees_on_keys'
-    add_foreign_key :trees, :trees, column: :parent_id
     create_table :uploads do |t|
       t.integer :subject_id, null: false
       t.integer :grade_band_id, null: false
@@ -52,13 +50,4 @@ class MainTables < ActiveRecord::Migration[5.1]
     add_index :uploads, [:subject_id, :grade_band_id, :locale_id], name: 'index_uploads_on_keys'
   end
 
-  def self.down
-    drop_table :versions
-    drop_table :tree_types
-    drop_table :locales
-    drop_table :grade_bands
-    drop_table :subjects
-    drop_table :trees
-    drop_table :uploads
-  end
 end

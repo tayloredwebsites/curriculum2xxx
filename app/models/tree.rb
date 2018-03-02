@@ -5,7 +5,6 @@ class Tree < BaseRec
   belongs_to :version
   belongs_to :subject
   belongs_to :grade_band
-  belongs_to :parent, class_name: "Tree", foreign_key: "parent_id", optional: true
 
   has_and_belongs_to_many :sectors
 
@@ -172,7 +171,6 @@ class Tree < BaseRec
         tree.grade_band_id = gradeBandRec.id
         tree.code = fullCode
         # fill in parent id if parent passed in, and parent codes match.
-        tree.parent_id = (parentRec.present? && tree.parentCode == parentRec.code) ? parentRec.id : nil
         tree.name_key = Tree.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
         tree.base_key = Tree.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
         ret = tree.save
@@ -185,11 +183,10 @@ class Tree < BaseRec
       elsif matched_codes.count == 1
         # it already exists, skip
         matched = matched_codes.first
-        if matched.name_key.blank? || matched.parent_id.blank?
+        if matched.name_key.blank?
           # fixed if existing record is missing translation key or parent record id
           matched.name_key = matched.buildNameKey
           matched.base_key = matched.buildBaseKey
-          matched.parent_id = parentRec.id if (parentRec.present? && matched.parentCode == parentRec.code)
           matched.save
           # to do - do we need error checking here?
         end
