@@ -88,6 +88,8 @@ GEM
       railties (>= 4.1.0, < 5.2)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.5.1)
+      devise (>= 3.4)
     docile (1.1.5)
     dotenv (0.7.0)
     erubi (1.7.0)
@@ -248,6 +250,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   devise
+  devise-i18n
   factory_bot_rails
   font-awesome-sass
   foreman

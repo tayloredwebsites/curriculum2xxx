@@ -1,16 +1,25 @@
-<h2>Sign up</h2>
+<h2><%= t('.sign_up') %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
-  <div class='row-stripes'>
-    <%= render partial: 'users/form_email', :locals => {:form => f} %>
-    <%= render partial: 'users/form_new_passwd', :locals => {:form => f} %>
-    <%= render partial: 'users/form_other', :locals => {:form => f} %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit t('.sign_up') %>
   </div>
 <% end %>
 

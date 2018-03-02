@@ -38,6 +38,7 @@ gem 'foreman'
 
 # devise for authentication
 gem 'devise'
+gem 'devise-i18n'
 
 # # internationalization tables in database
 # gem 'i18n-active_record', :require => 'i18n/active_record'
