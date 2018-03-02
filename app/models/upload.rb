@@ -29,8 +29,8 @@ class Upload < BaseRec
       :"Ishod" => :outcome,
       :"Pokazatelj" => :indicator,
       :"Raspon" => :gradeBand,
-      :"Relevantni KBE sektori:" => :relevantKbe,
-      :"Objašnjenje kako se pokazatelji odnose prema KBE sektorima:" => :sectorRelation,
+      :"Relevantni sektori KBE" => :relevantKbe,
+      :"Objašnjenje kako se indikator odnosi na KBE sektor" => :sectorRelation,
       :"Usko povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Kemija" => :chemistry,
       :"Matematika" => :mathematics,
@@ -41,37 +41,40 @@ class Upload < BaseRec
     },
     :"hr" => {
       :"sheetID" => :row,
-      :"Area" => :area,
-      :"Component" => :component,
-      :"Outcome" => :outcome,
-      :"Indicator" => :indicator,
-      :"Grade band" => :gradeBand,
-      :"relevant KBE sectors (as determined from KBE spreadsheets)" => :relevantKbe,
-      :"Explanation of how the indicator relates to KBE sector" => :sectorRelation,
-      :"Closely related learning outcomes applicable to KBE sector" => :currentSubject,
-      :"Chemistry" => :chemistry,
-      :"Mathematics" => :mathematics,
-      :"Geography" => :geography,
-      :"Physics" => :physics,
-      :"Biology" => :biology,
-      :"ICT" => :computers
+      :"Oblast" => :area,
+      :"Komponenta" => :component,
+      :"Ishod" => :outcome,
+      :"Pokazatelj" => :indicator,
+      :"Raspon" => :gradeBand,
+      :"Relevantni KBE sektori:" => :relevantKbe,
+      :"Relevantni sektori KBE" => :relevantKbe,
+      :"Objašnjenje kako se pokazatelji odnose prema KBE sektorima:" => :sectorRelation,
+      :"Objašnjenje kako se indikator odnosi na KBE sektor" => :sectorRelation,
+      :"Usko povezani ishodi učenja koji se odnose na KBE sektore:" => :currentSubject,
+      :"Tijesno povezani ishodi učenja koji se odnose na KBE sektor" => :currentSubject,
+      :"Kemija" => :chemistry,
+      :"Matematika" => :mathematics,
+      :"Geografija" => :geography,
+      :"Fizika" => :physics,
+      :"Biologija" => :biology,
+      :"IKT" => :computers
     },
     :"sr" =>{
       :"sheetID" => :row,
-      :"Area" => :area,
-      :"Component" => :component,
-      :"Outcome" => :outcome,
-      :"Indicator" => :indicator,
-      :"Grade band" => :gradeBand,
-      :"relevant KBE sectors (as determined from KBE spreadsheets)" => :relevantKbe,
-      :"Explanation of how the indicator relates to KBE sector" => :sectorRelation,
-      :"Closely related learning outcomes applicable to KBE sector" => :currentSubject,
-      :"Chemistry" => :chemistry,
-      :"Mathematics" => :mathematics,
-      :"Geography" => :geography,
-      :"Physics" => :physics,
-      :"Biology" => :biology,
-      :"ICT" => :computers
+      :"Oblast" => :area,
+      :"Komponenta" => :component,
+      :"Ishod" => :outcome,
+      :"Pokazatelj" => :indicator,
+      :"Raspon" => :gradeBand,
+      :"Релевантни сектори економије засноване на знању (ЕЗЗ)" => :relevantKbe,
+      :"Објашњење како се индикатор односи на секторе ЕЗЗ-а" => :sectorRelation,
+      :"Тијесно повезани исходи учења који се односе на секторе ЕЗЗ-а" => :currentSubject,
+      :"Хемија" => :chemistry,
+      :"Математика" => :mathematics,
+      :"Географија" => :geography,
+      :"Физика" => :physics,
+      :"Биологија" => :biology,
+      :"ИКТ" => :computers
     }
   }
   SHORT_REQ = {
@@ -104,7 +107,7 @@ class Upload < BaseRec
     locale_vals =  Upload::TO_SHORT_HASH[locale.to_sym]
     # puts "locale_vals: #{locale_vals.inspect}"
     # puts "locale_vals: #{locale_vals[val.to_sym]}"
-    ret =  locale_vals[val.to_sym]
+    ret = val.present? ? locale_vals[val.strip.to_sym] : ''
   end
 
   # def self.reverse_hash

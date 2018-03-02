@@ -145,6 +145,8 @@ class UploadsController < ApplicationController
           stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
           row_num += 1
 
+          Rails.logger.info("PROCESSING ROW: #{row_num}, #{row.inspect}")
+
           # skip rows if missing required fields (beside row number and grade band)
           # otherwise blank rows produce errors stopping the upload
           break if !validUploadRow?(@localeRec.code, row)
@@ -154,8 +156,7 @@ class UploadsController < ApplicationController
             @abortRow = false
 
             # validate grade band in this row matches this upload
-            # do not process this row if it is for the wrong grade level
-            # note this is processed within the column loop so it gets reported in the report
+            # return an error for this row if it is for the wrong grade level
             grade_band = get_grade_band(@localeRec.code, row)
             if grade_band != @gradeBandRec.code
               @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_grade_band', grade_band: grade_band)
@@ -163,7 +164,7 @@ class UploadsController < ApplicationController
             end
 
             # map csv headers to short symbols
-            new_key = Upload.get_short(@localeRec.code, key.strip)
+            new_key = Upload.get_short(@localeRec.code, key)
 
             # ensure required rows have data
             if new_key.present? && Upload::SHORT_REQ[new_key.to_sym] && val.blank?
@@ -255,7 +256,7 @@ class UploadsController < ApplicationController
       label = strArray.first
       desc = str[(label.length+1)..-1]
       text = desc.present? ? desc.lstrip : ''
-      return label.gsub(/[^0-9,.]/, ""), text, ''
+      return label.gsub(/[^0-9]/, ""), text, ''
     elsif depth == 2
       # Outcome formatting: "Outcome: #. <name>""
       strArray = str.split(/\./)
@@ -280,6 +281,7 @@ class UploadsController < ApplicationController
 
   def process_otc_tree(depth, val, row_num, stacks)
     code_str, text, indicatorCode = parseSubCodeText(val, depth)
+    # Rails.logger.debug("parse: #{code_str.inspect}, #{text.inspect}, #{indicatorCode.inspect}")
 
     stacks[CODES_STACK][depth] = code_str # save curreant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
@@ -464,17 +466,19 @@ class UploadsController < ApplicationController
   end
 
 
+  # skip row if more than two blank required fields
+  # - note some rows came in with only row and grade band filled in
+  # otherwise process row and indicate errors
   def validUploadRow?(locale, row)
+    missing_count = 0
     row.each do |key, val|
       shortKey = Upload.get_short(locale, key)
-      if shortKey.present? && Upload::SHORT_REQ[shortKey.to_sym]
-        if val.blank? && shortKey != :row && shortKey != :gradeBand
-          puts "invalid upload row: #{shortKey} - #{row.inspect}"
-          return false
-        end
+      if shortKey.present? && Upload::SHORT_REQ[shortKey.to_sym] && val.blank?
+        puts "invalid upload row: #{shortKey} - #{row.inspect}"
+        missing_count += 1
       end
     end
-    return true
+    return (missing_count > 2 ? false : true)
   end
 
 end
