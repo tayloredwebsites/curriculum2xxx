@@ -33,7 +33,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     end
     assert_equal(BaseRec::UPLOAD_NOT_UPLOADED, @hem_09.status)
     assert_equal(0, Tree.count)
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_9_en.csv'))
     find('button').click
 
     # at upload reporting page
@@ -53,7 +53,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
 
 
     # run it again, and should have the same report
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_9_en.csv'))
     find('button').click
     assert_equal(do_upload_upload_path('bs', @hem_09.id), current_path)
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
@@ -89,7 +89,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     assert_equal(BaseRec::UPLOAD_NOT_UPLOADED, @hem_13.status)
     assert_equal(0, Tree.count)
     assert_equal(40, Translation.count)
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_9_en.csv'))
     find('button').click
     assert_equal(do_upload_upload_path('en', @hem_13.id), current_path)
     assert page.has_content?(I18n.translate('uploads.errors.incorrect_filename', filename: @hem_13.filename))
@@ -104,7 +104,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     end
     assert_equal(BaseRec::UPLOAD_NOT_UPLOADED, @hem_13.status)
     assert_equal(0, Tree.count)
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_13_transl_Eng.csv'))
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_13_en.csv'))
     find('button').click
     assert_equal(do_upload_upload_path('en', @hem_13.id), current_path)
 

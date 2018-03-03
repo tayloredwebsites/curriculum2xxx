@@ -375,12 +375,12 @@ class UploadsController < ApplicationController
         countMatches = 0
         last_match = nil
         textMatchingSectors.each do |m|
-          if m.locale == @localeRec.code && m.key.include?(s.strip)
+          if m.locale == @localeRec.code && m.key.include?('sector.')
             countMatches += 1
             last_match = m
           end
         end
-        matchingSectors = Translation.where("locale = ? AND key like ? AND value LIKE ?", @localeRec.code, "sector.%", "%#{s.strip}%")
+        # matchingSectors = Translation.where("locale = ? AND key like ? AND value LIKE ?", @localeRec.code, "sector.%", "%#{s.strip}%")
         if countMatches == 1 # matched description in translation table
           # get the sector record from the sector code
           sectorCode = last_match.key

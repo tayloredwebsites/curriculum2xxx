@@ -44,7 +44,7 @@ if Version.count < 1
   )
 end
 throw "Invalid Version Count" if Version.count > 1
-@v01 = Version.first
+@v01 = Version.last
 
 if TreeType.count < 1
   TreeType.create(
@@ -52,7 +52,7 @@ if TreeType.count < 1
   )
 end
 throw "Invalid TreeType Count" if TreeType.count > 1
-@otc = TreeType.first
+@otc = TreeType.last
 
 if Locale.count < 1
   Locale.create(
@@ -219,16 +219,16 @@ else
   Sector.create(code: '10', name_key: 'sector.10.name', base_key: 'sector.10')
 end
 throw "Invalid Sector Count" if Sector.count != 10
-@sector1 = Sector.find(1)
-@sector2 = Sector.find(2)
-@sector3 = Sector.find(3)
-@sector4 = Sector.find(4)
-@sector5 = Sector.find(5)
-@sector6 = Sector.find(6)
-@sector7 = Sector.find(7)
-@sector8 = Sector.find(8)
-@sector9 = Sector.find(9)
-@sector10 = Sector.find(10)
+@sector1 = Sector.where(name_key: 'sector.1.name').first
+@sector2 = Sector.where(name_key: 'sector.2.name').first
+@sector3 = Sector.where(name_key: 'sector.3.name').first
+@sector4 = Sector.where(name_key: 'sector.4.name').first
+@sector5 = Sector.where(name_key: 'sector.5.name').first
+@sector6 = Sector.where(name_key: 'sector.6.name').first
+@sector7 = Sector.where(name_key: 'sector.7.name').first
+@sector8 = Sector.where(name_key: 'sector.8.name').first
+@sector9 = Sector.where(name_key: 'sector.9.name').first
+@sector10 = Sector.where(name_key: 'sector.10.name').first
 
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.1.name', 'Informacione komunikacione tehnologije (ICT)')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR

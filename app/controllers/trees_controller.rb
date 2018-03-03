@@ -5,7 +5,10 @@ class TreesController < ApplicationController
   def index
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all.order(:code)
-    @tree = Tree.new
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
     @otcTree = ''
     respond_to do |format|
       format.html
@@ -18,7 +21,10 @@ class TreesController < ApplicationController
     # to do - refactor this
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all.order(:code)
-    @tree = Tree.new
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
 
     @subj = params[:tree].present? && params[:tree][:subject_id].present? ? Subject.find(params[:tree][:subject_id]) : nil
     @gb = params[:tree].present? && params[:tree][:grade_band_id].present? ? GradeBand.find(params[:tree][:grade_band_id]) : nil
@@ -152,19 +158,23 @@ class TreesController < ApplicationController
   end
 
   def new
-    @tree = Tree.new()
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
   end
 
-  def create
-    @tree = Tree.new(tree_params)
-    if @tree.save
-      flash[:success] = "tree created."
-      # I18n.backend.reload!
-      redirect_to trees_path
-    else
-      render :new
-    end
-  end
+  # def create
+  #   Rails.logger.debug("Tree.create params: #{tree_params.inspect}")
+  #   @tree = Tree.new(tree_params)
+  #   if @tree.save
+  #     flash[:success] = "tree created."
+  #     # I18n.backend.reload!
+  #     redirect_to trees_path
+  #   else
+  #     render :new
+  #   end
+  # end
 
   def show
     # get all translation keys for this record and above

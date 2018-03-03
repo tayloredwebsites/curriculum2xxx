@@ -13,7 +13,7 @@ if Version.count < 1
   )
 end
 throw "Invalid Version Count" if Version.count > 1
-@v01 = Version.first
+@v01 = Version.last # use last instead of first for testing (database not totally reset between tests)
 
 if TreeType.count < 1
   TreeType.create(
@@ -21,7 +21,7 @@ if TreeType.count < 1
   )
 end
 throw "Invalid TreeType Count" if TreeType.count > 1
-@otc = TreeType.first
+@otc = TreeType.last # use last instead of first for testing (database not totally reset between tests)
 
 if Locale.count < 1
   Locale.create(
@@ -47,19 +47,7 @@ throw "Invalid Locale Count" if Locale.count != 4
 @loc_sr = Locale.third
 @loc_en = Locale.fourth
 
-if GradeBand.count < 1
-  GradeBand.create(
-    tree_type_id: @otc.id,
-    code: '9'
-  )
-end
-if GradeBand.count < 2
-  GradeBand.create(
-    tree_type_id: @otc.id,
-    code: '13'
-  )
-end
-if GradeBand.count < 3
+if GradeBand.count < 4
   GradeBand.create(
     tree_type_id: @otc.id,
     code: '3'
@@ -68,47 +56,24 @@ if GradeBand.count < 3
     tree_type_id: @otc.id,
     code: '6'
   )
-end
-throw "Invalid GradeBand Count" if GradeBand.count != 4
-@gb_09 = GradeBand.first
-@gb_13 = GradeBand.second
-@gb_03 = GradeBand.third
-@gb_06 = GradeBand.fourth
-@grade_bands = GradeBand.all
-
-# for production
-# if GradeBand.count != 4
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '3'
-#   )
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '6'
-#   )
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '9'
-#   )
-#   GradeBand.create(
-#     tree_type_id: @otc.id,
-#     code: '13'
-#   )
-# end
-# throw "Invalid GradeBand Count" if GradeBand.count != 4
-# @gb_03 = GradeBand.first
-# @gb_06 = GradeBand.second
-# @gb_09 = GradeBand.third
-# @gb_13 = GradeBand.fourth
-
-if Subject.count < 1
-  Subject.create(
+  GradeBand.create(
     tree_type_id: @otc.id,
-    code: 'Hem'
+    code: '9'
+  )
+  GradeBand.create(
+    tree_type_id: @otc.id,
+    code: '13'
   )
 end
-@hem = Subject.first
-if Subject.count < 2
+
+throw "Invalid GradeBand Count" if GradeBand.count != 4
+@gb_03 = GradeBand.first
+@gb_06 = GradeBand.second
+@gb_09 = GradeBand.third
+@gb_13 = GradeBand.fourth
+@grade_bands = GradeBand.all
+
+if Subject.count != 6
   Subject.create(
     tree_type_id: @otc.id,
     code: 'Bio'
@@ -123,6 +88,10 @@ if Subject.count < 2
   )
   Subject.create(
     tree_type_id: @otc.id,
+    code: 'Hem'
+  )
+  Subject.create(
+    tree_type_id: @otc.id,
     code: 'IT'
   )
   Subject.create(
@@ -130,85 +99,17 @@ if Subject.count < 2
     code: 'Mat'
   )
 end
-Rails.logger.debug("Subject.count: #{Subject.count}")
 throw "Invalid Subject Count" if Subject.count != 6
-@hem = Subject.first
-@bio = Subject.second
-@fiz = Subject.third
-@geo = Subject.fourth
+@bio = Subject.first
+@fiz = Subject.second
+@geo = Subject.third
+@hem = Subject.fourth
 @it = Subject.fifth
 @mat = Subject.last
 @subjects = Subject.all
 
-# if Subject.count != 6
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Bio'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Fiz'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Geo'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Hem'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'IT'
-#   )
-#   Subject.create(
-#     tree_type_id: @otc.id,
-#     code: 'Mat'
-#   )
-# end
-# throw "Invalid Subject Count" if Subject.count != 6
-# @bio = Subject.first
-# @fiz = Subject.second
-# @geo = Subject.third
-# @hem = Subject.fourth
-# @it = Subject.fifth
-# @mat = Subject.last
-# @subjects = Subject.all
-
-if Upload.count < 1
-  Upload.create(
-    subject_id: @hem.id,
-    grade_band_id: @gb_09.id,
-    locale_id: @loc_en.id,
-    status: 0,
-    filename: 'Hem_09_transl_Eng.csv'
-  )
-end
-if Upload.count < 2
-  Upload.create(
-    subject_id: @hem.id,
-    grade_band_id: @gb_13.id,
-    locale_id: @loc_en.id,
-    status: 0,
-    filename: 'Hem_13_transl_Eng.csv'
-  )
-end
 
 if Upload.count != 62
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_09.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_9_en.csv'
-  # )
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_13.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_13_en.csv'
-  # )
   @subjects.each do |s|
     @grade_bands.each do |gb|
       # don't create grades 3 and 6 for Hem (Chemistry) and Fiz (Physics)
@@ -240,20 +141,20 @@ if Upload.count != 62
       end
     end
   end
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_09.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_9_en.csv'
-  # )
-  # Upload.create(
-  #   subject_id: @hem.id,
-  #   grade_band_id: @gb_13.id,
-  #   locale_id: @loc_en.id,
-  #   status: 0,
-  #   filename: 'Hem_13_en.csv'
-  # )
+  Upload.create(
+    subject_id: @hem.id,
+    grade_band_id: @gb_09.id,
+    locale_id: @loc_en.id,
+    status: 0,
+    filename: 'Hem_9_en.csv'
+  )
+  Upload.create(
+    subject_id: @hem.id,
+    grade_band_id: @gb_13.id,
+    locale_id: @loc_en.id,
+    status: 0,
+    filename: 'Hem_13_en.csv'
+  )
 end
 # valid count:
 #   2 english
@@ -261,8 +162,8 @@ end
 #   - 12 physics and chemistry for grades 3 and 6 for 3 languages
 #   = 62 valid uploads
 throw "Invalid Upload Count" if Upload.count != 62
-@hem_09 = Upload.first
-@hem_13 = Upload.second
+@hem_09 = Upload.where(filename: 'Hem_9_en.csv').first
+@hem_13 = Upload.where(filename: 'Hem_13_en.csv').first
 
 
 
@@ -287,16 +188,16 @@ else
   Sector.create(code: '10', name_key: 'sector.10.name', base_key: 'sector.10')
 end
 throw "Invalid Sector Count" if Sector.count != 10
-@sector1 = Sector.find(1)
-@sector2 = Sector.find(2)
-@sector3 = Sector.find(3)
-@sector4 = Sector.find(4)
-@sector5 = Sector.find(5)
-@sector6 = Sector.find(6)
-@sector7 = Sector.find(7)
-@sector8 = Sector.find(8)
-@sector9 = Sector.find(9)
-@sector10 = Sector.find(10)
+@sector1 = Sector.where(name_key: 'sector.1.name').first
+@sector2 = Sector.where(name_key: 'sector.2.name').first
+@sector3 = Sector.where(name_key: 'sector.3.name').first
+@sector4 = Sector.where(name_key: 'sector.4.name').first
+@sector5 = Sector.where(name_key: 'sector.5.name').first
+@sector6 = Sector.where(name_key: 'sector.6.name').first
+@sector7 = Sector.where(name_key: 'sector.7.name').first
+@sector8 = Sector.where(name_key: 'sector.8.name').first
+@sector9 = Sector.where(name_key: 'sector.9.name').first
+@sector10 = Sector.where(name_key: 'sector.10.name').first
 
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.1.name', 'Informacione komunikacione tehnologije (ICT)')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR

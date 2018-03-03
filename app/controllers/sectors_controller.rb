@@ -18,7 +18,10 @@ class SectorsController < ApplicationController
       @translations[t.key] = t.value
     end
 
-    @tree = Tree.new()
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
     if params[:tree].present?
       @subject_id = params[:tree][:subject_id].present? ? params[:tree][:subject_id] : nil
       @grade_band_id = params[:tree][:grade_band_id].present? ? params[:tree][:grade_band_id] : nil

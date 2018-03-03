@@ -42,7 +42,7 @@ class TreesSystemTest < ApplicationSystemTestCase
     # uploads index page
     page.find("#uploadsTable tbody tr#id_#{@hem_09.id} a").click
     assert_equal(start_upload_upload_path('bs', @hem_09.id), current_path)
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_9_en.csv'))
     find('button').click
     assert_equal(do_upload_upload_path('bs', @hem_09.id), current_path)
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
@@ -174,8 +174,8 @@ class TreesSystemTest < ApplicationSystemTestCase
     within('.rel-sector-col.val') do
       assert page.has_content?("3 - Technology of materials and high-tech production")
       # link to related sector(s) work
-      assert_equal 1, page.find_all("a[data-sector='3']").count
-      page.find("a[data-sector='3']").click
+      assert_equal 1, page.find_all("a[data-sector='#{@sector3.id}']").count
+      page.find("a[data-sector='#{@sector3.id}']").click
     end
     assert_equal sectors_path('en'), current_path
     within("table.tree-listing tbody tr[data-row='0']") do

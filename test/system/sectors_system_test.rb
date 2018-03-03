@@ -34,7 +34,7 @@ class SectorsSystemTest < ApplicationSystemTestCase
     assert_equal(uploads_path(), current_path)
     page.find("#uploadsTable tbody tr#id_#{@hem_09.id} a").click
     assert_equal(start_upload_upload_path('bs', @hem_09.id), current_path)
-    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_09_transl_Eng.csv'))
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Hem_9_en.csv'))
     find('button').click
     assert_equal(do_upload_upload_path('bs', @hem_09.id), current_path)
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
@@ -54,7 +54,10 @@ class SectorsSystemTest < ApplicationSystemTestCase
     page.find(".filter-sectors a[href='#{sectors_path('en')}']").click
     assert_equal(sectors_path('en'), current_path)
     # assert_equal I18n.translate('sectors.index.title', locale: :en), page.title
-    page.find("form#new_sector input[name='commit']").click
+    select('Hem', from: "tree_subject_id")
+    select('9', from: "tree_grade_band_id")
+
+    page.find("form[action='/en/sectors/index'] input[name='commit']").click
     assert_equal(sectors_path('en'), current_path)
     assert_equal I18n.translate('sectors.index.title', locale: :en), page.title
     assert_equal '1 - Information Communication Technology (ICT)', page.find("tr[data-row='0'] td.sector-row").text

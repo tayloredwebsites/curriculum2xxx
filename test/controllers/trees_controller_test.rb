@@ -11,8 +11,9 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
     @user1 = FactoryBot.create(:user, roles: 'admin')
     @user1.confirm # do a devise confirmation of new user
     sign_in @user1
-    Rails.logger.debug("+++ setup completed +++")
     testing_db_seeds
+    @locale_code = 'en'
+    I18n.locale = @locale_code
   end
 
   test "should get index" do
@@ -29,24 +30,25 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 4, assigns(:gbs).count
     assert_equal 0, assigns(:trees).count
 
-    assert_difference('Tree.count', 1) do
-      post trees_path, params: { tree: {
-        tree_type_id: @otc.id,
-        version_id: @v01.id,
-        subject_id: @hem.id,
-        grade_band_id: @gb_09.id,
-        code: '1'
-      } }
-    end
-    post index_listing_trees_path
-    assert_response :success
-    assert_equal 1, assigns(:trees).count
+    # don't need create action in controller thus far.
+    # assert_difference('Tree.count', 1) do
+    #   post trees_path, params: { tree: {
+    #     tree_type_id: @otc.id,
+    #     version_id: @v01.id,
+    #     subject_id: @hem.id,
+    #     grade_band_id: @gb_09.id,
+    #     code: '1'
+    #   } }
+    # end
+    # post index_listing_trees_path
+    # assert_response :success
+    # assert_equal 1, assigns(:trees).count
   end
 
   test "filter by grade_band works" do
 
     # load up the 09 file
-    up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
+    up_file = fixture_file_upload('files/Hem_9_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
@@ -54,7 +56,7 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 186, Tree.count
 
     # load up the 13 file
-    up_file = fixture_file_upload('files/Hem_13_transl_Eng.csv','text/csv')
+    up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status

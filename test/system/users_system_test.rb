@@ -56,7 +56,7 @@ class UsersSystemTest < ApplicationSystemTestCase
     page.find("ul#locale-select a[href='/users/lang/en']").click
     page.find("#topNav a[href='/en/users/sign_in']").click
     within('#main-container h2') do
-      assert page.has_content?('Log in')
+        assert page.has_content?('Sign in')
     end
     page.find("#main-container a[href='/en/users/sign_up']").click
     within('#main-container h2') do
@@ -179,9 +179,10 @@ class UsersSystemTest < ApplicationSystemTestCase
     # at trees index page
     if public
       page.find("#topNav a[href='/en/users/sign_in']").click
+      sleep 1
       assert_equal(new_user_session_path('en'), current_path)
       within('#main-container h2') do
-        assert page.has_content?('Log in')
+        assert page.has_content?('Sign in')
       end
     else
       within('#topNav') do

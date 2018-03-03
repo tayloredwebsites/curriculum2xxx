@@ -35,13 +35,15 @@ class ApplicationController < ActionController::Base
   end
 
   def set_type_and_version
-    @treeTypeRec = TreeType.find(BaseRec::TREE_TYPE_ID)
+    # assumes only one tree type record
+    @treeTypeRec = TreeType.first
     if @treeTypeRec.blank?
       raise "ERROR missing Tree Type Record"
     elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
       raise "ERROR invalid Tree Type Code"
     end
-    @versionRec = Version.find(BaseRec::VERSION_ID)
+    # assumes only one version record
+    @versionRec = Version.first
     if @versionRec.blank?
       raise "ERROR missing Version Record"
     elsif @versionRec.code != BaseRec::VERSION_CODE

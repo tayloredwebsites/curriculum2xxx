@@ -12,7 +12,7 @@ module UserSystemHelper
     # page.find("#main-container form input[name='user[email]']").set(user.email)
     fill_in "user[email]", with: user.email
     fill_in "user[password]", with: passwd
-    click_button "Log in"
+    click_button "Sign in"
   end
 
 end

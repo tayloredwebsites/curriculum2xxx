@@ -42,7 +42,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should successfully do_upload of good file" do
-    up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
+    up_file = fixture_file_upload('files/Hem_9_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
@@ -51,7 +51,7 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get errors do_upload of file with errors" do
-    up_file = fixture_file_upload('files/Hem_13_transl_Eng.csv','text/csv')
+    up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status

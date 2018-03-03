@@ -17,7 +17,7 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
 
   test "index listing filter should work" do
     # load up the 09 file
-    up_file = fixture_file_upload('files/Hem_09_transl_Eng.csv','text/csv')
+    up_file = fixture_file_upload('files/Hem_9_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
@@ -25,7 +25,7 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 186, Tree.count
 
     # load up the 13 file
-    up_file = fixture_file_upload('files/Hem_13_transl_Eng.csv','text/csv')
+    up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status

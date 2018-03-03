@@ -19,10 +19,11 @@ class Tree < BaseRec
 
   validates :code, presence: true, allow_blank: false
 
-  # scope for hard coded variables
-  scope :otc_tree, -> {
-    where(tree_type_id: TREE_TYPE_ID, version_id: VERSION_ID)
-  }
+  # removed for testing issues.  set values in controller
+  # # scope for hard coded variables
+  # scope :otc_tree, -> {
+  #   where(tree_type_id: TREE_TYPE_ID, version_id: VERSION_ID)
+  # }
   scope :otc_listing, -> {
     order('subjects.code', 'grade_bands.code', 'locales.name')
     # where(active: true)
@@ -113,12 +114,13 @@ class Tree < BaseRec
   # get parent record for this item (by hierarchy code as appropriate)
   def getParentRec
     outcomes = Tree.where(
-      tree_type_id: BaseRec::TREE_TYPE_ID,
-      version_id: BaseRec::VERSION_ID,
+      tree_type_id: self.tree_type_id,
+      version_id: self.version_id,
       subject_id: self.subject_id,
       grade_band_id: self.grade_band_id,
       code: self.parentCode
     )
+
     if outcomes.count == 0
       return nil
     else
@@ -161,7 +163,14 @@ class Tree < BaseRec
       return fullCode, matchRec, BaseRec::REC_SKIP, "#{fullCode}"
     else
       # get the tree records for this hierarchy item
-      matched_codes = Tree.otc_tree.where(subject_id: subjectRec.id, grade_band_id: gradeBandRec.id, code: fullCode)
+  #   where()
+      matched_codes = Tree.where(
+        tree_type_id: treeTypeRec.id,
+        version_id: versionRec.id,
+        subject_id: subjectRec.id,
+        grade_band_id: gradeBandRec.id,
+        code: fullCode
+        )
       if matched_codes.count == 0
         # It has not been uploaded yet.  create it.
         tree = Tree.new
@@ -181,6 +190,7 @@ class Tree < BaseRec
           return fullCode, tree, BaseRec::REC_ADDED, "#{fullCode}"
         end
       elsif matched_codes.count == 1
+        Rails.logger.error("ERROR: tree item matched already.")
         # it already exists, skip
         matched = matched_codes.first
         if matched.name_key.blank?
