@@ -11,7 +11,7 @@ class BaseRec < ActiveRecord::Base
   REC_SKIP = 4
 
   # to do - get these from translation table
-  UPLOAD_STATUS = ['Not Uploaded', 'Tree Upload Started', 'Tree Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Subjects Related', 'Upload Done']
+  UPLOAD_STATUS = ['-', 'OTC Upload Started', 'OTC Uploaded', 'Related to KBE', 'Subjects Relations Started', 'Subjects Related', 'Upload Done']
   UPLOAD_PROGRESS_PCT = [0, 17, 33, 50, 67, 83, 100]
   UPLOAD_NOT_UPLOADED = 0
   UPLOAD_TREE_UPLOADING = 1

@@ -130,7 +130,7 @@ en:
       new_upload: "Create new Upload"
       upload: "Upload"
       status: "Status"
-      status_detail: "Status Detail"
+      last_errors: "Errors from last Upload"
       uploaded: "Uploaded"
       num_added_sector_of_numall: "%{num} relations added to "
       saved_code: 'Saved code: %{code}'

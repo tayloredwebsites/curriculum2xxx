@@ -22,6 +22,9 @@
 #main-container {
   text-align: center;
 }
+.align-left {
+  text-align: left;
+}
 .error, .alert, #error_explanation {
   color: red;
   font-size: larger;
@@ -67,7 +70,7 @@ form {
 }
 
 .row-stripes {
-  .row:nth-child(even) {
+  .row:nth-child(even), td:nth-child(even) {
     background-color: #e5ffff;
   }
 }

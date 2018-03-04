@@ -69,6 +69,11 @@ class UploadsController < ApplicationController
       @message = "Select file to upload to get to next step"
       @errs = []
       @rptRecs = []
+      if !@upload.status_detail.present?
+        @status_detail = ''
+      else
+        @status_detail = "Errors from last upload:<br>#{@upload.status_detail.split('$$$').join('<br>')}"
+      end
       render :do_upload
     else
       flash[:notice] = 'Missing upload record.'
@@ -91,6 +96,7 @@ class UploadsController < ApplicationController
     @rptRecs = []
     abortRun = false
     @abortRow = false
+    @status_detail = ''
 
     # fully process flag (currently how processed)
     # this flag will allow skipping the processing of columns based upon status
@@ -224,6 +230,8 @@ class UploadsController < ApplicationController
             @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
           end
         end
+        # save all errors into the upload status detail field for easy review of last run of errors
+        @upload.status_detail = @errs.join('$$$')
         @upload.save
       end
       render :do_upload
@@ -353,7 +361,7 @@ class UploadsController < ApplicationController
     tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
-    sectorNames = val.present? ? val.split(';') : []
+    sectorNames = val.present? ? val.split(/[;,]/) : []
     # get an array of related KBE sectors (note there is an 'All KBE sectors' option)
     sectorNames.each do |s|
       # custom matching of descriptions (that do not correspond with what is in the database)
@@ -364,10 +372,12 @@ class UploadsController < ApplicationController
         relations << '1'
       elsif s.upcase.include? 'MEDICINE'
         relations << '2'
-      elsif s.upcase.include? 'TECHNOLOGY OF MATERIALS'
+      elsif s.upcase.include? 'MATERIALS'
         relations << '3'
       elsif s.upcase.include? 'ENERGY'
         relations << '4'
+      elsif s.upcase.include? 'AGRICULTUR'
+        relations << '10'
       else
         # not a custom match, get sector code from translation records for sectors.
         # look for matching tranlations for sector sector names, matching the locale, and text
@@ -393,7 +403,7 @@ class UploadsController < ApplicationController
         elsif countMatches == 0
           errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
         else
-          errs << I18n.translate('app.errors.too_many_matched_key', key: s.strip)
+          errs << I18n.translate('app.errors.too_many_matched_key', key: s.strip) if s.strip.present?
         end
       end
     end
@@ -423,7 +433,10 @@ class UploadsController < ApplicationController
       stacks[IDS_STACK][PROCESSING_SECTOR] << "#{tree_rec.id}-#{s.id}" if !stacks[IDS_STACK][PROCESSING_SECTOR].include?("#{tree_rec.id}-#{s.id}")
     end
     statMsg = I18n.translate('app.labels.new_sector_relations', sectors: sectorsAdded.join(', ') )
-    statMsg += ', '+ errs.join(', ') if errs.count > 0
+    if errs.count > 0
+      statMsg += ', '+ errs.join(', ')
+      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + errs.join(', ')
+    end
     # generate report record
     rptRec = [row_num]
     rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
@@ -431,6 +444,7 @@ class UploadsController < ApplicationController
     rptRec << ((allSectors.count > 0) ? I18n.translate('app.labels.related_to_sectors', sectors: allSectors.join(', ')) : 'No related sectors.')
     rptRec << statMsg
     @rptRecs << rptRec
+
 
     @sectorErrs = true if @rowErrs.count > 0
 

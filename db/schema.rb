@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180217205351) do
+ActiveRecord::Schema.define(version: 20180304151532) do
 
   create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20180217205351) do
     t.integer "grade_band_id", null: false
     t.integer "locale_id", null: false
     t.integer "status"
-    t.string "status_detail"
+    t.text "status_detail"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "filename"

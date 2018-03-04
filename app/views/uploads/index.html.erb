@@ -2,7 +2,7 @@
 <% content_for(:page_class, 'uploads') %>
 
 <p><%= link_to translate('uploads.labels.new_upload'), new_upload_path() %></p>
-<table id='uploadsTable'>
+<table id='uploadsTable' class='table-striped'>
   <thead>
     <tr>
       <th><%= translate('app.labels.subject') %></th>
@@ -18,7 +18,7 @@
         <td><%= u.subject.code %></td>
         <td><%= u.grade_band.code %></td>
         <td><%= u.locale.name %></td>
-        <td><%= BaseRec::UPLOAD_STATUS[u.status] %></td>
+        <td><%= BaseRec::UPLOAD_STATUS[u.status] %> <%= '- With Errors' if u.status_detail.present? %></td>
         <td>
           <%= link_to translate('uploads.labels.upload'), start_upload_upload_path(id: u.id) %>
         </td>
