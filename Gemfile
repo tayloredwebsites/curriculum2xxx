@@ -45,8 +45,7 @@ gem 'devise-i18n'
 # # internationalization tables in database
 # gem 'i18n-active_record', :require => 'i18n/active_record'
 
-# bootstrap 4 - To Do - update this when out of beta
-gem 'bootstrap', '~> 4.0.0.beta2.1'
+gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'font-awesome-sass'
 
