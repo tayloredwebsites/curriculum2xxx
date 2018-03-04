@@ -16,7 +16,7 @@
     @extend .fa-square-o !optional;
   }
   .glyphicon-check {
-    @extend .fa-check-square-o;
+    @extend .fa-check-square-o !optional;
   }
 }
 #main-container {
