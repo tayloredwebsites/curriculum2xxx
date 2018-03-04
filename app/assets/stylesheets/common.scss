@@ -13,7 +13,7 @@
     @extend .fa-plus;
   }
   .glyphicon-unchecked {
-    @extend .fa-square-o;
+    @extend .fa-square-o !optional;
   }
   .glyphicon-check {
     @extend .fa-check-square-o;
