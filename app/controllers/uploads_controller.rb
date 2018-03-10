@@ -407,13 +407,16 @@ class UploadsController < ApplicationController
         sector_num = 0
       end
 
-      if sector_num > 0 && !relations.include?(sector_num.to_s)
-        relations << sector_num.to_s
-      elsif sectorTranslations[clean_s].present? &&
-          !relations.include?(sectorTranslations[clean_s])
+      if sector_num > 0
+        if !relations.include?(sector_num.to_s)
+          relations << sector_num.to_s
+        end
+      elsif sectorTranslations[clean_s].present?
+        if !relations.include?(sectorTranslations[clean_s])
 
-      # not a custom match, get sector code from translations of sectors hash.
-        relations << sectorTranslations[clean_s]
+          # not a custom match, get sector code from translations of sectors hash.
+          relations << sectorTranslations[clean_s]
+        end
       else
         errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
       end
