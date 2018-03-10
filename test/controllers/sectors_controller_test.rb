@@ -41,19 +41,19 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
 
     post sectors_path, params: { tree: { subject_id: @hem.id } }
     assert_response :success
-    assert_equal 157, assigns(:rptRows).count
+    assert_equal 130, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { sector_id: @sector1.id } }
     assert_response :success
-    assert_equal 27, assigns(:rptRows).count
+    assert_equal 6, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { grade_band_id: @gb_09.id } }
     assert_response :success
-    assert_equal 150, assigns(:rptRows).count
+    assert_equal 130, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { subject_id: '', grade_band_id: '', sector_id: '' } }
     assert_response :success
-    assert_equal 157, assigns(:rptRows).count
+    assert_equal 130, assigns(:rptRows).count
 
 
   end

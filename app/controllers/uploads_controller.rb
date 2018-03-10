@@ -153,7 +153,7 @@ class UploadsController < ApplicationController
           stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
           row_num += 1
 
-          # Rails.logger.info("PROCESSING ROW: #{row_num}, #{row.inspect}")
+          Rails.logger.info("PROCESSING ROW: #{row_num}, #{row.inspect}")
 
           # skip rows if missing required fields (beside row number and grade band)
           # otherwise blank rows produce errors stopping the upload
@@ -389,13 +389,14 @@ class UploadsController < ApplicationController
     tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
-    # split by semi-colon and period.  Not by comma (used in Sector Names)
-    sectorNames = val.present? ? val.split(/[;\.]/) : []
+    # split by semi-colon and period and others!!!
+    # Not split by comma (used in Sector Names)
+    sectorNames = val.present? ? val.split(/[:;\.)]+/) : []
     # get a hash of all sectors translations that return the sector code
     sectorTranslations = get_sectors_translations()
 
     sectorNames.each do |s|
-      # custom matching of descriptions (that do not correspond with what is in the database)
+      # matching of descriptions
       clean_s = s.strip
       break if clean_s.blank?
 
@@ -411,14 +412,18 @@ class UploadsController < ApplicationController
         if !relations.include?(sector_num.to_s)
           relations << sector_num.to_s
         end
-      elsif sectorTranslations[clean_s].present?
-        if !relations.include?(sectorTranslations[clean_s])
+      # elsif sectorTranslations[clean_s].present?
+      #   if !relations.include?(sectorTranslations[clean_s])
 
-          # not a custom match, get sector code from translations of sectors hash.
-          relations << sectorTranslations[clean_s]
-        end
-      else
-        errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
+      #     # not a custom match, get sector code from translations of sectors hash.
+      #     relations << sectorTranslations[clean_s]
+      #   end
+      # else
+      #   Rails.logger.debug("*** sector_num: #{sector_num.inspect}")
+      #   Rails.logger.debug("*** clean_s: #{clean_s.inspect}")
+      #   Rails.logger.debug("*** sectorTranslations[clean_s]: #{sectorTranslations[clean_s].inspect}")
+      #   Rails.logger.debug("*** relations: #{relations.inspect}")
+      #   errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
       end
 
     end
