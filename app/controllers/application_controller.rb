@@ -14,6 +14,15 @@ class ApplicationController < ActionController::Base
     { locale: I18n.locale }
   end
 
+  def int_or_zero_from_s(strIn)
+    begin
+      ret = Integer(strIn)
+    rescue ArgumentError, TypeError
+      ret = 0
+    end
+  end
+
+
   private
 
   # set the locale codes in controllers: 'before_action :getLocaleCode'

@@ -60,19 +60,19 @@ class SectorsSystemTest < ApplicationSystemTestCase
     page.find("form[action='/en/sectors/index'] input[name='commit']").click
     assert_equal(sectors_path('en'), current_path)
     assert_equal I18n.translate('sectors.index.title', locale: :en), page.title
-    assert_equal '1 - Information Communication Technology (ICT)', page.find("tr[data-row='0'] td.sector-row").text
+    assert_equal '1 - IT', page.find("tr[data-row='0'] td.sector-row").text
     assert_equal '1.1.1.b', page.find("tr[data-row='1'] td.code-col").text
-    assert_equal 321, page.all('table.tree-listing tr.rpt').count
+    assert_equal 150, page.all('table.tree-listing tr.rpt').count
 
     assert_equal(sectors_path('en'), current_path)
     assert_equal I18n.translate('sectors.index.title', locale: :en), page.title
-    select('Information Communication Technology (ICT)', from: "tree_sector_id")
+    select('IT', from: "tree_sector_id")
     page.find("form#new_sector input[name='commit']").click
     assert_equal(sectors_path('en'), current_path)
     assert_equal I18n.translate('sectors.index.title', locale: :en), page.title
-    assert_equal '1 - Information Communication Technology (ICT)', page.find("tr[data-row='0'] td.sector-row").text
+    assert_equal '1 - IT', page.find("tr[data-row='0'] td.sector-row").text
     assert_equal '1.1.1.b', page.find("tr[data-row='1'] td.code-col").text
-    assert_equal 27, page.all('table.tree-listing tr.rpt').count
+    assert_equal 23, page.all('table.tree-listing tr.rpt').count
 
   end
 

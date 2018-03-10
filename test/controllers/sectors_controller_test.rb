@@ -29,8 +29,8 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
-    assert_equal 4, assigns(:errs).count
-    assert_equal 195, Tree.count # 186 + 9
+    assert_equal 2, assigns(:errs).count
+    assert_equal 198, Tree.count # 186 + 9 + 3 (?)
 
     get sectors_path
     assert_response :success
@@ -41,19 +41,19 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
 
     post sectors_path, params: { tree: { subject_id: @hem.id } }
     assert_response :success
-    assert_equal 326, assigns(:rptRows).count
+    assert_equal 157, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { sector_id: @sector1.id } }
     assert_response :success
-    assert_equal 29, assigns(:rptRows).count
+    assert_equal 27, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { grade_band_id: @gb_09.id } }
     assert_response :success
-    assert_equal 321, assigns(:rptRows).count
+    assert_equal 150, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { subject_id: '', grade_band_id: '', sector_id: '' } }
     assert_response :success
-    assert_equal 326, assigns(:rptRows).count
+    assert_equal 157, assigns(:rptRows).count
 
 
   end

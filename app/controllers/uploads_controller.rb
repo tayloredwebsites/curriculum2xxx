@@ -133,8 +133,11 @@ class UploadsController < ApplicationController
         file = File.open upload_params['file'].path
         # Consume the first two CSV rows.
         line = file.gets
+        # Rails.logger.debug("*** first line read: #{line.inspect}")
         line = file.gets
+        # Rails.logger.debug("*** second line read: #{line.inspect}")
         infoLine = line.split(',')
+        # Rails.logger.debug("*** second infoLine: #{line.inspect}")
         grade_band = 0
         begin
           grade_band = Integer(infoLine[3])
@@ -150,7 +153,7 @@ class UploadsController < ApplicationController
           stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
           row_num += 1
 
-          Rails.logger.info("PROCESSING ROW: #{row_num}, #{row.inspect}")
+          # Rails.logger.info("PROCESSING ROW: #{row_num}, #{row.inspect}")
 
           # skip rows if missing required fields (beside row number and grade band)
           # otherwise blank rows produce errors stopping the upload
@@ -256,29 +259,44 @@ class UploadsController < ApplicationController
     if !str.present?
       return "BLANK"
     end
-    if depth == 0 || depth == 1
+    if depth < 2
       # Area formatting: "AREA #: <name>""
       # Component formatting: "Component #: <name>""
-      strArray = str.split(/:/)
-      label = strArray.first
-      desc = str[(label.length+1)..-1]
+      strArray = str.strip.split(/[:;\.\s]+/)
+      label = strArray[0]
+      code = strArray[1]
+      desc = str[(label.length+code.length+2)..-1]
       text = desc.present? ? desc.lstrip : ''
-      return label.gsub(/[^0-9]/, ""), text, ''
+      return code, text, ''
     elsif depth == 2
       # Outcome formatting: "Outcome: #. <name>""
-      strArray = str.split(/\./)
+      strArray = str.strip.split(/\./)
       label = strArray.first
       desc = str[(label.length+1)..-1]
       text = desc.present? ? desc.lstrip : ''
       return label.gsub(/[^0-9,.]/, ""), text, ''
-    elsif depth == 3
-      # Indicator formatting: "<area>.<component>.<outcome>.<indicator>. <name>""
-      strArray = str.split(/ /)
-      codes = strArray.first.split(/\./)
-      desc = str[(strArray.first.length)..-1]
+    else
+      strArray = str.strip.split(/[\s\.)]+/)
+      strCodesArray = strArray[0..3].join('').split('')
+      code_array = []
+      strCodesArray[0..3].each_with_index do |c, ix|
+        code_num = int_or_zero_from_s(c)
+        # output valid Area, Component or Outcome
+        code_array << code_num if ix < 3 && code_num > 0
+        code_array << c if ix == 3 && code_num == 0 && c.length == 1
+      end
+      if code_array.length == 4
+        # we have fourth code, which should be the indicator letter code
+        code = code_array[3]
+        # recreate text from rest of strArray
+        text = strArray[0..-(strArray.length - 4)].join(' ')
+      else
+        # Invalid code - error
+        Rails.logger.error("ERROR - Invalid code from strArray: #{strArray.inspect}")
+        desc = str[(strArray.first.length)..-2]
+      end
       text = desc.present? ? desc.lstrip : ''
-      code = codes.length > 3 ? codes[3] : ''
-      return code, text, codes[0..3].join('.')
+      return code, text, code_array.join('.')
     end
   end
 
@@ -290,8 +308,18 @@ class UploadsController < ApplicationController
     code_str, text, indicatorCode = parseSubCodeText(val, depth)
     # Rails.logger.debug("parse: #{code_str.inspect}, #{text.inspect}, #{indicatorCode.inspect}")
 
+    # Rails.logger.debug("***")
+    # Rails.logger.debug "*** parseSubCodeText (#{val}, #{depth}) =>"
+    # Rails.logger.debug("*** code_str: #{code_str.inspect}")
+    # Rails.logger.debug("*** text: #{text.inspect}")
+    # Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
+
     stacks[CODES_STACK][depth] = code_str # save curreant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
+    # Rails.logger.debug("*** stacks[CODES_STACK]: #{stacks[CODES_STACK].inspect}")
+    # Rails.logger.debug("*** depth: #{depth.inspect}")
+    # Rails.logger.debug("*** buildFullCode(#{stacks[CODES_STACK].inspect}, #{depth} =>")
+    # Rails.logger.debug("*** buildCode: #{builtCode.inspect}")
     if depth == 3 && indicatorCode != builtCode
       # indicator code does not match code from Area, Component and Outcome.
       @abortRow = true
@@ -361,51 +389,35 @@ class UploadsController < ApplicationController
     tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
-    sectorNames = val.present? ? val.split(/[;,]/) : []
-    # get an array of related KBE sectors (note there is an 'All KBE sectors' option)
+    # split by semi-colon and period.  Not by comma (used in Sector Names)
+    sectorNames = val.present? ? val.split(/[;\.]/) : []
+    # get a hash of all sectors translations that return the sector code
+    sectorTranslations = get_sectors_translations()
+
     sectorNames.each do |s|
       # custom matching of descriptions (that do not correspond with what is in the database)
-      if s.upcase.include? 'ALL KBE SECTORS'
-        relations = BaseRec::ALL_SECTORS
-        break
-      elsif s.upcase.strip == 'IT'
-        relations << '1'
-      elsif s.upcase.include? 'MEDICINE'
-        relations << '2'
-      elsif s.upcase.include? 'MATERIALS'
-        relations << '3'
-      elsif s.upcase.include? 'ENERGY'
-        relations << '4'
-      elsif s.upcase.include? 'AGRICULTUR'
-        relations << '10'
-      else
-        # not a custom match, get sector code from translation records for sectors.
-        # look for matching tranlations for sector sector names, matching the locale, and text
-        textMatchingSectors = Translation.where("value LIKE ?", "%#{s.strip}%")
-        countMatches = 0
-        last_match = nil
-        textMatchingSectors.each do |m|
-          if m.locale == @localeRec.code && m.key.include?('sector.')
-            countMatches += 1
-            last_match = m
-          end
-        end
-        # matchingSectors = Translation.where("locale = ? AND key like ? AND value LIKE ?", @localeRec.code, "sector.%", "%#{s.strip}%")
-        if countMatches == 1 # matched description in translation table
-          # get the sector record from the sector code
-          sectorCode = last_match.key
-          sectorCode = Sector.sectorCodeFromTranslationCode(sectorCode)
-          if BaseRec::ALL_SECTORS.include?(sectorCode)
-            relations << sectorCode
-          else
-            errs << I18n.translate('uploads.errors.invalid_sector_code_for_sector', code: sectorCode, sector: s.strip)
-          end
-        elsif countMatches == 0
-          errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
-        else
-          errs << I18n.translate('app.errors.too_many_matched_key', key: s.strip) if s.strip.present?
-        end
+      clean_s = s.strip
+      break if clean_s.blank?
+
+      # pull out leading sector number if there (split on space or period)
+      begin
+        lead_word = clean_s.split(/[\s\.;:']/).first # no commas, used in Sector Names
+        sector_num = Integer(lead_word)
+      rescue ArgumentError, TypeError
+        sector_num = 0
       end
+
+      if sector_num > 0 && !relations.include?(sector_num.to_s)
+        relations << sector_num.to_s
+      elsif sectorTranslations[clean_s].present? &&
+          !relations.include?(sectorTranslations[clean_s])
+
+      # not a custom match, get sector code from translations of sectors hash.
+        relations << sectorTranslations[clean_s]
+      else
+        errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
+      end
+
     end
     sectorsAdded = []
     relations.each do |r|
@@ -475,6 +487,16 @@ class UploadsController < ApplicationController
 
     @sectorErrs = true if errs.count > 0
 
+  end
+
+  def get_sectors_translations
+    sectorNameKeys = Sector.all.map { |s| s.name_key }
+    translationByNames = Hash.new
+    translations = Translation.where(key: sectorNameKeys).all
+    translations.each do |t|
+      translationByNames[t.value] = t.key[/[0-9]+/]
+    end
+    return translationByNames
   end
 
   def get_grade_band(locale, row)

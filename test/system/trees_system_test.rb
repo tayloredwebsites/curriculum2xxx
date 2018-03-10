@@ -172,14 +172,14 @@ class TreesSystemTest < ApplicationSystemTestCase
     within('.indicator-name') { assert page.has_content?("1.1.1.a: Indicator a:"), 'missing indicator' }
     assert_equal 'Knowing properties of materials is a basis for modern production of materials', page.find('.rel-reason-col.val').text
     within('.rel-sector-col.val') do
-      assert page.has_content?("3 - Technology of materials and high-tech production")
+      assert page.has_content?("3 - Technology of materials")
       # link to related sector(s) work
       assert_equal 1, page.find_all("a[data-sector='#{@sector3.id}']").count
       page.find("a[data-sector='#{@sector3.id}']").click
     end
     assert_equal sectors_path('en'), current_path
     within("table.tree-listing tbody tr[data-row='0']") do
-      assert page.has_content? "3 - Technology of materials and high-tech production"
+      assert page.has_content? "3 - Technology of materials"
     end
   end
 

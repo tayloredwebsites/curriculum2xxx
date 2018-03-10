@@ -39,6 +39,7 @@ class UploadsSystemTest < ApplicationSystemTestCase
     # at upload reporting page
     assert_equal(do_upload_upload_path('bs', @hem_09.id), current_path)
     refute_equal(0, Tree.count)
+
     # confirm
     # 4 area records were added
     # 16 components (4 per area +(4*4 = 16)
@@ -108,11 +109,11 @@ class UploadsSystemTest < ApplicationSystemTestCase
     find('button').click
     assert_equal(do_upload_upload_path('en', @hem_13.id), current_path)
 
-    assert_equal(9, Tree.count)
+    assert_equal(12, Tree.count)
     rows =  page.find_all('#uploadReport tbody tr')
-    assert_equal 25, rows.count # 19 + 6 sector explanations
-    assert_equal(54, Translation.count)  # nine items added to tree = 49 + 6 explanations
-    assert_equal 5, page.find_all('div.error').count # row for each of four error rows and count row
+    assert_equal 30, rows.count # 19 + 6 sector explanations
+    assert_equal(59, Translation.count)  # nine items added to tree = 49 + 6 explanations
+    assert_equal 3, page.find_all('div.error').count # row for each of four error rows and count row
 
     # we got errors uploading tree.
     assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_TREE_UPLOADING]}", page.find('h4').text)
