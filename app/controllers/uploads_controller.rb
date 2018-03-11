@@ -277,7 +277,7 @@ class UploadsController < ApplicationController
       return label.gsub(/[^0-9,.]/, ""), text, ''
     else
       strArray = str.strip.split(/[\s\.)]+/)
-      strCodesArray = strArray[0..3].join('').split('')
+      strCodesArray = strArray[0..3] # .join('').split('')
       code_array = []
       strCodesArray[0..3].each_with_index do |c, ix|
         code_num = int_or_zero_from_s(c)
@@ -324,7 +324,7 @@ class UploadsController < ApplicationController
       # indicator code does not match code from Area, Component and Outcome.
       @abortRow = true
       @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
-    elsif code_str.length != 1
+    elsif code_str.length < 1
       @abortRow = true
       @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: val)
     end
