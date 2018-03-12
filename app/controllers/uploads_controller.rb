@@ -277,7 +277,9 @@ class UploadsController < ApplicationController
       return label.gsub(/[^0-9,.]/, ""), text, ''
     else
       strArray = str.strip.split(/[\s\.)]+/)
+      strArray2 = str.strip.split(/[\.]+/)
       strCodesArray = strArray[0..3] # .join('').split('')
+      strCodesArray2 = strArray2[0..3]
       code_array = []
       strCodesArray[0..3].each_with_index do |c, ix|
         code_num = int_or_zero_from_s(c)
@@ -288,14 +290,19 @@ class UploadsController < ApplicationController
       if code_array.length == 4
         # we have fourth code, which should be the indicator letter code
         code = code_array[3]
-        # recreate text from rest of strArray
-        text = strArray[0..-(strArray.length - 4)].join(' ')
-      else
-        # Invalid code - error
-        Rails.logger.error("ERROR - Invalid code from strArray: #{strArray.inspect}")
-        desc = str[(strArray.first.length)..-2]
+      # else
+      #   # Invalid code - error
+      #   Rails.logger.error("ERROR - Invalid code from strArray: #{strArray.inspect}")
       end
-      text = desc.present? ? desc.lstrip : ''
+      codes = strCodesArray.join('.')
+      if codes == strCodesArray2.join('.')
+        # only . between codes, so text should be after codes and period
+        desc = str[(codes.length+1)..str.length]
+      else
+        # there is at least one space between codes
+        desc = str[(codes.length+2)..str.length]
+      end
+      text = desc.present? ? desc.strip : ''
       return code, text, code_array.join('.')
     end
   end
