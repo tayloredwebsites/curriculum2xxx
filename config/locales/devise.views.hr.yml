@@ -2,137 +2,135 @@ hr:
   activerecord:
     attributes:
       user:
-        confirmation_sent_at: 
-        confirmation_token: 
-        confirmed_at: 
-        created_at: 
-        current_password: 
-        current_sign_in_at: 
-        current_sign_in_ip: 
-        email: 
-        encrypted_password: 
-        failed_attempts: 
-        last_sign_in_at: 
-        last_sign_in_ip: 
-        locked_at: 
-        password: 
-        password_confirmation: 
-        remember_created_at: 
-        remember_me: 
-        reset_password_sent_at: 
-        reset_password_token: 
-        sign_in_count: 
-        unconfirmed_email: 
-        unlock_token: 
-        updated_at: 
+        confirmation_sent_at: Potvrda poslana na
+        confirmation_token: Potvrdni znak
+        confirmed_at: Potvrđen u
+        created_at: Kreiran u
+        current_password: Trenutna zaporka
+        current_sign_in_at: Trenutno prijavljeni u 
+        current_sign_in_ip: Trenutni IP znak
+        email: E-mail
+        encrypted_password: Šifrirana zaporka
+        failed_attempts: Neuspjeli pokušaji
+        last_sign_in_at: Poslednji put prijavljen 
+        last_sign_in_ip: Posljednja IP adresa
+        locked_at: Zaključano
+        password: Zaporka 
+        password_confirmation: Potvrdite zaporku
+        remember_created_at: Zapamti kreirano u 
+        remember_me: Zapamti me
+        reset_password_sent_at: Poništi zaporku poslatu na
+        reset_password_token: Resetuj znak za lozinku
+        sign_in_count: Broj zahtjeva
+        unconfirmed_email: Nepotvrđen nalog 
+        unlock_token: Otključaj znak
+        updated_at: Ažurirano u 
     models:
-      user: 
+      user:  Korisnik
   devise:
     confirmations:
-      confirmed: Vaš račun je uspješno potvrđen. Sad ste prijavljeni.
+      confirmed: Vaš nalog je uspješno potvrđen.
       new:
-        resend_confirmation_instructions: 
-      send_instructions: U roku nekoliko minuta ćete primiti e-mail s uputama za potvrdu Vašeg računa.
-      send_paranoid_instructions: Ukoliko se Vaša email adresa nalazi u našoj bazi u roku od nekoliko minuta ćete primiti mail s uputama kako potvrditi Vaš račun.
+        resend_confirmation_instructions: Ponovite upute za verifikaciju
+      send_instructions: U roku od nekoliko minuta primit ćete ePoruku sa uputama za potvrdu Vašeg naloga.
+      send_paranoid_instructions: Ukoliko se Vaša email adresa nalazi u našoj bazi u roku od nekoliko minuta ćete primiti ePoruku s uputama kako potvrditi Vaš nalog.
     failure:
       already_authenticated: Već ste prijavljeni.
-      inactive: Vaš račun još nije aktiviran.
-      invalid: 
-      last_attempt: Imate još jedan pokušaj prije nego Vaš račun bude zaključan.
-      locked: Vaš račun je zaključan.
-      not_found_in_database: 
-      timeout: Vrijeme trajanja Vaše sesije je isteklo. Za nastavak se prijavite ponovno.
+      inactive: Vaš nalog još nije aktiviran.
+      invalid: Neispravan e-mail ili zaporka.
+      last_attempt: Imate još jedan pokušaj prije nego što Vaš nalog bude zaključan.
+      locked: Vaš nalog je zaključan.
+      not_found_in_database: Neispravan e-mail ili lozinka.
+      timeout: Trajanje vaše sesije je isteklo. Ponovno se prijavite za nastavak.
       unauthenticated: Za nastavak se morate prijaviti ili registrirati.
-      unconfirmed: Prije nastavka morate potvrditi Vaš račun.
+      unconfirmed: Prije nastavka morate potvrditi Vaš nalog.
     mailer:
       confirmation_instructions:
-        action: 
-        greeting: 
-        instruction: 
-        subject: Upute za potvrdu korisničkog računa
+        action: Potvrdi moj nalog
+        greeting: Dobrodošli
+        instruction: 'E-mail naloga možete potvrditi putem linka ispod:'
+        subject: Upute za potvrdu korisničkog naloga
       password_change:
-        greeting: 
-        message: 
-        subject: 
+        greeting: Zdravo
+        message: Obavještavamo Vas da je Vaša zaporka promijenjena.
+        subject: Zaporka je promijenjena  
       reset_password_instructions:
-        action: 
-        greeting: 
-        instruction: 
-        instruction_2: 
-        instruction_3: 
-        subject: Upute za promjenu lozinke
+        action: Promijeni moju zaporku
+        greeting: Zdravo
+        instruction: Netko je tražio link za promjenu Vaše zaporke, a to se može uraditi putem linka ispod. 
+        instruction_2: Ako niste to Vi tražili, ignorišite ovu ePoruku.
+        instruction_3: Vaša zaporka se neće promijeniti dok ne pristupite linku iznad i kreirate novu.
+        subject: Upute za promjenu zaporke
       unlock_instructions:
-        action: 
-        greeting: 
-        instruction: 
-        message: 
-        subject: Upute za otključavanje korisničkog računa
+        action: Otključaj moj nalog  
+        greeting: Zdravo
+        instruction: 'Kliknite na link ispod da biste otključali svoj nalog:'
+        message: Vaš nalog je zaključan zbog prekomjernog broja neuspjelih pokušaja prijave.
+        subject: Upute za otključavanje korisničkog naloga
     omniauth_callbacks:
-      failure: Nismo Vas u mogućnosti autorizirati sa %{kind} računom zbog "%{reason}".
-      success: Uspješna autorizacija sa %{kind} računa.
+      failure: Nismo Vas u mogućnosti autorizirati sa %{kind} nalogom zbog "%{reason}".
+      success: Uspješna autorizacija sa %{kind} naloga.
     passwords:
       edit:
-        change_my_password: 
-        change_your_password: 
-        confirm_new_password: 
-        new_password: 
+        change_my_password: Promjeni moju zaporku
+        change_your_password: Promijeni svoju zaporku
+        confirm_new_password: Potvrdi novu zaporku 
+        new_password: Nova zaporka
       new:
-        forgot_your_password: 
-        send_me_reset_password_instructions: 
-      no_token: Ne možete pristupiti ovoj stranici ako niste kliknuli na link u emailu za resetiranje lozinke.
-      send_instructions: U roku nekoliko minuta ćete primiti e-mail s uputama za promjenu Vaše lozinke.
-      send_paranoid_instructions: Ukoliko se Vaša email adresa nalazi u našoj bazi, na istu ćete u roku od nekoliko minuta primiti link za resetiranje lozinke.
-      updated: Vaša lozinka je uspješno promjenjena. Sad ste prijavljeni.
-      updated_not_active: Vaša lozinka je uspješno promijenjena.
+        forgot_your_password: Zaboravili ste zaporku?
+        send_me_reset_password_instructions: Pošaljite mi upute za promjenu zaporke 
+      no_token: Ne možete pristupiti ovoj stranici ukoliko ne pristupite preko ePoruke za promjenu zaporke. Ako dolazite iz ePoruke za promjenu zaporke, obavezno provjerite da li ste koristili punu URL adresu.
+      send_instructions: U roku od nekoliko minuta dobićete ePoruku sa uputom za promjenu Vaše zaporke.
+      send_paranoid_instructions: Ukoliko se Vaša e-mail adresa nalazi u našoj bazi, na istu ćete dobiti link za promjenu zaporke u roku od nekoliko minuta. 
+      updated: Vaša zaporka je uspješno promjenjena. Sad ste prijavljeni.
+      updated_not_active: Vaša zaporka je uspješno promijenjena.
     registrations:
-      destroyed: Pozdrav! Vaš račun je uspješno obrisan. Nadamo se da ćete se brzo vratiti.
+      destroyed: Pozdrav! Vaš nalog je uspješno obrisan. Nadamo se da ćete se brzo vratiti.
       edit:
-        are_you_sure: 
-        cancel_my_account: 
-        currently_waiting_confirmation_for_email: 
-        leave_blank_if_you_don_t_want_to_change_it: 
-        title: 
-        unhappy: 
-        update: 
-        we_need_your_current_password_to_confirm_your_changes: 
+        are_you_sure: Da li ste sigurni?
+        cancel_my_account: Otkaži moj nalog
+        currently_waiting_confirmation_for_email: 'Trenutno čekam potvrdu za: %{email}'
+        leave_blank_if_you_don_t_want_to_change_it: Ostavite prazno ako ne želite da je promijenite 
+        title: Uredi
+        unhappy: Nezadovoljni?
+        update: Ažuriranje
+        we_need_your_current_password_to_confirm_your_changes: Potrebna nam je Vaša trenutna zaporka da bi potvrdili promjene
       new:
-        sign_up: 
+        sign_up: Registruj se
       signed_up: Dobrodošli! Uspješno ste se registrirali.
-      signed_up_but_inactive: Uspješno ste se registrirali. Doduše, ne možete se prijaviti u sustav zato što Vaš račun još nije aktiviran.
-      signed_up_but_locked: Uspješno ste se registrirali. Nažalost ne možete se prijaviti jer Vam je račun zaključan.
-      signed_up_but_unconfirmed: Poruka s linkom za potvrdu je poslana na Vašu e-mail adresu. Molimo kliknite na link da aktivirate Vaš račun.
-      update_needs_confirmation: Uspješno ste ažurirali Vaš račun, ali trebamo potvrditi Vašu novu e-mail adresu. Molimo provjerite svoje sanduče i kliknite na link za potvrdu.
-      updated: Uspješno ste izmjenili Vaš račun.
+      signed_up_but_inactive: Uspješno ste se registrirali. Nažalost, ne možete se prijaviti u sustav zato što Vaš račun još nije aktiviran.
+      signed_up_but_locked: Uspješno ste se registrirali. Nažalost ne možete se prijaviti jer Vam je nalog zaključan.
+      signed_up_but_unconfirmed: Poruka s linkom za potvrdu je poslana na Vašu e-mail adresu. Molimo kliknite na link da aktivirate Vaš nalog.
+      update_needs_confirmation: Uspješno ste ažurirali Vaš nalog, ali trebamo potvrditi Vašu novu e-mail adresu. Molimo provjerite svoj e-mail i kliknite na link za potvrdu.
+      updated: Uspješno ste ažurirali Vaš nalog.
     sessions:
-      already_signed_out: 
+      already_signed_out: Uspješno ste odjavljeni. 
       new:
-        sign_in: 
+        sign_in: Prijavi se
       signed_in: Uspješno ste se prijavili.
       signed_out: Uspješno ste se odjavili.
     shared:
       links:
-        back: 
-        didn_t_receive_confirmation_instructions: 
-        didn_t_receive_unlock_instructions: 
-        forgot_your_password: 
-        sign_in: 
-        sign_in_with_provider: 
-        sign_up: 
+        back: Nazad
+        didn_t_receive_confirmation_instructions: Niste dobili upute za potvrdu?
+        didn_t_receive_unlock_instructions: Niste dobili upute za otključavanje? 
+        forgot_your_password: Zaboravili ste zaporku? 
+        sign_in: Prijavi se
+        sign_in_with_provider: Prijavi se sa
+        sign_up: Registriraj se
     unlocks:
       new:
-        resend_unlock_instructions: 
-      send_instructions: U roku nekoliko minuta ćete primiti e-mail s uputama za otključavanje Vašeg računa.
-      send_paranoid_instructions: Ako Vaš račun postoji, na email ćete u roku nekoliko minuta primiti upute kako ga otključati.
-      unlocked: Vaš račun je uspješno otključan. Molimo prijavite se.
+        resend_unlock_instructions: Ponovo pošaljite upute za otključavanje
+      send_instructions: U roku od nekoliko minuta ćete primiti e-mail s uputama za otključavanje Vašeg naloga.
+      send_paranoid_instructions: Ako Vaš nalog postoji, na e-mail adresu ćete u roku nekoliko minuta primiti upute kako ga otključati.
+      unlocked: Vaš nalog je uspješno otključan. Molimo prijavite se.
   errors:
     messages:
       already_confirmed: je već potvrđen, molimo pokušajte se prijaviti
       confirmation_period_expired: je trebao biti potvrđen tijekom perioda %{period}, molimo tražite novi
       expired: je istekao, molimo zatražite novi
       not_found: nije pronađeno
-      not_locked: nije zaključan
+      not_locked: nije zaključano
       not_saved:
-        few: "%{count} greške sprečavaju snimanje %{resource}:"
-        many: "%{count} grešaka sprečavaju snimanje %{resource}:"
-        one: '1 greška sprečava snimanje %{resource}:'
-        other: "%{count} grešaka sprečavaju snimanje %{resource}:"
+        one: '1 greška sprječava snimanje %{resource}:'
+        other: "%{count} grešaka sprječavaju snimanje %{resource}:"

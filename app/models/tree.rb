@@ -144,6 +144,9 @@ class Tree < BaseRec
     parents = self.getAllParents
     allRecs = parents.concat([self])
     treeKeys = (allRecs).map { |rec| rec.name_key}
+    treeKeys.each do |k|
+      Rails.logger.debug("*** treeKey: #{k}")
+    end
   end
 
 
