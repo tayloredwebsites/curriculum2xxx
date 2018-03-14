@@ -82,7 +82,7 @@ class UsersController < ApplicationController
     unauthorized() and return if !user_is_admin?(current_user)
     @user = User.new(admin_user_params)
     if @user.save
-      flash[:success] = "user #{ @user.email } created."
+      flash[:success] = I18n.t('user_created_email', email: @user.email)
     end
     render :configuration
   end
@@ -106,12 +106,12 @@ class UsersController < ApplicationController
     if user_is_admin?(current_user)
       # regular user can set user as teacher or admin
       if @user.update(admin_user_params)
-        flash[:success] = "user #{ @user.email } updated."
+        flash[:success] = I18n.t('user_updated_email', email: @user.email)
       end
     elsif has_same_id?(current_user, @user)
       # regular user cannot set self as teacher or admin
       if @user.update(regular_user_params)
-        flash[:success] = "user #{ @user.email } updated."
+        flash[:success] = I18n.t('user_updated_email', email: @user.email)
       end
     end
     render :configuration

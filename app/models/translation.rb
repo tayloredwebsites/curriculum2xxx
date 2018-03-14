@@ -2,6 +2,7 @@ class Translation < BaseRec
 
   # to do - add associations
 
+  # to do - lookup in config.i18n.fallbacks order if not found
   def self.find_translation(locale, code, checkDefault = true, allow_none = false)
     recs = Translation.where(locale: locale, key: code)
     if recs.count == 1
@@ -16,16 +17,16 @@ class Translation < BaseRec
           if allow_none
             return nil, BaseRec::REC_NO_CHANGE, ""
           else
-            return nil, BaseRec::REC_ERROR, "Missing translation for #{code}"
+            return nil, BaseRec::REC_ERROR, I18n.t('translations.errors.missing_translations_locale_code', locale: locale, code: code)
           end
         else
-          return nil, BaseRec::REC_ERROR, "System Error, too many default translations for #{code}"
+          return nil, BaseRec::REC_ERROR, I18n.t('translations.errors.too_many_translations_locale_code', locale: locale, code: code)
         end
       else # if checkDefault
         return nil, BaseRec::REC_NO_CHANGE, ''
       end # if checkDefault
     else # if recs.count ...
-      raise "System Error, too many translations for locale: #{locale}, code: #{code}"
+      raise I18n.t('translations.errors.too_many_translations_locale_code', locale: locale, code: code)
     end # if recs.count ...
   end
 
@@ -47,7 +48,7 @@ class Translation < BaseRec
       else
         rec = Translation.create(locale: locale, key: code, value: val)
         if rec.errors.count > 0
-          errors << "ERROR creating translation for #{code} to: #{val}"
+          errors << I18n.t('translations.errors.creating_translations_locale_code', locale: locale, code: code)
           return nil, BaseRec::REC_ERROR, errors.to_s
         end
         return rec, BaseRec::REC_ADDED, ''
@@ -59,7 +60,7 @@ class Translation < BaseRec
         rec.value = val
         rec.save
         if rec.errors.count > 0
-          errors << "ERROR updating translation for #{code} to #{val}"
+          errors << I18n.t('translations.errors.updating_translations_locale_code', locale: locale, code: code)
           return nil, BaseRec::REC_ERROR, errors.to_s
         end
         return rec, BaseRec::REC_UPDATED, ''

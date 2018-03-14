@@ -52,14 +52,13 @@ class SectorsController < ApplicationController
       # listing = listing.is_indicator
       @trees = listing.all
 
-      # to do - filter out all but indicator records.
-      # note: indicator records have code of length 4, tricky to do (must be done in sql, and not a sql standard).
+      # Note: to be able to filter out all but indicator records.
+      # indicator records have depth of 4, outcomes have depth of 3.
       # consider adding length/depth field to record (denormalized for convenience)
 
-      # translation 'includes' not working due to Translations table belonging to I18n Active record gem.
+      # Translations table no longer belonging to I18n Active record gem.
       # note: Active Record had problems with placeholder conditions in join clause.
-      # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
-      # possibly create own Translation model to allow includes, or join I18n Translation table somehow
+      # Consider having Translations belong_to trees and sectors.
       # Current solution: get translation from hash of pre-cached translations.
       name_keys= @trees.pluck(:name_key)
       translations = Translation.where(locale: @locale_code, key: name_keys).all

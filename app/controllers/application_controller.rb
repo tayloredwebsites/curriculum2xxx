@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # set the locale codes in controllers: 'before_action :getLocaleCode'
+  # set the locale codes
   def getLocaleCode
     # first default locale to default locale
     @locale_code = Rails.application.config.i18n.default_locale
@@ -47,16 +47,16 @@ class ApplicationController < ActionController::Base
     # assumes only one tree type record
     @treeTypeRec = TreeType.first
     if @treeTypeRec.blank?
-      raise "ERROR missing Tree Type Record"
+      raise I18n.translate('app.errors.missing_tree_type_record')
     elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
-      raise "ERROR invalid Tree Type Code"
+      raise I18n.translate('app.errors.missing_tree_type_code')
     end
     # assumes only one version record
     @versionRec = Version.first
     if @versionRec.blank?
-      raise "ERROR missing Version Record"
+      raise I18n.translate('app.errors.missing_version_record')
     elsif @versionRec.code != BaseRec::VERSION_CODE
-      raise "ERROR invalid Version Code"
+      raise I18n.translate('app.errors.missing_version_code')
     end
   end
 

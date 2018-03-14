@@ -3,6 +3,7 @@ en:
   app:
     title: "ENABLE BIH Curriculum App."
     labels:
+      all: "All"
       save: "Save"
       cancel: "Cancel"
       submit: "Submit"
@@ -51,6 +52,10 @@ en:
       unauthorized: "You are not authorized to access requested page."
       invalid_sheetID: "Row number does not match sheetID"
       missing_req_field: "Row is missing required field"
+      missing_tree_type_record: "error - missing Tree Type Record"
+      missing_tree_type_code: "error - invalid Tree Type Code"
+      missing_version_record: "error - missing Version Record"
+      missing_version_code: "error - invalid Version Code"
   home:
     name: "Enable BiH Web App Home Page"
     title: "Home Page"
@@ -99,7 +104,13 @@ en:
       key: "Key"
       value: "Value"
     errors:
-      too_many_translations_lang_key: "too many translations for locale: %{lang}, key: %{key}"
+      missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
+      too_many_translations_locale_code: "too many translations for locale: %{locale}, code: %{code}"
+      creating_translations_locale_code: "error creating translation for locale: %{locale}, code: %{code}"
+      creating_translations_locale_code: "error updating translation for locale: %{locale}, code: %{code}"
+      is_same_as_default: "Your new translation is the same as the default."
+      updated_key: "Translation for %{key} updated."
+      error_creating_code_val: "error creating translation #{code} to: #{val}"
   trees:
     index:
       name: "Operational Teaching Curriculum (OTC) Listing"
@@ -114,6 +125,28 @@ en:
       otc_listing_filter: "OTC Listing Filter"
       sectors_listing: "KBE Sectors"
       sectors_listing_hover: "Knowledge Based Education (KBE) Sectors"
+      related_sectors: 'Related Sectors KBE.'
+      how_sectors_related: 'How Sector KBE is related.'
+      indicator_connections: 'Connections to Other Indicators:'
+      current_subject: "In this Subject"
+      subject_biology: "In Biology"
+      subject_chemistry: "In Chemistry"
+      subject_geography: "In Geography"
+      subject_it: "In Information Technology"
+      subject_math: "In Math"
+      subject_physics: "In Physics"
+      teacher_field_1: "Multi, inter or trans disciplinary KBE sector based projects"
+      teacher_field_2: "Rough Learning Progression - When to teach"
+      teacher_field_3: "Textbook and Resource Materials to Use in Class"
+      teacher_field_4: "Suggested Assessment Resources and Activities"
+      teacher_field_5: "Additional Background and Resource Materials for the Teacher"
+      teacher_field_6: "Goal behaviour (What students will do, Practical learning targets)"
+    errors:
+      missing_area_in_tree: "error: missing area in report tree."
+      missing_component_in_tree: "error: missing component in report tree."
+      tree_too_deep_id: "error: treeview depth > 4 at id: %{id}"
+      save_curriculum_code_error: "saving Curriculum code %{code} returned errors: "
+      too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"
   sectors:
     index:
       name: "Knowledge Based Education (KBE) Sectors"
@@ -165,6 +198,9 @@ en:
       teacher: 'Teacher:'
       fill_signup_form: "Please fill out this form to continue the signup process."
       req_teacher: "Teacher Request:"
+    messages:
+      user_created_email: "user %{email} created."
+      user_updated_email: "user %{email} updated."
   activerecord:
     attributes:
       user:

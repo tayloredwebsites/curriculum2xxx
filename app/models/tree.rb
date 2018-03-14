@@ -184,13 +184,11 @@ class Tree < BaseRec
         tree.base_key = Tree.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
         ret = tree.save
         if tree.errors.count > 0
-          Rails.logger.error("ERROR: saving hierarchy item: #{fullCode} returned errors: #{tree.errors.full_messages}")
-          return fullCode, nil, BaseRec::REC_ERROR, tree.errors.full_messages
+          return fullCode, nil, BaseRec::REC_ERROR, "#{I18n.t('trees.errors.save_curriculum_code_error', code: fullCode)} #{tree.errors.full_messages}"
         else
           return fullCode, tree, BaseRec::REC_ADDED, "#{fullCode}"
         end
       elsif matched_codes.count == 1
-        Rails.logger.error("ERROR: tree item matched already.")
         # it already exists, skip
         matched = matched_codes.first
         if matched.name_key.blank?
@@ -203,7 +201,7 @@ class Tree < BaseRec
         return fullCode, matched_codes.first, BaseRec::REC_NO_CHANGE, "#{fullCode}"
       else
         # too many matching items in database: system error.
-        err_str = "Too Many items match in tree: #{@upload.subject_id}, grade_band_id: #{@upload.grade_band_id}, code: #{fullCode}"
+        err_str = I18n.t('trees.errors.too_many_match_subject_gb_code', subject: @upload.subject_id, gb: @upload.grade_band_id, code: fullCode)
         Rails.logger.error("ERROR: #{err_str} ")
         return fullCode, nil, BaseRec::REC_ERROR, err_str
       end # if

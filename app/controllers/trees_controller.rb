@@ -38,10 +38,9 @@ class TreesController < ApplicationController
     # Note: sort order does not matter, it is ordered correctly in the conversion to the treeview json.
     @trees = listing.all
 
-    # translation 'includes' not working due to Translations table belonging to I18n Active record gem.
+    # Translations table no longer belonging to I18n Active record gem.
     # note: Active Record had problems with placeholder conditions in join clause.
-    # Left join not working, since translation table is owned by gem, and am having trouble inheriting it into MyTranslations.
-    # possibly create own Translation model to allow includes, or join I18n Translation table somehow
+    # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
     name_keys= @trees.pluck(:name_key)
     @translations = Hash.new
@@ -68,28 +67,28 @@ class TreesController < ApplicationController
       when 2
         newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
-          raise "ERROR: system error, missing area item in report tree."
+          raise I18n.t('trees.errors.missing_area_in_tree')
         end
         addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
 
       when 3
         newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
-          raise "ERROR: system error, missing area item in report tree."
+          raise I18n.t('trees.errors.missing_area_in_tree')
         elsif otcHash[tree.area][:nodes][tree.component].blank?
-          raise "ERROR: system error, missing component item in report tree."
+          raise I18n.t('trees.errors.missing_component_in_tree')
         end
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
       when 4
-        # to do - looi into refactoring this
+        # to do - look into refactoring this
         # check to make sure parent in hash exists.
         if otcHash[tree.area].blank?
-          raise "ERROR: system error, missing area item in report tree."
+          raise I18n.t('trees.errors.missing_area_in_tree')
         elsif otcHash[tree.area][:nodes][tree.component].blank?
-          raise "ERROR: system error, missing component item in report tree."
+          raise I18n.t('trees.errors.missing_component_in_tree')
         elsif otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome].blank?
-          raise "ERROR: system error, missing component item in report tree."
+          raise I18n.t('trees.errors.missing_outcome_in_tree')
         end
         if @gb.present?
           newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
@@ -104,7 +103,7 @@ class TreesController < ApplicationController
         end
 
       else
-        raise "build treeview json code not an area or component #{tree.code} at id: #{tree.id}"
+        raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
       end
     end
     # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON

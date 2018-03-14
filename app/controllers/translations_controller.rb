@@ -30,11 +30,11 @@ class TranslationsController < ApplicationController
   def create
     @translation = Translation.new(translation_params)
     if @translation.value == I18n.t(@translation.key, locale: @translation.locale)
-      flash[:alert] = "Your new translation is the same as the default."
+      flash[:alert] = I18n.t('translations.errors.is_same_as_default')
       render :new
     else
       if @translation.save
-        flash[:success] = "Translation for #{ @key } updated."
+        flash[:success] = I18n.t('translations.errors.updated_key', key: @key)
         # I18n.backend.reload!
         redirect_to translations_path(@locale_code)
       else
@@ -51,7 +51,7 @@ class TranslationsController < ApplicationController
 
   def update
     if @translation.update(translation_params)
-      flash[:notice] = "Translation for #{ @key } updated."
+      flash[:notice] = I18n.t('translations.errors.updated_key', key: @key)
       # I18n.backend.reload!
       redirect_to translations_path(@locale_code)
     else
