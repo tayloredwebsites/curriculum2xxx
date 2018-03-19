@@ -21,10 +21,6 @@ class TreesController < ApplicationController
     # to do - refactor this
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all.order(:code)
-    @tree = Tree.new(
-      tree_type_id: @treeTypeRec.id,
-      version_id: @versionRec.id
-    )
 
     @subj = params[:tree].present? && params[:tree][:subject_id].present? ? Subject.find(params[:tree][:subject_id]) : nil
     @gb = params[:tree].present? && params[:tree][:grade_band_id].present? ? GradeBand.find(params[:tree][:grade_band_id]) : nil
@@ -37,6 +33,13 @@ class TreesController < ApplicationController
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # Note: sort order does not matter, it is ordered correctly in the conversion to the treeview json.
     @trees = listing.all
+
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+    @tree.subject_id = @subj.id if @subj.present?
+    @tree.grade_band_id = @gb.id if @gb.present?
 
     # Translations table no longer belonging to I18n Active record gem.
     # note: Active Record had problems with placeholder conditions in join clause.
