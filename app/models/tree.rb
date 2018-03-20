@@ -1,5 +1,15 @@
 class Tree < BaseRec
 
+  # Note: Found english version of letters mixed in with cryllic
+  # mapped english version of cyrillic letters to match the corresponding english letter so both versions of the letter would map out properly to the english
+  # then mapped cyrillic letters, so english to cyrillic would return cryllic
+  INDICATOR_SEQ_ENG = ['a','e','j','k','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p']
+  INDICATOR_SEQ_CYR = ['a','e','j','k','а','б','в','г','д','ђ','e','ж','з','и','ј','к','л','љ','м','н']
+  # hash to return english letter for cyrillic letter
+  GET_ENG_IND_H = INDICATOR_SEQ_CYR.zip(INDICATOR_SEQ_ENG).to_h
+  # hash to return cyrillic letter for english letter
+  GET_CYR_IND_H = INDICATOR_SEQ_ENG.zip(INDICATOR_SEQ_CYR).to_h
+
 
   belongs_to :tree_type
   belongs_to :version
@@ -94,6 +104,58 @@ class Tree < BaseRec
       return self.codeArray[3]
     else
       return nil
+    end
+  end
+
+  def self.engIndicatorLetter(letter)
+    if Tree.validCyrIndicatorLetter?(letter)
+      return GET_ENG_IND_H[letter]
+    else
+      return "#{letter}-#{letter.ord}-INVALID"
+    end
+  end
+
+  def self.validCyrIndicatorLetter?(letter)
+    if INDICATOR_SEQ_CYR.include?(letter)
+      return true
+    else
+      return false
+    end
+  end
+
+  def self.indicatorLetterByLocale(locale, letter)
+    if locale == BaseRec::LOCALE_SR
+      return Tree.engIndicatorLetter(letter)
+    else
+      return letter
+    end
+  end
+
+  def cyrIndicatorCode
+    # indicator code letter is in english - map to cyrillic
+    indicLetter = self.indicator
+    if self.depth == 4 && indicLetter.present? && INDICATOR_SEQ_ENG.include?(indicLetter)
+      codeArray = self.code.split('.')
+      if codeArray[3] != indicLetter
+        # should not happen
+        Rails.logger.error("ERROR: Tree id: #{self.id} has mismatched code and indicator")
+        return code
+      else
+        codeArray[3] = GET_CYR_IND_H[indicLetter]
+        return codeArray.join('.')
+      end
+    else
+      # should not happen
+      Rails.logger.error("ERROR: Tree id: #{self.id} is not a valid indicator (getCyrIndicatorCode)")
+      return code
+    end
+  end
+
+  def codeByLocale(locale)
+    if locale == BaseRec::LOCALE_SR
+      return cyrIndicatorCode
+    else
+      return code
     end
   end
 

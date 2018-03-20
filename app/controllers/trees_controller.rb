@@ -94,14 +94,14 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_outcome_in_tree')
         end
         if @gb.present?
-          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.code}: #{translation}", id: "#{tree.id}", nodes: {}}
+          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code)}: #{translation}", id: "#{tree.id}", nodes: {}}
           addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
         else
           # add grade band level item
           newGradeBand = {text: "#{I18n.translate('app.labels.grade_band_num', num: tree.grade_band.code)}", id: "#{tree.grade_band.id}", nodes: {}}
           addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.grade_band.code, newGradeBand)
           # add indicator level item
-          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.code}: #{translation}", id: "#{tree.id}", nodes: {}}
+          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code)}: #{translation}", id: "#{tree.id}", nodes: {}}
           addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome][:nodes][tree.grade_band.code], tree.subCode, newHash)
         end
 

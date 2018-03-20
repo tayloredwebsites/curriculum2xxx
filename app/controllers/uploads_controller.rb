@@ -289,7 +289,8 @@ class UploadsController < ApplicationController
       end
       if code_array.length == 4
         # we have fourth code, which should be the indicator letter code
-        code = code_array[3]
+        code = Tree.indicatorLetterByLocale(@localeRec.code, code_array[3])
+        code_array[3] = code
       # else
       #   # Invalid code - error
       #   Rails.logger.error("ERROR - Invalid code from strArray: #{strArray.inspect}")

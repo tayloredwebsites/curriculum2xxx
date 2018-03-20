@@ -15,7 +15,7 @@
     <div class='row outcome-row'><%= "#{I18n.translate('app.labels.outcome')} #{@tree.outcome}: #{@translations[outcome.buildNameKey]}" %></div>
     <div class='indicator-table'>
       <div class='indicator-name' style=''>
-        <%= "#{I18n.translate('app.labels.indicator')} #{@tree.code}: #{@translations[@tree.buildNameKey]}" %>
+        <%= "#{I18n.translate('app.labels.indicator')} #{@tree.codeByLocale(@locale_code)}: #{@translations[@tree.buildNameKey]}" %>
       </div>
       <div class='col indicator-info'>
         <div class='row'>
