@@ -4,7 +4,8 @@ class TreesController < ApplicationController
 
   def index
     @subjects = Subject.all.order(:code)
-    @gbs = GradeBand.all.order(:code)
+    @gbs = GradeBand.all
+    @gbs_upper = GradeBand.where(code: ['9','13'])
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -20,7 +21,8 @@ class TreesController < ApplicationController
   def index_listing
     # to do - refactor this
     @subjects = Subject.all.order(:code)
-    @gbs = GradeBand.all.order(:code)
+    @gbs = GradeBand.all
+    @gbs_upper = GradeBand.where(code: ['9','13'])
 
     @subj = params[:tree].present? && params[:tree][:subject_id].present? ? Subject.find(params[:tree][:subject_id]) : nil
     @gb = params[:tree].present? && params[:tree][:grade_band_id].present? ? GradeBand.find(params[:tree][:grade_band_id]) : nil
