@@ -3,7 +3,8 @@ class SectorsController < ApplicationController
   def index
 
     @subjects = Subject.all.order(:code)
-    @gbs = GradeBand.all.order(:code)
+    @gbs = GradeBand.all
+    @gbs_upper = GradeBand.where(code: ['9','13'])
     @sectors = Sector.all
     @sector = Sector.new
 
@@ -28,7 +29,6 @@ class SectorsController < ApplicationController
       @sector_id = params[:tree][:sector_id].present? ? params[:tree][:sector_id] : nil
     end
     @subjectOptions = helpers.subjectsOptions(@subject_id)
-    @gradeBandOptions = helpers.gradeBandsOptions(@grade_band_id)
     @sectorsOptions = helpers.sectorsOptions(@sector_id, @translations)
 
     @rptRows = []

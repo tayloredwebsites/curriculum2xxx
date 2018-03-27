@@ -20,5 +20,3 @@
 //
 // include other js in this directory tree.
 //= require_tree .
-
-// show/hide correct grade band selector depending upon subject

@@ -16,15 +16,15 @@
       </div>
       <div class='row'>
         <div class='col col-md-2 border-left border-bottom'>
-          <select name='tree[subject_id]' id='tree_subject_id'>
+          <select name='tree[subject_id]' id='tree_subject_id' class='subject-with-gb'>
             <%= options_for_select(@subjectOptions, @subject_id) %>
           </select>
         </div>
         <div class='col col-md-2 border-bottom'>
-          <select name='tree[grade_band_id]' id='tree_grade_band_id'>
-            <%= options_for_select(@gradeBandOptions, @grade_band_id) %>
-          </select>
+          <span id='all-gbs-select'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
+          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs_upper, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
         </div>
+
         <div class='col col-md-6 border-bottom'>
           <select name='tree[sector_id]' id='tree_sector_id'>
             <%= options_for_select(@sectorsOptions, @sector_id) %>
