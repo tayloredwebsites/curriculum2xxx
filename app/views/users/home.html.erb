@@ -1,13 +1,6 @@
 <% content_for(:title_code, 'home.title') %>
 <% content_for(:page_class, 'users') %>
 
-<%
-  if current_user.present? && current_user.is_registering?
-%>
-  <%= render partial: 'registration', :locals => {:user => current_user} %>
-<%
-  end
-%>
 <h2><%= I18n.translate('home.title') %></h2>
 <div id='home'>
   <div class='col-md-12'>

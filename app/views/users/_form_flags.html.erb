@@ -24,4 +24,32 @@
       <% end %>
     </span>
   </div>
+  <div class='row'>
+    <span class='col col-md-4 label-col'>
+      <%= form.label :role_public %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
+      <%= form.check_box :role_public %>
+      <% if @user.errors.present? && @user.errors[:role_public].present? %>
+        <span class='ui-error'><%= @user.errors[:role_public].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <div class='row'>
+    <span class='col col-md-4 label-col'>
+      <%= form.label I18n.t('app.roles.name') %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
+      <% if @user.is_admin? %>
+        <%= I18n.t('app.roles.admin.name') %>
+      <% elsif @user.is_teacher? %>
+        <%= I18n.t('app.roles.teacher.name') %>
+      <% elsif @user.is_public? %>
+        <%= I18n.t('app.roles.public.name') %>
+      <% end %>
+    </span>
+  </div>
 <% end %>

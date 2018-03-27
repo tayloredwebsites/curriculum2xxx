@@ -5,7 +5,6 @@
       <th><%= translate('app.labels.email') %></th>
       <th><%= translate('app.labels.name') %></th>
       <th><%= translate('app.roles.name') %></th>
-      <th><%= translate('app.roles.req_teacher.abbrev') %></th>
       <th><%= translate('app.labels.action') %></th>
     </tr>
   </thead>
@@ -15,7 +14,6 @@
         <td><%= u.email %></td>
         <td><%= u.full_name %></td>
         <td><%= u.role_names %></td>
-        <td><%= u.is_requesting_teacher_role? %></td>
         <td>
           <%= link_to translate('app.labels.edit'), edit_user_path(id: u.id) %>
         </td>

@@ -39,9 +39,9 @@ en:
       teacher:
         abbrev: 'Teacher'
         name: 'Teacher'
-      req_teacher:
-        abbrev: 'Requested?'
-        name: 'Request for Teacher Access'
+      public:
+        abbrev: 'Public'
+        name: 'Public Access'
     errors:
       too_many_matched_key: "Too many matches for %{key}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
@@ -198,13 +198,14 @@ en:
       teacher: 'Teacher:'
       fill_signup_form: "Please fill out this form to continue the signup process."
       req_teacher: "Teacher Request:"
+      public_user: "Registered Public User"
     messages:
       user_created_email: "user %{email} created."
       user_updated_email: "user %{email} updated."
   activerecord:
     attributes:
       user:
-        role_req_teacher: "Requesting to be Teacher"
+        role_public: "Public"
         role_teacher: "Teacher"
         role_admin: "BiH Web Admin"
         email: "E-Mail Address"

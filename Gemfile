@@ -55,6 +55,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
   gem 'factory_bot_rails' # was factory_girl_rails
   gem 'rails-controller-testing' # add assigns and assert template to controller testing
   gem 'launchy' # for launching save_and_open_page to default browser

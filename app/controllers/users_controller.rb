@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   ADMIN_USER_PARAMS = [
     :role_admin,
     :role_teacher,
-    :role_req_teacher
+    :role_public
   ]
 
   # update the the locale (language), and return to current page
