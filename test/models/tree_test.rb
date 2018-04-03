@@ -82,18 +82,18 @@ class TreeTest < ActiveSupport::TestCase
   test "find_or_add_code_in_tree tests" do
     # should add area 2
     tree_count = Tree.count
-    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc, @v01, @hem, @gb_09, '2', nil, nil)
+    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc, @v01, @hem, @gb_09, '2', '[]', nil, nil, 0)
     assert_equal tree_count+1, Tree.count
 
     # should not add area 2 again
     tree_count = Tree.count
-    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc, @v01, @hem, @gb_09, '2', nil, nil)
+    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc, @v01, @hem, @gb_09, '2', '[]', nil, nil, 0)
     assert_equal tree_count, Tree.count
     assert_equal BaseRec::REC_NO_CHANGE, status
 
     # should skip if matching record passed in
     tree_count = Tree.count
-    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc, @v01, @hem, @gb_09, '2', nil, match_rec)
+    new_code, match_rec, status, msg = Tree.find_or_add_code_in_tree( @otc, @v01, @hem, @gb_09, '2', '[]', nil, Tree.last, 0)
     assert_equal tree_count, Tree.count
     assert_equal BaseRec::REC_SKIP, status
 

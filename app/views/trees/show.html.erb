@@ -14,8 +14,13 @@
     <div class='row component-row'><%= "#{I18n.translate('app.labels.component')} #{@tree.component}: #{@translations[component.buildNameKey]}" %></div>
     <div class='row outcome-row'><%= "#{I18n.translate('app.labels.outcome')} #{@tree.outcome}: #{@translations[outcome.buildNameKey]}" %></div>
     <div class='indicator-table'>
-      <div class='indicator-name' style=''>
-        <%= "#{I18n.translate('app.labels.indicator')} #{@tree.codeByLocale(@locale_code)}: #{@translations[@tree.buildNameKey]}" %>
+      <div class='indicator-name'>
+
+        <% @indicators.each do |ia| %>
+          <p>
+            <%= "#{I18n.translate('app.labels.indicator')} #{ia[0]}: #{ia[1]}" %>
+          </p>
+        <% end %>
       </div>
       <div class='col indicator-info'>
         <div class='row'>

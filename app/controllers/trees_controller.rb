@@ -65,18 +65,21 @@ class TreesController < ApplicationController
       areaHash = {}
       depth = tree.depth
       case depth
-      when 1
+
+      when 0
         newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         # add area if not there already
         otcHash[tree.area] = newHash if !otcHash[tree.area].present?
-      when 2
+
+      when 1
         newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
         end
+        Rails.logger.debug("*** #{tree.subCode.inspect} to area #{tree.area.inspect} in otcHash")
         addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
 
-      when 3
+      when 2
         newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if otcHash[tree.area].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
@@ -85,7 +88,7 @@ class TreesController < ApplicationController
         end
         addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
 
-      when 4
+      when 3
         # to do - look into refactoring this
         # check to make sure parent in hash exists.
         if otcHash[tree.area].blank?
@@ -95,16 +98,25 @@ class TreesController < ApplicationController
         elsif otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome].blank?
           raise I18n.t('trees.errors.missing_outcome_in_tree')
         end
+        all_translations = translation.present? ? JSON.load(translation) : []
+        all_codes = JSON.load(tree.matching_codes)
         if @gb.present?
-          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code)}: #{translation}", id: "#{tree.id}", nodes: {}}
-          addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
+          # add indicator level item directly under outcome
+          all_codes.each_with_index do |c, ix|
+            newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
+            addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
+          end
         else
-          # add grade band level item
+          Rails.logger.debug("*** no @gb present")
+          # add grade band level item under outcome
           newGradeBand = {text: "#{I18n.translate('app.labels.grade_band_num', num: tree.grade_band.code)}", id: "#{tree.grade_band.id}", nodes: {}}
           addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.grade_band.code, newGradeBand)
-          # add indicator level item
-          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code)}: #{translation}", id: "#{tree.id}", nodes: {}}
-          addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome][:nodes][tree.grade_band.code], tree.subCode, newHash)
+          # add indicator level item under grade band
+          all_codes.each_with_index do |c, ix|
+            thisCode = tree.codeByLocale(@locale_code, ix)
+            newHash = {text: "#{I18n.translate('app.labels.indicator')} #{thisCode}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
+            addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome][:nodes][tree.grade_band.code], thisCode, newHash)
+          end
         end
 
       else
@@ -190,6 +202,15 @@ class TreesController < ApplicationController
     # get the translation key for the related sectors explanation
     treeKeys << "#{@tree.base_key}.explain"
     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+    all_codes = JSON.load(@tree.matching_codes)
+    trans = @translations[@tree.buildNameKey]
+    all_translations = JSON.load(trans)
+    @indicators = []
+    all_codes.each_with_index do |c, ix|
+      thisCode = @tree.codeByLocale(@locale_code, ix)
+      @indicators << [thisCode, all_translations[ix]] if all_translations.length > ix
+    end
+
   end
 
   def edit

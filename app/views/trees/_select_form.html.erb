@@ -11,9 +11,9 @@
       </div>
       <div class='row'>
         <div class='col col-md-4 border-left border-bottom subject-with-gb'><%= collection_select(:tree, :subject_id, @subjects, :id, :code) %></div>
-        <div class='col col-md-4 border-left border-bottom'>
+        <div id='gb-container' class='col col-md-4 border-left border-bottom'>
+          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs_upper, :id, :code, {include_blank: I18n.t('app.labels.all')}, {} ) %></span>
           <span id='all-gbs-select'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
-          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs_upper, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
         </div>
 
         <div class='col col-md-4 border-bottom border-right'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>

@@ -255,9 +255,9 @@ class UploadsController < ApplicationController
     @uploads = Upload.order(:id).includes([:subject, :grade_band, :locale]).all.upload_listing
   end
 
-  def parseSubCodeText(str, depth)
+  def parseSubCodeText(str, depth, stacks)
     if !str.present?
-      return "BLANK"
+      return "BLANK", '', '', '[]'
     end
     if depth < 2
       # Area formatting: "AREA #: <name>""
@@ -267,44 +267,39 @@ class UploadsController < ApplicationController
       code = strArray[1]
       desc = str[(label.length+code.length+2)..-1]
       text = desc.present? ? desc.lstrip : ''
-      return code, text, ''
+      return code, text, '', '[]'
     elsif depth == 2
       # Outcome formatting: "Outcome: #. <name>""
       strArray = str.strip.split(/\./)
       label = strArray.first
       desc = str[(label.length+1)..-1]
       text = desc.present? ? desc.lstrip : ''
-      return label.gsub(/[^0-9,.]/, ""), text, ''
+      return label.gsub(/[^0-9,.]/, ""), text, '', '[]'
     else
-      strArray = str.strip.split(/[\s\.)]+/)
-      strArray2 = str.strip.split(/[\.]+/)
-      strCodesArray = strArray[0..3] # .join('').split('')
-      strCodesArray2 = strArray2[0..3]
-      code_array = []
-      strCodesArray[0..3].each_with_index do |c, ix|
-        code_num = int_or_zero_from_s(c)
-        # output valid Area, Component or Outcome
-        code_array << code_num if ix < 3 && code_num > 0
-        code_array << c if ix == 3 && code_num == 0 && c.length == 1
+      cs = stacks[CODES_STACK]
+      outcomeCode = "#{cs[0]}.#{cs[1]}.#{cs[2]}"
+      arrCodes = []
+      arrDescs = []
+      indicCodeFirst = ''
+      # split multiple indicators and process each
+      str.split(outcomeCode).each do |outc|
+        if outc.length > 0
+          outcScan = StringScanner.new(outc)
+          # skip any white space or punctuation to get the indicator code
+          outcScan.skip_until /[\s[[:punct:]]]*/
+          # get the indicator code
+          indicCode = outcScan.scan /./
+          # change cyrilliac codes to western (english sequence)
+          indicCodeW = Tree.indicatorLetterByLocale(@localeRec.code, indicCode)
+          # save off the first indicator code
+          indicCodeFirst = indicCodeW if indicCodeFirst.blank?
+          # skip any white space or punctuation to the text of the indicator
+          outcScan.skip_until /[\s[[:punct:]]]*/
+          arrCodes << "#{outcomeCode}.#{indicCodeW}"
+          arrDescs << outcScan.rest.strip
+        end
       end
-      if code_array.length == 4
-        # we have fourth code, which should be the indicator letter code
-        code = Tree.indicatorLetterByLocale(@localeRec.code, code_array[3])
-        code_array[3] = code
-      # else
-      #   # Invalid code - error
-      #   Rails.logger.error("ERROR - Invalid code from strArray: #{strArray.inspect}")
-      end
-      codes = strCodesArray.join('.')
-      if codes == strCodesArray2.join('.')
-        # only . between codes, so text should be after codes and period
-        desc = str[(codes.length+1)..str.length]
-      else
-        # there is at least one space between codes
-        desc = str[(codes.length+2)..str.length]
-      end
-      text = desc.present? ? desc.strip : ''
-      return code, text, code_array.join('.')
+      return indicCodeFirst, JSON.dump(arrDescs), arrCodes.first, JSON.dump(arrCodes)
     end
   end
 
@@ -313,21 +308,10 @@ class UploadsController < ApplicationController
   end
 
   def process_otc_tree(depth, val, row_num, stacks)
-    code_str, text, indicatorCode = parseSubCodeText(val, depth)
-    # Rails.logger.debug("parse: #{code_str.inspect}, #{text.inspect}, #{indicatorCode.inspect}")
+    code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, depth, stacks)
 
-    # Rails.logger.debug("***")
-    # Rails.logger.debug "*** parseSubCodeText (#{val}, #{depth}) =>"
-    # Rails.logger.debug("*** code_str: #{code_str.inspect}")
-    # Rails.logger.debug("*** text: #{text.inspect}")
-    # Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
-
-    stacks[CODES_STACK][depth] = code_str # save curreant code in codes stack
+    stacks[CODES_STACK][depth] = code_str # save currant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
-    # Rails.logger.debug("*** stacks[CODES_STACK]: #{stacks[CODES_STACK].inspect}")
-    # Rails.logger.debug("*** depth: #{depth.inspect}")
-    # Rails.logger.debug("*** buildFullCode(#{stacks[CODES_STACK].inspect}, #{depth} =>")
-    # Rails.logger.debug("*** buildCode: #{builtCode.inspect}")
     if depth == 3 && indicatorCode != builtCode
       # indicator code does not match code from Area, Component and Outcome.
       @abortRow = true
@@ -348,8 +332,10 @@ class UploadsController < ApplicationController
         @subjectRec,
         @gradeBandRec,
         builtCode,
+        indicCodeArr,
         nil, # to do - set parent record for all records below area
-        stacks[RECS_STACK][depth]
+        stacks[RECS_STACK][depth],
+        depth
       )
     end
 
@@ -420,18 +406,6 @@ class UploadsController < ApplicationController
         if !relations.include?(sector_num.to_s)
           relations << sector_num.to_s
         end
-      # elsif sectorTranslations[clean_s].present?
-      #   if !relations.include?(sectorTranslations[clean_s])
-
-      #     # not a custom match, get sector code from translations of sectors hash.
-      #     relations << sectorTranslations[clean_s]
-      #   end
-      # else
-      #   Rails.logger.debug("*** sector_num: #{sector_num.inspect}")
-      #   Rails.logger.debug("*** clean_s: #{clean_s.inspect}")
-      #   Rails.logger.debug("*** sectorTranslations[clean_s]: #{sectorTranslations[clean_s].inspect}")
-      #   Rails.logger.debug("*** relations: #{relations.inspect}")
-      #   errs << I18n.translate('uploads.errors.no_matching_sector', sector: s.strip)
       end
 
     end

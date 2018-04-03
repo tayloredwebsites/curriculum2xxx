@@ -58,6 +58,7 @@
       margin-left: -15px;
       border-top: 1px solid black;
       border-right: 1px solid black;
+      text-align: left;
     }
     .rel-sector-col, .rel-reason-col, .subject-relations {
       border-left: 1px solid black;
@@ -77,16 +78,19 @@
   }
 
   @media only screen and (max-width: 767px) {
-    // detail page indicator move to top on thin screens
-    .indicator-name {
-      float: none;
-      width: 100%;
-      border-bottom:1px solid black;
-      border-left: 1px solid black;
-    }
-    .indicator-info {
-      float: none;
-      width: 100%;
+    .indicator-table {
+      // detail page indicator move to top on thin screens
+      .indicator-name {
+        float: none;
+        width: 100%;
+        border-bottom:1px solid black;
+        border-left: 1px solid black;
+        text-align: left;
+      }
+      .indicator-info {
+        float: none;
+        width: 100%;
+      }
     }
     // put sectors listing button next to curriculum filter
     .filter-curriculum {

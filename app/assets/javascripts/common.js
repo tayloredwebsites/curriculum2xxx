@@ -2,6 +2,9 @@
 
 $(function() {
 
+  var saveUpperGbs;
+  var saveAllGbs;
+
   //###################################
   //# EVENT HANDLERS
 
@@ -13,17 +16,25 @@ $(function() {
 
   //# Show the correct Grade Band selector
   showCorrectGradeBand = function(that, ev) {
-    sel = $('.subject-with-gb option:selected')
-    text = sel.text()
-    var upperGBs = ['Fiz', 'Hem']
+    sel = $('.subject-with-gb option:selected');
+    text = sel.text();
+    var upperGBs = ['Fiz', 'Hem'];
+    if($('#all-gbs-select').length > 0) {
+      $('#all-gbs-select').hide();
+      saveAllGbs = $('#all-gbs-select').detach();
+    }
+    if($('#upper-gbs-select').length > 0) {
+      $('#upper-gbs-select').hide();
+      saveUpperGbs = $('#upper-gbs-select').detach();
+    }
     if (upperGBs.indexOf(text) < 0) {
       // not in upper grade bands only subjects
-      $('#upper-gbs-select').hide()
-      $('#all-gbs-select').show()
+      saveAllGbs.appendTo('#gb-container');
+      $('#all-gbs-select').show();
     } else {
       // in upper grade bands only subjects
-      $('#all-gbs-select').hide()
-      $('#upper-gbs-select').show()
+      saveUpperGbs.appendTo('#gb-container');
+      $('#upper-gbs-select').show();
     }
   }
 
@@ -32,12 +43,12 @@ $(function() {
   //# ADD EVENT BINDINGS
 
   $(".fa-bars").on('click', function(event, state) {
-    toggleTopNav(this, event)
+    toggleTopNav(this, event);
   })
 
 
   $(".subject-with-gb").on('change', function(event, state) {
-    showCorrectGradeBand(this, event)
+    showCorrectGradeBand(this, event);
   })
 
 });

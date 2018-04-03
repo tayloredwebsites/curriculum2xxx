@@ -39,18 +39,20 @@ class Tree < BaseRec
     # where(active: true)
   }
 
+  def code_by_ix(ix)
+    if depth == 3
+      if self.matching_codes.length > ix
+        mcs = JSON.load(matching_codes)
+        return mcs[ix]
+      end
+    end
+    return code
+  end
+
+
   def codeArray
     if self.code.present?
       return self.code.split('.')
-    else
-      return nil
-    end
-  end
-
-  # return the depth of the code (return 3 from a.b.c)
-  def depth
-    if self.code.present?
-      return self.codeArray.count
     else
       return nil
     end
@@ -76,15 +78,11 @@ class Tree < BaseRec
   end
 
   def area
-    if self.depth.present? && self.depth > 0
-      return self.codeArray[0]
-    else
-      return nil
-    end
+    return self.codeArray[0]
   end
 
   def component
-    if self.depth.present? && self.depth > 1
+    if self.depth.present? && self.depth > 0
       return self.codeArray[1]
     else
       return nil
@@ -92,7 +90,7 @@ class Tree < BaseRec
   end
 
   def outcome
-    if self.depth.present? && self.depth > 2
+    if self.depth.present? && self.depth > 1
       return self.codeArray[2]
     else
       return nil
@@ -100,7 +98,7 @@ class Tree < BaseRec
   end
 
   def indicator
-    if self.depth.present? && self.depth > 3
+    if self.depth.present? && self.depth > 2
       return self.codeArray[3]
     else
       return nil
@@ -131,31 +129,24 @@ class Tree < BaseRec
     end
   end
 
-  def cyrIndicatorCode
+  def self.cyrIndicatorCode(codeIn)
     # indicator code letter is in english - map to cyrillic
-    indicLetter = self.indicator
-    if self.depth == 4 && indicLetter.present? && INDICATOR_SEQ_ENG.include?(indicLetter)
-      codeArray = self.code.split('.')
-      if codeArray[3] != indicLetter
-        # should not happen
-        Rails.logger.error("ERROR: Tree id: #{self.id} has mismatched code and indicator")
-        return code
-      else
+    codeArray = codeIn.split('.')
+    if codeArray.length > 3
+      indicLetter = codeArray[3]
+      if INDICATOR_SEQ_ENG.include?(indicLetter)
         codeArray[3] = GET_CYR_IND_H[indicLetter]
         return codeArray.join('.')
       end
-    else
-      # should not happen
-      Rails.logger.error("ERROR: Tree id: #{self.id} is not a valid indicator (getCyrIndicatorCode)")
-      return code
     end
   end
 
-  def codeByLocale(locale)
+  def codeByLocale(locale, ix=0)
+    retCode = code_by_ix(ix)
     if locale == BaseRec::LOCALE_SR
-      return cyrIndicatorCode
+      return Tree.cyrIndicatorCode(code)
     else
-      return code
+      return retCode
     end
   end
 
@@ -220,7 +211,7 @@ class Tree < BaseRec
   #   fullCode - code including parent codes (e.g. 1.1.1.a for a indicator).
   #   parentRec - parent (area for component, component for outcome, outcome for indicator)
   #   matchRec - last record processed (at this depth), to prevent attempting to add more than once.
-  def self.find_or_add_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode, parentRec, matchRec)
+  def self.find_or_add_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode, codeArray, parentRec, matchRec, depth)
     # if this record is the same as matchRec, then it was already updated.
     matchCode = (matchRec ? matchRec.code : '')
     # name_key = Tree.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
@@ -234,7 +225,8 @@ class Tree < BaseRec
         version_id: versionRec.id,
         subject_id: subjectRec.id,
         grade_band_id: gradeBandRec.id,
-        code: fullCode
+        code: fullCode,
+        depth: depth
         )
       if matched_codes.count == 0
         # It has not been uploaded yet.  create it.
@@ -244,6 +236,8 @@ class Tree < BaseRec
         tree.subject_id = subjectRec.id
         tree.grade_band_id = gradeBandRec.id
         tree.code = fullCode
+        tree.matching_codes = codeArray
+        tree.depth = depth
         # fill in parent id if parent passed in, and parent codes match.
         tree.name_key = Tree.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
         tree.base_key = Tree.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
