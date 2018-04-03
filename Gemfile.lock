@@ -187,6 +187,8 @@ GEM
       railties (>= 4.2.0, < 5.3)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
+    rvm-capistrano (1.5.0)
+      capistrano (>= 2.15.4)
     sass (3.5.5)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -267,6 +269,7 @@ DEPENDENCIES
   puma (~> 3.7)
   rails (~> 5.1.4)
   rails-controller-testing
+  rvm-capistrano
   sass-rails (~> 5.0)
   selenium-webdriver
   simplecov
@@ -278,4 +281,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.15.4
+   1.16.1

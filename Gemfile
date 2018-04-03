@@ -71,6 +71,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Use Capistrano for deployment
   gem 'capistrano-rails'
+  gem 'rvm-capistrano'
   # this may be needed for developers with rvm?
   # gem 'capistrano-rvm'
 end
