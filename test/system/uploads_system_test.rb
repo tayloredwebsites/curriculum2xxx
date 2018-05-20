@@ -123,4 +123,43 @@ class UploadsSystemTest < ApplicationSystemTestCase
   end
 
 
+  test "blank indicators upload" do
+    # uploads index page
+    visit root_path
+    # page.find("ul#locale-select a[href='/users/lang/bs']").click
+    # # assert_equal "/users/lang/en", current_path
+    # # assert_equal home_users_path("en"), current_path
+    page.find("#topNav a[href='/bs/uploads']").click
+    sleep 1
+    assert_equal(uploads_path('bs'), current_path)
+
+    assert_equal 'Uploads Listing', page.title
+    assert_equal 62, page.all('#uploadsTable tbody tr').count
+    page.find("#uploadsTable tbody tr#id_#{@bio_03.id} a").click
+
+    # uploads page, with status not uploaded
+    assert_equal(start_upload_upload_path('bs', @bio_03.id), current_path)
+    within('h4') do
+      assert page.has_content?("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]}")
+    end
+
+    assert_equal(BaseRec::UPLOAD_NOT_UPLOADED, @bio_03.status)
+    assert_equal(0, Tree.count)
+    page.find('#upload_file').set(Rails.root.join('test/fixtures/files/Bio_3_bs.csv'))
+    find('button').click
+    assert_equal(do_upload_upload_path('bs', @bio_03.id), current_path)
+
+    assert_equal(43, Tree.count)
+    rows =  page.find_all('#uploadReport tbody tr')
+    assert_equal 87, rows.count
+    assert_equal(103, Translation.count)
+    assert_equal 0, page.find_all('div.error').count # no error rows
+
+    # we got errors uploading tree.
+    assert_equal("Status: #{BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_SECTOR_RELATED]}", page.find('h4').text)
+    @bio_03.reload
+    assert_equal(BaseRec::UPLOAD_SECTOR_RELATED, @bio_03.status)
+
+  end
+
 end

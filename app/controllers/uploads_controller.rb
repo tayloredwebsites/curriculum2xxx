@@ -174,11 +174,11 @@ class UploadsController < ApplicationController
             # map csv headers to short symbols
             new_key = Upload.get_short(@localeRec.code, key)
 
-            # ensure required rows have data
-            if new_key.present? && Upload::SHORT_REQ[new_key.to_sym] && val.blank?
-              @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.missing_req_field', field: new_key)
-              @abortRow = true
-            end
+            # # ensure required rows have data
+            # if new_key.present? && Upload::SHORT_REQ[new_key.to_sym] && val.blank?
+            #   @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.missing_req_field', field: new_key)
+            #   @abortRow = true
+            # end
 
             # process this column for this row
             case new_key
@@ -190,19 +190,19 @@ class UploadsController < ApplicationController
               end
             when :area
               if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-                stacks = process_otc_tree(0, val, row_num, stacks)
+                stacks = process_otc_tree(0, val, row_num, stacks, grade_band)
               end
             when :component
               if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-                stacks = process_otc_tree(1, val, row_num, stacks)
+                stacks = process_otc_tree(1, val, row_num, stacks, grade_band)
               end
             when :outcome
               if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-                stacks = process_otc_tree(2, val, row_num, stacks)
+                stacks = process_otc_tree(2, val, row_num, stacks, grade_band)
               end
             when :indicator
               if @process_fully || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-                stacks = process_otc_tree(3, val, row_num, stacks)
+                stacks = process_otc_tree(3, val, row_num, stacks, grade_band)
               end
             when :relevantKbe
               if @process_fully || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
@@ -307,18 +307,30 @@ class UploadsController < ApplicationController
     return codes_stack[0..depth].join('.')
   end
 
-  def process_otc_tree(depth, val, row_num, stacks)
+  def process_otc_tree(depth, val, row_num, stacks, grade_band)
     code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, depth, stacks)
 
     stacks[CODES_STACK][depth] = code_str # save currant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
-    if depth == 3 && indicatorCode != builtCode
-      # indicator code does not match code from Area, Component and Outcome.
-      @abortRow = true
-      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
-    elsif code_str.length < 1
-      @abortRow = true
-      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: val)
+    Rails.logger.debug("*** depth: #{depth}, builtCode: #{builtCode.inspect}")
+    if depth == 3
+
+      if code_str.length < 1
+        # no indicator is ok for grades 3 and 6
+        #   (some indicators are only for higher grades)
+        Rails.logger.debug("*** invalid indicator for higher gradeband")
+        @abortRow = true
+        if !['3', '6'].include?(grade_band)
+          @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: val)
+        end
+      elsif indicatorCode != builtCode
+        # indicator code does not match code from Area, Component and Outcome.
+        Rails.logger.debug("*** indicatorCode (#{indicatorCode}) != builtCode (#{builtCode}")
+        @abortRow = true
+        if !['3', '6'].include?(grade_band)
+          @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
+        end
+      end
     end
     if @abortRow
       # don't process record if to be aborted.

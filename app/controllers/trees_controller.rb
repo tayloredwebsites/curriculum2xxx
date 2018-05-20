@@ -203,7 +203,11 @@ class TreesController < ApplicationController
     treeKeys << "#{@tree.base_key}.explain"
     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
     all_codes = JSON.load(@tree.matching_codes)
+    # Rails.logger.debug("*** all_codes: #{all_codes.inspect}")
+    Rails.logger.debug("*** @translations: #{@translations.inspect}")
+    Rails.logger.debug("*** @tree.buildNameKey: #{@tree.buildNameKey.inspect}")
     trans = @translations[@tree.buildNameKey]
+    Rails.logger.debug("*** trans = #{trans.inspect}")
     all_translations = JSON.load(trans)
     @indicators = []
     all_codes.each_with_index do |c, ix|

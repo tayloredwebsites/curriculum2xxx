@@ -164,7 +164,7 @@ end
 throw "Invalid Upload Count" if Upload.count != 62
 @hem_09 = Upload.where(filename: 'Hem_9_en.csv').first
 @hem_13 = Upload.where(filename: 'Hem_13_en.csv').first
-
+@bio_03 = Upload.where(filename: 'Bio_3_bs.csv').first
 
 
 
