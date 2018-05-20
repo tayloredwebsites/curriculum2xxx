@@ -29,6 +29,13 @@ append :linked_files, "config/database.yml", "config/secrets.yml", "app/assets/i
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
+set :default_environment, {
+  # 'PATH' => "/path/to/.rvm/gems/ree/1.8.7/bin:/path/to/.rvm/bin:/path/to/.rvm/ree-1.8.7-2009.10/bin:$PATH",
+  # 'RUBY_VERSION' => 'ruby 1.8.7'
+  # 'GEM_HOME'     => '/path/to/.rvm/gems/ree-1.8.7-2010.01',
+  # 'GEM_PATH'     => '/path/to/.rvm/gems/ree-1.8.7-2010.01',
+  # 'BUNDLE_PATH'  => '/path/to/.rvm/gems/ree-1.8.7-2010.01'  # If you are using bundler.
+}
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
