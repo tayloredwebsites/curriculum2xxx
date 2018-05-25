@@ -114,6 +114,8 @@ class UploadsController < ApplicationController
       if upload_params['file'].original_filename != @upload.filename
         flash[:alert] = I18n.translate('uploads.errors.incorrect_filename', filename: @upload.filename)
         abortRun = true
+        Rails.logger.debug("*** seed filename: #{@upload.filename.inspect}")
+        Rails.logger.debug("*** upload filename: #{upload_params['file'].original_filename.inspect}")
       elsif @upload.status == BaseRec::UPLOAD_DONE
         # skip processing if already done, otherwise process)
         flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
@@ -284,7 +286,7 @@ class UploadsController < ApplicationController
       indicCodeFirst = ''
       # split multiple indicators and process each
       str.split(outcomeCode).each do |outc|
-        if outc.length > 0
+        if outc.strip.length > 0
           outcScan = StringScanner.new(outc)
           # skip any white space or punctuation to get the indicator code
           outcScan.skip_until /[\s[[:punct:]]]*/
@@ -331,6 +333,9 @@ class UploadsController < ApplicationController
         if !['3', '6'].include?(grade_band)
           @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
         end
+      elsif indicatorCode.length > 7
+        @abortRow = true
+        @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_indicator', indicator: "#{code_str[0]}, #{text}")
       end
     end
     if @abortRow

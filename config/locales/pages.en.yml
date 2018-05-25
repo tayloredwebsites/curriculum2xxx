@@ -46,6 +46,7 @@ en:
       too_many_matched_key: "Too many matches for %{key}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
       invalid_code: "invalid code: %{code}"
+      invalid_indicator: "invalid indicator: %{indicator}"
       skipped_code: "Warning - skipped this indicator"
       unsaved_rec: "cannot update unsaved record"
       missing_base_key: "cannot update translation without base key"
