@@ -333,9 +333,10 @@ class UploadsController < ApplicationController
         if !['3', '6'].include?(grade_band)
           @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
         end
-      elsif indicatorCode.length > 7
+      elsif indicatorCode.include?('INVALID')
         @abortRow = true
-        @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_indicator', indicator: "#{code_str[0]}, #{text}")
+        @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_indicator', indicator: "#{code_str[0]},
+          #{text}")
       end
     end
     if @abortRow
