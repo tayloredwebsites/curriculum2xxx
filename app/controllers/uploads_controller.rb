@@ -205,6 +205,7 @@ class UploadsController < ApplicationController
                 stacks = process_otc_tree(3, val, row_num, stacks, grade_band)
               end
             when :relevantKbe
+              Rails.logger.debug("**** when Relevant KBE")
               if @process_fully || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
                 process_sector(val, row_num, stacks)
               end
@@ -334,6 +335,7 @@ class UploadsController < ApplicationController
     end
     if @abortRow
       # don't process record if to be aborted.
+      Rails.logger.debug("*** @abortRow")
       save_status = BaseRec::REC_ERROR
       message = ''
     else
@@ -392,12 +394,14 @@ class UploadsController < ApplicationController
   end # process_otc_tree
 
   def process_sector(val, row_num, stacks)
+    Rails.logger.debug("*** process_sector(#{val}, #{row_num}, #{stacks}")
     tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
     # split by semi-colon and period and others!!!
     # Not split by comma (used in Sector Names)
     sectorNames = val.present? ? val.split(/[:;\.)]+/) : []
+    Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
     # get a hash of all sectors translations that return the sector code
     sectorTranslations = get_sectors_translations()
 
@@ -410,6 +414,7 @@ class UploadsController < ApplicationController
       begin
         lead_word = clean_s.split(/[\s\.;:']/).first # no commas, used in Sector Names
         sector_num = Integer(lead_word)
+        Rails.logger.debug("*** found sector_num: #{sector_num}")
       rescue ArgumentError, TypeError
         sector_num = 0
       end

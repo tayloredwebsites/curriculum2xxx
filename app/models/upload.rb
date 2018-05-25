@@ -67,6 +67,7 @@ class Upload < BaseRec
       :"Pokazatelj" => :indicator,
       :"Raspon" => :gradeBand,
       :"Релевантни сектори економије засноване на знању (ЕЗЗ)" => :relevantKbe,
+      :"Рeлeвaнтни сектори економије засноване на знању (ЕЗЗ)" => :relevantKbe,
       :"Објашњење како се индикатор односи на секторе ЕЗЗ-а" => :sectorRelation,
       :"Тијесно повезани исходи учења који се односе на секторе ЕЗЗ-а" => :currentSubject,
       :"Хемија" => :chemistry,
