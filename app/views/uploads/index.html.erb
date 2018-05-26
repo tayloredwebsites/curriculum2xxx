@@ -1,15 +1,15 @@
 <% content_for(:title_code, 'uploads.index.name') %>
 <% content_for(:page_class, 'uploads') %>
 
-<p><%= link_to translate('uploads.labels.new_upload'), new_upload_path() %></p>
+<p><%= link_to translate('uploads.labels.upload_summary'), upload_summary_path() %></p>
 <table id='uploadsTable' class='table-striped'>
   <thead>
     <tr>
       <th><%= translate('app.labels.subject') %></th>
       <th><%= translate('app.labels.grade') %></th>
       <th><%= translate('app.labels.language') %></th>
-      <th><%= translate('app.labels.status') %></th>
       <th><%= translate('app.labels.action') %></th>
+      <th><%= translate('app.labels.status') %></th>
     </tr>
   </thead>
   <tbody>
@@ -18,10 +18,10 @@
         <td><%= u.subject.code %></td>
         <td><%= u.grade_band.code %></td>
         <td><%= u.locale.name %></td>
-        <td><%= BaseRec::UPLOAD_STATUS[u.status] %> <%= '- With Errors' if u.status_detail.present? %></td>
         <td>
-          <%= link_to translate('uploads.labels.upload'), start_upload_upload_path(id: u.id) %>
+          <%= link_to "#{translate('uploads.labels.upload')} #{u.filename}", start_upload_upload_path(id: u.id) %>
         </td>
+        <td><%= BaseRec::UPLOAD_STATUS[u.status] %> <%= '- With Errors' if u.status_detail.present? %></td>
       </tr>
     <% end %>
   </tbody>

@@ -63,6 +63,11 @@ class UploadsController < ApplicationController
     end
   end
 
+  def upload_summary
+    unauthorized() and return if !user_is_admin?(current_user)
+    index_prep
+  end
+
   def start_upload
     unauthorized() and return if !user_is_admin?(current_user)
     if @upload
@@ -273,11 +278,25 @@ class UploadsController < ApplicationController
       return code, text, '', '[]'
     elsif depth == 2
       # Outcome formatting: "Outcome: #. <name>""
-      strArray = str.strip.split(/\./)
+      # Outcome formatting: "Outcome: #.#.#. <name>""
+      strArray1 = str.strip.split(/[:\s]+/)
+      label_length = strArray1[0].length+1
+      str2 = str[label_length..str.length].strip
+      strArray = str2.strip.split(/\./)
       label = strArray.first
-      desc = str[(label.length+1)..-1]
+      skip_count = label_length
+      strArray.each_with_index do |str, ix|
+        if (Integer(str) rescue(-1)) >= 0
+          label = str
+          skip_count += str.length + 1
+        end
+      end
+      desc = str[(skip_count+1)..-1]
+      Rails.logger.debug("*** str: #{str.inspect}")
+      Rails.logger.debug("*** str2 = #{str2.inspect}")
+      Rails.logger.debug("*** skip_count: #{skip_count}, desc: #{desc.inspect}")
       text = desc.present? ? desc.lstrip : ''
-      return label.gsub(/[^0-9,.]/, ""), text, '', '[]'
+      return label.gsub(/[^0-9]/, ""), text, '', '[]'
     else
       cs = stacks[CODES_STACK]
       outcomeCode = "#{cs[0]}.#{cs[1]}.#{cs[2]}"
@@ -300,6 +319,7 @@ class UploadsController < ApplicationController
           outcScan.skip_until /[\s[[:punct:]]]*/
           arrCodes << "#{outcomeCode}.#{indicCodeW}"
           arrDescs << outcScan.rest.strip
+          Rails.logger.debug("*** outc: #{outc.inspect}, indicCode: #{indicCode.inspect}, indicCodeW: #{indicCodeW.inspect}")
         end
       end
       return indicCodeFirst, JSON.dump(arrDescs), arrCodes.first, JSON.dump(arrCodes)
@@ -307,12 +327,20 @@ class UploadsController < ApplicationController
   end
 
   def buildFullCode(codes_stack, depth)
+    Rails.logger.debug("*** codes_stack: #{codes_stack.inspect}, depth: #{depth}")
     return codes_stack[0..depth].join('.')
   end
 
   def process_otc_tree(depth, val, row_num, stacks, grade_band)
     code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, depth, stacks)
 
+    Rails.logger.debug("*** parseSubCodeText(val=#{val.inspect}, depth=#{depth}")
+    # Rails.logger.debug("*** parseSubCodeText(stacks=#{stacks.inspect}")
+    Rails.logger.debug("*** returns:")
+    Rails.logger.debug("*** code_str: #{code_str.inspect}")
+    Rails.logger.debug("*** text: #{text.inspect}")
+    Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
+    Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
     stacks[CODES_STACK][depth] = code_str # save currant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
     Rails.logger.debug("*** depth: #{depth}, builtCode: #{builtCode.inspect}")
@@ -334,6 +362,7 @@ class UploadsController < ApplicationController
           @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: indicatorCode)
         end
       elsif indicatorCode.include?('INVALID')
+        Rails.logger.debug("*** indicatorCode has INVALID - val: #{val.inspect}, code_str: #{code_str.inspect}, indicatorCode: #{indicatorCode.inspect}")
         @abortRow = true
         @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_indicator', indicator: "#{code_str[0]},
           #{text}")

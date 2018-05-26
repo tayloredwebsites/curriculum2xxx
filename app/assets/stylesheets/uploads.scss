@@ -36,7 +36,17 @@
     text-align: left;
   }
 
-
+  .uploadSummary {
+    .uploadName {
+      width: 19%;
+      border: 1px solid black;
+    }
+    .uploadDetails {
+      text-align: left;
+      width: 79%;
+      border: 1px solid black;
+    }
+  }
 
   // end of SCSS for uploads pages
 }

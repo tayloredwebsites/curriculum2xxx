@@ -27,6 +27,9 @@ en:
       message: "Message"
       gen_list: "Generate List"
       sector: "KBE Sector"
+      upload_summary: 'Uploads Summary Report'
+      upload_file: "Upload File"
+      upload_status_errors: "Upload Status / Errors"
       related_to_sectors: "Related to sectors: %{sectors}"
       new_sector_relations: "Newly related sectors: %{sectors}"
       sectors_listing: "Knowledge Based Education (KBE) Sectors"

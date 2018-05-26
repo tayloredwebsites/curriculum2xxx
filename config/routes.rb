@@ -13,6 +13,7 @@ scope "(:locale)", locale: /bs|hr|sr|en/ do
     end
   end
 
+  get 'upload_summary', to: 'uploads#upload_summary'
   resources :uploads,
     only: [:index, :new, :create, :show, :edit, :update] do
     collection do

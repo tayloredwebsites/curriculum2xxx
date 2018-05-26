@@ -1,0 +1,27 @@
+<% content_for(:title_code, 'uploads.index.name') %>
+<% content_for(:page_class, 'uploads') %>
+
+<table class='uploadSummary table-striped'>
+  <thead>
+    <tr>
+      <th><%= translate('app.labels.upload_file') %></th>
+      <th><%= translate('app.labels.upload_status_errors') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @uploads.each do |u| %>
+      <tr>
+        <td class='uploadName'><%= u.filename %>
+        </td>
+        <td class='uploadDetails'>
+          <%= if (u.status_detail.present?)
+              u.status_detail.split('$$$').join('<br>').html_safe
+            else
+              BaseRec::UPLOAD_STATUS[u.status]
+            end
+           %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
