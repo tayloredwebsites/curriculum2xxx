@@ -283,7 +283,7 @@ class UploadsController < ApplicationController
       label_length = strArray1[0].length+1
       str2 = str[label_length..str.length].strip
       strArray = str2.strip.split(/\./)
-      label = strArray.first
+      label = strArray.first.present? ? strArray.first : ''
       skip_count = label_length
       strArray.each_with_index do |str, ix|
         if (Integer(str) rescue(-1)) >= 0
