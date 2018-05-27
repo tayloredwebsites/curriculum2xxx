@@ -16,7 +16,7 @@
     <div class='indicator-table'>
       <div class='indicator-name'>
 
-        <% @indicators.each do |ia| %>
+        <% @group_indicators.each do |ia| %>
           <p>
             <%= "#{I18n.translate('app.labels.indicator')} #{ia[0]}: #{ia[1]}" %>
           </p>

@@ -1,6 +1,6 @@
 class TreesController < ApplicationController
 
-  before_action :find_tree, only: [:show, :edit, :update]
+  before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
 
   def index
     @subjects = Subject.all.order(:code)
@@ -131,7 +131,11 @@ class TreesController < ApplicationController
         area[:nodes].each do |key2, comp|
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            a4 = {text: outc[:text], href: tree_path(outc[:id]), setting: 'outcome'}
+            if @gb.present?
+              a4 = {text: outc[:text], href: show_outcome_tree_path(outc[:id]), setting: 'outcome'}
+            else
+              a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
+            end
             if @gb.present?
               outc[:nodes].each do |key4, indic|
                 a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
@@ -193,6 +197,7 @@ class TreesController < ApplicationController
   # end
 
   def show
+    # to do - refactor so this and show_outcome are same action and view
     # get all translation keys for this record and above
     treeKeys = @tree.getAllTransNameKeys
     # get all translation keys for all sectors related to it
@@ -203,18 +208,36 @@ class TreesController < ApplicationController
     treeKeys << "#{@tree.base_key}.explain"
     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
     all_codes = JSON.load(@tree.matching_codes)
-    # Rails.logger.debug("*** all_codes: #{all_codes.inspect}")
-    Rails.logger.debug("*** @translations: #{@translations.inspect}")
-    Rails.logger.debug("*** @tree.buildNameKey: #{@tree.buildNameKey.inspect}")
     trans = @translations[@tree.buildNameKey]
-    Rails.logger.debug("*** trans = #{trans.inspect}")
     all_translations = JSON.load(trans)
-    @indicators = []
+    @group_indicators = []
     all_codes.each_with_index do |c, ix|
       thisCode = @tree.codeByLocale(@locale_code, ix)
-      @indicators << [thisCode, all_translations[ix]] if all_translations.length > ix
+      @group_indicators << [thisCode, all_translations[ix]] if all_translations.length > ix
     end
+  end
 
+  def show_outcome
+    @indicators = []
+    # get all indicators for this outcome and single grade band
+    @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
+    # get all translation keys for this learning outcome
+    treeKeys = @tree.getAllTransNameKeys
+    @trees.each do |t|
+      # get translation key for this indicator
+      treeKeys << t.name_key
+      # get translation key for each sector for this indicator
+      t.sectors.each do |s|
+        treeKeys << s.name_key
+      end
+      # get the translation key for the indicators in the group of matched (indicators)
+      JSON.load(t.matching_codes).each do |j|
+        treeKeys << "#{t.buildRootKey}.#{j}.name"
+      end
+      treeKeys << "#{t.base_key}.explain"
+      @indicators << t
+    end
+    @translations = Translation.translationsByKeys(@locale_code, treeKeys)
   end
 
   def edit

@@ -60,13 +60,13 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
-    assert_equal 1, assigns(:errs).count
-    assert_equal 199, Tree.count # 186 + 9 + 4?
+    assert_equal 2, assigns(:errs).count
+    assert_equal 198, Tree.count # 186 + 9 + 4?
 
     # all returns all 198 records
     post index_listing_trees_path
     assert_response :success
-    assert_equal 199, assigns(:trees).count
+    assert_equal 198, assigns(:trees).count
 
     # 09 returns 186 records
     post index_listing_trees_path, params: { tree: {
@@ -82,7 +82,7 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
       grade_band_id: @gb_13.id
     } }
     assert_response :success
-    assert_equal 13, assigns(:trees).count
+    assert_equal 12, assigns(:trees).count
 
   end
 

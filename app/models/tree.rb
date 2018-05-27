@@ -170,6 +170,10 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}"
   end
 
+  def buildRootKey
+    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
+  end
+
   # get parent record for this item (by hierarchy code as appropriate)
   def getParentRec
     outcomes = Tree.where(
@@ -203,9 +207,6 @@ class Tree < BaseRec
     parents = self.getAllParents
     allRecs = parents.concat([self])
     treeKeys = (allRecs).map { |rec| rec.name_key}
-    treeKeys.each do |k|
-      Rails.logger.debug("*** treeKey: #{k}")
-    end
   end
 
 
@@ -215,6 +216,7 @@ class Tree < BaseRec
   #   subjectRec - subject record
   #   gradeBandRec - grade band record
   #   fullCode - code including parent codes (e.g. 1.1.1.a for a indicator).
+  #   codeArray - all indicator codes that match this indicator (when indicator has multiple codes)
   #   parentRec - parent (area for component, component for outcome, outcome for indicator)
   #   matchRec - last record processed (at this depth), to prevent attempting to add more than once.
   def self.find_or_add_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode, codeArray, parentRec, matchRec, depth)

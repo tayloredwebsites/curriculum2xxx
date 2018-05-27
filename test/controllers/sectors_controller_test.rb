@@ -29,8 +29,8 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
     assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
-    assert_equal 1, assigns(:errs).count
-    assert_equal 199, Tree.count # 186 + 9 + 4 (?)
+    assert_equal 2, assigns(:errs).count
+    assert_equal 198, Tree.count # 186 + 9 + 4 (?)
 
     get sectors_path
     assert_response :success
