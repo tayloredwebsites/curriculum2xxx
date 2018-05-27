@@ -3,14 +3,7 @@ class TreesController < ApplicationController
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
 
   def index
-    @subjects = Subject.all.order(:code)
-    @gbs = GradeBand.all
-    @gbs_upper = GradeBand.where(code: ['9','13'])
-    @tree = Tree.new(
-      tree_type_id: @treeTypeRec.id,
-      version_id: @versionRec.id
-    )
-    @otcTree = ''
+    index_prep
     respond_to do |format|
       format.html
       format.json { render json: {subjects: @subjects, grade_bands: @gbs}}
@@ -96,7 +89,15 @@ class TreesController < ApplicationController
         elsif otcHash[tree.area][:nodes][tree.component].blank?
           raise I18n.t('trees.errors.missing_component_in_tree')
         elsif otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome].blank?
-          raise I18n.t('trees.errors.missing_outcome_in_tree')
+          Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
+          Rails.logger.error "area: #{tree.area}"
+          Rails.logger.error otcHash[tree.area]
+          Rails.logger.error "component: #{tree.component}"
+          Rails.logger.error otcHash[tree.area][:nodes][tree.component]
+          Rails.logger.error "outcome: #{tree.outcome}"
+          Rails.logger.error otcHash[tree.area][:nodes][tree.component][:nodes]
+          Rails.logger.error otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome]
+          raise I18n.t('trees.errors.missing_outcome_in_tree', otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome])
         end
         all_translations = translation.present? ? JSON.load(translation) : []
         all_codes = JSON.load(tree.matching_codes)
@@ -132,7 +133,7 @@ class TreesController < ApplicationController
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
             if @gb.present?
-              a4 = {text: outc[:text], href: show_outcome_tree_path(outc[:id]), setting: 'outcome'}
+              a4 = {text: outc[:text], href: tree_path(outc[:id]), setting: 'outcome'}
             else
               a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
             end
@@ -196,31 +197,44 @@ class TreesController < ApplicationController
   #   end
   # end
 
-  def show
-    # to do - refactor so this and show_outcome are same action and view
-    # get all translation keys for this record and above
-    treeKeys = @tree.getAllTransNameKeys
-    # get all translation keys for all sectors related to it
-    @tree.sectors.each do |s|
-      treeKeys << s.name_key
-    end
-    # get the translation key for the related sectors explanation
-    treeKeys << "#{@tree.base_key}.explain"
-    @translations = Translation.translationsByKeys(@locale_code, treeKeys)
-    all_codes = JSON.load(@tree.matching_codes)
-    trans = @translations[@tree.buildNameKey]
-    all_translations = JSON.load(trans)
-    @group_indicators = []
-    all_codes.each_with_index do |c, ix|
-      thisCode = @tree.codeByLocale(@locale_code, ix)
-      @group_indicators << [thisCode, all_translations[ix]] if all_translations.length > ix
-    end
-  end
+  # def show
+  #   # to do - refactor so this and show_outcome are same action and view
+  #   # get all translation keys for this record and above
+  #   treeKeys = @tree.getAllTransNameKeys
+  #   # get all translation keys for all sectors related to it
+  #   @tree.sectors.each do |s|
+  #     treeKeys << s.name_key
+  #   end
+  #   # get the translation key for the related sectors explanation
+  #   treeKeys << "#{@tree.base_key}.explain"
+  #   @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+  #   all_codes = JSON.load(@tree.matching_codes)
+  #   trans = @translations[@tree.buildNameKey]
+  #   all_translations = JSON.load(trans)
+  #   @group_indicators = []
+  #   all_codes.each_with_index do |c, ix|
+  #     thisCode = @tree.codeByLocale(@locale_code, ix)
+  #     @group_indicators << [thisCode, all_translations[ix]] if all_translations.length > ix
+  #   end
+  # end
 
-  def show_outcome
+  def show
+    case @tree.depth
+      # process this tree item, is at proper depth to show detail
+    when 3
+      # process this single indicator
+      @trees = [@tree]
+    when 2
+      # get all indicators for this outcome and single grade band
+      @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
+    else
+      # not a detail page, go back to index page
+      index_prep
+      render :index
+    end
+
+    # prepare to output detail page
     @indicators = []
-    # get all indicators for this outcome and single grade band
-    @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
     # get all translation keys for this learning outcome
     treeKeys = @tree.getAllTransNameKeys
     @trees.each do |t|
@@ -277,6 +291,17 @@ class TreesController < ApplicationController
     if !parent[:nodes][subCode].present?
       parent[:nodes][subCode] = newHash
     end
+  end
+
+  def index_prep
+    @subjects = Subject.all.order(:code)
+    @gbs = GradeBand.all
+    @gbs_upper = GradeBand.where(code: ['9','13'])
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+    @otcTree = ''
   end
 
 end

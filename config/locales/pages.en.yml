@@ -149,6 +149,7 @@ en:
     errors:
       missing_area_in_tree: "error: missing area in report tree."
       missing_component_in_tree: "error: missing component in report tree."
+      missing_outcome_in_tree: "error: missing outcome in report tree."
       tree_too_deep_id: "error: treeview depth > 4 at id: %{id}"
       save_curriculum_code_error: "saving Curriculum code %{code} returned errors: "
       too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"

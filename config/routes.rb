@@ -33,9 +33,6 @@ scope "(:locale)", locale: /bs|hr|sr|en/ do
       get 'index_listing'
       post 'index_listing'
     end
-    member do
-      get 'show_outcome'
-    end
   end
 
 
