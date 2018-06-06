@@ -439,22 +439,50 @@ class UploadsController < ApplicationController
     Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
     # get a hash of all sectors translations that return the sector code
     sectorTranslations = get_sectors_translations()
+    Rails.logger.debug("*** sectorTranslations: #{sectorTranslations.inspect}")
 
     sectorNames.each do |s|
       # matching of descriptions
+      Rails.logger.debug("*** sectorName: #{s.inspect}")
       clean_s = s.strip
       break if clean_s.blank?
 
-      # pull out leading sector number if there (split on space or period)
-      begin
-        lead_word = clean_s.split(/[\s\.;:']/).first # no commas, used in Sector Names
-        sector_num = Integer(lead_word)
-        Rails.logger.debug("*** found sector_num: #{sector_num}")
-      rescue ArgumentError, TypeError
-        sector_num = 0
+      # hard coded sector names matches (when spreadsheet does not match db)
+      case clean_s
+      when 'IT', 'IKT', 'it', 'ikt', 'ИТ'
+        sector_num = 1
+      when 'Medicina i srodni sektori', 'medicina i srodni sektori', 'Медицина и сродни сектори'
+        sector_num = 2
+      when 'Tehnologija materijala', 'tehnologija materijala', 'Технологија материјала', 'технологија материјала'
+        sector_num = 3
+      when 'Proizvodnja energije, prenos i efikasnost', 'Energija i obnovljivi izvori', 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'производња енергије, пренос и ефикасност', 'Производња енергије', 'пренос и ефикасност'
+        sector_num = 4
+      when 'Umjetnost', 'Umjetnost'
+        sector_num = 6
+      when 'Sport', 'sport'
+        sector_num = 7
+      when 'Poljoprivredna proizvodnja', 'poljoprivredna proizvodnja', 'пољопривредна производња'
+        sector_num = 10
+      when 'medicina i srodni sektoritehnologija materijalaITproizvodnja energije, prijenos i učinkovitost'
+        sector_num = 98 # 2, 3, 1, 4
+      when 'Svi KBE sektori', 'svi KBE sektori', 'Сви ЕЗЗ-а сектори'
+        sector_num = 99 # all
+      else
+        # pull out leading sector number if there (split on space or period)
+        begin
+          lead_word = clean_s.split(/[\s\.;:']/).first # no commas, used in Sector Names
+          sector_num = Integer(lead_word)
+          Rails.logger.debug("*** found sector_num: #{sector_num}")
+        rescue ArgumentError, TypeError
+          sector_num = 0
+        end
       end
 
-      if sector_num > 0
+      if sector_num == 98
+        relations = ['1','2','3','4']
+      elsif sector_num == 99
+        relations = ['1','2','3','4','5','6','7','8','9','10']
+      elsif sector_num > 0
         if !relations.include?(sector_num.to_s)
           relations << sector_num.to_s
         end
