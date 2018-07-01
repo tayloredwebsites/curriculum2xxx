@@ -23,7 +23,7 @@ set :repo_url, "git@github.com:21pstem/curriculum.git"
 
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml", "config/secrets.yml"
-append :linked_files, "config/database.yml", "config/secrets.yml", "app/assets/images/logo.png"
+append :linked_files, "config/database.yml", "app/assets/images/logo.png"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"

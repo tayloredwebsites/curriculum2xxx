@@ -1,3 +1,13 @@
+set :stage, :production
+server 'kbe.enablebih.org', user: 'deploy', roles: %w{web app db}
+set :rvm_ruby_version, '2.4.1p111'
+set :deploy_to, '/web/bih_enable/curriculum'
+set :rails_env, 'production'
+# set :bundle_dir, "/usr/local/rvm/gems/ruby-1.9.3-p550"
+# set :bundle_dir, "~/.rvm/bin/gems/ruby-1.9.3-p550"
+
+set :ssh_options, {:forward_agent => true}
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
