@@ -61,7 +61,7 @@
         <tr class='rpt' data-tree='<%= r[1] %>' data-row='<%= ix %>'>
           <td class='sector-col'>&nbsp;</td>
           <td class='code-col'><%= r[1] %></td>
-          <td class='translation-col'><%= r[2] %></td>
+          <td class='translation-col'><a href='<%= tree_path(r[3]) %>'><%= r[2] %></a></td>
         </tr>
       <% end %>
     <% end %>

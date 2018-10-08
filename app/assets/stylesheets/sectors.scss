@@ -33,6 +33,16 @@
       &:nth-child(even) {
         background-color: #e5ffff;
       }
+      .translation-col a {
+        color: black !important;
+        a:visited, a:active {
+          color: black !important;
+        }
+        a:hover {
+          color: blue !important;
+          text-decoration: underline;
+        }
+      }
     }
     tr.rpt-header {
       background-color: #cff;

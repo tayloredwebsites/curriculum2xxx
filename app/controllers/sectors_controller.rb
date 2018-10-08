@@ -1,4 +1,5 @@
 class SectorsController < ApplicationController
+  # Controller for the (10) Sectors of the Knowledge Base
 
   def index
 
@@ -88,23 +89,23 @@ class SectorsController < ApplicationController
 
   def outputRowsForSector(sector)
     rptRows = []
-    rptRows << [sector.code, '', @translations[sector.name_key]]
+    rptRows << [sector.code, '', @translations[sector.name_key], '-1']
     # filter out records when pulling from the join
     if @grade_band_id.present? && @subject_id.present?
       sector.trees.where(grade_band_id: @grade_band_id, subject_id: @subject_id ).each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key]] if t.indicator.present?
+        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
       end
     elsif @grade_band_id.present?
       sector.trees.where(grade_band_id: @grade_band_id).each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key]] if t.indicator.present?
+        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
       end
     elsif @subject_id.present?
       sector.trees.where(subject_id: @subject_id ).each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key]] if t.indicator.present?
+        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
       end
     else
       sector.trees.each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key]] if t.indicator.present?
+        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
       end
     end
     return  rptRows
