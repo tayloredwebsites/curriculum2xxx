@@ -22,6 +22,7 @@
 !/tmp/.keep
 **/.DS_Store
 **/.~lock*
+**/temp*
 
 # simplecov working files
 coverage
