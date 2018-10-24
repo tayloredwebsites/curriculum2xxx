@@ -103,13 +103,15 @@ class UploadsController < ApplicationController
     @abortRow = false
     @status_detail = ''
 
-    # fully process flag (currently how processed)
-    # this flag will allow skipping the processing of columns based upon status
-    # could be an option on the file upload screen
-    @phase_one = true
     Rails.logger.debug("*** params: #{params}")
-    Rails.logger.debug("*** params['p1']: #{params['p1']}")
-    Rails.logger.debug("*** params['p2']: #{params['p2']}")
+    Rails.logger.debug("*** params['phase']: #{params['phase']}")
+
+    @phaseOne =  (params['phase'] == '1') ? true : false
+    @phaseTwo =  (params['phase'] == '2') ? true : false
+    @phaseOne = true if !@phaseOne && !@phaseTwo
+
+    Rails.logger.debug("*** @phaseOne: #{@phaseOne}")
+    Rails.logger.debug("*** @phaseTwo: #{@phaseTwo}")
 
     if @upload
       @subjectRec = @upload.subject
@@ -198,34 +200,40 @@ class UploadsController < ApplicationController
                 @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_sheetID', code: val)
               end
             when :area
-              if @phase_one || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              if @phaseOne
                 stacks = process_otc_tree(0, val, row_num, stacks, grade_band)
               end
             when :component
-              if @phase_one || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              if @phaseOne
                 stacks = process_otc_tree(1, val, row_num, stacks, grade_band)
               end
             when :outcome
-              if @phase_one || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              if @phaseOne
                 stacks = process_otc_tree(2, val, row_num, stacks, grade_band)
               end
             when :indicator
-              if @phase_one || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
+              if @phaseOne
                 stacks = process_otc_tree(3, val, row_num, stacks, grade_band)
               end
             when :relevantKbe
               Rails.logger.debug("**** when Relevant KBE")
-              if @phase_one || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
+              # if @phaseOne || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
+              if @phaseOne
                 process_sector(val, row_num, stacks)
               end
             when :sectorRelation
               Rails.logger.debug("**** when sectorRelation")
-              if @phase_one || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
+              # if @phaseOne || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
+              if @phaseOne
                 process_sector_relation(val, row_num, stacks) if val.present?
               end
             when :currentSubject, :chemistry, :mathematics, :geography, :physics, :biology, :computers
-              Rails.logger.debug("**** when subject: #{new_key}")
-              if @phase_one || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
+              Rails.logger.debug("**** when subject: #{new_key} (#{key}), #{@localeRec.code}")
+              if @phaseTwo
                 process_subject_relation(val, row_num, stacks) if val.present?
               end
             end
