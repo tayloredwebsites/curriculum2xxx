@@ -103,6 +103,7 @@ class UploadsController < ApplicationController
     @abortRow = false
     @status_detail = ''
 
+    Rails.logger.debug ("*** upload: #{params['upload']}")
     Rails.logger.debug("*** params: #{params}")
     Rails.logger.debug("*** params['phase']: #{params['phase']}")
 
@@ -113,7 +114,7 @@ class UploadsController < ApplicationController
     Rails.logger.debug("*** @phaseOne: #{@phaseOne}")
     Rails.logger.debug("*** @phaseTwo: #{@phaseTwo}")
 
-    if @upload
+    if @upload && params['upload']
       @subjectRec = @upload.subject
       @gradeBandRec = @upload.grade_band
       @localeRec = @upload.locale
@@ -242,6 +243,10 @@ class UploadsController < ApplicationController
           @errs.concat(@rowErrs)
         end # CSV.foreach
       end
+    else
+      Rails.logger.error("ERROR:  invalid params: #{params}")
+      flash[:alert] = "ERROR: MISSING upload filename"
+      abortRun = true
     end # if upload
     if abortRun
       index_prep
@@ -272,7 +277,10 @@ class UploadsController < ApplicationController
   end
 
   def upload_params
-    params.require('upload').permit(:subject_id, :grade_band_id, :locale_id, :status, :file)
+    params.require('upload').permit(:subject_id, :grade_band_id, :locale_id, :status, :file, :phase, :upload)
+    # # ToDo - what is the upload param for ???
+    # # params.permit(:subject_id, :grade_band_id, :locale_id, :status, :file, :phase, :upload)
+    # params.permit(:utf8, :authenticity_token, :upload, :locale, :id, :phase)
   end
 
   def index_prep
