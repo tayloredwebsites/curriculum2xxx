@@ -32,6 +32,7 @@ class Upload < BaseRec
       :"Relevantni sektori KBE" => :relevantKbe,
       :"Objašnjenje kako se indikator odnosi na KBE sektor" => :sectorRelation,
       :"Usko povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
+      :"Tijesno povezani ishodi uÄenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Kemija" => :chemistry,
       :"Matematika" => :mathematics,
       :"Geografija" => :geography,
@@ -86,6 +87,16 @@ class Upload < BaseRec
     :indicator => true,
     :gradeBand => true
   }
+
+  TO_SUBJECT_CODE = {
+    :currentSubject => '',
+    :chemistry => 'Hem',
+    :mathematics => 'Mat',
+    :geography => 'Geo',
+    :physics => 'Fiz',
+    :biology => 'Bio',
+    :computers => 'IT'
+}
 
   belongs_to :subject
   belongs_to :grade_band

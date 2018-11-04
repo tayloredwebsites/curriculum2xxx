@@ -5,7 +5,7 @@ class UploadsController < ApplicationController
   ROCESSING_AREA = 0
   ROCESSING_COMPONENT = 1
   ROCESSING_OUTCOME = 2
-  ROCESSING_INDICATOR = 3
+  PROCESSING_INDICATOR = 3
   PROCESSING_SECTOR = 4
 
   # types of stacks
@@ -103,10 +103,6 @@ class UploadsController < ApplicationController
     @abortRow = false
     @status_detail = ''
 
-    Rails.logger.debug ("*** upload: #{params['upload']}")
-    Rails.logger.debug("*** params: #{params}")
-    Rails.logger.debug("*** params['phase']: #{params['phase']}")
-
     @phaseOne =  (params['phase'] == '1') ? true : false
     @phaseTwo =  (params['phase'] == '2') ? true : false
     @phaseOne = true if !@phaseOne && !@phaseTwo
@@ -120,6 +116,7 @@ class UploadsController < ApplicationController
       @localeRec = @upload.locale
       tree_parent_code = ''
 
+      Rails.logger.debug("*** @upload.status: #{@upload.status} ==? #{BaseRec::UPLOAD_SECTOR_RELATED}")
       # check filename
       if upload_params['file'].original_filename != @upload.filename
         flash[:alert] = I18n.translate('uploads.errors.incorrect_filename', filename: @upload.filename)
@@ -128,11 +125,16 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** upload filename: #{upload_params['file'].original_filename.inspect}")
       elsif @upload.status == BaseRec::UPLOAD_DONE
         # skip processing if already done, otherwise process)
+        Rails.logger.debug("*** file done")
         flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
         abortRun = true
+      elsif @phaseTwo && @upload.status < 2
+        # do not process phase 2 until LO tree is uploaded
+        Rails.logger.debug("*** cannot process file, @phaseTwo: #{@phaseTwo}, status: #{@upload.status}")
+        flash[:notify] = "Cannot process Phase 2 for #{@upload.filename} until Learning Outcomes are successfully loaded"
+        abortRun = true
       else
-        # process file to upload
-
+        Rails.logger.debug("*** process file")
         # stacks is an array whose elements correspond to the depth of the code tree (level of processing)
         #  - (e.g. 0 - Area, 1 - Component, 2 - Outcome, ...)
         stacks = Array.new
@@ -159,6 +161,7 @@ class UploadsController < ApplicationController
         raise "Invalid grade band on second header row: #{infoLine[2]}: #{infoLine[3]}" if infoLine[2] != 'Raspon:' || grade_band ==  0
         # Create your CSV object using the remainder of the stream.
         csv = CSV.new file, headers: true
+        Rails.logger.debug("*** get csv rows")
         csv.each do |row|
 
           @rowErrs = []
@@ -193,6 +196,7 @@ class UploadsController < ApplicationController
             # end
 
             # process this column for this row
+            Rails.logger.debug("*** procesing column: #{new_key}")
             case new_key
             when :row
               if val.to_s != row_num.to_s
@@ -202,40 +206,49 @@ class UploadsController < ApplicationController
               end
             when :area
               # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-              if @phaseOne
+              if true
                 stacks = process_otc_tree(0, val, row_num, stacks, grade_band)
               end
             when :component
               # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-              if @phaseOne
+              if true
                 stacks = process_otc_tree(1, val, row_num, stacks, grade_band)
               end
             when :outcome
               # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-              if @phaseOne
+              if true
                 stacks = process_otc_tree(2, val, row_num, stacks, grade_band)
               end
             when :indicator
               # if @phaseOne || @upload.status == BaseRec::UPLOAD_NOT_UPLOADED || @upload.status == BaseRec::UPLOAD_TREE_UPLOADING
-              if @phaseOne
+              if true
                 stacks = process_otc_tree(3, val, row_num, stacks, grade_band)
               end
             when :relevantKbe
-              Rails.logger.debug("**** when Relevant KBE")
-              # if @phaseOne || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
-              if @phaseOne
+              # load relevant KBE if phase 2 or tree has been uploaded
+              if (
+                @phaseTwo ||
+                @upload.status == BaseRec::UPLOAD_TREE_UPLOADED ||
+                @upload.status == BaseRec::UPLOAD_SECTOR_RELATED
+              )
+                Rails.logger.debug("**** when Relevant KBE")
                 process_sector(val, row_num, stacks)
               end
             when :sectorRelation
-              Rails.logger.debug("**** when sectorRelation")
-              # if @phaseOne || @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
-              if @phaseOne
+              # load Sector Relations if phase 2 or tree has been uploaded
+              if (
+                @phaseTwo ||
+                @upload.status == BaseRec::UPLOAD_TREE_UPLOADED ||
+                @upload.status == BaseRec::UPLOAD_SECTOR_RELATED
+              )
+                Rails.logger.debug("**** when sectorRelation")
                 process_sector_relation(val, row_num, stacks) if val.present?
               end
             when :currentSubject, :chemistry, :mathematics, :geography, :physics, :biology, :computers
-              Rails.logger.debug("**** when subject: #{new_key} (#{key}), #{@localeRec.code}")
+              Rails.logger.debug("*** process a subject column for #{new_key} with value: #{val}")
               if @phaseTwo
-                process_subject_relation(val, row_num, stacks) if val.present?
+                Rails.logger.debug("**** when subject: #{new_key} (#{key}), #{@localeRec.code}")
+                process_subject_relation(val, row_num, stacks, new_key) if val.present?
               end
             end
             break if @abortRow || @rowErrs.count > 0
@@ -254,10 +267,15 @@ class UploadsController < ApplicationController
     else
       # Update status level
       if stacks[IDS_STACK][ROCESSING_AREA].count > 0
+        Rails.logger.debug("processing area count: #{stacks[IDS_STACK][ROCESSING_AREA].count}")
         @upload.status = BaseRec::UPLOAD_TREE_UPLOADING
+        Rails.logger.debug("tree errors: #{@treeErrs.inspect}")
         if !@treeErrs
+          Rails.logger.debug("no tree errors")
           @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
           # to do - update this to wait till sector explanation done.
+          Rails.logger.debug("processing sector count: #{stacks[IDS_STACK][PROCESSING_SECTOR].count}")
+          Rails.logger.debug("sector errors: #{@sectorErrs.inspect}")
           if stacks[IDS_STACK][PROCESSING_SECTOR].count > 0 && !@sectorErrs
             @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
           end
@@ -358,13 +376,13 @@ class UploadsController < ApplicationController
   def process_otc_tree(depth, val, row_num, stacks, grade_band)
     code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, depth, stacks)
 
-    Rails.logger.debug("*** parseSubCodeText(val=#{val.inspect}, depth=#{depth}")
-    # Rails.logger.debug("*** parseSubCodeText(stacks=#{stacks.inspect}")
-    Rails.logger.debug("*** returns:")
-    Rails.logger.debug("*** code_str: #{code_str.inspect}")
-    Rails.logger.debug("*** text: #{text.inspect}")
-    Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
-    Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
+    # Rails.logger.debug("*** parseSubCodeText(val=#{val.inspect}, depth=#{depth}")
+    # # Rails.logger.debug("*** parseSubCodeText(stacks=#{stacks.inspect}")
+    # Rails.logger.debug("*** returns:")
+    # Rails.logger.debug("*** code_str: #{code_str.inspect}")
+    # Rails.logger.debug("*** text: #{text.inspect}")
+    # Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
+    # Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
     stacks[CODES_STACK][depth] = code_str # save currant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
     Rails.logger.debug("*** depth: #{depth}, builtCode: #{builtCode.inspect}")
@@ -430,6 +448,14 @@ class UploadsController < ApplicationController
           "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name",
           text
         )
+        Rails.logger.debug("*** process_otc_tree find_or_update_translation")
+        Rails.logger.debug("*** arg 1: #{@localeRec.code}")
+        Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name")
+        Rails.logger.debug("*** arg 3: #{text}")
+        Rails.logger.debug("*** returns:")
+        Rails.logger.debug("*** transl: #{transl.inspect}")
+        Rails.logger.debug("*** text_status: #{text_status.inspect}")
+        Rails.logger.debug("*** text_msg: #{text_msg.inspect}")
         if text_status == BaseRec::REC_ERROR
           @rowErrs << text_msg
         end
@@ -445,7 +471,7 @@ class UploadsController < ApplicationController
       rptRec << new_code
       rptRec << translation_val
       rptRec << statMsg
-      @rptRecs << rptRec
+      @rptRecs << rptRec if !@phaseTwo
 
     end # if not skipped record
     @treeErrs = true if @rowErrs.count > 0
@@ -454,7 +480,7 @@ class UploadsController < ApplicationController
 
   def process_sector(val, row_num, stacks)
     Rails.logger.debug("*** process_sector(#{val}, #{row_num}, #{stacks}")
-    tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
+    tree_rec = stacks[RECS_STACK][PROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
     # split by semi-colon and period and others!!!
@@ -514,8 +540,10 @@ class UploadsController < ApplicationController
 
     end
     sectorsAdded = []
+    Rails.logger.debug("*** Sector Relations add")
     relations.each do |r|
       # get the KBE code from the looked up sector description in the translation table
+      Rails.logger.debug("*** relation: #{r.inspect}")
       begin
         sectors = Sector.where(code: r)
         throw "Missing sector with code #{r.inspect}" if sectors.count < 1
@@ -523,12 +551,15 @@ class UploadsController < ApplicationController
         # check the sectors_trees table to see if it is joined already
         matchedTrees = sector.trees.where(id: tree_rec.id)
         # if not, join them
+        Rails.logger.debug("*** matchedTrees: #{matchedTrees.inspect}")
         if matchedTrees.count == 0
           sector.trees << tree_rec
           sectorsAdded << r
         end
       rescue ActiveRecord::ActiveRecordError => e
-        errs << I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
+        eMsg = I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
+        Rails.logger.error("*** #{eMsg}")
+        errs << eMsg
       end
     end
     # get current list of related sector for this tree
@@ -549,7 +580,7 @@ class UploadsController < ApplicationController
     rptRec << '' # blank out the code column of report
     rptRec << ((allSectors.count > 0) ? I18n.translate('app.labels.related_to_sectors', sectors: allSectors.join(', ')) : 'No related sectors.')
     rptRec << statMsg
-    @rptRecs << rptRec
+    @rptRecs << rptRec if !@phaseTwo
 
 
     @sectorErrs = true if @rowErrs.count > 0
@@ -557,14 +588,14 @@ class UploadsController < ApplicationController
   end
 
   def process_sector_relation(val, row_num, stacks)
-    # to do - ensure this is run if the @process_fully flag is not set
     errs = []
-    tree_rec = stacks[RECS_STACK][ROCESSING_INDICATOR] # get current indicator record from stacks
+    tree_rec = stacks[RECS_STACK][PROCESSING_INDICATOR] # get current indicator record from stacks
     explain, text_status, text_msg = Translation.find_or_update_translation(
       @localeRec.code,
       "#{tree_rec.base_key}.explain",
       val
     )
+
     if text_status == BaseRec::REC_ERROR
       err_str = text_msg
       errs << err_str
@@ -580,8 +611,78 @@ class UploadsController < ApplicationController
     @rptRecs << rptRec
 
     @sectorErrs = true if errs.count > 0
-
   end
+
+
+  def process_subject_relation(val, row_num, stacks, new_key)
+    errs = []
+    tree_rec = stacks[RECS_STACK][PROCESSING_INDICATOR] # get current indicator record from stacks
+
+    # (depth, val, row_num, stacks, grade_band)
+    code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, 4, stacks)
+
+    Rails.logger.debug("*** process_subject_relation - parseSubCodeText(val=#{val.inspect}, depth=#{4}")
+    # Rails.logger.debug("*** text: #{text.inspect}")
+    Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
+
+    indicCodeJson = JSON.parse indicCodeArr
+    Rails.logger.debug("indicCodeJson: #{indicCodeJson}")
+    # indicTextJson = JSON.parse text
+    # Rails.logger.debug("indicTextJson: #{indicTextJson}")
+
+    indicCodeJson.each_with_index do |indic, ix|
+      Rails.logger.debug("indic: #{indic}")
+      # Rails.logger.debug("indic text: #{indicTextJson[ix]}")
+      begin
+        @subjectRec.inspect
+        Rails.logger.debug("*** current @subjectRec: #{@subjectRec.inspect}")
+        subjCode = Upload::TO_SUBJECT_CODE[new_key.to_sym]
+        subjCode = subjCode == '' ? @subjectRec.code : subjCode
+        Rails.logger.debug("*** subjCode: #{subjCode}")
+        subjects = Subject.where(code: subjCode)
+        throw "Missing sector with code #{subjCode}" if subjects.count < 1
+        subject = subjects.first
+        Rails.logger.debug("*** current subject: #{subject.inspect}")
+        Rails.logger.debug("*** current tree: #{tree_rec.inspect}")
+        # # check the subjects_trees table to see if it is joined already
+        # matchedTrees = subject.trees.where(id: tree_rec.id)
+        # # if not, join them
+        # Rails.logger.debug("*** matchedTrees: #{matchedTrees.inspect}")
+        # if matchedTrees.count == 0
+        #   subject.trees << tree_rec
+        #   sectorsAdded << r
+        # end
+      rescue ActiveRecord::ActiveRecordError => e
+        eMsg = I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
+        Rails.logger.error("*** #{eMsg}")
+        errs << eMsg
+      end
+  end
+
+    throw "Stop Here"
+
+    # # update translation if not an error and value changed
+    # transl, text_status, text_msg = Translation.find_or_update_translation(
+    #   @localeRec.code,
+    #   "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name",
+    #   text
+    # )
+    # if text_status == BaseRec::REC_ERROR
+    #   @rowErrs << text_msg
+    # end
+    # translation_val = transl.value.present? ? transl.value : ''
+
+    # generate report record
+    rptRec = [row_num]
+    rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
+    rptRec << '' # blank out the code column of report
+    rptRec << "#{I18n.translate('app.labels.sector_related_explain')}: #{explain.value}"
+    rptRec << ((errs.count > 0) ? errs.to_s : '')
+    @rptRecs << rptRec
+
+    @sectorErrs = true if errs.count > 0
+  end
+
 
   def get_sectors_translations
     sectorNameKeys = Sector.all.map { |s| s.name_key }

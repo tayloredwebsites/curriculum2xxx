@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402185805) do
+ActiveRecord::Schema.define(version: 20181105152831) do
 
   create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
@@ -49,6 +49,13 @@ ActiveRecord::Schema.define(version: 20180402185805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
+  end
+
+  create_table "subjects_trees", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "subject_id", null: false
+    t.bigint "tree_id", null: false
+    t.index ["subject_id", "tree_id"], name: "index_subjects_trees_on_subject_id_and_tree_id"
+    t.index ["tree_id", "subject_id"], name: "index_subjects_trees_on_tree_id_and_subject_id"
   end
 
   create_table "translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
