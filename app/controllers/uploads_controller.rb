@@ -187,7 +187,7 @@ class UploadsController < ApplicationController
             end
 
             # map csv headers to short symbols
-            new_key = Upload.get_short(@localeRec.code, key)
+            new_key = Upload.get_short(@localeRec.code, key.strip)
 
             # # ensure required rows have data
             # if new_key.present? && Upload::SHORT_REQ[new_key.to_sym] && val.blank?
@@ -196,7 +196,14 @@ class UploadsController < ApplicationController
             # end
 
             # process this column for this row
-            Rails.logger.debug("*** procesing column: #{new_key}")
+            Rails.logger.debug("*** matching procesing column: #{ix.inspect} #{new_key.inspect}")
+            if !new_key
+              if ix == 8
+                Rails.logger.debug("*** fix column 8 header")
+                new_key = :currentSubject
+              end
+            end
+            Rails.logger.debug("*** fixed procesing column: #{new_key}")
             case new_key
             when :row
               if val.to_s != row_num.to_s
@@ -224,6 +231,8 @@ class UploadsController < ApplicationController
               if true
                 stacks = process_otc_tree(3, val, row_num, stacks, grade_band)
               end
+            when :gradeBand
+              # skip this, already obtained for each element
             when :relevantKbe
               # load relevant KBE if phase 2 or tree has been uploaded
               if (
@@ -250,6 +259,9 @@ class UploadsController < ApplicationController
                 Rails.logger.debug("**** when subject: #{new_key} (#{key}), #{@localeRec.code}")
                 process_subject_relation(val, row_num, stacks, new_key) if val.present?
               end
+            else
+              Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
+              throw "invalid column header: #{key}"
             end
             break if @abortRow || @rowErrs.count > 0
           end # row.each
@@ -354,7 +366,14 @@ class UploadsController < ApplicationController
           # get the indicator code
           indicCode = outcScan.scan /./
           # change cyrilliac codes to western (english sequence)
-          indicCodeW = Tree.indicatorLetterByLocale(@localeRec.code, indicCode)
+          if Tree::INDICATOR_SEQ_ENG.include?(indicCode)
+            Rails.logger.debug("*** western character")
+            indicCodeW = indicCode
+          else
+            Rails.logger.debug("*** not western character: #{"%s %3d %02X" % [ indicCode, indicCode.ord, indicCode.ord ]}")
+            indicCodeW = Tree.indicatorLetterByLocale(@localeRec.code, indicCode)
+          end
+          Rails.logger.debug("**** indicCodeFirst: #{indicCodeFirst}, indicCode: #{indicCode}, indicCodeW: #{indicCodeW}")
           # save off the first indicator code
           indicCodeFirst = indicCodeW if indicCodeFirst.blank?
           # skip any white space or punctuation to the text of the indicator
@@ -479,21 +498,24 @@ class UploadsController < ApplicationController
   end # process_otc_tree
 
   def process_sector(val, row_num, stacks)
-    Rails.logger.debug("*** process_sector(#{val}, #{row_num}, #{stacks}")
+    Rails.logger.debug("***")
+    Rails.logger.debug("*** process_sector val: #{val}")
+    Rails.logger.debug("*** process_sector row: #{row_num}")
+    # Rails.logger.debug("*** process_sector(#{stacks}")
     tree_rec = stacks[RECS_STACK][PROCESSING_INDICATOR] # get current indicator record from stacks
     errs = []
     relations = []
     # split by semi-colon and period and others!!!
     # Not split by comma (used in Sector Names)
     sectorNames = val.present? ? val.split(/[:;\.)]+/) : []
-    Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
+    # Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
     # get a hash of all sectors translations that return the sector code
     sectorTranslations = get_sectors_translations()
-    Rails.logger.debug("*** sectorTranslations: #{sectorTranslations.inspect}")
+    # Rails.logger.debug("*** sectorTranslations: #{sectorTranslations.inspect}")
 
     sectorNames.each do |s|
       # matching of descriptions
-      Rails.logger.debug("*** sectorName: #{s.inspect}")
+      # Rails.logger.debug("*** sectorName: #{s.inspect}")
       clean_s = s.strip
       break if clean_s.blank?
 
@@ -540,7 +562,7 @@ class UploadsController < ApplicationController
 
     end
     sectorsAdded = []
-    Rails.logger.debug("*** Sector Relations add")
+    # Rails.logger.debug("*** Sector Relations add")
     relations.each do |r|
       # get the KBE code from the looked up sector description in the translation table
       Rails.logger.debug("*** relation: #{r.inspect}")
@@ -618,23 +640,43 @@ class UploadsController < ApplicationController
     errs = []
     tree_rec = stacks[RECS_STACK][PROCESSING_INDICATOR] # get current indicator record from stacks
 
-    # (depth, val, row_num, stacks, grade_band)
-    code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, 4, stacks)
+    # # (depth, val, row_num, stacks, grade_band)
+    # code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, 4, stacks)
 
-    Rails.logger.debug("*** process_subject_relation - parseSubCodeText(val=#{val.inspect}, depth=#{4}")
-    # Rails.logger.debug("*** text: #{text.inspect}")
-    Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
+    # Rails.logger.debug("*** process_subject_relation - parseSubCodeText(val=#{val.inspect}, depth=#{4}")
+    # # Rails.logger.debug("*** text: #{text.inspect}")
+    # Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
 
-    indicCodeJson = JSON.parse indicCodeArr
-    Rails.logger.debug("indicCodeJson: #{indicCodeJson}")
-    # indicTextJson = JSON.parse text
-    # Rails.logger.debug("indicTextJson: #{indicTextJson}")
-
-    indicCodeJson.each_with_index do |indic, ix|
-      Rails.logger.debug("indic: #{indic}")
-      # Rails.logger.debug("indic text: #{indicTextJson[ix]}")
+    # indicCodeJson = JSON.parse indicCodeArr
+    # Rails.logger.debug("indicCodeJson: #{indicCodeJson}")
+    # # indicTextJson = JSON.parse text
+    # # Rails.logger.debug("indicTextJson: #{indicTextJson}")
+    splitVal = val.present? ? val.split(/\.+/) : []
+    relations = []
+    codeAccum = ''
+    textAccum = ''
+    lastWas = ''
+    splitVal.each do |str|
+      numVal = Integer(str) rescue -1
+      if numVal < 0
+        textAccum += '.' if textAccum.length > 0
+        textAccum += str
+        lastWas = 'text'
+      else
+        if lastWas == 'text'
+          relations << [codeAccum, textAccum]
+          codeAccum = ''
+          textAccum = ''
+        end
+        codeAccum += '.' if codeAccum.length > 0
+        codeAccum += numVal.to_s
+        lastWas = 'code'
+      end
+    end
+    relations << [codeAccum, textAccum]
+    relations.each_with_index do |relate, ix|
+      Rails.logger.debug("*** Related Subject Indicator #{relate[0]}: #{relate[1]}")
       begin
-        @subjectRec.inspect
         Rails.logger.debug("*** current @subjectRec: #{@subjectRec.inspect}")
         subjCode = Upload::TO_SUBJECT_CODE[new_key.to_sym]
         subjCode = subjCode == '' ? @subjectRec.code : subjCode
@@ -643,7 +685,8 @@ class UploadsController < ApplicationController
         throw "Missing sector with code #{subjCode}" if subjects.count < 1
         subject = subjects.first
         Rails.logger.debug("*** current subject: #{subject.inspect}")
-        Rails.logger.debug("*** current tree: #{tree_rec.inspect}")
+        treeRecs = Tree.find_code_in_tree(@treeTypeRec, @versionRec, @subjectRec, @gradeBandRec, relate[0])
+        Rails.logger.debug("*** current tree: #{tree_rec[0].inspect}")
         # # check the subjects_trees table to see if it is joined already
         # matchedTrees = subject.trees.where(id: tree_rec.id)
         # # if not, join them
@@ -657,7 +700,7 @@ class UploadsController < ApplicationController
         Rails.logger.error("*** #{eMsg}")
         errs << eMsg
       end
-  end
+    end
 
     throw "Stop Here"
 

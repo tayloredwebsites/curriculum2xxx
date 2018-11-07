@@ -33,6 +33,7 @@ class Upload < BaseRec
       :"Objašnjenje kako se indikator odnosi na KBE sektor" => :sectorRelation,
       :"Usko povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Tijesno povezani ishodi uÄenja koji se odnose na KBE sektor:" => :currentSubject,
+      :"Tijesno povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Kemija" => :chemistry,
       :"Matematika" => :mathematics,
       :"Geografija" => :geography,

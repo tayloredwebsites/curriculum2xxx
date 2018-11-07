@@ -275,4 +275,24 @@ class Tree < BaseRec
     end # if code == matchCode
   end
 
+  def self.find_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+    # get the tree records for this hierarchy item
+    matched_codes = Tree.where(
+      tree_type_id: treeTypeRec.id,
+      version_id: versionRec.id,
+      subject_id: subjectRec.id,
+      grade_band_id: gradeBandRec.id,
+      code: fullCode
+    )
+    Rails.logger.debug ("*** find code: #{fullCode}")
+    if matched_codes.count == 1
+      # it already exists, skip
+      matched = matched_codes.first
+      return [matched]
+    elsif matched_codes.count == 0
+      console.error ("ERROR - missing tree rec")
+      return []
+    end # if
+  end
+
 end
