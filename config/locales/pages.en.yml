@@ -34,6 +34,7 @@ en:
       new_sector_relations: "Newly related sectors: %{sectors}"
       sectors_listing: "Knowledge Based Education (KBE) Sectors"
       sector_related_explain: "Sectors Related Explanation"
+      subject_related_explain: "Subjects Related Explanation"
     roles:
       name: 'Roles'
       admin:

@@ -35,11 +35,14 @@ class Upload < BaseRec
       :"Tijesno povezani ishodi uÄenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Tijesno povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Kemija" => :chemistry,
+      :"Hemija" => :chemistry,
       :"Matematika" => :mathematics,
       :"Geografija" => :geography,
+      :"Moja okolina, Priroda i društvo" => :geography,
       :"Fizika" => :physics,
       :"Biologija" => :biology,
-      :"IKT" => :computers
+      :"IKT" => :computers,
+      :"Informatika" => :computers
     },
     :"hr" => {
       :"sheetID" => :row,
@@ -97,7 +100,17 @@ class Upload < BaseRec
     :physics => 'Fiz',
     :biology => 'Bio',
     :computers => 'IT'
-}
+  }
+
+  TO_SUBJECT_ID = {
+    :currentSubject => 0,
+    :chemistry => 4,
+    :mathematics => 6,
+    :geography => 3,
+    :physics => 2,
+    :biology => 1,
+    :computers => 5
+  }
 
   belongs_to :subject
   belongs_to :grade_band

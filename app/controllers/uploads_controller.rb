@@ -260,8 +260,12 @@ class UploadsController < ApplicationController
                 process_subject_relation(val, row_num, stacks, new_key) if val.present?
               end
             else
-              Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
-              throw "invalid column header: #{key}"
+              if ix > 13
+                # ignore teacher input columns
+              else
+                Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
+                throw "invalid column header: #{key}"
+              end
             end
             break if @abortRow || @rowErrs.count > 0
           end # row.each
@@ -674,53 +678,47 @@ class UploadsController < ApplicationController
       end
     end
     relations << [codeAccum, textAccum]
+    subjectsRelated = []
+    subjectsJustRelated = []
     relations.each_with_index do |relate, ix|
       Rails.logger.debug("*** Related Subject Indicator #{relate[0]}: #{relate[1]}")
       begin
-        Rails.logger.debug("*** current @subjectRec: #{@subjectRec.inspect}")
         subjCode = Upload::TO_SUBJECT_CODE[new_key.to_sym]
-        subjCode = subjCode == '' ? @subjectRec.code : subjCode
-        Rails.logger.debug("*** subjCode: #{subjCode}")
-        subjects = Subject.where(code: subjCode)
-        throw "Missing sector with code #{subjCode}" if subjects.count < 1
-        subject = subjects.first
-        Rails.logger.debug("*** current subject: #{subject.inspect}")
-        treeRecs = Tree.find_code_in_tree(@treeTypeRec, @versionRec, @subjectRec, @gradeBandRec, relate[0])
-        Rails.logger.debug("*** current tree: #{tree_rec[0].inspect}")
-        # # check the subjects_trees table to see if it is joined already
-        # matchedTrees = subject.trees.where(id: tree_rec.id)
-        # # if not, join them
-        # Rails.logger.debug("*** matchedTrees: #{matchedTrees.inspect}")
-        # if matchedTrees.count == 0
-        #   subject.trees << tree_rec
-        #   sectorsAdded << r
-        # end
+        subjCode = (subjCode == '') ? @subjectRec.code : subjCode
+        subjId = Upload::TO_SUBJECT_ID[new_key.to_sym]
+        subjId = (subjId == 0) ? @subjectRec.id : subjId
+        subject = Subject.find(subjId)
+        throw "Missing sector with id: #{subjId} (code #{subjCode})" if !subject
+        treeRec = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, relate[0])
+        if treeRec
+          # check the subjects_trees table to see if it is joined already
+          matchedTrees = subject.trees.where(id: tree_rec.id)
+          # if not, join them
+          subjectsRelated << relate[0] # if relate[0]
+          if matchedTrees.count == 0
+            subject.trees << tree_rec
+            subjectsJustRelated << relate[0] # if relate[0]
+          end
+        else
+          # error, cannot relate this outcome/indicator cod
+          eMsg = "ERROR - relating subject #{subjCode} to #{relate[0]}"
+          Rails.logger.error("*** #{eMsg}")
+          errs << eMsg
+        end
       rescue ActiveRecord::ActiveRecordError => e
-        eMsg = I18n.translate('uploads.errors.exception_relating_sector_to_tree', e: e)
+        eMsg = "ERROR - relating subject relation: #{e}"
         Rails.logger.error("*** #{eMsg}")
         errs << eMsg
       end
     end
 
-    throw "Stop Here"
-
-    # # update translation if not an error and value changed
-    # transl, text_status, text_msg = Translation.find_or_update_translation(
-    #   @localeRec.code,
-    #   "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name",
-    #   text
-    # )
-    # if text_status == BaseRec::REC_ERROR
-    #   @rowErrs << text_msg
-    # end
-    # translation_val = transl.value.present? ? transl.value : ''
-
     # generate report record
     rptRec = [row_num]
     rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
     rptRec << '' # blank out the code column of report
-    rptRec << "#{I18n.translate('app.labels.sector_related_explain')}: #{explain.value}"
-    rptRec << ((errs.count > 0) ? errs.to_s : '')
+    rptRec << ((subjectsRelated.length > 0) ? ("Related to: " + subjectsRelated.join(', ')) : '')
+    statMsg = ((subjectsJustRelated.length > 0) ? ("Newly Related to: " + subjectsJustRelated.join(', ')) : '')
+    rptRec << statMsg + ((errs.count > 0) ? ("Errors: #{errs.to_s}") : '')
     @rptRecs << rptRec
 
     @sectorErrs = true if errs.count > 0

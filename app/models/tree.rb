@@ -288,10 +288,10 @@ class Tree < BaseRec
     if matched_codes.count == 1
       # it already exists, skip
       matched = matched_codes.first
-      return [matched]
+      return matched
     elsif matched_codes.count == 0
-      console.error ("ERROR - missing tree rec")
-      return []
+      Rails.logger.error ("ERROR - missing tree rec for: #{subjectRec.code}, #{gradeBandRec.code}, #{fullCode}")
+      return nil
     end # if
   end
 
