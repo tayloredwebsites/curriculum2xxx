@@ -1,12 +1,14 @@
 class UploadsController < ApplicationController
 
-  PROCESSING_DEPTH = 5
+  PROCESSING_DEPTH = 7
   CODE_DEPTH = 4
   ROCESSING_AREA = 0
   ROCESSING_COMPONENT = 1
   ROCESSING_OUTCOME = 2
   PROCESSING_INDICATOR = 3
   PROCESSING_SECTOR = 4
+  PROCESSING_SECTOR_EXPLAIN = 5
+  PROCESSING_SUBJECT_REL = 6
 
   # types of stacks
   RECS_STACK = 0
@@ -98,6 +100,7 @@ class UploadsController < ApplicationController
     @rowErrs = []
     @treeErrs = false
     @sectorErrs = false
+    @subjectErrs = false
     @rptRecs = []
     abortRun = false
     @abortRow = false
@@ -291,13 +294,24 @@ class UploadsController < ApplicationController
           @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
           # to do - update this to wait till sector explanation done.
           Rails.logger.debug("processing sector count: #{stacks[IDS_STACK][PROCESSING_SECTOR].count}")
+          Rails.logger.debug("processing sector explain count: #{stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN].count}")
           Rails.logger.debug("sector errors: #{@sectorErrs.inspect}")
-          if stacks[IDS_STACK][PROCESSING_SECTOR].count > 0 && !@sectorErrs
+          if stacks[IDS_STACK][PROCESSING_SECTOR].count > 0 &&
+            stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN] &&
+            stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN].count > 0 &&
+              !@sectorErrs
             @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
+            Rails.logger.debug("processing subjects count: #{stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count}")
+            Rails.logger.debug("subject errors: #{@subjectErrs.inspect}")
+            if stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count > 0
+              @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
+              @upload.status = BaseRec::UPLOAD_SUBJ_RELATED if !@subjectErrs
+            end
           end
         end
         # save all errors into the upload status detail field for easy review of last run of errors
         @upload.status_detail = @errs.join('$$$')
+        @upload.status = BaseRec::UPLOAD_DONE if @upload.status == BaseRec::UPLOAD_SUBJ_RELATED
         @upload.save
       end
       render :do_upload
@@ -608,7 +622,6 @@ class UploadsController < ApplicationController
     rptRec << statMsg
     @rptRecs << rptRec if !@phaseTwo
 
-
     @sectorErrs = true if @rowErrs.count > 0
 
   end
@@ -621,6 +634,8 @@ class UploadsController < ApplicationController
       "#{tree_rec.base_key}.explain",
       val
     )
+
+    stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN] << "#{tree_rec.id}" if !stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN].include?("#{tree_rec.id}")
 
     if text_status == BaseRec::REC_ERROR
       err_str = text_msg
@@ -721,7 +736,7 @@ class UploadsController < ApplicationController
     rptRec << statMsg + ((errs.count > 0) ? ("Errors: #{errs.to_s}") : '')
     @rptRecs << rptRec
 
-    @sectorErrs = true if errs.count > 0
+    @subjectErrs = true if errs.count > 0
   end
 
 
