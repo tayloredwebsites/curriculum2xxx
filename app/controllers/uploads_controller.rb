@@ -131,10 +131,10 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** file done")
         flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
         abortRun = true
-      elsif @phaseTwo && @upload.status < 2
+      elsif @phaseTwo && @upload.status < 3
         # do not process phase 2 until LO tree is uploaded
         Rails.logger.debug("*** cannot process file, @phaseTwo: #{@phaseTwo}, status: #{@upload.status}")
-        flash[:notify] = "Cannot process Phase 2 for #{@upload.filename} until Learning Outcomes are successfully loaded"
+        flash[:notify] = "Cannot process Phase 2 for #{@upload.filename} until Learning Outcomes are successfully loaded and Sectors are related"
         abortRun = true
       else
         Rails.logger.debug("*** process file")
@@ -238,21 +238,13 @@ class UploadsController < ApplicationController
               # skip this, already obtained for each element
             when :relevantKbe
               # load relevant KBE if phase 2 or tree has been uploaded
-              if (
-                @phaseTwo ||
-                @upload.status == BaseRec::UPLOAD_TREE_UPLOADED ||
-                @upload.status == BaseRec::UPLOAD_SECTOR_RELATED
-              )
+              if true
                 Rails.logger.debug("**** when Relevant KBE")
                 process_sector(val, row_num, stacks)
               end
             when :sectorRelation
               # load Sector Relations if phase 2 or tree has been uploaded
-              if (
-                @phaseTwo ||
-                @upload.status == BaseRec::UPLOAD_TREE_UPLOADED ||
-                @upload.status == BaseRec::UPLOAD_SECTOR_RELATED
-              )
+              if true
                 Rails.logger.debug("**** when sectorRelation")
                 process_sector_relation(val, row_num, stacks) if val.present?
               end
@@ -649,7 +641,7 @@ class UploadsController < ApplicationController
     rptRec << '' # blank out the code column of report
     rptRec << "#{I18n.translate('app.labels.sector_related_explain')}: #{explain.value}"
     rptRec << ((errs.count > 0) ? errs.to_s : '')
-    @rptRecs << rptRec
+    @rptRecs << rptRec if !@phaseTwo
 
     @sectorErrs = true if errs.count > 0
   end
