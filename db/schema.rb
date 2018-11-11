@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181105152831) do
+ActiveRecord::Schema.define(version: 20181110170331) do
 
   create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 20181105152831) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "filename"
+    t.text "statusPhase2"
     t.index ["grade_band_id"], name: "index_uploads_on_grade_band_id"
     t.index ["locale_id"], name: "index_uploads_on_locale_id"
     t.index ["subject_id", "grade_band_id", "locale_id"], name: "index_uploads_on_keys"

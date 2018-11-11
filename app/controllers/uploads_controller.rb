@@ -79,8 +79,12 @@ class UploadsController < ApplicationController
       if !@upload.status_detail.present?
         @status_detail = ''
       else
-        @status_detail = "Errors from last upload:<br>#{@upload.status_detail.split('$$$').join('<br>')}"
+        @status_detail = "<h5>Errors from Phase 1 upload:</h5>#{@upload.status_detail.split('$$$').join('<br>')}"
       end
+      if @upload.statusPhase2.present?
+        @status_detail += "<br><h5>Errors from Phase 2 upload:</h5>#{@upload.statusPhase2.split('$$$').join('<br>')}"
+      end
+      Rails.logger.debug("*** @status_detail: #{@status_detail.inspect}")
       render :do_upload
     else
       flash[:notice] = 'Missing upload record.'
@@ -131,11 +135,11 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** file done")
         flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
         abortRun = true
-      elsif @phaseTwo && @upload.status < 3
-        # do not process phase 2 until LO tree is uploaded
-        Rails.logger.debug("*** cannot process file, @phaseTwo: #{@phaseTwo}, status: #{@upload.status}")
-        flash[:notify] = "Cannot process Phase 2 for #{@upload.filename} until Learning Outcomes are successfully loaded and Sectors are related"
-        abortRun = true
+      # elsif @phaseTwo && @upload.status < 3
+      #   # do not process phase 2 until LO tree is uploaded
+      #   Rails.logger.debug("*** cannot process file, @phaseTwo: #{@phaseTwo}, status: #{@upload.status}")
+      #   flash[:notify] = "Cannot process Phase 2 for #{@upload.filename} until Learning Outcomes are successfully loaded and Sectors are related"
+      #   abortRun = true
       else
         Rails.logger.debug("*** process file")
         # stacks is an array whose elements correspond to the depth of the code tree (level of processing)
@@ -150,9 +154,9 @@ class UploadsController < ApplicationController
         file = File.open upload_params['file'].path
         # Consume the first two CSV rows.
         line = file.gets
-        # Rails.logger.debug("*** first line read: #{line.inspect}")
+        Rails.logger.debug("*** first line read: #{line.inspect}")
         line = file.gets
-        # Rails.logger.debug("*** second line read: #{line.inspect}")
+        Rails.logger.debug("*** second line read: #{line.inspect}")
         infoLine = line.split(',')
         # Rails.logger.debug("*** second infoLine: #{line.inspect}")
         grade_band = 0
@@ -190,7 +194,11 @@ class UploadsController < ApplicationController
             end
 
             # map csv headers to short symbols
-            new_key = Upload.get_short(@localeRec.code, key.strip)
+            if key
+              new_key = Upload.get_short(@localeRec.code, key, ix)
+            else
+              new_key = :skip
+            end
 
             # # ensure required rows have data
             # if new_key.present? && Upload::SHORT_REQ[new_key.to_sym] && val.blank?
@@ -199,6 +207,7 @@ class UploadsController < ApplicationController
             # end
 
             # process this column for this row
+            Rails.logger.debug("")
             Rails.logger.debug("*** matching procesing column: #{ix.inspect} #{new_key.inspect}")
             if !new_key
               if ix == 8
@@ -208,6 +217,8 @@ class UploadsController < ApplicationController
             end
             Rails.logger.debug("*** fixed procesing column: #{new_key}")
             case new_key
+            when :skip
+              # skip this column
             when :row
               if val.to_s != row_num.to_s
                 # Rails.logger.error "ERROR: mismatched row num: #{val} != #{row_num}"
@@ -295,6 +306,7 @@ class UploadsController < ApplicationController
             @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
             Rails.logger.debug("processing subjects count: #{stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count}")
             Rails.logger.debug("subject errors: #{@subjectErrs.inspect}")
+            @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
             if stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count > 0
               @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
               @upload.status = BaseRec::UPLOAD_SUBJ_RELATED if !@subjectErrs
@@ -302,7 +314,11 @@ class UploadsController < ApplicationController
           end
         end
         # save all errors into the upload status detail field for easy review of last run of errors
-        @upload.status_detail = @errs.join('$$$')
+        if @phaseOne
+          @upload.status_detail = @errs.join('$$$')
+        elsif @phaseTwo
+          @upload.statusPhase2 = @errs.join('$$$')
+        end
         @upload.status = BaseRec::UPLOAD_DONE if @upload.status == BaseRec::UPLOAD_SUBJ_RELATED
         @upload.save
       end
@@ -601,11 +617,13 @@ class UploadsController < ApplicationController
       allSectors << s.code
       stacks[IDS_STACK][PROCESSING_SECTOR] << "#{tree_rec.id}-#{s.id}" if !stacks[IDS_STACK][PROCESSING_SECTOR].include?("#{tree_rec.id}-#{s.id}")
     end
-    statMsg = I18n.translate('app.labels.new_sector_relations', sectors: sectorsAdded.join(', ') )
+    statMsg = (sectorsAdded.length > 0) ? I18n.translate('app.labels.new_sector_relations', sectors: sectorsAdded.join(', ') ) : ''
     if errs.count > 0
-      statMsg += ', '+ errs.join(', ')
-      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + errs.join(', ')
+      statMsg += ', ' if statMsg.length > 0
+      statMsg += errs.join(', ')
+      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + errs.join(', ') if !@phaseTwo
     end
+
     # generate report record
     rptRec = [row_num]
     rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
@@ -632,7 +650,7 @@ class UploadsController < ApplicationController
     if text_status == BaseRec::REC_ERROR
       err_str = text_msg
       errs << err_str
-      @rowErrs << err_str
+      @rowErrs << err_str if !@phaseTwo
     end
 
     # generate report record
@@ -651,64 +669,85 @@ class UploadsController < ApplicationController
     errs = []
     tree_rec = stacks[RECS_STACK][PROCESSING_INDICATOR] # get current indicator record from stacks
 
-    # # (depth, val, row_num, stacks, grade_band)
-    # code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, 4, stacks)
-
-    # Rails.logger.debug("*** process_subject_relation - parseSubCodeText(val=#{val.inspect}, depth=#{4}")
-    # # Rails.logger.debug("*** text: #{text.inspect}")
-    # Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
-
-    # indicCodeJson = JSON.parse indicCodeArr
-    # Rails.logger.debug("indicCodeJson: #{indicCodeJson}")
-    # # indicTextJson = JSON.parse text
-    # # Rails.logger.debug("indicTextJson: #{indicTextJson}")
     splitVal = val.present? ? val.split(/\.+/) : []
     relations = []
     codeAccum = ''
     textAccum = ''
     lastWas = ''
-    splitVal.each do |str|
+    codeIx = 0
+    splitVal.each_with_index do |str, ix|
       numVal = Integer(str) rescue -1
-      if numVal < 0
-        textAccum += '.' if textAccum.length > 0
-        textAccum += str
-        lastWas = 'text'
-      else
+      stripStr = str.strip
+      Rails.logger.debug("*** codeIx: #{codeIx}, stripStr: #{stripStr}, length: #{stripStr.length}")
+      # get code, noting fourth item in code is usually a letter
+      isLastCode = (codeIx == 3 && stripStr.length == 1)
+      if numVal > -1 || isLastCode
         if lastWas == 'text'
           relations << [codeAccum, textAccum]
           codeAccum = ''
           textAccum = ''
         end
+        codeIx += 1
         codeAccum += '.' if codeAccum.length > 0
-        codeAccum += numVal.to_s
+        if isLastCode
+          codeAccum += stripStr
+        else
+          codeAccum += numVal.to_s
+        end
         lastWas = 'code'
+      else
+        textAccum += '.' if textAccum.length > 0
+        textAccum += str
+        lastWas = 'text'
+        codeIx = 0
       end
     end
     relations << [codeAccum, textAccum]
     subjectsRelated = []
     subjectsJustRelated = []
+
+    cs = stacks[CODES_STACK]
+    outcomeCode = "#{cs[0]}.#{cs[1]}.#{cs[2]}.#{cs[3]}"
+    Rails.logger.debug("*** code for row: #{outcomeCode}")
+
     relations.each_with_index do |relate, ix|
       Rails.logger.debug("*** Related Subject Indicator #{relate[0]}: #{relate[1]}")
       begin
         subjCode = Upload::TO_SUBJECT_CODE[new_key.to_sym]
         subjCode = (subjCode == '') ? @subjectRec.code : subjCode
+        Rails.logger.debug("*** subjCode: #{subjCode.inspect}")
         subjId = Upload::TO_SUBJECT_ID[new_key.to_sym]
         subjId = (subjId == 0) ? @subjectRec.id : subjId
         subject = Subject.find(subjId)
         throw "Missing sector with id: #{subjId} (code #{subjCode})" if !subject
         treeRec = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, relate[0])
+        newCode = relate[0]
+        codeArray = newCode.split('.')
+        eMsg = ''
+        Rails.logger.debug("*** relate[0], newCode, codeArray: #{relate[0].inspect} #{newCode.inspect} #{codeArray.inspect}")
+        if !treeRec && codeArray.length == 4
+          newCode = codeArray.first(3).join('.')
+          treeRec = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, newCode)
+          if treeRec
+            eMsg = "WARNING - #{@subjectRec.code}.#{outcomeCode} is related to #{subjCode}.#{newCode} instead of #{subjCode}.#{relate[0]} for Grade Band: #{@gradeBandRec.code}"
+          else
+            eMsg = "ERROR - cannot relate #{@subjectRec.code}.#{outcomeCode} to #{subjCode}.#{relate[0]} or #{subjCode}.#{newCode} for Grade Band: #{@gradeBandRec.code}"
+          end
+        elsif !treeRec
+          eMsg = "ERROR - cannot relate #{@subjectRec.code}.#{outcomeCode} to #{subjCode}.#{relate[0]} for Grade Band: #{@gradeBandRec.code}"
+        end
         if treeRec
           # check the subjects_trees table to see if it is joined already
           matchedTrees = subject.trees.where(id: tree_rec.id)
           # if not, join them
-          subjectsRelated << relate[0] # if relate[0]
+          Rails.logger.debug("*** subjCode: #{subjCode.inspect} newCode: #{newCode.inspect}")
+          subjectsRelated << subjCode + '.' + newCode
           if matchedTrees.count == 0
             subject.trees << tree_rec
-            subjectsJustRelated << relate[0] # if relate[0]
+            subjectsJustRelated << subjCode + '.' + newCode
           end
-        else
-          # error, cannot relate this outcome/indicator cod
-          eMsg = "ERROR - relating subject #{subjCode} to #{relate[0]}"
+        end
+        if eMsg != ''
           Rails.logger.error("*** #{eMsg}")
           errs << eMsg
         end
@@ -719,14 +758,22 @@ class UploadsController < ApplicationController
       end
     end
 
+    stacks[IDS_STACK][PROCESSING_SUBJECT_REL] << "#{tree_rec.id}" if !stacks[IDS_STACK][PROCESSING_SUBJECT_REL].include?("#{tree_rec.id}")
+
+    statMsg = ((subjectsJustRelated.length > 0) ? ("Newly Related to: " + subjectsJustRelated.join(', ')) : '')
+    if errs.count > 0
+      statMsg += ', ' if statMsg.length > 0
+      statMsg += errs.join(', ')
+      @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + errs.join(', ') if @phaseTwo
+    end
+
     # generate report record
     rptRec = [row_num]
     rptRec.concat(Array.new(CODE_DEPTH) {''}) # blank out the first four columns of report
-    rptRec << '' # blank out the code column of report
-    rptRec << ((subjectsRelated.length > 0) ? ("Related to: " + subjectsRelated.join(', ')) : '')
-    statMsg = ((subjectsJustRelated.length > 0) ? ("Newly Related to: " + subjectsJustRelated.join(', ')) : '')
+    rptRec << outcomeCode
+    rptRec << ((subjectsRelated.length > 0) ? ("#{@subjectRec.code}.#{outcomeCode} is related to: " + subjectsRelated.join(', ')) : '')
     rptRec << statMsg + ((errs.count > 0) ? ("Errors: #{errs.to_s}") : '')
-    @rptRecs << rptRec
+    @rptRecs << rptRec if @phaseTwo
 
     @subjectErrs = true if errs.count > 0
   end

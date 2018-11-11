@@ -171,7 +171,7 @@ en:
       new_upload: "Create new Upload"
       upload: "Upload"
       status: "Status"
-      last_errors: "Errors from last Upload"
+      last_errors: "Errors from prior uploads"
       uploaded: "Uploaded"
       num_added_sector_of_numall: "%{num} relations added to "
       saved_code: 'Saved code: %{code}'

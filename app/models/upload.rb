@@ -6,21 +6,21 @@ class Upload < BaseRec
 
   TO_SHORT_HASH = {
     :"en" => {
-      :"sheetID" => :row,
-      :"Area" => :area,
-      :"Component" => :component,
-      :"Outcome" => :outcome,
-      :"Indicator" => :indicator,
-      :"Grade band" => :gradeBand,
-      :"relevant KBE sectors (as determined from KBE spreadsheets)" => :relevantKbe,
-      :"Explanation of how the indicator relates to KBE sector" => :sectorRelation,
-      :"Closely related learning outcomes applicable to KBE sector" => :currentSubject,
-      :"Chemistry" => :chemistry,
-      :"Mathematics" => :mathematics,
-      :"Geography" => :geography,
-      :"Physics" => :physics,
-      :"Biology" => :biology,
-      :"ICT" => :computers
+      :"sheetID" => :row, # 0
+      :"Area" => :area, # 1
+      :"Component" => :component, # 2
+      :"Outcome" => :outcome, # 3
+      :"Indicator" => :indicator, # 4
+      :"Grade band" => :gradeBand, # 5
+      :"relevant KBE sectors (as determined from KBE spreadsheets)" => :relevantKbe, # 6
+      :"Explanation of how the indicator relates to KBE sector" => :sectorRelation, # 7
+      :"Closely related learning outcomes applicable to KBE sector" => :currentSubject, # 8
+      :"Chemistry" => :chemistry, # 8
+      :"Mathematics" => :mathematics, # 9
+      :"Geography" => :geography, # 10
+      :"Physics" => :physics, # 11
+      :"Biology" => :biology, # 12
+      :"ICT" => :computers # 13
     },
     :"bs" => {
       :"sheetID" => :row,
@@ -34,10 +34,12 @@ class Upload < BaseRec
       :"Usko povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Tijesno povezani ishodi uÄenja koji se odnose na KBE sektor:" => :currentSubject,
       :"Tijesno povezani ishodi učenja koji se odnose na KBE sektor:" => :currentSubject,
+      :"Tijesno povezani ishodi učenja koji se odnose na KBE sector" => :currentSubject,
       :"Kemija" => :chemistry,
       :"Hemija" => :chemistry,
       :"Matematika" => :mathematics,
       :"Geografija" => :geography,
+      :"Poznavanje društva, Priroda i društvo, Društvo, Geografija" => :geography,
       :"Moja okolina, Priroda i društvo" => :geography,
       :"Fizika" => :physics,
       :"Biologija" => :biology,
@@ -60,9 +62,11 @@ class Upload < BaseRec
       :"Kemija" => :chemistry,
       :"Matematika" => :mathematics,
       :"Geografija" => :geography,
+      :"Moja okolina, Priroda i društvo" => :geography,
       :"Fizika" => :physics,
       :"Biologija" => :biology,
-      :"IKT" => :computers
+      :"IKT" => :computers,
+      :"Informatika" => :computers
     },
     :"sr" =>{
       :"sheetID" => :row,
@@ -75,12 +79,18 @@ class Upload < BaseRec
       :"Рeлeвaнтни сектори економије засноване на знању (ЕЗЗ)" => :relevantKbe,
       :"Објашњење како се индикатор односи на секторе ЕЗЗ-а" => :sectorRelation,
       :"Тијесно повезани исходи учења који се односе на секторе ЕЗЗ-а" => :currentSubject,
+      :"Oбjaшњeњe кaкo сe индикaтoр oднoси нa секторе ЕЗЗ-а" => :currentSubject,
       :"Хемија" => :chemistry,
+      :"Хeмиja" => :chemistry,
       :"Математика" => :mathematics,
+      :"Maтeмaтикa" => :mathematics,
       :"Географија" => :geography,
+      :"Моја околина, Природа и друштво" => :geography,
       :"Физика" => :physics,
+      :"Физикa" => :physics,
       :"Биологија" => :biology,
-      :"ИКТ" => :computers
+      :"ИКТ" => :computers,
+      :"Информатика" => :computers
     }
   }
   SHORT_REQ = {
@@ -127,13 +137,58 @@ class Upload < BaseRec
     # where(active: true)
   }
 
-  def self.get_short(locale, val)
+  def self.get_short(locale, val, ix=0)
     # puts "locale: #{locale.inspect}"
     # puts "val: #{val.inspect}"
     locale_vals =  Upload::TO_SHORT_HASH[locale.to_sym]
     # puts "locale_vals: #{locale_vals.inspect}"
     # puts "locale_vals: #{locale_vals[val.to_sym]}"
-    ret = val.present? ? locale_vals[val.strip.to_sym] : ''
+    if !val.present?
+      Rails.logger.debug("*** missing value")
+      return ''
+    elsif locale_vals[val.strip.to_sym].present?
+      Rails.logger.debug("*** found value #{val}")
+      return locale_vals[val.strip.to_sym]
+    elsif ix == 8
+      Rails.logger.debug("*** column 8 is currentSubject")
+      return :currentSubject
+    elsif val.include?('Geografija')
+      Rails.logger.debug("*** matched Geography")
+      return :geography
+    elsif val.include?('друштво')
+      Rails.logger.debug("*** matched Geography")
+      return :geography
+    elsif val.include?('Гeoгрaфиja')
+      Rails.logger.debug("*** matched Geography")
+      return :geography
+    elsif val.include?('društvo')
+      Rails.logger.debug("*** matched Geography")
+      return :geography
+    elsif val.include?('Informatika')
+      Rails.logger.debug("*** matched Computers")
+      return :computers
+    elsif val.include?('Информатика')
+      Rails.logger.debug("*** matched Computers")
+      return :computers
+    elsif val.include?('информатикa')
+      Rails.logger.debug("*** matched Computers")
+      return :computers
+    elsif val.include?('Biologija')
+      Rails.logger.debug("*** matched Computers")
+      return :biology
+    elsif val.include?('Биологија')
+      Rails.logger.debug("*** matched Computers")
+      return :biology
+    elsif val.include?('Објашњење')
+      Rails.logger.debug("*** matched sectorRelation")
+      return :sectorRelation
+    elsif val.include?('Релевантнисекториекономије')
+      Rails.logger.debug("*** matched sectorRelation")
+      return :relevantKbe
+    else
+      Rails.logger.debug("*** no matching at all for  #{val}")
+      return ''
+    end
   end
 
   # def self.reverse_hash

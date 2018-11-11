@@ -12,10 +12,10 @@
   </div>
 </div>
 <h4><%= "#{translate('uploads.labels.status')}: #{BaseRec::UPLOAD_STATUS[@upload.status]}" %></h4>
-<% if @upload.status_detail.present? %>
-  <h5 class='h6 align-left'>
+<% if @status_detail.present? %>
+  <div class='align-left'>
     <%= "#{translate('uploads.labels.last_errors')}: " %><%= @status_detail.html_safe %>
-  </h5>
+  </div>
 <% end # if %>
 <% if @errs.count > 0 %>
   <div class='error'><%= @errs.count %> Errors</div>
@@ -23,6 +23,15 @@
     <div class='error'><%= e %></div>
   <% end %>
 <% end # if %>
+<br>
+<ul class='titleList'>
+<% if @status_detail.present? || @errs.count > 0 %>
+  <li><%= "#{translate('app.labels.subject')}: #{@upload.subject.code}" %></li>
+  <li><%= "#{translate('app.labels.grade_band')}: #{@upload.grade_band.code}" %></li>
+  <li><%= "#{translate('app.labels.language')}: #{@upload.locale.name}" %></li>
+<% end # if %>
+</ul>
+
 <div><%= @messages %></div>
 <h5 class='h6'><%= @message %></h5>
 <%= form_tag do_upload_upload_path, {multipart: true, class: 'text-center'} do |form| %>
@@ -66,8 +75,8 @@
         <th><%= translate('app.labels.outcome') %></th>
         <th><%= translate('app.labels.indicator')  %></th>
         <th><%= translate('app.labels.code') %></th>
-        <th><%= translate('app.labels.description') %></th>
-        <th><%= translate('app.labels.message') %></th>
+        <th style="width: 30%;"><%= translate('app.labels.description') %></th>
+        <th style="width: 30%;"><%= translate('app.labels.message') %></th>
       </tr>
     </thead>
     <tbody>
