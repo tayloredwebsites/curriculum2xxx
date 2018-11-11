@@ -244,6 +244,9 @@ class TreesController < ApplicationController
       t.sectors.each do |s|
         treeKeys << s.name_key
       end
+      t.subjects.each do |s|
+        treeKeys << s.name_key
+      end
       # get the translation key for the indicators in the group of matched (indicators)
       JSON.load(t.matching_codes).each do |j|
         treeKeys << "#{t.buildRootKey}.#{j}.name"
