@@ -235,17 +235,31 @@ class TreesController < ApplicationController
 
     # prepare to output detail page
     @indicators = []
+    @subjects = Subject.all
+    subjById = @subjects.map{ |rec| [rec.id, rec.code]}
+    @subjById = Hash[subjById]
+    Rails.logger.debug("*** @subjById: #{@subjById.inspect}")
+    relatedBySubj = @subjects.map{ |rec| [rec.code, []]}
+    @relatedBySubj = Hash[relatedBySubj]
+    Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
     # get all translation keys for this learning outcome
     treeKeys = @tree.getAllTransNameKeys
     @trees.each do |t|
+      Rails.logger.debug("*** tree: #{t.base_key}")
       # get translation key for this indicator
       treeKeys << t.name_key
       # get translation key for each sector for this indicator
       t.sectors.each do |s|
         treeKeys << s.name_key
       end
-      t.subjects.each do |s|
-        treeKeys << s.name_key
+      # get translation key for each related indicators for this indicator
+      Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
+      t.related_trees.each do |r|
+        Rails.logger.debug("*** related: #{r.inspect}")
+        treeKeys << r.name_key
+        subCode = @subjById[r.subject_id]
+        Rails.logger.debug("*** @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
+        @relatedBySubj[subCode] << {code: r.code, tkey: r.name_key} if !@relatedBySubj[subCode].include?(r.code)
       end
       # get the translation key for the indicators in the group of matched (indicators)
       JSON.load(t.matching_codes).each do |j|
@@ -254,6 +268,7 @@ class TreesController < ApplicationController
       treeKeys << "#{t.base_key}.explain"
       @indicators << t
     end
+    Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
   end
 

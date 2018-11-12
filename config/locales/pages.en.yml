@@ -1,5 +1,12 @@
 
 en:
+  subjects:
+    Bio: "Biology"
+    Fiz: "Physics"
+    Geo: "Geography"
+    Hem: "Chemistry"
+    IT: "Information Technology"
+    Mat: "Mathematics"
   app:
     title: "ENABLE BIH Curriculum App."
     labels:
@@ -134,13 +141,13 @@ en:
       related_sectors: 'Related Sectors KBE.'
       how_sectors_related: 'How Sector KBE is related.'
       indicator_connections: 'Connections to Other Indicators:'
-      current_subject: "In this Subject"
-      subject_biology: "In Biology"
-      subject_chemistry: "In Chemistry"
-      subject_geography: "In Geography"
-      subject_it: "In Information Technology"
-      subject_math: "In Math"
-      subject_physics: "In Physics"
+      current_subject: "This Subject"
+      Bio: "Biology"
+      Hem: "Chemistry"
+      Geo: "Geography"
+      IT: "Information Technology"
+      Mat: "Mathematics"
+      Fiz: "Physics"
       teacher_header: "Supporting Resources"
       teacher_field_1: "Multi, inter or trans disciplinary KBE sector based projects"
       teacher_field_2: "Rough Learning Progression - When to teach"

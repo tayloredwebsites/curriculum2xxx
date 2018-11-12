@@ -67,34 +67,106 @@
             </div>
           </div>
           <div class='row subject-relations'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.subject_biology') %>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t('trees.labels.Bio') %>
             </div>
+            <% @relatedBySubj['Bio'].each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <%= @translations[r[:tkey]] %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class='row subject-relations'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.subject_chemistry') %>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t('trees.labels.Hem') %>
             </div>
+            <% @relatedBySubj['Hem'].each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <%= @translations[r[:tkey]] %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class='row subject-relations'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.subject_geography') %>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t('trees.labels.Geo') %>
             </div>
+            <% @relatedBySubj['Geo'].each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <%= @translations[r[:tkey]] %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class='row subject-relations'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.subject_it') %>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t('trees.labels.IT') %>
             </div>
+            <% @relatedBySubj['IT'].each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <%= @translations[r[:tkey]] %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class='row subject-relations'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.subject_math') %>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t('trees.labels.Mat') %>
             </div>
+            <% @relatedBySubj['Mat'].each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <%= @translations[r[:tkey]] %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class='row subject-relations'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.subject_physics') %>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t('trees.labels.Fiz') %>
             </div>
+            <% @relatedBySubj['Fiz'].each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <%= @translations[r[:tkey]] %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

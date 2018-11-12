@@ -463,7 +463,7 @@ class UploadsController < ApplicationController
       message = ''
     else
       # insert record into tree
-      new_code, node, save_status, message = Tree.find_or_add_code_in_tree(
+      new_code, @rowTreeRec, save_status, message = Tree.find_or_add_code_in_tree(
         @treeTypeRec,
         @versionRec,
         @subjectRec,
@@ -486,17 +486,17 @@ class UploadsController < ApplicationController
         translation_val = ''
       else # if save_status ...
         # update current node in records stack, and save off id.
-        stacks[RECS_STACK][depth] = node
-        stacks[IDS_STACK][depth] << node.id if !stacks[IDS_STACK][depth].include?(node.id)
+        stacks[RECS_STACK][depth] = @rowTreeRec
+        stacks[IDS_STACK][depth] << @rowTreeRec.id if !stacks[IDS_STACK][depth].include?(@rowTreeRec.id)
         # update translation if not an error and value changed
         transl, text_status, text_msg = Translation.find_or_update_translation(
           @localeRec.code,
-          "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name",
+          "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name",
           text
         )
         Rails.logger.debug("*** process_otc_tree find_or_update_translation")
         Rails.logger.debug("*** arg 1: #{@localeRec.code}")
-        Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{node.code}.name")
+        Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name")
         Rails.logger.debug("*** arg 3: #{text}")
         Rails.logger.debug("*** returns:")
         Rails.logger.debug("*** transl: #{transl.inspect}")
@@ -679,7 +679,6 @@ class UploadsController < ApplicationController
     splitVal.each_with_index do |str, ix|
       numVal = Integer(str) rescue -1
       stripStr = str.strip
-      Rails.logger.debug("*** codeIx: #{codeIx}, stripStr: #{stripStr}, length: #{stripStr.length}")
       # get code, noting fourth item in code is usually a letter
       isLastCode = (codeIx == 3 && stripStr.length == 1)
       if numVal > -1 || isLastCode
@@ -721,32 +720,37 @@ class UploadsController < ApplicationController
         subjId = (subjId == 0) ? @subjectRec.id : subjId
         subject = Subject.find(subjId)
         throw "Missing sector with id: #{subjId} (code #{subjCode})" if !subject
-        treeRec = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, relate[0])
+        related_tree = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, relate[0])
         newCode = relate[0]
         codeArray = newCode.split('.')
         eMsg = ''
         Rails.logger.debug("*** relate[0], newCode, codeArray: #{relate[0].inspect} #{newCode.inspect} #{codeArray.inspect}")
-        if !treeRec && codeArray.length == 4
+        if !related_tree.present? && codeArray.length == 4
           newCode = codeArray.first(3).join('.')
-          treeRec = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, newCode)
-          if treeRec
+          related_tree = Tree.find_code_in_tree(@treeTypeRec, @versionRec, subject, @gradeBandRec, newCode)
+          if related_tree.present?
             eMsg = "WARNING - #{@subjectRec.code}.#{outcomeCode} is related to #{subjCode}.#{newCode} instead of #{subjCode}.#{relate[0]} for Grade Band: #{@gradeBandRec.code}"
           else
             eMsg = "ERROR - cannot relate #{@subjectRec.code}.#{outcomeCode} to #{subjCode}.#{relate[0]} or #{subjCode}.#{newCode} for Grade Band: #{@gradeBandRec.code}"
           end
-        elsif !treeRec
+        elsif !related_tree.present?
           eMsg = "ERROR - cannot relate #{@subjectRec.code}.#{outcomeCode} to #{subjCode}.#{relate[0]} for Grade Band: #{@gradeBandRec.code}"
         end
-        if treeRec
-          # check the subjects_trees table to see if it is joined already
-          matchedTrees = subject.trees.where(id: tree_rec.id)
+        if related_tree.present?
+          # check the related_trees join table to see if it is joined already
+          Rails.logger.debug("*** @rowTreeRec: #{@rowTreeRec.inspect}")
+          Rails.logger.debug("*** related_tree: #{related_tree.inspect}")
+          itemAllTrees = @rowTreeRec.related_trees
+          Rails.logger.debug("*** itemAllTrees: #{itemAllTrees.inspect}")
+          matchedTrees = @rowTreeRec.related_trees.where(id: related_tree.id)
+          Rails.logger.debug("*** was related matchedTrees: #{matchedTrees.inspect}")
           # if not, join them
-          Rails.logger.debug("*** subjCode: #{subjCode.inspect} newCode: #{newCode.inspect}")
           subjectsRelated << subjCode + '.' + newCode
           if matchedTrees.count == 0
-            subject.trees << tree_rec
+            @rowTreeRec.related_trees << related_tree
             subjectsJustRelated << subjCode + '.' + newCode
           end
+          Rails.logger.debug("*** now related @rowTreeRec.trees: #{@rowTreeRec.related_trees.inspect}")
         end
         if eMsg != ''
           Rails.logger.error("*** #{eMsg}")

@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(version: 20181110170331) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "related_trees_trees", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "tree_id", null: false
+    t.bigint "related_tree_id", null: false
+    t.index ["tree_id", "related_tree_id"], name: "index_related_trees_trees_on_tree_id_and_related_tree_id"
+  end
+
   create_table "sectors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.string "name_key"
@@ -49,6 +55,13 @@ ActiveRecord::Schema.define(version: 20181110170331) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
+  end
+
+  create_table "subjects_trees", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "subject_id", null: false
+    t.bigint "tree_id", null: false
+    t.index ["subject_id", "tree_id"], name: "index_subjects_trees_on_subject_id_and_tree_id"
+    t.index ["tree_id", "subject_id"], name: "index_subjects_trees_on_tree_id_and_subject_id"
   end
 
   create_table "translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -88,11 +101,6 @@ ActiveRecord::Schema.define(version: 20181110170331) do
     t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys"
     t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
     t.index ["version_id"], name: "index_trees_on_version_id"
-  end
-
-  create_table "trees_trees", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "tree_id", null: false
-    t.index ["tree_id"], name: "index_trees_trees_on_tree_id_and_tree_id"
   end
 
   create_table "uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

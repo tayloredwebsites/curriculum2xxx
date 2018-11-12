@@ -17,6 +17,12 @@ class Tree < BaseRec
   belongs_to :grade_band
 
   has_and_belongs_to_many :sectors
+  # has_and_belongs_to_many :related_trees, class_name: "Tree", join_table: "related_trees_trees"
+  has_and_belongs_to_many(:related_trees,
+    :class_name => "Tree",
+    :join_table => "related_trees_trees",
+    :foreign_key => "tree_id",
+    :association_foreign_key => "related_tree_id")
 
   # does not seem to be working ?
   # has_many :my_translations
