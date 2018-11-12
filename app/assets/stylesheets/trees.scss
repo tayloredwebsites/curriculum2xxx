@@ -89,6 +89,10 @@
     }
   }
 
+  .indicator-table {
+    word-wrap: break-word;
+  }
+
   @media only screen and (max-width: 767px) {
     .indicator-table {
       // detail page indicator move to top on thin screens
