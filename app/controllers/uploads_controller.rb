@@ -305,16 +305,15 @@ class UploadsController < ApplicationController
               !@sectorErrs
             @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
           end
-          Rails.logger.debug("processing subjects count: #{stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count}")
-          Rails.logger.debug("subject errors: #{@subjectErrs.inspect}")
-          @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
-          if stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count > 0
-            @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
-            @upload.status = BaseRec::UPLOAD_SUBJ_RELATED if !@subjectErrs
-          end
-
         end
-        # save all errors into the upload status detail field for easy review of last run of errors
+        Rails.logger.debug("processing subjects count: #{stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count}")
+        Rails.logger.debug("subject errors: #{@subjectErrs.inspect}")
+        @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
+        if stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count > 0
+          @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
+          @upload.status = BaseRec::UPLOAD_SUBJ_RELATED if !@subjectErrs
+        end
+      # save all errors into the upload status detail field for easy review of last run of errors
         if @phaseOne
           @upload.status_detail = @errs.join('$$$')
         elsif @phaseTwo
