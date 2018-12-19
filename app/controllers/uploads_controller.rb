@@ -266,7 +266,7 @@ class UploadsController < ApplicationController
                 process_subject_relation(val, row_num, stacks, new_key) if val.present?
               end
             else
-              if ix > 13
+              if ix > 12
                 # ignore teacher input columns
               else
                 Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")

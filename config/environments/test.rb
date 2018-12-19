@@ -45,6 +45,7 @@ Rails.application.configure do
   Capybara.save_path = 'tmp/capybara'
 
   # to output debugging statements output during test runs
-  # see test/test_helper.rb
+  # preceed the test with the following require statement:
+  # require 'test_helper_debugging'
 
 end
