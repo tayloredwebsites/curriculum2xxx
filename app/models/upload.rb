@@ -7,6 +7,7 @@ class Upload < BaseRec
   TO_SHORT_HASH = {
     :"en" => {
       :"row" => :row, # 0
+      :"originalRow" => :"originalRow",
       :"area" => :area, # 1
       :"component" => :component, # 2
       :"outcome" => :outcome, # 3
@@ -20,7 +21,9 @@ class Upload < BaseRec
       :"geography" => :geography, # 10
       :"physics" => :physics, # 11
       :"biology" => :biology, # 12
-      :"computers" => :computers # 13
+      :"computers" => :computers, # 13
+      :"bio_geo" => :bio_geo # process this row with both biology and geology
+
     },
     :"bs" => {
       :"sheetID" => :row,
@@ -174,10 +177,10 @@ class Upload < BaseRec
       Rails.logger.debug("*** matched Computers")
       return :computers
     elsif val.include?('Biologija')
-      Rails.logger.debug("*** matched Computers")
+      Rails.logger.debug("*** matched biology")
       return :biology
     elsif val.include?('Биологија')
-      Rails.logger.debug("*** matched Computers")
+      Rails.logger.debug("*** matched biology")
       return :biology
     elsif val.include?('Објашњење')
       Rails.logger.debug("*** matched sectorRelation")
