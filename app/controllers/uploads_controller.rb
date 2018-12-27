@@ -159,13 +159,27 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** second line read: #{line.inspect}")
         infoLine = line.split(',')
         # Rails.logger.debug("*** second infoLine: #{line.inspect}")
+        # detect if shifted over for english extra row column
+        gradeCol = 0
+        Rails.logger.debug("*** infoLine[2]: #{infoLine[2].inspect}")
+        Rails.logger.debug("*** infoLine[3]: #{infoLine[3].inspect}")
+        Rails.logger.debug("*** infoLine[4]: #{infoLine[4].inspect}")
+        Rails.logger.debug("*** infoLine[5]: #{infoLine[5].inspect}")
+        if infoLine[1].strip === 'Raspon:' || infoLine[1].strip === 'Grade Band:'
+          gradeCol = 2
+        elsif infoLine[2].strip === 'Raspon:' || infoLine[2].strip === 'Grade Band:'
+          gradeCol = 3
+        elsif infoLine[3].strip == 'Raspon:' || infoLine[3].strip == 'Grade Band:'
+          gradeCol = 4
+        end
         grade_band = 0
         begin
-          grade_band = Integer(infoLine[3])
+          grade_band = Integer(infoLine[gradeCol])
         rescue ArgumentError, TypeError
           grade_band = 0
         end
-        raise "Invalid grade band on second header row: #{infoLine[2]}: #{infoLine[3]}" if infoLine[2] != 'Raspon:' || grade_band ==  0
+        Rails.logger.debug("*** infoLine[gradeCol]: #{infoLine[gradeCol].inspect}")
+        raise "Invalid grade band on second header row: #{gradeCol} - #{infoLine[gradeCol].inspect}" if gradeCol == 0 || grade_band == 0
         # Create your CSV object using the remainder of the stream.
         csv = CSV.new file, headers: true
         Rails.logger.debug("*** get csv rows")
@@ -265,9 +279,19 @@ class UploadsController < ApplicationController
                 Rails.logger.debug("**** when subject: #{new_key} (#{key}), #{@localeRec.code}")
                 process_subject_relation(val, row_num, stacks, new_key) if val.present?
               end
+            when :originalRow
+              # skip this, ignoring this column
+            when :bio_geo
+              # if empty, skip this and fix or process later.
+              if (val.present?)
+                Rails.logger.debug("**** Warning: bio_geo has a value of: #{val.inspect}")
+                @rowErrs << "Warning, Unable to match subject for biology / geology column in row: #{row_num}"
+              end
             else
-              if ix > 13
+              if ix > 12
                 # ignore teacher input columns
+                # note original english files did not have row or originalRow, so for tests to pass we need this to be 12
+                # note final bs, hr, sr files do not have originalRow
               else
                 Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
                 throw "invalid column header: #{key}"
@@ -421,19 +445,20 @@ class UploadsController < ApplicationController
   def process_otc_tree(depth, val, row_num, stacks, grade_band)
     code_str, text, indicatorCode, indicCodeArr = parseSubCodeText(val, depth, stacks)
 
-    # Rails.logger.debug("*** parseSubCodeText(val=#{val.inspect}, depth=#{depth}")
-    # # Rails.logger.debug("*** parseSubCodeText(stacks=#{stacks.inspect}")
-    # Rails.logger.debug("*** returns:")
-    # Rails.logger.debug("*** code_str: #{code_str.inspect}")
-    # Rails.logger.debug("*** text: #{text.inspect}")
-    # Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
-    # Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
+    Rails.logger.debug("*** parseSubCodeText(val=#{val.inspect}, depth=#{depth}")
+    # Rails.logger.debug("*** parseSubCodeText(stacks=#{stacks.inspect}")
+    Rails.logger.debug("*** returns:")
+    Rails.logger.debug("*** code_str: #{code_str.inspect}")
+    Rails.logger.debug("*** text: #{text.inspect}")
+    Rails.logger.debug("*** indicatorCode: #{indicatorCode.inspect}")
+    Rails.logger.debug("*** indicCodeArr: #{indicCodeArr.inspect}")
     stacks[CODES_STACK][depth] = code_str # save currant code in codes stack
     builtCode = buildFullCode(stacks[CODES_STACK], depth)
     Rails.logger.debug("*** depth: #{depth}, builtCode: #{builtCode.inspect}")
     if depth == 3
-
+      Rails.logger.debug("*** Depth == 3")
       if code_str.length < 1
+        Rails.logger.debug("*** code_str.length < 1")
         # no indicator is ok for grades 3 and 6
         #   (some indicators are only for higher grades)
         Rails.logger.debug("*** invalid indicator for higher gradeband")
@@ -442,6 +467,7 @@ class UploadsController < ApplicationController
           @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_code', code: val)
         end
       elsif indicatorCode != builtCode
+        Rails.logger.debug("*** indicatorCode != builtCode")
         # indicator code does not match code from Area, Component and Outcome.
         Rails.logger.debug("*** indicatorCode (#{indicatorCode}) != builtCode (#{builtCode}")
         @abortRow = true
@@ -454,69 +480,96 @@ class UploadsController < ApplicationController
         @rowErrs << I18n.translate('app.labels.row_num', num: row_num) + I18n.translate('app.errors.invalid_indicator', indicator: "#{code_str[0]},
           #{text}")
       end
+      Rails.logger.debug("*** OK")
     end
     if @abortRow
       # don't process record if to be aborted.
       Rails.logger.debug("*** @abortRow")
       save_status = BaseRec::REC_ERROR
       message = ''
+    elsif depth == 3
+      Rails.logger.debug("*** depth == 3")
+      textArr = JSON.load(text)
+      codeArr = JSON.load(indicCodeArr)
+      Rails.logger.debug("*** indicCodeArr: #{codeArr.inspect}")
+      # check to see if indicator code arrays match
+      if !codeArr.kind_of?(Array)
+        @abortRow = true
+        @rowErrs << "Row: #{row_num} - Invalid code array from parseSubCodeText"
+      elsif !textArr.kind_of?(Array)
+        @abortRow = true
+        @rowErrs << "Row: #{row_num} - Invalid text array from parseSubCodeText"
+      elsif codeArr.length != textArr.length
+        @abortRow = true
+        @rowErrs << "Row: #{row_num} - Invalid length of indicator codes and descriptions."
+      end
     else
-      # insert record into tree
-      new_code, @rowTreeRec, save_status, message = Tree.find_or_add_code_in_tree(
-        @treeTypeRec,
-        @versionRec,
-        @subjectRec,
-        @gradeBandRec,
-        builtCode,
-        indicCodeArr,
-        nil, # to do - set parent record for all records below area
-        stacks[RECS_STACK][depth],
-        depth
-      )
+      codeArr = [code_str]
+      textArr = [text]
     end
 
     if save_status != BaseRec::REC_SKIP
+      if !@abortRow
+        codeArr.each_with_index do |iCode, ix|
+          recCode = (depth < 3) ? builtCode : iCode
+          Rails.logger.debug("*** iCode: #{iCode.inspect}, builtCode: #{builtCode.inspect}")
+          # insert record into tree
+          new_code, @rowTreeRec, save_status, message = Tree.find_or_add_code_in_tree(
+            @treeTypeRec,
+            @versionRec,
+            @subjectRec,
+            @gradeBandRec,
+            recCode,
+            [iCode], # only put in this code (not all for row)
+            nil, # to do - set parent record for all records below area
+            stacks[RECS_STACK][depth],
+            depth
+          )
 
-      # update text translation for this locale (if not skipped)
-      if save_status == BaseRec::REC_ERROR
-        @rowErrs << message if message.present?
-        # stacks[NUM_ERRORS_STACK][depth] += 1
-        # Note: no update of translation if error
-        translation_val = ''
-      else # if save_status ...
-        # update current node in records stack, and save off id.
-        stacks[RECS_STACK][depth] = @rowTreeRec
-        stacks[IDS_STACK][depth] << @rowTreeRec.id if !stacks[IDS_STACK][depth].include?(@rowTreeRec.id)
-        # update translation if not an error and value changed
-        transl, text_status, text_msg = Translation.find_or_update_translation(
-          @localeRec.code,
-          "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name",
-          text
-        )
-        Rails.logger.debug("*** process_otc_tree find_or_update_translation")
-        Rails.logger.debug("*** arg 1: #{@localeRec.code}")
-        Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name")
-        Rails.logger.debug("*** arg 3: #{text}")
-        Rails.logger.debug("*** returns:")
-        Rails.logger.debug("*** transl: #{transl.inspect}")
-        Rails.logger.debug("*** text_status: #{text_status.inspect}")
-        Rails.logger.debug("*** text_msg: #{text_msg.inspect}")
-        if text_status == BaseRec::REC_ERROR
-          @rowErrs << text_msg
-        end
-        translation_val = transl.value.present? ? transl.value : ''
-      end # if save_status ...
-      # statMsg = "#{BaseRec::SAVE_CODE_STATUS[save_status]}"
-      statMsg = I18n.translate('uploads.labels.saved_code', code: builtCode) if save_status == BaseRec::REC_ADDED || save_status == BaseRec::REC_UPDATED
-      statMsg = statMsg.blank? ? "#{@rowErrs.join(', ')}" : statMsg + ", #{@rowErrs.join(', ')}" if @rowErrs.count > 0
+          # update text translation for this locale (if not skipped)
+          if save_status == BaseRec::REC_ERROR
+            @rowErrs << message if message.present?
+            # stacks[NUM_ERRORS_STACK][depth] += 1
+            # Note: no update of translation if error
+            translation_val = ''
+          else # if save_status ...
+            # update current node in records stack, and save off id.
+            stacks[RECS_STACK][depth] = @rowTreeRec
+            stacks[IDS_STACK][depth] << @rowTreeRec.id if !stacks[IDS_STACK][depth].include?(@rowTreeRec.id)
+            # update translation if not an error and value changed
+            transl, text_status, text_msg = Translation.find_or_update_translation(
+              @localeRec.code,
+              "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name",
+              textArr[ix]
+            )
+            Rails.logger.debug("*** process_otc_tree find_or_update_translation")
+            Rails.logger.debug("*** arg 1: #{@localeRec.code}")
+            Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name")
+            Rails.logger.debug("*** arg 3: #{text}")
+            Rails.logger.debug("*** returns:")
+            Rails.logger.debug("*** transl: #{transl.inspect}")
+            Rails.logger.debug("*** text_status: #{text_status.inspect}")
+            Rails.logger.debug("*** text_msg: #{text_msg.inspect}")
+            if text_status == BaseRec::REC_ERROR
+              @rowErrs << text_msg
+            end
+            translation_val = transl.value.present? ? transl.value : ''
+          end # if save_status ...
 
-      # generate report record if not skipped
-      rptRec = [row_num]
-      rptRec.concat(stacks[CODES_STACK].clone)  # code stack for first four columns of report
-      rptRec << new_code
-      rptRec << translation_val
-      rptRec << statMsg
-      @rptRecs << rptRec if !@phaseTwo
+          # statMsg = "#{BaseRec::SAVE_CODE_STATUS[save_status]}"
+          statMsg = I18n.translate('uploads.labels.saved_code', code: recCode) if save_status == BaseRec::REC_ADDED || save_status == BaseRec::REC_UPDATED
+          statMsg = statMsg.blank? ? "#{@rowErrs.join(', ')}" : statMsg + ", #{@rowErrs.join(', ')}" if @rowErrs.count > 0
+
+          # generate report record if not skipped
+          rptRec = [row_num]
+          rptRec.concat(stacks[CODES_STACK].clone)  # code stack for first four columns of report
+          rptRec << new_code
+          rptRec << translation_val
+          rptRec << statMsg
+          @rptRecs << rptRec if !@phaseTwo
+
+        end # each indicator code array
+      end # @abortRow
 
     end # if not skipped record
     @treeErrs = true if @rowErrs.count > 0

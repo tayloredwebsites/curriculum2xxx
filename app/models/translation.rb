@@ -31,6 +31,7 @@ class Translation < BaseRec
   end
 
   def self.find_or_update_translation(locale, code, val)
+    Rails.logger.debug("*** find_or_update_translation - locale: #{locale.inspect}, code: #{code.inspect}, val: #{val.inspect}")
     errors = []
     rec, status, message = self.find_translation(locale, code, false, true)
     if status == BaseRec::REC_ERROR

@@ -6,21 +6,24 @@ class Upload < BaseRec
 
   TO_SHORT_HASH = {
     :"en" => {
-      :"sheetID" => :row, # 0
-      :"Area" => :area, # 1
-      :"Component" => :component, # 2
-      :"Outcome" => :outcome, # 3
-      :"Indicator" => :indicator, # 4
-      :"Grade band" => :gradeBand, # 5
-      :"relevant KBE sectors (as determined from KBE spreadsheets)" => :relevantKbe, # 6
-      :"Explanation of how the indicator relates to KBE sector" => :sectorRelation, # 7
-      :"Closely related learning outcomes applicable to KBE sector" => :currentSubject, # 8
-      :"Chemistry" => :chemistry, # 8
-      :"Mathematics" => :mathematics, # 9
-      :"Geography" => :geography, # 10
-      :"Physics" => :physics, # 11
-      :"Biology" => :biology, # 12
-      :"ICT" => :computers # 13
+      :"row" => :row, # 0
+      :"originalRow" => :"originalRow",
+      :"area" => :area, # 1
+      :"component" => :component, # 2
+      :"outcome" => :outcome, # 3
+      :"indicator" => :indicator, # 4
+      :"gradeBand" => :gradeBand, # 5
+      :"relevantKbe" => :relevantKbe, # 6
+      :"sectorRelation" => :sectorRelation, # 7
+      :"currentSubject" => :currentSubject, # 8
+      :"chemistry" => :chemistry, # 8
+      :"mathematics" => :mathematics, # 9
+      :"geography" => :geography, # 10
+      :"physics" => :physics, # 11
+      :"biology" => :biology, # 12
+      :"computers" => :computers, # 13
+      :"bio_geo" => :bio_geo # process this row with both biology and geology
+
     },
     :"bs" => {
       :"sheetID" => :row,
@@ -174,10 +177,10 @@ class Upload < BaseRec
       Rails.logger.debug("*** matched Computers")
       return :computers
     elsif val.include?('Biologija')
-      Rails.logger.debug("*** matched Computers")
+      Rails.logger.debug("*** matched biology")
       return :biology
     elsif val.include?('Биологија')
-      Rails.logger.debug("*** matched Computers")
+      Rails.logger.debug("*** matched biology")
       return :biology
     elsif val.include?('Објашњење')
       Rails.logger.debug("*** matched sectorRelation")

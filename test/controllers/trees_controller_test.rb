@@ -1,5 +1,6 @@
 require 'helpers/test_components_helper'
 require 'helpers/seeds_testing_helper'
+# require 'test_helper_debugging'
 
 
 class TreesControllerTest < ActionDispatch::IntegrationTest
@@ -51,7 +52,7 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
     up_file = fixture_file_upload('files/Hem_9_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_09.id), params: {upload: {file: up_file}}
     assert_response :success
-    assert_equal BaseRec::UPLOAD_SECTOR_RELATED, assigns(:upload).status
+    assert_equal BaseRec::UPLOAD_SUBJ_RELATING, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
     assert_equal 186, Tree.count
 
@@ -59,8 +60,8 @@ class TreesControllerTest < ActionDispatch::IntegrationTest
     up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
     patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
     assert_response :success
-    assert_equal BaseRec::UPLOAD_TREE_UPLOADING, assigns(:upload).status
     assert_equal 2, assigns(:errs).count
+    assert_equal BaseRec::UPLOAD_SUBJ_RELATING, assigns(:upload).status
     assert_equal 198, Tree.count # 186 + 9 + 4?
 
     # all returns all 198 records

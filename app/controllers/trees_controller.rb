@@ -84,6 +84,7 @@ class TreesController < ApplicationController
       when 3
         # to do - look into refactoring this
         # check to make sure parent in hash exists.
+        Rails.logger.debug("*** tree index - tree: #{tree.inspect}")
         if otcHash[tree.area].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
         elsif otcHash[tree.area][:nodes][tree.component].blank?
@@ -99,13 +100,34 @@ class TreesController < ApplicationController
           Rails.logger.error otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome]
           raise I18n.t('trees.errors.missing_outcome_in_tree', otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome])
         end
-        all_translations = translation.present? ? JSON.load(translation) : []
+        Rails.logger.debug("*** translation: #{translation.inspect}")
+
+        # attempt to stop json parser errors on regular string.
+        all_translations = []
+        begin
+          all_translations = translation.present? ? JSON.load(translation) : []
+        rescue JSON::ParserError
+          all_translations = (translation.present? && translation.is_a?(String) ) ? [translation]: ['']
+        end
+
+        # attempt to stop json parser errors on regular strings
+        all_codes = []
+        begin
+          all_codes = tree.matching_codes.present? ? JSON.load(tree.matching_codes) : []
+        rescue JSON::ParserError
+          all_codes = (tree.matching_codes.present? && tree.matching_codes.is_a?(String) ) ? [tree.matching_codes]: ['']
+        end
+
+        Rails.logger.debug("*** translate - tree.matching_codes: #{tree.matching_codes.inspect}")
         all_codes = JSON.load(tree.matching_codes)
         if @gb.present?
           # add indicator level item directly under outcome
+          Rails.logger.debug("*** add to #{}")
           all_codes.each_with_index do |c, ix|
             newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
+            Rails.logger.debug("*** #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}, id: #{tree.id}")
             addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
+            Rails.logger.debug("*** area: #{tree.area}, component: #{tree.component}, outcome: #{tree.outcome}, subCode: #{tree.subCode}, ")
           end
         else
           Rails.logger.debug("*** no @gb present")
