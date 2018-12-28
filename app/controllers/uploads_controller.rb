@@ -180,6 +180,14 @@ class UploadsController < ApplicationController
         end
         Rails.logger.debug("*** infoLine[gradeCol]: #{infoLine[gradeCol].inspect}")
         raise "Invalid grade band on second header row: #{gradeCol} - #{infoLine[gradeCol].inspect}" if gradeCol == 0 || grade_band == 0
+
+        @localeSeq = 'w'
+        # get alphabet sequence for cyrillic indicator code sequencing
+        if infoLine[gradeCol+7] == 'localeSeq:'
+          @localeSeq = infoLine[gradeCol+8] if (['c','w'].include?(infoLine[gradeCol+8]))
+          Rails.logger.debug("Found localeSeq at #{gradeCol+7}: #{infoLine[gradeCol+8]}")
+        end
+        Rails.logger.debug("localeSeq: #{@localeSeq.inspect}")
         # Create your CSV object using the remainder of the stream.
         csv = CSV.new file, headers: true
         Rails.logger.debug("*** get csv rows")
@@ -416,13 +424,13 @@ class UploadsController < ApplicationController
           # get the indicator code
           indicCode = outcScan.scan /./
           # change cyrilliac codes to western (english sequence)
-          if Tree::INDICATOR_SEQ_ENG.include?(indicCode)
-            Rails.logger.debug("*** western character")
-            indicCodeW = indicCode
-          else
+          # if Tree::INDICATOR_SEQ_ENG.include?(indicCode)
+          #   Rails.logger.debug("*** western character")
+          #   indicCodeW = indicCode
+          # else
             Rails.logger.debug("*** not western character: #{"%s %3d %02X" % [ indicCode, indicCode.ord, indicCode.ord ]}")
-            indicCodeW = Tree.indicatorLetterByLocale(@localeRec.code, indicCode)
-          end
+            indicCodeW = Tree.indicatorLetterByLocale(@localeRec.code, indicCode, @localeSeq)
+          # end
           Rails.logger.debug("**** indicCodeFirst: #{indicCodeFirst}, indicCode: #{indicCode}, indicCodeW: #{indicCodeW}")
           # save off the first indicator code
           indicCodeFirst = indicCodeW if indicCodeFirst.blank?
