@@ -1,17 +1,19 @@
 class Tree < BaseRec
 
   # Note: Found english version of letters mixed in with cryllic
-  # mapped english version of cyrillic letters to match the corresponding english letter so both versions of the letter would map out properly to the english
+  # mapped english version of aejko cyrillic letters to match the corresponding english letter so both versions of the letter would map out properly to the english
   # then mapped cyrillic letters, so english to cyrillic would return cryllic
-  # INDICATOR_SEQ_ENG = ['a','e','j','k','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','c']
-  # INDICATOR_SEQ_CYR = ['a','e','j','k','а','б','в','г','д','ђ','е','ж','з','и','ј','к','л','љ','м','н','ц']
-  INDICATOR_SEQ_ENG = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p']
-  INDICATOR_SEQ_CYR = ['а', 'б', 'ц', 'д', 'е', 'ф', 'г', 'х', 'и', 'ј', 'к', 'л', 'м', 'н', 'о', 'п']
+  INDICATOR_SEQ_ENG = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'a', 'e', 'j', 'k', 'o']
+  INDICATOR_SEQ_CYR = ['а', 'б', 'ц', 'д', 'е', 'ф', 'г', 'х', 'и', 'ј', 'к', 'л', 'м', 'н', 'о', 'п', 'a', 'e', 'j', 'k', 'o']
   # hash to return english letter for cyrillic letter
   GET_ENG_IND_H = INDICATOR_SEQ_CYR.zip(INDICATOR_SEQ_ENG).to_h
   # hash to return cyrillic letter for english letter
   GET_CYR_IND_H = INDICATOR_SEQ_ENG.zip(INDICATOR_SEQ_CYR).to_h
 
+  # indicator sequence in cyrillic order (not in western order)
+  INDICATOR_CYR_SEQ_CYR = ['а', 'б', 'в', 'г' ,'д' ,'ђ' ,'е' ,'ж' ,'з' ,'и' ,'ј' ,'к' ,'л' ,'љ' ,'м' ,'н', 'a', 'e', 'j', 'k', 'o']
+  # hash to return cyrillic letter for english letter in sequence order
+  GET_ENG_SEQ_CYR_IND_H = INDICATOR_CYR_SEQ_CYR.zip(INDICATOR_SEQ_ENG).to_h
 
   belongs_to :tree_type
   belongs_to :version
@@ -113,9 +115,16 @@ class Tree < BaseRec
     end
   end
 
-  def self.engIndicatorLetter(letter)
-    if Tree.validCyrIndicatorLetter?(letter)
-      return GET_ENG_IND_H[letter]
+  def self.engIndicatorLetter(letter, seq)
+    # convert cyrillic to western alphabet depending upon sequencing
+    ret = ''
+    if seq == 'c'
+      ret = GET_ENG_SEQ_CYR_IND_H[letter]
+    else
+      ret = GET_ENG_IND_H[letter]
+    end
+    if ret.present?
+      return ret
     else
       return "#{letter}(#{letter.bytes})-INVALID"
     end
@@ -130,10 +139,12 @@ class Tree < BaseRec
   end
 
   # return the indicator letter by locale (translating SR to latin equivalent)
-  #  (indicators have a simple mapping from english abcde... to абвгдђ...)
-  def self.indicatorLetterByLocale(locale, letter)
+  # indicators are mapped in either:
+  #   a cyrillic sequenced mapping абвгдђ... to abcde...
+  #   or a western sequenced mapping from абцде... to abcde...)
+  def self.indicatorLetterByLocale(locale, letter, seq='c')
     if locale == BaseRec::LOCALE_SR
-      return Tree.engIndicatorLetter(letter)
+      return Tree.engIndicatorLetter(letter, seq)
     else
       if INDICATOR_SEQ_ENG.include?(letter)
         return letter
