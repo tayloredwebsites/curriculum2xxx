@@ -118,10 +118,10 @@ class Tree < BaseRec
   def self.engIndicatorLetter(letter, seq)
     # convert cyrillic to western alphabet depending upon sequencing
     ret = ''
-    if seq == 'w'
-      ret = GET_ENG_IND_H[letter]
-    else
+    if seq == 'c'
       ret = GET_ENG_SEQ_CYR_IND_H[letter]
+    else
+      ret = GET_ENG_IND_H[letter]
     end
     if ret.present?
       return ret
@@ -142,7 +142,7 @@ class Tree < BaseRec
   # indicators are mapped in either:
   #   a cyrillic sequenced mapping абвгдђ... to abcde...
   #   or a western sequenced mapping from абцде... to abcde...)
-  def self.indicatorLetterByLocale(locale, letter, seq='w')
+  def self.indicatorLetterByLocale(locale, letter, seq='c')
     if locale == BaseRec::LOCALE_SR
       return Tree.engIndicatorLetter(letter, seq)
     else

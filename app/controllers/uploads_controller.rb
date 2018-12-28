@@ -181,7 +181,7 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** infoLine[gradeCol]: #{infoLine[gradeCol].inspect}")
         raise "Invalid grade band on second header row: #{gradeCol} - #{infoLine[gradeCol].inspect}" if gradeCol == 0 || grade_band == 0
 
-        @localeSeq = 'w'
+        @localeSeq = 'c'
         # get alphabet sequence for cyrillic indicator code sequencing
         if infoLine[gradeCol+7] == 'localeSeq:'
           @localeSeq = infoLine[gradeCol+8] if (['c','w'].include?(infoLine[gradeCol+8]))
