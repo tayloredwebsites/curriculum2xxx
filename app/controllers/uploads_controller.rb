@@ -161,10 +161,10 @@ class UploadsController < ApplicationController
         # Rails.logger.debug("*** second infoLine: #{line.inspect}")
         # detect if shifted over for english extra row column
         gradeCol = 0
-        Rails.logger.debug("*** infoLine[2]: #{infoLine[2].inspect}")
-        Rails.logger.debug("*** infoLine[3]: #{infoLine[3].inspect}")
-        Rails.logger.debug("*** infoLine[4]: #{infoLine[4].inspect}")
-        Rails.logger.debug("*** infoLine[5]: #{infoLine[5].inspect}")
+        # Rails.logger.debug("*** infoLine[2]: #{infoLine[2].inspect}")
+        # Rails.logger.debug("*** infoLine[3]: #{infoLine[3].inspect}")
+        # Rails.logger.debug("*** infoLine[4]: #{infoLine[4].inspect}")
+        # Rails.logger.debug("*** infoLine[5]: #{infoLine[5].inspect}")
         if infoLine[1].strip === 'Raspon:' || infoLine[1].strip === 'Grade Band:'
           gradeCol = 2
         elsif infoLine[2].strip === 'Raspon:' || infoLine[2].strip === 'Grade Band:'
@@ -185,12 +185,12 @@ class UploadsController < ApplicationController
         # get alphabet sequence for cyrillic indicator code sequencing
         if infoLine[gradeCol+7] == 'localeSeq:'
           @localeSeq = infoLine[gradeCol+8] if (['c','w'].include?(infoLine[gradeCol+8]))
-          Rails.logger.debug("Found localeSeq at #{gradeCol+7}: #{infoLine[gradeCol+8]}")
+          # Rails.logger.debug("Found localeSeq at #{gradeCol+7}: #{infoLine[gradeCol+8]}")
         end
-        Rails.logger.debug("localeSeq: #{@localeSeq.inspect}")
+        # Rails.logger.debug("localeSeq: #{@localeSeq.inspect}")
         # Create your CSV object using the remainder of the stream.
         csv = CSV.new file, headers: true
-        Rails.logger.debug("*** get csv rows")
+        # Rails.logger.debug("*** get csv rows")
         csv.each do |row|
 
           @rowErrs = []
@@ -594,7 +594,9 @@ class UploadsController < ApplicationController
     relations = []
     # split by semi-colon and period and others!!!
     # Not split by comma (used in Sector Names)
-    sectorNames = val.present? ? val.split(/[:;\.)]+/) : []
+    sectorNames1 = val.present? ? val.split(/[:;\.)]+/) : []
+    sectorNames2 = val.present? ? val.split(/[:;,\.)]+/) : []
+    sectorNames = sectorNames1.concat(sectorNames2)
     # Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
     # get a hash of all sectors translations that return the sector code
     sectorTranslations = get_sectors_translations()
@@ -603,28 +605,36 @@ class UploadsController < ApplicationController
     sectorNames.each do |s|
       # matching of descriptions
       # Rails.logger.debug("*** sectorName: #{s.inspect}")
-      clean_s = s.strip
+      # ignore case, and remove leading and trailing spaces
+      clean_s = s.strip.downcase
       break if clean_s.blank?
 
+      # Medicine and related sectors, Tourism, Finance and business, Entrepreneurship
       # hard coded sector names matches (when spreadsheet does not match db)
       case clean_s
-      when 'IT', 'IKT', 'it', 'ikt', 'ИТ'
+      when 'it', 'ikt', 'it', 'ikt', 'ит', 'икт', 'informaciono-komunikacijske tehnologije (ikt)', 'informacijske i komunikacijske tehnologije (ikt)', 'инфoрмaтичко-кoмуникaциoнe тeхнoлoгиje (икт)', 'information communication technology (ict)', 'ict'
         sector_num = 1
-      when 'Medicina i srodni sektori', 'medicina i srodni sektori', 'Медицина и сродни сектори'
+      when 'medicina i srodni sektori', 'medicina i srodni sektori', 'медицина и сродни сектори', 'zdravstvo', 'здрaвствo', 'medicine and related sectors' 'health',
         sector_num = 2
-      when 'Tehnologija materijala', 'tehnologija materijala', 'Технологија материјала', 'технологија материјала'
+      when 'tehnologija materijala', 'tehnologija materijala', 'технологија материјала', 'технологија материјала', 'tehnologija materijala i visokotehnološka proizvodnja', 'tehnologija materijala i visokotehnološka proizvodnja', 'teхнoлoгиja мaтeриjaлa и висoкoтeхнoлoшкa прoизвoдњa', 'technology of materials and high-tech production', 'technology of materials'
         sector_num = 3
-      when 'Proizvodnja energije, prenos i efikasnost', 'Energija i obnovljivi izvori', 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'производња енергије, пренос и ефикасност', 'Производња енергије', 'пренос и ефикасност'
+      when 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'производња енергије, пренос и ефикасност', 'производња енергије', 'пренос и ефикасност', 'proizvodnja energije, prenos, efikasnost', 'proizvodnja energije, prijenos, učinkovitost', 'прoизвoдњa eнeргиje, прeнoс, eфикaснoст', 'energy production'
         sector_num = 4
-      when 'Umjetnost', 'Umjetnost'
+      when 'umjetnost', 'umjetnost', 'finansije i biznis', 'financije i poslovanje', 'финaнсиje и бизнис', 'finance and business', 'finance'
+        sector_num = 5
+      when 'umjetnost, zabava i mediji', 'umjetnost', 'умjeтнoст, зaбaвa и мeдиjи', 'умjeтнoст', 'art, entertainment and media', 'art'
         sector_num = 6
-      when 'Sport', 'sport'
+      when 'спoрт', 'sport', 'sport'
         sector_num = 7
-      when 'Poljoprivredna proizvodnja', 'poljoprivredna proizvodnja', 'пољопривредна производња'
+      when 'poljoprivredna proizvodnja', 'poljoprivredna proizvodnja', 'пољопривредна производња', 'turizam', 'tуризaм', 'tourism'
+        sector_num = 8
+      when 'poduzetništvo', 'предузетништво', 'entrepreneurship'
+        sector_num = 9
+      when 'savremena poljoprivredna proizvodnja', 'suvremena poljoprivredna proizvodnja', 'сaврeмeнa пoљoприврeднa прoизвoдњa', 'contemporary agricultural production'
         sector_num = 10
-      when 'medicina i srodni sektoritehnologija materijalaITproizvodnja energije, prijenos i učinkovitost'
+      when 'medicina i srodni sektoritehnologija materijalaitproizvodnja energije, prijenos i učinkovitost'
         sector_num = 98 # 2, 3, 1, 4
-      when 'Svi KBE sektori', 'svi KBE sektori', 'Сви ЕЗЗ-а сектори'
+      when 'svi kbe sektori', 'svi kbe sektori', 'сви езз-а сектори', 'all kbe sectors'
         sector_num = 99 # all
       else
         # pull out leading sector number if there (split on space or period)
@@ -636,6 +646,7 @@ class UploadsController < ApplicationController
           sector_num = 0
         end
       end
+      # Rails.logger.debug("*** matching resulting sector_num: #{sector_num.inspect}")
 
       if sector_num == 98
         relations = ['1','2','3','4']
@@ -646,13 +657,14 @@ class UploadsController < ApplicationController
           relations << sector_num.to_s
         end
       end
+      # Rails.logger.debug("***  resulting relations: #{relations.inspect}")
 
     end
     sectorsAdded = []
     # Rails.logger.debug("*** Sector Relations add")
     relations.each do |r|
       # get the KBE code from the looked up sector description in the translation table
-      Rails.logger.debug("*** relation: #{r.inspect}")
+      # Rails.logger.debug("*** relation: #{r.inspect}")
       begin
         sectors = Sector.where(code: r)
         throw "Missing sector with code #{r.inspect}" if sectors.count < 1
@@ -660,7 +672,7 @@ class UploadsController < ApplicationController
         # check the sectors_trees table to see if it is joined already
         matchedTrees = sector.trees.where(id: tree_rec.id)
         # if not, join them
-        Rails.logger.debug("*** matchedTrees: #{matchedTrees.inspect}")
+        # Rails.logger.debug("*** matchedTrees: #{matchedTrees.inspect}")
         if matchedTrees.count == 0
           sector.trees << tree_rec
           sectorsAdded << r

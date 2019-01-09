@@ -256,7 +256,7 @@ rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.6.name', 'Umjetnost, zabava i mediji')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.7.name', 'Sport ')
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.7.name', 'Sport')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_BS, 'sector.8.name', 'Turizam')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
