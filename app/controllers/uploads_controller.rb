@@ -291,14 +291,17 @@ class UploadsController < ApplicationController
               # skip this, ignoring this column
             when :bio_geo
               # if empty, skip this and fix or process later.
-              if (val.present?)
+              if (val.present?) && @phaseTwo
                 Rails.logger.debug("**** Warning: bio_geo has a value of: #{val.inspect}")
                 @rowErrs << "Warning, Unable to match subject for biology / geology column in row: #{row_num}"
               end
             else
-              if ix > 12
+              if ix > 14
                 # ignore teacher input columns
-                # note original english files did not have row or originalRow, so for tests to pass we need this to be 12
+                # note original english files did not have row or originalRow
+                # so for to process all subject columns in the new files with extra columns:
+                # - we have to increase the number by two,
+                # - and rely upon no match on the teacher columns
                 # note final bs, hr, sr files do not have originalRow
               else
                 Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
@@ -550,14 +553,14 @@ class UploadsController < ApplicationController
               "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name",
               textArr[ix]
             )
-            Rails.logger.debug("*** process_otc_tree find_or_update_translation")
-            Rails.logger.debug("*** arg 1: #{@localeRec.code}")
-            Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name")
-            Rails.logger.debug("*** arg 3: #{text}")
-            Rails.logger.debug("*** returns:")
-            Rails.logger.debug("*** transl: #{transl.inspect}")
-            Rails.logger.debug("*** text_status: #{text_status.inspect}")
-            Rails.logger.debug("*** text_msg: #{text_msg.inspect}")
+            # Rails.logger.debug("*** process_otc_tree find_or_update_translation")
+            # Rails.logger.debug("*** arg 1: #{@localeRec.code}")
+            # Rails.logger.debug("*** arg 2: #{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}.#{@gradeBandRec.code}.#{@rowTreeRec.code}.name")
+            # Rails.logger.debug("*** arg 3: #{text}")
+            # Rails.logger.debug("*** returns:")
+            # Rails.logger.debug("*** transl: #{transl.inspect}")
+            # Rails.logger.debug("*** text_status: #{text_status.inspect}")
+            # Rails.logger.debug("*** text_msg: #{text_msg.inspect}")
             if text_status == BaseRec::REC_ERROR
               @rowErrs << text_msg
             end
@@ -593,9 +596,9 @@ class UploadsController < ApplicationController
     errs = []
     relations = []
     # split by semi-colon and period and others!!!
-    # Not split by comma (used in Sector Names)
-    sectorNames1 = val.present? ? val.split(/[:;\.)]+/) : []
-    sectorNames2 = val.present? ? val.split(/[:;,\.)]+/) : []
+    # also split by comma and dash (used in Sector Names)
+    sectorNames1 = val.present? ? val.split(/[:;\(\)\{\}\[\]\-\.)]+/) : []
+    sectorNames2 = val.present? ? val.split(/[:;,\(\)\{\}\[\]\-\.)]+/) : []
     sectorNames = sectorNames1.concat(sectorNames2)
     # Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
     # get a hash of all sectors translations that return the sector code
@@ -634,7 +637,7 @@ class UploadsController < ApplicationController
         sector_num = 10
       when 'medicina i srodni sektoritehnologija materijalaitproizvodnja energije, prijenos i učinkovitost'
         sector_num = 98 # 2, 3, 1, 4
-      when 'svi kbe sektori', 'svi kbe sektori', 'сви езз-а сектори', 'all kbe sectors'
+      when 'svi kbe sektori', 'svi kbe sektori', 'сви езз-а сектори', 'all kbe sectors', 'all kbe sektori'
         sector_num = 99 # all
       else
         # pull out leading sector number if there (split on space or period)

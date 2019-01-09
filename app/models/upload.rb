@@ -164,43 +164,43 @@ class Upload < BaseRec
       Rails.logger.debug("*** missing value")
       return ''
     elsif locale_vals[val.strip.to_sym].present?
-      Rails.logger.debug("*** found value #{val}")
+      # Rails.logger.debug("*** found value #{val}")
       return locale_vals[val.strip.to_sym]
     elsif ix == 8
-      Rails.logger.debug("*** column 8 is currentSubject")
+      # Rails.logger.debug("*** column 8 is currentSubject")
       return :currentSubject
     elsif val.include?('Geografija')
-      Rails.logger.debug("*** matched Geography")
+      # Rails.logger.debug("*** matched Geography")
       return :geography
     elsif val.include?('друштво')
-      Rails.logger.debug("*** matched Geography")
+      # Rails.logger.debug("*** matched Geography")
       return :geography
     elsif val.include?('Гeoгрaфиja')
-      Rails.logger.debug("*** matched Geography")
+      # Rails.logger.debug("*** matched Geography")
       return :geography
     elsif val.include?('društvo')
-      Rails.logger.debug("*** matched Geography")
+      # Rails.logger.debug("*** matched Geography")
       return :geography
     elsif val.include?('Informatika')
-      Rails.logger.debug("*** matched Computers")
+      # Rails.logger.debug("*** matched Computers")
       return :computers
     elsif val.include?('Информатика')
-      Rails.logger.debug("*** matched Computers")
+      # Rails.logger.debug("*** matched Computers")
       return :computers
     elsif val.include?('информатикa')
-      Rails.logger.debug("*** matched Computers")
+      # Rails.logger.debug("*** matched Computers")
       return :computers
     elsif val.include?('Biologija')
-      Rails.logger.debug("*** matched biology")
+      # Rails.logger.debug("*** matched biology")
       return :biology
     elsif val.include?('Биологија')
-      Rails.logger.debug("*** matched biology")
+      # Rails.logger.debug("*** matched biology")
       return :biology
     elsif val.include?('Објашњење')
-      Rails.logger.debug("*** matched sectorRelation")
+      # Rails.logger.debug("*** matched sectorRelation")
       return :sectorRelation
     elsif val.include?('Релевантнисекториекономије')
-      Rails.logger.debug("*** matched sectorRelation")
+      # Rails.logger.debug("*** matched sectorRelation")
       return :relevantKbe
     else
       Rails.logger.debug("*** no matching at all for  #{val}")
