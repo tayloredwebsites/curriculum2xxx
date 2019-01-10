@@ -304,8 +304,11 @@ class UploadsController < ApplicationController
                 # - and rely upon no match on the teacher columns
                 # note final bs, hr, sr files do not have originalRow
               else
-                Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
-                throw "invalid column header: #{key}"
+                # only throw error if past column 12 (for new ss with extra columns)
+                if ix < 13
+                  Rails.logger.error("ERROR at column #{ix} matching: #{new_key} - '#{key}''")
+                  throw "invalid column header: #{key}"
+                end
               end
             end
             break if @abortRow || @rowErrs.count > 0
@@ -587,6 +590,7 @@ class UploadsController < ApplicationController
     return stacks
   end # process_otc_tree
 
+  # process related sector KBE listing
   def process_sector(val, row_num, stacks)
     Rails.logger.debug("***")
     Rails.logger.debug("*** process_sector val: #{val}")
@@ -598,7 +602,7 @@ class UploadsController < ApplicationController
     # split by semi-colon and period and others!!!
     # also split by comma and dash (used in Sector Names)
     sectorNames1 = val.present? ? val.split(/[:;\(\)\{\}\[\]\-\.)]+/) : []
-    sectorNames2 = val.present? ? val.split(/[:;,\(\)\{\}\[\]\-\.)]+/) : []
+    sectorNames2 = val.present? ? val.split(/[:;\s,\(\)\{\}\[\]\-\.)]+/) : []
     sectorNames = sectorNames1.concat(sectorNames2)
     # Rails.logger.debug("*** sectorNames: #{sectorNames.inspect}")
     # get a hash of all sectors translations that return the sector code
@@ -615,29 +619,27 @@ class UploadsController < ApplicationController
       # Medicine and related sectors, Tourism, Finance and business, Entrepreneurship
       # hard coded sector names matches (when spreadsheet does not match db)
       case clean_s
-      when 'it', 'ikt', 'it', 'ikt', 'ит', 'икт', 'informaciono-komunikacijske tehnologije (ikt)', 'informacijske i komunikacijske tehnologije (ikt)', 'инфoрмaтичко-кoмуникaциoнe тeхнoлoгиje (икт)', 'information communication technology (ict)', 'ict'
+      when 'ikt', 'ikt', 'ит', 'икт', 'informaciono-komunikacijske tehnologije (ikt)', 'informacijske i komunikacijske tehnologije (ikt)', 'инфoрмaтичко-кoмуникaциoнe тeхнoлoгиje (икт)', 'information communication technology (ict)', 'ict', 'information', 'informacijske', 'инфoрмaтичко'
         sector_num = 1
-      when 'medicina i srodni sektori', 'medicina i srodni sektori', 'медицина и сродни сектори', 'zdravstvo', 'здрaвствo', 'medicine and related sectors' 'health',
+      when 'medicina i srodni sektori', 'medicina i srodni sektori', 'медицина и сродни сектори', 'zdravstvo', 'здрaвствo', 'medicine and related sectors' 'health', 'zdravstvo', 'здрaвствo', 'medicine', 'medicina', 'медицина'
         sector_num = 2
-      when 'tehnologija materijala', 'tehnologija materijala', 'технологија материјала', 'технологија материјала', 'tehnologija materijala i visokotehnološka proizvodnja', 'tehnologija materijala i visokotehnološka proizvodnja', 'teхнoлoгиja мaтeриjaлa и висoкoтeхнoлoшкa прoизвoдњa', 'technology of materials and high-tech production', 'technology of materials'
+      when 'tehnologija materijala', 'tehnologija materijala', 'технологија материјала', 'технологија материјала', 'tehnologija materijala i visokotehnološka proizvodnja', 'tehnologija materijala i visokotehnološka proizvodnja', 'teхнoлoгиja мaтeриjaлa и висoкoтeхнoлoшкa прoизвoдњa', 'technology of materials and high-tech production', 'technology of materials', 'materials', 'high-tech', 'мaтeриjaлa', 'висoкoтeхнoлoшкa', 'materijala', 'visokotehnološka'
         sector_num = 3
-      when 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'производња енергије, пренос и ефикасност', 'производња енергије', 'пренос и ефикасност', 'proizvodnja energije, prenos, efikasnost', 'proizvodnja energije, prijenos, učinkovitost', 'прoизвoдњa eнeргиje, прeнoс, eфикaснoст', 'energy production'
+      when 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'proizvodnja energije, prenos i efikasnost', 'energija i obnovljivi izvori', 'производња енергије, пренос и ефикасност', 'производња енергије', 'пренос и ефикасност', 'proizvodnja energije, prenos, efikasnost', 'proizvodnja energije, prijenos, učinkovitost', 'прoизвoдњa eнeргиje, прeнoс, eфикaснoст', 'energy production', 'energy', 'energije', 'енергије'
         sector_num = 4
-      when 'umjetnost', 'umjetnost', 'finansije i biznis', 'financije i poslovanje', 'финaнсиje и бизнис', 'finance and business', 'finance'
+      when 'finansije i biznis', 'financije i poslovanje', 'финaнсиje и бизнис', 'finance and business', 'finance', 'финaнсиje', 'финaнсиj', 'финaнси', 'finansije'
         sector_num = 5
-      when 'umjetnost, zabava i mediji', 'umjetnost', 'умjeтнoст, зaбaвa и мeдиjи', 'умjeтнoст', 'art, entertainment and media', 'art'
+      when 'umjetnost, zabava i mediji', 'умjeтнoст, зaбaвa и мeдиjи', 'умjeтнoст', 'art, entertainment and media', 'art', 'entertainment', 'media', 'умjeтнoст', 'зaбaвa', 'мeдиjи', 'umjetnost', 'zabava', 'mediji'
         sector_num = 6
       when 'спoрт', 'sport', 'sport'
         sector_num = 7
-      when 'poljoprivredna proizvodnja', 'poljoprivredna proizvodnja', 'пољопривредна производња', 'turizam', 'tуризaм', 'tourism'
+      when 'turizam', 'tуризaм', 'tourism'
         sector_num = 8
       when 'poduzetništvo', 'предузетништво', 'entrepreneurship'
         sector_num = 9
-      when 'savremena poljoprivredna proizvodnja', 'suvremena poljoprivredna proizvodnja', 'сaврeмeнa пoљoприврeднa прoизвoдњa', 'contemporary agricultural production'
+      when 'poljoprivredna proizvodnja', 'poljoprivredna proizvodnja', 'пољопривредна производња', 'savremena poljoprivredna proizvodnja', 'suvremena poljoprivredna proizvodnja', 'сaврeмeнa пoљoприврeднa прoизвoдњa', 'contemporary agricultural production', 'agricultural', 'пoљoприврeднa', 'poljoprivredna'
         sector_num = 10
-      when 'medicina i srodni sektoritehnologija materijalaitproizvodnja energije, prijenos i učinkovitost'
-        sector_num = 98 # 2, 3, 1, 4
-      when 'svi kbe sektori', 'svi kbe sektori', 'сви езз-а сектори', 'all kbe sectors', 'all kbe sektori'
+      when 'svi kbe sektori', 'svi kbe sektori', 'сви езз-а сектори', 'all kbe sectors', 'all kbe sektori', 'kbe', 'езз'
         sector_num = 99 # all
       else
         # pull out leading sector number if there (split on space or period)
@@ -649,11 +651,12 @@ class UploadsController < ApplicationController
           sector_num = 0
         end
       end
+
+      # only check for match on case sensitive 'IT'
+      sector_num = 1 if s.strip == "IT"
       # Rails.logger.debug("*** matching resulting sector_num: #{sector_num.inspect}")
 
-      if sector_num == 98
-        relations = ['1','2','3','4']
-      elsif sector_num == 99
+      if sector_num == 99
         relations = ['1','2','3','4','5','6','7','8','9','10']
       elsif sector_num > 0
         if !relations.include?(sector_num.to_s)
