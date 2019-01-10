@@ -202,6 +202,9 @@ class Upload < BaseRec
     elsif val.include?('Релевантнисекториекономије')
       # Rails.logger.debug("*** matched sectorRelation")
       return :relevantKbe
+    elsif val.include?('math')
+      # Rails.logger.debug("*** matched sectorRelation")
+      return :mathematics
     else
       Rails.logger.debug("*** no matching at all for  #{val}")
       return ''
