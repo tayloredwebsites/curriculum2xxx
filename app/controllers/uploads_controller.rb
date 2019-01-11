@@ -346,7 +346,7 @@ class UploadsController < ApplicationController
         end
         Rails.logger.debug("processing subjects count: #{stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count}")
         Rails.logger.debug("subject errors: #{@subjectErrs.inspect}")
-        @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
+        # @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
         if stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count > 0
           @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
           @upload.status = BaseRec::UPLOAD_SUBJ_RELATED if !@subjectErrs
