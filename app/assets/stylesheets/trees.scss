@@ -8,6 +8,14 @@
 // SCSS for curriculum (trees) pages
 #main-container.trees {
 
+  .filter-container {
+    overflow: hidden;
+    border: 1px solid black;
+    .filter-sectors {
+      float: left;
+    }
+  }
+
   // tighten up treeview item height by 20 pixels (10 off of top and bottom)
   #tree .list-group .list-group-item {
     padding-top: 2px;
@@ -27,21 +35,6 @@
       color:inherit;
       text-decoration:none;
       pointer-events:none;
-    }
-  }
-
-  // curriculum listing select form or sectors listing link
-  form#new_tree {
-  }
-  .filter-container {
-    overflow: hidden;
-    border: 1px solid black;
-    .filter-curriculum {
-      float: left;
-      padding-bottom: 5px;
-    }
-    .filter-sectors {
-      float: left;
     }
   }
 
@@ -140,13 +133,13 @@
     // put sectors listing button next to curriculum filter
     .filter-curriculum {
       float: none;
-      width: 70%;
+      width: 100%;
       border-right: 1px solid black;
     }
-    .filter-sectors {
-      float: none;
-      width: 30%;
-    }
+    // .filter-sectors {
+    //   float: none;
+    //   width: 30%;
+    // }
     .teacher-grid {
       grid-template-columns: auto auto;
     }

@@ -2,7 +2,7 @@
   <div class='filter-curriculum'>
     <%= form_for @tree, url: index_listing_trees_path do |form| %>
       <div class='row'>
-        <div class='col col-md-12'><%= translate('trees.labels.otc_listing_filter') %></div>
+        <div class='col col-md-12'><%= translate('trees.labels.filter_by_subject_grade') %></div>
       </div>
       <div class='row'>
         <div class='col col-md-4 border-left border-top'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
@@ -19,14 +19,5 @@
         <div class='col col-md-4 border-bottom border-right'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
       </div>
     <% end %>
-  </div>
-  <div class='filter-sectors'>
-    <div class='row'>&nbsp;</div>
-    <div class='row'>
-      <div class='col'>
-        <a class="btn btn-primary" href='<%= sectors_path %>' title='<%= translate('trees.labels.sectors_listing_hover') %>'><%= translate('trees.labels.sectors_listing') %></a>
-      </div>
-    </div>
-    <div class='row'>&nbsp;</div>
   </div>
 </div>
