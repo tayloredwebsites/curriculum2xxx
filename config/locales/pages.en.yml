@@ -2,13 +2,11 @@
 en:
   subjects:
     Bio: "Biology"
-    Fiz: "Physics"
-    Geo: "Geography"
-    Hem: "Chemistry"
-    IT: "Information Technology"
+    Phy: "Physics"
+    Che: "Chemistry"
     Mat: "Mathematics"
   app:
-    title: "ENABLE BIH Curriculum App."
+    title: "Future Visions Curriculum App."
     labels:
       all: "All"
       save: "Save"
@@ -17,8 +15,8 @@ en:
       edit: "Edit"
       create: "Create"
       subject: "Subject"
-      grade_band: "Grade Band"
-      grade_band_num: "Grade Band %{num}"
+      grade_band: "Grade"
+      grade_band_num: "Grade %{num}"
       action: "Action"
       actions: "Actions"
       language: "Language"
@@ -33,13 +31,13 @@ en:
       description: 'Description'
       message: "Message"
       gen_list: "Generate List"
-      sector: "KBE Sector"
+      sector: "Future Vision"
       upload_summary: 'Uploads Summary Report'
       upload_file: "Upload File"
       upload_status_errors: "Upload Status / Errors"
       related_to_sectors: "Related to sectors: %{sectors}"
       new_sector_relations: "Newly related sectors: %{sectors}"
-      sectors_listing: "Knowledge Based Education (KBE) Sectors"
+      future_vision: "Knowledge Based Education (KBE) Sectors"
       sector_related_explain: "Sectors Related Explanation"
       subject_related_explain: "Subjects Related Explanation"
     roles:
@@ -70,7 +68,7 @@ en:
       missing_version_record: "error - missing Version Record"
       missing_version_code: "error - invalid Version Code"
   home:
-    name: "Enable BiH Web App Home Page"
+    name: "Future Visions Curriculum App Home Page"
     title: "Home Page"
   nav_bar:
     home:
@@ -78,13 +76,16 @@ en:
       hover: "Home Page"
     curriculum:
       name: "Curriculum"
-      hover: "Lists the OTC Curriculum Tree"
+      hover: "Lists the Curriculum Tree"
+    sectors:
+      name: "Future Visions"
+      hover: "Lists the Curriculum by Future Visions"
     documents:
       name: "Documents"
       hover: "Documents Management for Administrators"
     uploads:
       name: "Uploads"
-      hover: "OTC Curriculum Spreadsheet Uploads"
+      hover: "Curriculum Spreadsheet Uploads"
     translations:
       name: "Translations"
       hover: "Translations Management for Administrators"
@@ -96,10 +97,10 @@ en:
       hover: "Change my account information"
     signin:
       name: "Sign In"
-      hover: "Sign in to Enable BiH Curritulum Web App"
+      hover: "Sign in to Curriculum Web App"
     signout:
       name: "Sign Out"
-      hover: "Sign in to Enable BiH Curritulum Web App"
+      hover: "Sign in to Curritulum Web App"
   translations:
     index:
       name: "Translations Listing"
@@ -126,20 +127,20 @@ en:
       error_creating_code_val: "error creating translation #{code} to: #{val}"
   trees:
     index:
-      name: "Operational Teaching Curriculum (OTC) Listing"
-      title: "OTC Listing"
+      name: "Curriculum Listing"
+      title: "Curriculum Listing"
     show:
-      name: "Operational Teaching Curriculum Detail Page"
+      name: "Curriculum Detail Page"
     labels:
       show_areas: "Show Areas"
       show_components: "Show Components"
       show_outcomes: "Show Outcomes"
       show_indicators: "Show Indicators"
-      otc_listing_filter: "OTC Listing Filter"
-      sectors_listing: "KBE Sectors"
-      sectors_listing_hover: "Knowledge Based Education (KBE) Sectors"
-      related_sectors: 'Related Sectors KBE.'
-      how_sectors_related: 'How Sector KBE is related.'
+      filter_by_subject_grade: "Filter by Subject & Grade"
+      future_vision: "Future Vision"
+      future_vision_hover: "Future Vision"
+      related_sectors: 'Related Visions'
+      how_sectors_related: 'How Vision is related.'
       indicator_connections: 'Connections to Other Indicators:'
       current_subject: "This Subject"
       Bio: "Biology"
@@ -149,7 +150,7 @@ en:
       Mat: "Mathematics"
       Fiz: "Physics"
       teacher_header: "Supporting Resources"
-      teacher_field_1: "Multi, inter or trans disciplinary KBE sector based projects"
+      teacher_field_1: "Multi, inter or trans disciplinary Future Vision based projects"
       teacher_field_2: "Rough Learning Progression - When to teach"
       teacher_field_3: "Textbook and Resource Materials to Use in Class"
       teacher_field_4: "Suggested Assessment Resources and Activities"
@@ -164,15 +165,15 @@ en:
       too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"
   sectors:
     index:
-      name: "Knowledge Based Education (KBE) Sectors"
-      title: "KBE Sectors Listing"
+      name: "Curriculum by Future Visions"
+      title: "Curriculum by Future Visions"
     labels:
-      sectors_listing_filter: "KBE Sectors Filter"
+      future_vision_filter: "Curriculum by Future Visions"
   uploads:
     index:
       name: "Uploads Listing"
     upload:
-      name: "Upload OTC Curriculum"
+      name: "Upload Curriculum"
       h2: "Spreadsheet file for:"
     labels:
       new_upload: "Create new Upload"
@@ -183,8 +184,8 @@ en:
       num_added_sector_of_numall: "%{num} relations added to "
       saved_code: 'Saved code: %{code}'
     errors:
-      invalid_sector_code_for_sector: "Invalid KBE code %{code} for KBE %{sector}"
-      no_matching_sector: "No matching KBE Sector found for %{sector}"
+      invalid_sector_code_for_sector: "Invalid Future Vision code %{code} for Future Vision %{sector}"
+      no_matching_sector: "No matching Future Vision found for %{sector}"
       exception_relating_sector_to_tree: "Exception occurred relating sector to tree: %{e}"
       incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
     warnings:
@@ -222,7 +223,7 @@ en:
       user:
         role_public: "Public"
         role_teacher: "Teacher"
-        role_admin: "BiH Web Admin"
+        role_admin: "Future Vision Curriculum Web Admin"
         email: "E-Mail Address"
         password: "Password"
         password_confirmation: "Password Confirmation"

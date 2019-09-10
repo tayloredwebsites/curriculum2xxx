@@ -7,31 +7,13 @@
   </div>
   <div id='pageHeaderShowNav' class=''>
     <ul id='locale-select'>
-      <% if @locale_code == 'bs' %>
+      <% if @locale_code == 'tr' %>
         <li class='cur-locale'>
-          <span>bosanski</span>
+          <span>Türk</span>
         </li>
       <% else %>
         <li class='locale-opt'>
-          <a href='/users/lang/bs'>bosanski</a>
-        </li>
-      <% end %>
-      <% if @locale_code == 'hr' %>
-        <li class='cur-locale'>
-          <span>hrvatski</span>
-        </li>
-      <% else %>
-        <li class='locale-opt'>
-          <a href='/users/lang/hr'>hrvatski</a>
-        </li>
-      <% end %>
-      <% if @locale_code == 'sr' %>
-        <li class='cur-locale'>
-          <span>српски</span>
-        </li>
-      <% else %>
-        <li class='locale-opt'>
-          <a href='/users/lang/sr'>српски</a>
+          <a href='/users/lang/tr'>Türk</a>
         </li>
       <% end %>
       <% if @locale_code == 'en' %>
@@ -66,6 +48,16 @@
     <% else %>
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
+      </li>
+    <%
+    end
+    if controller.controller_name == 'sectors' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= translate('nav_bar.sectors.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= translate('nav_bar.sectors.name') %></a>
       </li>
     <%
     end

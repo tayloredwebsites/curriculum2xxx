@@ -1,12 +1,11 @@
 <% content_for(:title_code, 'sectors.index.title') %>
-<% content_for(:title, 'sectors.index.name') %>
 <% content_for(:page_class, 'sectors') %>
 
 <div class='filter-container'>
   <div class='filter-selects'>
     <%= form_for @sector, url: sectors_path, :html => { :method => 'GET' } do |form| %>
       <div class='row'>
-        <div class='col col-md-12'><%= translate('sectors.labels.sectors_listing_filter') %></div>
+        <div class='col col-md-12'><%= translate('sectors.labels.future_vision_filter') %></div>
       </div>
       <div class='row'>
         <div class='col col-md-2 border-left border-top'><label for='tree_subject_id'><%= translate('app.labels.subject') %></label></div>
@@ -40,12 +39,12 @@
   <table class='tree-listing table'>
     <thead>
       <% if @rptRows.count > 0 %>
-        <tr class='rpt-header'>
+        <!-- tr class='rpt-header'>
           <th colspan="3"><%= translate('app.labels.sector') %></th>
-        </tr>
+        </tr -->
         <tr class='rpt-header'>
-          <th class='sector-col'>&nbsp;</th>
-          <th class='code-col'><%= translate('app.labels.code') %></th>
+          <!-- th class='sector-col'>&nbsp;</th -->
+          <th class='code-col'><%= translate('app.labels.sector') %></th>
           <th class='translation-col'><%= translate('app.labels.indicators') %></th>
         </tr>
       <% end %>
@@ -55,7 +54,7 @@
         if r[0].present?
       %>
         <tr class='rpt' data-sector='<%= r[0] %>' data-row='<%= ix %>'>
-          <td colspan='3' class='sector-row'><%= r[0] %> - <%= r[2] %></td>
+          <td colspan='2' class='sector-row'>&nbsp;<%= r[2] %></td>
         </tr>
       <% else %>
         <tr class='rpt' data-tree='<%= r[1] %>' data-row='<%= ix %>'>

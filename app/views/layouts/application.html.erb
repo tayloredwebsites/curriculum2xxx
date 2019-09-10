@@ -18,7 +18,6 @@
           <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
         </div>
       <% end %>
-      <div id='elm-body'></div>
       <div id='main-container' class='<%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
         <%= yield %>
       </div>
