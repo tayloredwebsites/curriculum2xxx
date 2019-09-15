@@ -1,0 +1,39 @@
+en,sci,8
+S.8. SCIENCE TEACHING PROGRAM
+S.8.1. [Unit]Seasons and Climate [Subject Name]Earth and Universe
+S.8.2. [Unit]DNA and Genetic Code [Subject Name]Living
+S.8.3. [Unit]Pressure [Subject Name]Physical Events
+S.8.4. [Unit]Substance and Industry [Subject Name]Matter and Nature
+S.8.5. [Unit]Simple Machines [Subject Name]Physical Events
+S.8.6. [Unit]Energy Transformations and Environmental Science [Subject Name]Living
+S.8.7. [Unit]Electric Loads and Electrical Energy [Subject Name]Physical Events
+S.8.1. Seasons and Climate / World and Universe
+S.8.1.1. Formation of Seasons
+S.8.1.2. Climate and Air Movements
+S.8.2. DNA and Genetics Code / Living
+S.8.2.1. DNA and Genetic Code
+S.8.2.2. Heredity
+S.8.2.3. Mutation and Modification
+S.8.2.4. Adaptation (Adaptation to the Environment)
+S.8.2.5. Biotechnology
+S.8.3. Pressure / Physical Events
+S.8.3.1. Pressure
+S.8.4. Substance and Industry / Substance and its Nature
+S.8.4.1. Periodic System
+S.8.4.2. Physical and Chemical Changes
+S.8.4.3. Chemical Reactions
+S.8.4.4. Acids and Bases
+S.8.4.5. Interaction of Matter with Heat
+S.8.4.6. Chemical Industry in Turkey
+S.8.5. Simple Machines / Physical Events
+S.8.5.1. Simple Machines
+
+S.8.6. Energy Transformations and Environmental Science / Living
+S.8.6.1. Food Chain and Energy Flow
+S.8.6.2. Energy Transformations
+S.8.6.3. Matter Cycles and Environmental Problems
+S.8.6.4. Sustainable Development
+S.8.7. Electric Charges and Electrical Energy / Physical Events
+S.8.7.1. Electric Charges and Electricity
+S.8.7.2. Electrical Installed Objects
+S.8.7.3. Transformation of Electrical Energy Systems

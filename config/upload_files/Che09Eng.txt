@@ -1,0 +1,154 @@
+en,che,9
+9.1. SCIENCE OF CHEMISTRY
+Key Concepts: compound, scientist, element, formula, chemistry, laboratory safety,
+substance, symbol, alchemy
+9.1.1. From Alchemy to Chemistry
+9.1.1.1. Explains the process of science being science.
+a. The difference between alchemy and chemistry is highlighted.
+b. The reading articles regarding the contributions made in Mesopotamia, China, Indian, Egypt, Greek, Central Asia and Islamic civilizations on the process of development of chemical science are given.
+c. Some of the scientists who contributed to the transition from alchemy to chemistry (Empedocles, Democritus, Aristotle, Câbir bin Hayyan, Ebubekir er-Razi, Robert Boyle, Antoine Lavoisier) and their studies on chemistry science are briefly introduced.
+9.1.2. Chemistry Disciplines and Working Areas of Chemists
+9.1.2.1. Explains the main fields of work of chemistry and chemists.
+a. Biochemistry, analytical chemistry, organic chemistry, inorganic chemistry, physical chemistry, polymer chemistry and industrial chemistry disciplines are briefly introduced.
+b. Drug, fertilizer, petrochemical, refinement, dye-textile areas of the relationship with chemistry is specified.
+c. Chemical engineering, metallurgical engineering, pharmacist, chemist, chemistry teaching profession are introduced.
+9.1.3. Symbolic Language of Chemistry
+9.1.3.1. It matches the names of elements that are frequently interaced with their own symbols in daily life.
+a. The definition of the element is made.
+b. The first 20 elements in the periodic system such as chrome, manganese, iron, cobalt, nickel, copper, zinc, bromine, silver, tin, iodine, barium, platinum, gold, mercury, lead elements which are frequently used in daily life are introduced.
+9.1.3.2. Matches the formulas of the compounds with their names.
+a. The definition of the compound is made.
+b. The compounds of H2O, HCl, H2SO4, HNO3, CH3COOH, CaCO3, NaHCO3, NH3, Ca(OH)2, NaOH, KOH, CaO ve NaCl are introduced with their common names.
+9.1.4. Occupational Health and Safety in Chemical Applications
+9.1.4.1. Explains the occupational health and safety rules that must be followed in chemistry laboratories.
+a. The main warning signs used in chemistry for health and safety purposes [flammable, caustic, corrosive, explosive, irritant, toxic (toxic), radioactive and environmentally harmful signs are introduced.
+b. It is emphasized that the importance of knowing the basic warning signs for occupational health and safety.
+9.1.4.2. Explains the effects of chemicals on human health and environment.
+a. The importance of Na, K, Fe, Ca, Mg, H2O for human health and environment is mentioned.
+b. Harmful effects of Hg, Pb, CO2, NO2, SO3, CO, Cl2 substances on human health and environment are highlighted.
+9.1.4.3. Recognizes some basic materials used in chemistry laboratory.
+The basic tools such as Beherglas, Erlenmayer, Graduated Cylinder (Mesh), Pipette, Glass Balloon, Balloon Floating, Burette and separation funnel found in the laboratory are introduced.
+9.2. ATOM AND PERIODIC SYSTEM
+Key concepts: absorption, nonmetal, atom, atomic model, atomic radius, electron affinity, electron, electronegativity, emission (emission), group, ion, ionization energy, isobar, isoelectronic, isotone, isotope, metal, neutron, periodic system, period, proton, theory, semi-metal
+9.2.1. Atom Models
+9.2.1.1. The atomic models of Dalton, Thomson, Rutherford and Bohr are explained.
+a. The Bohr atom model is associated with the rays absorbed / emitted by the atoms. Only radiation absorption / propagation is emphasized without entering into calculations.
+b. The importance of modern atomic theory (cloud model) by specifying the limitations of the Bohr atom model is highlighted. Orbital concept is not mentioned.
+c. Information technologies (animation, simulation, video, etc.) are used to explain atomic models.
+9.2.2. Structure of Atom
+9.2.2.1. Compares the loads, masses and places of electrons, protons and neutrons.
+a. Electron, proton, neutron, atomic number, mass number, isotope, isotone, isobar and isoelectronic concepts are introduced.
+b. The issue of in which way the loads and masses of the electrons, protons have found and the calculation of the average atomic mass in isotope atoms are not told.
+9.2.3. Periodic System
+9.2.3.1. Explains the principles of settlement of the elements in the periodic system.
+a. The work of Mendeleev on the periodic system and the contributions of Moseley are mentioned.
+b. Describes the relationship between the layer-electron distributions of atoms and their locations in the periodic system. The first 20 elements are essential and the layer electron distributions of other elements are not mentioned.
+9.2.3.2. Classifies the elements according to their place in the periodic system.
+The classification of the elements is made of as metal, nonmetal, semi-metal and noble (lineage) gases.
+9.2.3.3. Explains the changing tendencies of periodic properties.
+a. The concepts of periodic properties of metallic-ametalic, atomic radius, ionization energy, electron affinity and the electronegativity are explained; but it is not explained how to measure them.
+b. The definitions of covalent, ionic, metallic, van der Waals radius cannot be mentioned.
+c. Information technologies (animation, simulation, video, etc.) are utilized in the explanation of periodic properties.
+9.3. INTERACTIONS BETWEEN CHEMICAL SPECIES
+Key concepts: apolar covalent bond, bond energy, valence electron, hydrogen bond, ion, ionic bond, chemical bond, covalent bond, metallic bond, molecule, intermolecular interaction, polar covalent bond
+9.3.1. Chemical Type
+9.3.1.1. Explains chemical types.
+The concept of radical is not mentioned.
+9.3.2. Classification of Chemical Interactions
+9.3.2.1. Classify the interactions between chemical species.
+a. The inter-species classification is made between interatomic and intermolecular; the difficulties of this classification are addressed.
+b. The ionic, covalent and metallic bonding as examples of strong interactions and hydrogen bond and van der Waals forces as examples of poor interactions are given.
+9.3.3. Strong Interactions
+9.3.3.1. Associates the formation of ionic bonds with interactions between ions.
+a. The Lewis symbols of the neutral atoms and the monatomic ions are given. Examples are selected from the first 20 elements in the periodic system.
+b. It is emphasized that the structural units of ionic compounds are not confused with the concept of molecule.
+a. The concepts of periodic properties of metallic-ametalic, atomic radius, ionization energy, electron affinity and electronegativity are mentioned but it is not mentioned that how to measure them.
+b. The definitions of Covalent, ionic, metallic, van der Waals radius definitions are not mentioned.
+c. The information technologies (animation, simulation, video, etc.) are utilized in the explanation of ionic bond.
+9.3. INTERACTIONS BETWEEN CHEMICAL SPECIES
+Key concepts: apolar covalent bond, bond energy, valence electron, hydrogen bond, ion, ionic bond, chemical bond, covalent bond, metallic bond, molecule, intermolecular interaction, polar covalent bond
+9.3.1. Chemical Type
+9.3.1.1. Explains chemical types.
+The concept of radical concept is not mentioned.
+9.3.2. Classification of Chemical Interactions
+9.3.2.1. Classify the interactions between chemical species.
+a. The inter-species classification is made between interatomic and intermolecular; the difficulties which are brought by this classification are mentioned.
+b. As examples of strong interactions include ionic, covalent and metallic bonding; examples of weak interactions include hydrogen bond and van der Waals forces.
+9.3.3. Strong Interactions
+9.3.3.1. Associates the formation of ionic bonds with interactions between ions.
+a. The Lewis symbols of the neutral atoms and the monatomic ions are given. Examples are selected from the first 20 elements in the periodic system.
+b. It is emphasized that the structural units of ionic compounds are not confused with the concept of molecule.
+c. The information technologies (animation, simulation, video, etc.) are used to explain ionic bonds.
+9.3.3.2. Makes systematic naming of ionic bonded compounds.
+a. The compounds that are formed by monatomic and polyatomic ions (NH4 +, OH-, NO3- SO42-, CO32-, PO43-, CN-, CH3COO-) are being named.
+b. The compounds consist of variable valence metals (Cu, Fe, Hg, Sn, Pb) are being named.
+c. Nomenclature of hydrate compounds are not made.
+9.3.3.3. Explains the formation of covalent bond on the basis of interatomic electron co- association.
+a. When the covalent bonds are classified, polar and apolar covalent bonds are mentioned; the coordinated covalent bonds are not explained.
+b. The polemical-apolarian states of molecules are dwelled on over Lewis electron spot formulas of simple molecules (H2, Cl2, O2, N2, HCl, H2O, BH3, NH3, CH4, CO2).
+c. Information technologies (animation, simulation, video, etc.) are used in explaining covalent bonds.
+9.3.3.4. Makes systematic nomenclature of covalent bonded compounds.
+Systematic names of the examples of compounds as H2O, HCl, H2SO4, HNO3, NH3 are given.
+9.3.3.5. Explains the formation of metallic bond.
+The electron sea model is used to explain the metallic bond.
+9.3.4. Weak Interactions
+9.3.4.1. Distinguish weak and strong interactions based on bond energy.
+9.3.4.2. Classify weak interactions between chemical species.
+a. Van der Waals forces (dipole-dipole interactions, ion-dipole interactions, dipole-induceddipole interactions, ion-induced dipole interactions and London forces) are explained.
+b. The overall interaction forces of Dipole-dipole interactions, ion-dipole interactions and London forces are compared.
+9.3.4.3. Relates the physical properties of substances with hydrogen bonds.
+a. Describes the formation of the hydrogen bond.
+b. The boiling point variations of suitable compound series are explained on the graph, using hydrogen bonds and other interactions.
+c. Aziz Sancar's studies on DNA repair and his brief biography are given as a part of reading.
+It is emphasized that the importance of being patient, decisive and determined in the success of scientific studies.
+9.3.5. Physical and Chemical Changes
+9.3.5.1. Distinguishes the physical and chemical changes on the basis of the severity of the broken and formed bond energies.
+The Information technologies (animation, simulation, video, etc.) are used in the explanation of physical and chemical changes between species.
+9.4. CONDITIONS OF THE MATTER
+Key concepts: fluidity, Avogadro number, relative humidity, pressure, vapor pressure, evaporation, freezing, melting, expansion, volume, boiling, flushing (back sublimation), moles, absolute temperature, humidity, plasma, sublimation, viscosity, condensation
+9.4.1. Physical Conditions of Matter
+9.4.1.1. Explains the importance of matter being in different situations for living beings and environment.
+a. It is emphasized that the physical conditions of water (solid, liquid, gas) provide different functions.
+b. The importance of state changes is emphasized over the behaviors of LPG (liquefied petroleum gas), propellants in deodorants, LNG (liquefied natural gas) and gases used in refrigerators.
+c. It is dwelled on that nitrogen and oxygen obtained from the air.
+9.4.2. Solids
+9.4.2.1. Establishes the relationship between the properties of solids and the strength of bonds.
+The forces that hold the particles of salt, iodine, diamond and zinc solids together are emphasized by classifying the solids.
+9.4.3. Liquids
+9.4.3.1. Explains the concept of viscosity in liquids. 9.4.3.2. Explains the factors affecting viscosity in liquids.
+a. It is ensured that viscosity is correlated with intermolecular interaction. b. The viscosities of different liquids are associated with temperature.
+c. By making viscosity tests of water, glycerin and olive oil at different temperatures, the comparison of results is provided.
+9.4.3.3. Equilibrium vapor pressure through evaporation-condensation processes in closed containers are explained.
+a. The boiling event is explained by external pressure.
+b. The boiling and evaporation events are different from each other without entering phase diagrams indicated.
+9.4.3.4. Use concepts related to liquids and their properties in explaining natural phenomena.
+a. It is stated that the presence of water vapor in the atmosphere is expressed by the concept of moisture.
+b. It is indicated that the concepts of actual and sensed temperature given in the news of meteorology is expressed with the concept of relative humidity. The relative humidity calculations are not added.
+9.4.4. Gases
+9.4.4.1. Explains the general properties of gases.
+Gas laws and kinetic-molecular theory are not mentioned.
+9.4.4.2. Explains the properties of pressure, temperature, volume and quantity of gases by units.
+It is explained that Atm and mmHg as pressure units; liters (L) as volume units; celsius (oC) and Kelvin (K) as temperature units; mole as quantity unit. Unit conversions and calculations are not mentioned.
+9.4.4.3. Interprets state change graphs of pure substances.
+a. The melting, freezing, evaporation-condensation and boiling processes are examined over the graphics of state changes.
+b. Calculation of the processes of the hidden heating-cooling, melting and evaporation are not mentioned.
+c. It is provided to draw the graph of the pure water by making the state change experiment.
+9.4.5. Plasma
+9.4.5.1. Explains plasma state.
+The classification of hot and cold plasma is not mentioned.
+9.5. NATURE AND CHEMISTRY
+Key concepts: chemical pollutant, pollution, global warming, greenhouse effect, hard / soft water
+9.5.1. Water and Life
+9.5.1.1. Explains the importance of water for livings.
+The importance of water resources and its conservation is explained.
+9.5.1.2. Develop solutions for water conservation and protection of water resources.
+It is emphasized that it is a responsibility / duty for every citizen to use water-saving.
+9.5.1.3. Explains the hardness and softness properties of water.
+9.5.2. Environment’s Chemistry
+9.5.2.1. Explains chemical pollutants causing air, water and soil pollution.
+a. It is focused on the nitrogen oxides, carbon dioxide and sulfur oxides as air pollutants.
+b. It is focused on the plastics, detergents, organic liquids, heavy metals, batteries and industrial wastes as water and soil contaminants.
+9.5.2.2. Suggests solutions to reduce the effects of environmentally harmful chemical pollutants.
+a. It is emphasized that the necessity of being sensitive to living beings and the environment when selecting and using the consumption items by focusing on the vital importance of the atmosphere for living things.
+b. It is provided for students to gather information related to reduce the environmental hazards of chemical contaminants by using information technologies and share those with others. It is reminded that validity and reliability of information and information sources obtained from literature research should be questioned.
+c. It is provided that the students create suggestions of campaigns and events with their group friends for the purpose to create awareness about environmental cleanliness together. It is reminded that it is one of the most important things to share tasks and everyone pulls his own responsibility for the group work to be successful.

@@ -1,0 +1,127 @@
+en,mat,11
+11.1. (GEOMETRY) Trigonometry
+11.1.1. Directional Angles
+Terms and Concepts: directional angle, degree, minute, second, radian, basic measure
+Symbols and representations: 𝑅, ′, ′ ′,  ̊
+11.1.1.1. Explain the directional angle.
+11.1.1.2. Relates the angle measurement units to each other.
+a) The minutes and seconds are the sub units of the degree.
+b) Relate the degree to the radian;
+c) The main dimension of the angle.
+11.1.2. Trigonometric Functions
+Terms and Concepts: trigonometric function, period, periodic function
+Symbols and representations: sinx, cosx, tanx, cotx, cosecx, secx, arcsinx, arccosx, arctanx, T, f (x + t)
+11.1.2.1. Explains trigonometric functions by unit circle.
+a) Basic identities between trigonometric functions are examined with the help of similar triangles created.
+b) Signs of trigonometric functions according to regions are examined.
+c) Trigonometric functions are ordered according to their angle values.
+11.1.2.2. Solve problems related to the cosine theorem.
+a) Cosine theorem, obtained by using the Pythagorean Theorem.
+b) Real life problems are included.
+11.1.2.3. Solve problems related to sinus theorem.
+a) The sinus theorem, the length of the two sides and the angle between these edges is obtained by taking the area of the given triangle into account.
+b) The sinus theorem is not associated with the circumference.
+c) Real life problems are included.
+11.1.2.4. Draws trigonometric function graphs.
+a) Only the information and communication technologies are used in the graphical drawings of functions other than y = sinx and y = cosx functions.
+b) Periodic function definition is given, trigonometric functions are shown to be periodic.
+c) With the help of graphs, trigonometric functions are determined as single or double functions. d) Charts of secant and cosecant functions are not included.
+11.1.2.5. Explains inverse functions of sine, cosine and tangent functions.
+Graphs of inverse trigonometric functions are not included.
+11.2. Analytical Geometry
+11.2.1. Analytical Investigation of Straight
+Terms and Concepts: analytical plane, distance between two points, slope of the line, slope angle, parallel of two lines, steepness of two lines
+Symbols and representations: A(x,y), I AB I, m, d1//d2 ...
+11.2.1.1. Solve problems by obtaining the relationship between two points in the analytical plane.
+11.2.1.2. Calculates the coordinates of the point that divides a line in a certain ratio (inside or outside).
+a) Find the coordinates of the center point of a line.
+b) Find the coordinates of the center of gravity of a triangle.
+11.2.1.3. Analyzes the lines in the analytical plane.
+a) The inclination angle and slope of a line are defined.
+b) The equation of a line is created on the analytical plane.
+c) The equations of the equations which are parallel to the axes and passing through the origin are found and the graphs of the equations found are interpreted.
+ç) The conditions of the two lines are examined and there is an intersection point of the two intersecting lines.
+d) Information and communication technologies are used.
+11.2.1.4. Calculates the distance of a point to a line.
+a) Applications are made about the distance of a point to a line and the distance between two parallel lines.
+11.3. (NUMBERS AND ALGEBRA) Practices on Functions
+11.3.1. Practices regarding Functions
+Terms and Concepts: average change rate
+11.3.1.1. Solve the problem using the graph and table representation of the function.
+a) The points where the graph crosses the x and y axes; ranges in which the function is positive, negative, increasing and decreasing; maximum and minimum values of the function and their meaning in the context of the given situation.
+b) The average rate of change of a given range of a function given by algebraic expression, graph or table is calculated.
+c) The graph of the function is drawn and interpreted with the help of information and communication technologies.
+11.3.2. Secondary Functions and Graphics
+Terms and Concepts: quadratic function, vertex, parabola, axis of symmetry
+Symbols and Impressions: y=ax2 + bx + c, y = a(x-r)2 + k, y = a(x-x1).(x-x2)
+11.3.2.1. Interprets the function of a quadratic variable.
+a) The peak of the graph of the function, the points where the axes cut, and the axis of symmetry are found.
+b) The peak or maximum value of the function is associated with the peak of the graph of the function.
+c) The effect of the change in the coefficients of the function on the graph of the function is interpreted by using information and communication technologies.
+ç) The second order function is created with three points, one of which is given a two point or one on the y axis.
+d) The conditions of a right and a parabola are examined.
+11.3.2.2. Solve the problems that can be modeled by second order functions.
+11.3.3. Transformations of Functions
+Terms and Concepts: translation, symmetry, transformation
+11.3.3.1. Draws new function graphs with the help of transformations from the graph of a function.
+a) The symmetry properties of the graph of single and double functions are emphasized.
+b) The graphics of transformations of 𝑦=𝑓(x)+𝑏,𝑦=𝑓(𝐴−𝑎),𝑦=𝑘 𝑓(x),𝑦=𝑓(𝑘x),𝑦=−𝑓(x),𝑦=𝑓(−x) are given by using information and communication technologies.
+11.4. (NUMBERS AND ALGEBRA) Equation and Inequality Systems
+11.4.1. Second Order Systems with Two Unknown Equations
+11.4.1.1. He / she finds the solution set of systems of equations with two unknowns.
+The solution is interpreted with the help of graphs drawn from information and communication technologies.
+11.4.2. Secondary Inequalities and Inequality Systems
+Terms and Concepts: second order inequalities
+11.4.2.1. Finds a solution set of inequalities of a second degree.
+a) Find the solution set of the inequalities given in the form of the product as multiplication or division of ax + b or ax2 + bx + c.
+b) The solution is interpreted with the help of graphs drawn from information and communication technologies.
+11.4.2.2. Finds a set of solutions of systems of inequality of a second degree.
+11.5. (GEOMETRY) Circle and Circular Region
+11.5.1. Basic Elements of Circle
+Terms and Concepts: circle, center, radius, diameter, beam, tangent, cutter, bow
+11.5.1.1. Explain the tangent, beam, diameter, bow and cut. The situations of a circle and a line relative to each other are discussed.
+11.5.1.2. Perform the operations by showing the properties of the beam in the circle.
+a) In a circle, it is shown that the middle post of the beam passes through the center of the circle and the line connecting the midpoint of a beam to the center of the circle is perpendicular to the beam.
+b) The relationship between the length of the beams and their distance to the center is emphasized in a circle.
+11.5.2. Angles in Circles
+Terms and Concepts: center angle, perimeter angle, tangent-beam angle, inner angle, external angle
+11.5.2.1. The center, environment, interior, exterior and tangent-beam angles using the properties of the operations.
+a) Circular circle of the triangle is drawn.
+b) The relation of the sinus theorem with the radius of the circumference circle is emphasized.
+c) Use of the compass-ruler or information and communication technologies.
+11.5.3. Tangent in the Circle
+Terms and Concepts: tangent, tangent part
+11.5.3.1. Show the properties of the tangent in the circle operations.
+a) The tangent parts drawn from a point outside the circle are shown to have equal lengths. b) The inner tangent and outer tangent circles of the triangle are drawn.
+c) The common tangent of the two circles is not entered.
+ç) With the help of information and communication technologies, a circle and two tangents from a point outside this circle are drawn and the situation that is taken by dragging the point taken is taken into consideration.
+11.5.4. Circle and Area
+Terms and Concepts: arc length, circle, circle slice
+11.5.4.1. Creates environment and area relations of the circle.
+a) Applications are made about the area and area of the circle.
+b) Applications are made by finding the area and arc length relations of the circle segment.
+c) The work of Archimedes is given.
+ç) Real life problems are included.
+11.6. Solid Geometry
+11.6.1. Solid Objects
+Terms and Concepts: upright circular cylinder, upright circular cone, sphere, main line, vertex
+11.6.1.1. Sphere, perpendicular circular cylinder and perpendicular circular cone to create space and volume relations.
+a) Real life problems are included.
+b) Information and communication technologies are used.
+11.7. (DATA, COUNTING AND PROBABILITY) Probability
+11.7.1. Conditional Probability
+Terms and Concepts: conditional probability, dependent event, independent event, compound event
+Symbols and representations: P (A | B), P (A veB), P (AUB)
+11.7.1.1. Solves problems by explaining the conditional probability.
+a) Historical development process of probability is mentioned.
+b) Real life problems are included.
+11.7.1.2. Explains the probability of realization by explaining dependent and independent events.
+Real life problems are included.
+11.7.1.3. Calculates the probability of occurrence by explaining the compound event.
+a) Tree scheme is used.
+b) The selection is made from a maximum of three stages of events.
+c) Calculate the probability of events generated by “and, or”.
+ç) Real life problems are included.
+11.7.2. Experimental and Theoretical Probability
+Terms and Concepts: experimental probability, theoretical probability
+11.7.2.1. Correlates the theoretical probability with the theoretical possibility. Information and communication technologies are used.

@@ -1,0 +1,120 @@
+en,mat,12
+12.1. (NUMBERS AND ALGEBRA) Exponential and Logarithmic Functions
+12.1.1. Exponential Function
+Terms and Concepts: exponential function
+Symbols and Impressions: f(x)=ax
+12.1.1.1. Explains the exponential function.
+a) Explains why the exponential functions are needed.
+b) Exponential expressions and the properties of the transactions made with them are reminded. c) Exponential functions are shown one by one and with the help of graphic.
+12.1.2. Logarithm Function
+Terms and Concepts: logarithm function, natural logarithm
+Symbols and Impressions: logx, logax, lnx, e, ex
+12.1.2.1. Solve problems by associating the exponential function with the logarithm function.
+a) The graph of logarithm function of 𝑎∈R+−{1} is plotted using the graph of the exponential function. The graphs of the functions of y=ax and y=log ax indicate that they are symmetrical with respect to the y = x line.
+b) Information and communication technologies are used to examine the change in the graph of the logarithm function according to the values a.
+c) The works of Gelenbevi İsmail Efendi and John Napier are included.
+12.1.2.2. Solve problems by defining logarithm function at base 10 and e.
+a) It is mentioned that the number of e is irrational and its use in mathematics and other sciences.
+12.1.2.3. Use the properties of the logarithm function.
+12.1.3. Exponential, Logarithmic Equations and Inequalities
+Terms and Concepts: exponential equation, logarithmic equation
+12.1.3.1. Explains the solution sets of exponential, logarithmic equations and inequalities.
+12.1.3.2. Explain exponential and logarithmic functions to model real life situations.
+a) The examples such as population growth, bacterial population, decay of radioactive substances (half-life), determination of fossil ages, earthquake intensity (Richter scale), pH value, volume (decibels) are mentioned.
+b) Examples that will raise awareness about the concepts of waste and savings.
+c) The information and communication technologies are used.
+12.2. Sequence Progression
+12.2.1. Real Number Arrays
+Terms and Concepts: array, finite array, fixed array, arithmetic sequence, geometric sequence, Fibonacci sequence
+12.2.1.1. Explain the concept of array by associating with the concept of function.
+The finite array is given the equality of constant arrays and arrays.
+12.2.1.2. The general term or the reduction relation finds the terms of a given sequence of numbers.
+12.2.1.3. Performs operations by using the properties of arithmetic and geometric arrays.
+a) First n term sum is found.
+b) The total symbol is introduced but the features are not given.
+12.2.1.4. Solve problems with real life situations with the help of arrays.
+Arithmetic, geometric and Fibonacci sequences are given examples from nature and various art branches.
+12.3. (GEOMETRY) Trigonometry
+12.3.1. Total-Difference and Two-fold Angle Formulas
+12.3.1.1. Performs operations by creating formulas of trigonometric values of sum and difference of two angles. Transformation and inverse transformation formulas are not given.
+12.3.1.2. Makes operations by creating two-fold angle formulas.
+12.3.2. Trigonometric Equations
+Terms and Concepts: trigonometric equation
+12.3.2.1. Find solution sets of trigonometric equations.
+a) Being about a, b, c ∈R, the roots of trigonometric equations such as 𝑎 𝑠𝑖𝑛𝑓(x)+𝑏 𝑐𝑜𝑠 𝑔(x)=𝑐 are found; The solution with the coefficients a, b and c is associated.
+b) Real life problems are included.
+c) The work of El Battani is included.
+12.4. (GEOMETRY) Transformations
+12.4.1. Fundamental Transformations in the Analytical Plane
+Terms and Concepts: transformation, translation, rotation, center of rotation, rotation angle, symmetry, center of symmetry, axis of symmetry
+12.4.1.1. Finds the coordinates of the image of a given point in the analytic plane under translational, rotational and symmetry transformations.
+a) The concepts of translation, symmetry and rotation are reminded.
+b) the point; point, axis, y = x line, symmetries according to a line and symmetry of the line according to the point are highlighted. The correct symmetries of the line are not included.
+c) Displacement, symmetry and rotation with the help of information and communication technologies.
+12.4.1.2. Solves the problem of basic transformations and components.
+a) Modeling studies are included.
+b) Sampling from nature and architectural works.
+12.5. (NUMBERS AND ALGEBRA) Derivative
+12.5.1. Limit and Continuity
+Terms and Concepts: limit at one point, limit from right, limit from left, continuity
+12.5.1.1. Explains the limit of a function at a point, the limit from the left and the right from the limit.
+a) The concept of limit is explained with the help of tables and graphs, as an independent variable approaches a given number.
+b) Information and communication technologies are used.
+c) Cauchy's work is included.
+12.5.1.2. Specifies the properties related to the limit and makes practices.
+a) Limit practices including polynomials, rooted, exponential, and logarithmic and trigonometric functions are made.
+b) Only the share of the limit can be removed by dividing the share and denominator factor.
+12.5.1.3. Explain the continuity of a function at a point.
+a) Find the points on the graph of the function which are continuous and discontinuous.
+b) The historical development of the limit and the contributions of Salih Zeki to this field are mentioned.
+c) Continuity applications are made with the help of information and communication technologies.
+12.5.2. Instantaneous Change Rate and Derivative
+Terms and Concepts: instantaneous change rate, slope of the tangent, derivative, derivative from right, derivative from left
+a) The instantaneous change rate is explained by using physics and geometry models.
+b) The relation between the derivative value of a given function at a point and the inclination of the tangent at that point is emphasized.
+c) The relationship between the left-hand derivative and the right-hand derivative of a function at a point and the derivative.
+ç) The derivative rules such as f (x) = c, 𝑓(x)=𝑎x𝑛 (𝑎,𝑐∈R,𝑛∈Q) are mentioned. Apart from this, the derivative rules of functions (including closed and parametric functions) are not included.
+d) The work of Rolle is included.
+12.5.2.2. Evaluates the differentiability of a function at a point and in a range.
+a) It examines the requirements and requirements for a function to be derivative at one point.
+b) The relationship between the points where the function is not derivative and its graph is established.
+12.5.2.3. Performs operations with the help of the rules of addition, subtraction, multiplication, division of derivative two functions which can be differentiated.
+12.5.2.4. The rule of the derivative of the two functions (chain rule) is made by making the derivative calculation.
+12.5.3. Practices of derivative
+Terms and Concepts: critical point, extreme point, absolute maximum, absolute minimum, local maximum, local minimum
+12.5.3.1. Derivatives are determined by the help of derivative which decreases or decreases a function.
+12.5.3.2. Specifies the absolute maximum and absolute minimum, local maximum, local minimum points of a function.
+a) Using the information and communication technologies, graphic drawing is given and interpreted.
+12.5.3.3. Graphs a function with the help of its derivative.
+a) Graphical drawings are limited by polynomial functions.
+b) Information and communication technologies are used.
+12.5.3.4. Solves maximum and minimum problems with derivative help. Real life problems are included.
+12.6. (NUMBERS AND ALGEBRA) Integral
+12.6.1. Indefinite integral
+Terms and concepts: inverse derivative, indefinite integral, integral constant
+12.6.1.1. Defines the indefinite integral of a function and forms the rules of integration.
+a) Being “n” is not equal to -1 as the rules of indeterminate integration are limited by the functions of 𝑓(x)=𝑎x𝑛 (𝑎,𝑐∈R,𝑛∈Q)
+b) Applications of a constant of a function, the sum and the difference of the two functions are given the rules of integration.
+12.6.1.2. Performs integral process by changing the variable.
+12.6.2. Specific Integrals and Applications
+Terms and Concepts: Riemann sum, specific integral
+12.6.2.1. Calculates the area of the boundary region between the graph of a function and the x-axis with the aid of the Riemann sum.
+a) Realized fields encountered in real life and cannot be calculated with the formulas can be expressed as the limit of appropriate totals are explained.
+b) Polynomial is limited to functions.
+c) Information and communication technologies are used.
+12.6.2.2. Explains the relationship between the specific and indefinite integrals of a function.
+12.6.2.3. Perform operations using properties of definite integral.
+a) Particular integral of the fragmentary functions are included.
+12.6.2.4. Calculates area with definite integral.
+a) The area of the limited area between the graphics of the two functions is calculated.
+b) Real life problems are included.
+c) Information and communication technologies are used.
+12.7. (GEOMETRY) Analytical geometry
+12.7.1. Analytical Investigation of Circles
+Terms and Concepts: general equation of the circle, the standard equation of the circle
+12.7.1.1. The center and its radius form the equation of the given circle.
+a) The standard equation of the circle is x2+𝑦2+𝐷x+𝐸𝑦+𝐹=0.
+b) Shows in which cases the equation of 𝐴x2+𝐵𝑦2+𝐷x+𝐸𝑦+𝐹= 0 forms a circle.
+c) Information and communication technologies are used.
+12.7.1.2. Equations are given the correct condition of the circle and determine the status of each other.
+a) There are intersection points if there is a correct circle. b) Information and communication technologies are used.

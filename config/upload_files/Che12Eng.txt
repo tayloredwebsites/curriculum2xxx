@@ -1,0 +1,134 @@
+en,che,12
+12.1. CHEMICAL AND ELECTRICITY
+Key concepts: anode, electric charge, electrolyte, electrolytic cell, electrolysis, electrode, Faraday constant, electroplating cell, reduction, cathodic protection, cathode, corrosion, metal plating, metal activity sequence, redox, standard electrode potential, salt bridge, semi-cell oxidation
+12.1.1. Electric Current in Reduction-Oxidation Reactions
+12.1.1.1. Recognize redox reactions.
+a. The concepts of oxidation and reduction are emphasized.
+b. Redox reactions are balanced to introduce common oxidants (O2, KMnO4, H2SO4, HNO3, H2O2) and reducing (H2, SO2).
+c. No equalization of ionic redox reactions is allowed.
+12.1.1.2. Explain the relationship between redox reactions and electrical energy.
+a. It is emphasized whether the electron exchange between the reductant and the oxidant is possible in a way other than direct contact.
+b. The relevance / involuntary state of the redox reaction is associated with electrical energy.
+12.1.2. Electrodes and Electrochemical Cells
+12.1.2.1. Explain electrode and electrochemical cell concepts.
+a. The concepts of cathode and anode are discussed in relation to reduction-oxidation. b. The concepts of electrode, semi-cell and cell are emphasized.
+c. Inert electrodes are indicated where necessary.
+ç. The function of the salt bridge is explained in the batteries.
+d. Zn / Cu electrochemical cell test is performed and it is explained by taking advantage of the information technologies (animation, simulation, video, etc.).
+12.1.3. Electrode Potentials
+12.1.3.1. Explain the necessity of redox reactions using standard electrode potentials.
+a. The standard half-cell reduction potentials are associated with the standard hydrogen half-cell.
+b. The activity sequence of metals is emphasized.
+c. It is ensured that the voluntary redox reaction between the two separate half-cells is associated with the standard reduction potentials.
+ç. Studies on the calculation of electrode potentials under non-standard conditions are included.
+12.1.4. Electricity Production from Chemicals
+12.1.4.1. Explains the voltage and service life of electroplating batteries under the standard conditions.
+12.1.4.2. Explain the importance of lithium ion batteries by using them.
+Students are expected to prepare a poster and present it describing lithium-ion batteries and their current uses.
+12.1.5. Electrolysis
+12.1.5.1. Explains the electrolysis event in terms of electric current, time and the mass of matter undergoing change.
+a. An electrical charge-mass relation is established over the total load of 1 mol.
+b. The load unit is defined as Coulomb (C).
+c. Faraday relation is explained and calculations are made using this relation.
+ç. It is provided that the students construct Faraday equation by using an electronic spreadsheet program, observe the differences by changing the values and.
+d. The coating test is carried out.
+12.1.5.2. Explains the process of obtaining chemical substances by electrolysis method.
+Electrolysis of water and hydrogen and oxygen are obtained.
+12.1.6. Corrosion
+12.1.6.1. Explains the electrochemical basis of corrosion prevention methods.
+a. Explain the concept of corrosion.
+b. The corrosion protection process is associated with the activity sequence of metals; focuses on victim electrode concept.
+c. Examples of the use of the sacrificial electrode are given.
+12.2. INTRODUCTION TO CARBON CHEMISTRY
+Key concepts: inorganic compound, simple formula, diamond, graphite, hybridization, molecular formula, molecular geometry, organic compound, structural formula, π (pi) bond, σ (sigma) bond
+12.2.1. Inorganic and Organic Compounds
+12.2.1.1. Distinguish inorganic and organic compounds.
+a. The historical development of the concept of organic compounds is explained.
+b. The properties of inorganic and organic compounds are emphasized.
+12.2.2. Simple Formula and Molecular Formula
+12.2.2.1. Make calculations about finding of simple and molecular formulas of organic compounds.
+12.2.3. Carbon in Nature
+12.2.3.1. Relate the properties of carbon allotropes with their structures.
+a. The relationship is established between the property of the carbon element forming lots of compounds and the property of the ability to bond.
+b. By diamond and graphite are provided to examine, the structure and importance of fullerene, nanotube and graphene are emphasized.
+12.2.4. Lewis Formulas
+12.2.4.1. Writes Lewis formulas of covalently bound chemical species.
+The molecules in which the octet is exceeded are out of scope.
+12.2.5. Hybridization-Molecular Geometries
+12.2.5.1. Explains the formation of single, double and triple bonds on the basis of hybrid and atomic orbitals.
+12.2.5.2. Determines the geometry of molecules based on the hybridization of the central atom orbitals.
+a. Hybridization and VSEPR (Valence Layer Electron Pair Push) approach are emphasized.
+The others, except the compounds of second period elements made with hydrogen, are not given.
+b. Students are expected to make molecular models by using information technologies (animation, simulation, video etc.) on hybridization and VSEPR approach.
+3.12. ORGANIC COMPOUNDS
+Key concepts: aldehyde, aliphatic compound, alkane, alkene, alkyl halide, alkyne, alcohol, aromatic compound, ester, ether, functional group, cyclic structures, hydrocarbon, isomerism, carboxylic acid, ketone, fatty acid, structural isomeric, chain structure compounds
+12.3.1. Hydrocarbons
+12.3.1.1. Distinguishes hydrocarbon types.
+12.3.1.2. Explains the names, formulas, properties and application areas of simple alkanes.
+a. The properties of combustion and replacement with halogenation are emphasized.
+b. Structural isomerism and its types are emphasized.
+c. It is emphasized that alkanes are used in fuels [LPG, gasoline, diesel (diesel), fuel oil, tar and asphalt products components] and hexane is used as solvent.
+ç. A reading article about the octane number in petrol is given.
+12.3.1.3. Explains the names, formulas, properties and application areas of simple alkenes.
+a. Cis-trans isomerism is emphasized.
+b. It is emphasized that alkene is a raw material for alkyl halide and alcohols as a field of use.
+c. The use of alkenes in the food industry and their polymerization properties are given.
+12.3.1.4. Explains the names, formulas, properties and application areas of simple alkynes.
+Production of acetylene, application areas, addition properties and primary explosive salts are emphasized. Other alkyne samples are not allowed.
+12.3.1.5. Explains the names, formulas and application areas of simple aromatic compounds.
+Benzene, naphthalene, aniline, toluene and phenol compounds are introduced and their structures and application areas are mentioned.
+12.3.2. Functional Groups
+12.3.2.1. Classifies organic compounds according to their functional groups.
+The compounds formed when the hydroxy-groups are bonded to the hydroxy-, alkoxy-, halo-, carbonyl-, carboxyl-, amino-, nitro-, phenyl- groups are generally disclosed.
+12.3.3. Alcohols
+12.3.3.1. Explains the names, formulas, properties and application areas of alcohols.
+a. Ethanol is obtained by fermentation method.
+b. It is contemplated to obtain ethanol from alkyl halides and alkenes.
+c. Alcohols are classified according to the hydroxyl number and the alkyl number in the alpha carbon.
+ç. 1-4 alcohol mono alcohols, ethanediol (glycol) and propantriol (glycerin) are contemplated.
+d. The toxic properties of methanol are highlighted.
+e. The use of ethanol in the field of health is emphasized.
+f. It is emphasized that ethanol acts as a biofuel and is used as a solvent.
+12.3.4. Ethers
+12.3.4.1. Describes the names, formulas, properties and areas of use by classifying ethers.
+a. Asymmetric-symmetric ether separation is made.
+b. The solvent properties of ethers are emphasized.
+c. Functional group isomerism is explained and the isomers of ethers with alcohols are mentioned.
+12.3.5. Carbonyl Compounds
+12.3.5.1. Explains the names, formulas, properties and application areas of carbonyl compounds.
+a. A comparison of aldehyde and ketones is done by establishing a structural relationship and reducing-oxidation properties.
+b. Examples of aldehydes include formaldehyde, acetaldehyde and benzaldehyde; Examples of ketones are acetone.
+c. The functional group isomers of aldehydes and ketones are mentioned.
+ç. Aldehydes and ketones are used in food and cosmetics industry.
+12.3.6. Carboxylic Acids
+12.3.6.1. Explains the names, formulas and application areas of carboxylic acids.
+a. Formic acid, acetic acid, salicylic acid, phthalic acid, citric acid, malic acid, folic acid and benzoic acid are introduced. The formulas, except straight chain monocarboxylic acids, are not mentioned.
+b. The saturated and unsaturated fatty acids are introduced.
+c. It is emphasized that fatty acid salts are used as soap.
+ç. It is emphasized that benzoic acid and benzoates are used as food preservatives.
+12.3.7. Esters
+12.3.7.1. Explain the names, formulas and usage areas of esters.
+a. Examples of the esterification reaction are given.
+b. Examples of natural substances containing esters are lanolin, beeswax and balsam.
+c. Examples of the use of esters as solvents are given.
+ç. The functional group isomerism of carboxylic acids and esters is mentioned.
+d. Soap recovery is done.
+12.4. ENERGY RESOURCES AND SCIENTIFIC DEVELOPMENTS
+Key concepts: biomass, natural gas, fossil fuel, crude oil, geothermal, coal, nanotechnology, sustainability
+12.4.1. Fossil fuels
+12.4.1.1. Suggests solutions to reduce the environmental effects of fossil fuels.
+a. Fossil fuels and the formation of these fuels are explained by using information technologies (animation, simulation, video, etc.).
+b. It refers to the damage to the individual, the society and the environment by consciously consuming and wasting fossil fuels.
+c. Students will be able to investigate the harmful effects of fossil fuels on the environment and make use of the information they obtain and discuss their solutions to reduce the harmful effects of the environment.
+12.4.2. Alternative Energy Resources
+12.4.2.1. Recognizes the alternative energy sources.
+a. Solar, wind, hydrogen, geothermal and biomass energy sources are mentioned.
+b. The importance of obtaining hydrogen from boron mineral for the development of our country is emphasized.
+c. Turhan Nejat Veziroğlu's short curriculum vitae and his use of hydrogen as a fuel are included as part of his study.
+12.4.2.2. Evaluates the use of nuclear energy in terms of science, society, technology, environment and economy.
+12.4.3. Sustainability
+12.4.3.1. Explains the importance of sustainable life and development for society and environment by associating with chemistry science.
+The effects of energy, polymer, paper and metal sectors on sustainable life are mentioned.
+12.4.4. Nanotechnology
+12.4.4.1. Evaluates the developments in nanotechnology in terms of science, society, technology, environment and its effects on economy.
+The concept of nanotechnology is explained through examples.

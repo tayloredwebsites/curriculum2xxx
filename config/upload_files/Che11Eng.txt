@@ -1,0 +1,153 @@
+en,che,11
+11.1. MODERN ATOMY THEORY
+Key concepts: atom, atomic model, Aufbau Principle, valence electron, valence orbital, electron sequence, electron affinity, electronegativity, energy level (layer), Hund's rule, ionization energy, quantum numbers, spherical symmetry, orbital (wave function), Pauli Principle, periodic system, theory, trajectory, oxidation step
+11.1.1. Quantum Model of the Atom
+11.1.1.1. Explains the atom by quantum model.
+a. The importance of modern atomic theory (cloud model) is explained by emphasizing the limitations of the Bohr atom model in explaining the findings from experiments and observations.
+b. The concept of orbital for single-electron atoms / ions is associated with the possibility of having electrons.
+c. Orbit and orbital concepts are compared.
+ç. Quantum numbers are associated with orbitals.
+d. The energy levels of orbitals in multi-electron atoms are explained.
+11.1.2. Periodic System and Electron Sequences
+11.1.2.1. Establishes a relationship between the electron arrays of the neutral atoms and their places in the periodic system.
+a. Hund's Rule, Pauli Principle and Aufbau Principle are explained.
+b. Examples of electrons of atoms and ions are given. Atomic number 36 and smaller species are based on the electron array.
+c. The concepts of valence orbital and valence electron are explained.
+ç. The group and period are determined by associating the block with the element to the electron array.
+11.1.3. Periodic Features
+11.1.3.1. Explains the tendency of change in periodic properties with its reasons.
+a. The differences between Covalent radius, van der Waals radius and ionic radius are emphasized.
+b. The tendency of acidity / basicity of metallicity / nonmetality, atom / ion radius, ionization energy, electron affinity, electronegativity and oxide / hydroxide compounds are explained. The measuring of periodic properties is not mentioned.
+c. The relationship of sequential ionization energies with the group number is shown by examples.
+11.1.4. Getting to Know the Elements
+11.1.4.1. Explain the relationships between the elements and their properties in the periodic system.
+a. The metal / nonmetal character of the s, p, d block elements is associated with the ion loads, their activeness, and their chemical bond type electron sequence.
+b. The special cases of the f-block elements in the periodic system are highlighted. c. The inert gas properties are associated with electron strings.
+11.1.5. Oxidation Steps
+11.1.5.1. Explains the relationship between oxidation steps and electron arrays.
+a. The difference between the anion loads of the ametals and the oxidation steps is exemplified.
+b. The fact that the d-block elements can be present in more than one oxidation step is associated with electron arrays.
+11.2. GASES
+Key concepts: pressure, diffusion, saturated vapor pressure, effusion, phase diagram, volume, ideal gas, actual gas, partial pressure, critical pressure, critical temperature, absolute temperature, standard-normal conditions
+11.2.1. Properties of Gases and Gas Laws
+11.2.1.1. Explain the properties used in the description of gases.
+a. Pressure units (atm, Torr, mmHg) and volume units (L, m3) and their decimal and upper multiples are briefly explained.
+b. The methods of measuring the properties of gases are emphasized. Calculations related to manometers are not mentioned.
+11.2.1.2. Explains the laws of gas.
+a. The laws on the properties of gases (Boyle, Charles, Gay Lussac and Avogadro) are emphasized.
+b. Students will be able to draw and interpret graphs of gas laws by using ready data.
+11.2.2. The Ideal Gas Act
+11.2.2.1. Explains the relationship between experimental gas-derived laws and ideal gas law.
+a. The ideal gas equation is derived with the help of Boyle, Charles and Avogadro law. b. Sample calculations are made using the ideal gas equation.
+c. Gas volumes are normally associated with mass and molar numbers.
+11.2.3. Kinetic Theory in Gases
+11.2.3.1. Explains gas behaviours by kinetic theory.
+a. The basic assumptions of kinetic theory are emphasized.
+b. The Graham Diffusion and Effusion Law are derived by using the basic assumptions of kinetic theory.
+c. Diffusion test is performed and it is explained by taking advantage of the information technologies (animation, simulation, video, etc.). It is reminded that safety warnings must be observed when testing.
+11.2.4. Gas Mixtures
+11.2.4.1. Explains the partial pressures of gas mixtures with examples from daily life.
+Saturated vapor pressures of liquids are associated with the concept of partial pressure and calculations are made on the gases collected on water.
+11.2.5. Real Gases
+11.2.5.1. Compare the actual gas and ideal gas concepts in the compression / expansion process of gases.
+a. It is stated in which situations real gases deviate from idealism.
+b. Explaining the phase diagram of carbon dioxide and water, the difference between steam and gas concepts is emphasized.
+c. The hase diagrams showing different crystal structures of water are not entered.
+ç. It is explained with examples of cooling systems (Joule-Thomson event), which are widely used in daily life and are the applications of state changes of real gases.
+11.3. LIQUID SOLUTIONS AND SOLUBILITY
+Key concepts: solubility, dipole-dipole interactions, dipole-induced dipole interactions, hydrogen bond, induced dipole-induced dipole interactions, ion-dipole interactions, ion- induced dipole interactions, molarity, molarity
+11.3.1. Solvent Soluble Interactions
+11.3.1.1. Explains dissolution in liquid media by using interactions between chemical species.
+11.3.2. Concentration Units
+11.3.2.1. Associates different concentration units with the amount of solute.
+a. Molarity and molarity are introduced as concentration units.
+b. Normality and formality definitions are not mentioned.
+11.3.2.2. Prepares solutions at different concentrations.
+Calculations related to concentration are made by calculating molarity and molarity as well as percentage, volume, molar fraction and ppm.
+11.3.3. Colligative Properties
+11.3.3.1. Establishes relationship between the colligative properties of the solutions and their concentration.
+a. It is dwelled on the colligative properties include steam pressure reduction, freezing point down (cryoscopy), boiling point rise (ebusoscopy) and osmotic pressure.
+b. Calculations related to osmotic pressure are not mentioned.
+c. Brief information about water treatment is given by the reverse osmosis method.
+ç. Boiling point determination tests of pure water and aqueous solutions in different concentrations are made.
+11.3.4. Solubility
+11.3.4.1. Classifies the solutions on the basis of the solubility concept.
+a. The concepts of dilute, concentrated, saturated, super saturated and unsaturated solutions are emphasized.
+b. Solubilities are given in g / 100 g water units.
+c. Calculations related to solubility are made.
+11.3.5. Factors Affecting Solubility
+11.3.5.1. Explains the relationship of solubility with temperature and pressure.
+a. Interpretation of temperature-dependent solubility curves of different salts is ensured.
+b. Calculations of the concentration and crystallization of the salts at different temperatures are made.
+c. It is emphasized that the solubility of gases changes with pressure and temperature; Interpretation of resolution curves is provided.
+ç. Students are expected to use the electronic spreadsheet program to analyse the relationship between resolution and temperature and to observe and interpret the changes.
+11.4. ENERGY IN CHEMICAL REACTION
+Key concepts: bond energy, exothermic reaction, endothermic reaction, enthalpy, Hess's
+law, enthalpy of standard formation, enthalpy of reaction
+11.4.1. Heat Exchange in Reactions
+11.4.1.1. Explain the energy changes occurring in reactions.
+a. Exothermic and endothermic reactions are associated with heat exchange.
+b. The information technologies (animation, simulation, video, etc.) are used to explain exothermic and endothermic reactions.
+11.4.2. Formation Enthalpy
+11.4.2.1. Calculates the reaction enthalpies via standard formation enthalpy.
+a. The standard formation enthalpy is defined.
+b. The reaction enthalpy is explained by the potential energy-reaction coordinate graph.
+c. Students will be able to create graphs by using an electronic spreadsheet for reaction enthalpies, and observe and interpret the changes taking place by changing the values.
+11.4.3. Bond Energies
+11.4.3.1. Explains the relationship between bond energies and reaction enthalpy.
+Reaction enthalpy calculations are made through the energies formed and broken.
+11.4.4. Aggregation of Reaction Heat
+11.4.4.1. Explain the Hess Law.
+Calculations related to Hess Law are made.
+11.5. SPEED IN CHEMICAL REACTIONS
+Key concepts: activation energy, rate constant, inhibitor, catalyst, average reaction rate
+11.5.1. Rate of Reaction
+11.5.1.1. Explain the relationship between chemical reactions and particle collisions.
+11.5.1.2. Explain the speed of chemical reactions.
+a. The amount of substance (concentration, molar, mass, volume in normal conditions for gas substances) is correlated with the rate of reaction.
+b. The concept of average reaction rate is explained.
+c. Examples of homogeneous and heterogeneous phase reactions are given.
+11.5.2. Factors Affecting Reaction Rate
+11.5.2.1. Explains the factors affecting the rate of reaction.
+a. In one-step reactions, the concentration-dependent expressions of the reaction rate in both directions are given.
+b. For multi-step reactions, the speed-determining step is emphasized.
+c. The effect of the type of substance, concentration, temperature, catalyst (not entered into enzymes) and surface touch to the reaction rate is emphasized.
+The Arrhenius argument is not mentioned.
+ç. Oktay Sinanoğlu's short biography and his studies regarding the reaction mechanisms are given as a reading article.
+11.6. BALANCE IN CHEMICAL REACTIONS
+Key concepts: acid-base pair, acidity / basicity constant, Brönsted-Lowry acid / some, precipitation reaction, solubility product, equilibrium constant, equivalence point, indicator, chemical equilibrium, strong acid / base, Le Chatelier's principle, auto-ionization, pH / pOH, buffer solution, titration, weak acid / base
+11.6.1. Chemical Equilibrium
+11.6.1.1. Explains the balance in physical and chemical changes.
+a. Describes the equilibrium over maximum irregularity and minimum energy trends. b. The balance is explained by forward and reverse reaction rates.
+c. Calculations are made by deriving equilibrium expressions in terms of concentration and pressure for reversible reactions.
+ç. The relationship between different equilibrium constants is examined.
+11.6.2. Factors Affecting Balance
+11.6.2.1. Explains the factors affecting balance.
+a. The effect of temperature, concentration, volume, partial pressure and total pressure on the equilibrium is explained by the balance expression.
+b. The Le Chatelier principle is examined through examples.
+c. The catalyst-balance relationship is highlighted.
+11.6.3. Aqueous Solution Balances
+11.6.3.1. Explains the concepts of pH and pOH by means of auto-ionization of water. 11.6.3.2. Compares Brönsted-Lowry acids / bases.
+11.6.3.3. Explains the acidity of cations and the basis of anions based on their interactions with water.
+a. Strong / weak acids and bases are introduced; examples of conjugated acid-base pairs are given.
+b. The reaction of cations acting as acid and the anions acting as bases with the water are discussed.
+11.6.3.4. It establishes a relationship between the power of acidity / basicity and decomposition equilibrium constants.
+It is ensured that the ionization rates of the acids / bases are associated with the equilibrium constants.
+11.6.3.5. Calculates the pH values of strong and weak monoprotic acid / base solutions.
+a. The pH values of very concentrated and very dilute acid / base solution are not mentioned.
+b. For weak acids / bases, the [H +] = (Ka.Ca) 1/2 and [OH-] = (Kb.Cb) 1/2 equations are based.
+c. Polyprotic acids are not mentioned.
+11.6.3.6. Relate the properties of buffer solutions and their daily usage areas.
+a. It is explained by balances in environment that the pH values of the buffer solutions do not change much with dilution and acid / base addition. The Henderson formula and buffer capacity are not mentioned.
+b. The importance of buffer solutions for living organisms is mentioned.
+11.6.3.7. Describes the acidity / basicity properties of salt solutions.
+a. The concepts of acidic, basic and neutral salt are explained.
+b. Examples of salts with anionic weak base are given.
+c. The acidity of salts with cation NH4 + or anion HSO4– is emphasized.
+ç. The hydrolysis calculations are not entered.
+11.6.3.8. Determines the strong acid / base concentrations by titration method. a. Titration test is performed and the results are interpreted by means of graph. b. Calculation examples are given for titration.
+c. Provide students to compute the calculations for the titration method with the help of electronic spreadsheet program, change the values and observe the differences and interpret.
+11.6.3.9. Explains the equilibrium of precipitation and sedimentation in aqueous environments.
+a. Examples of dissolution-precipitation equilibrium are given; The concepts of resolution product (Kch) and resolution (s) are associated.
+b. Factors affecting the solubility of salts, the effect of temperature and common ion are emphasized.
+c. Common ion effect calculations are made.

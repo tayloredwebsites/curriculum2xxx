@@ -1,0 +1,61 @@
+en,bio,9
+9.1. Life Science Biology
+9.1.1. Common Features of Biology and Living Things
+Key Concepts: nutrition, biology, excretion, growth, vitality, development, movement, homeostasis, cell, metabolism, organization, respiration, response to stimulation, compliance, reproduction
+9.1.1.1 Examines common characteristics of living things.
+a. It is mentioned briefly how the biology is used with the present meaning through the concept of living.
+b. The features of living creatures such as cellular structure, nutrition, respiratory, excretory, movement, reaction to stimuli, metabolism, homeostasis, harmony, organization, reproduction, growth and development are highlighted.
+9.1.2. Basic Compounds in the Structure of Living Things
+Key Concepts: acid, ATP, base, DNA, enzyme, hormone, inorganic, carbohydrate, mineral,
+organic, protein, RNA, water, salt, vitamin, lipid
+9.1.2.1. Explains the organic and inorganic compounds that make up the structure of living things.
+a. The importance of water, minerals, acids, bases and salts for living beings is indicated.
+b. The importance of minerals of calcium, potassium, iron, iodine, fluorine, magnesium, sodium, phosphorus, chlorine, sulphur, zinc for living beings is emphasized.
+c. The structure, function and importance of carbohydrates, lipids, proteins, nucleic acids, enzymes for living beings are indicated.
+ç. It is emphasized that DNA is found in all species and contains the same nucleotides.
+d. The importance of ATP and hormones for living beings are questioned without giving the chemical formulas.
+e. General properties of vitamins are given. The role of vitamins A, D, E, K, B and C and their importance for living things are indicated. The types of B group vitamins are not mentioned.
+f. It is provided for students to do experiments where they can detect the presence of carbohydrates, lipids and proteins in foods.
+g. It is provided that experiments related to factors affecting enzyme activity are made.
+9.1.2.2. Establishes the relationship between lipid, carbohydrate, protein, vitamins, water and minerals with healthy nutrition.
+a. Insulin resistance, diabetes and obesity are referred to in the context of healthy nutrition. b. Students are encouraged to prepare a weekly healthy diet program for their age group. 9.2. Cell
+9.2.1. Cell
+Key concepts: active transport, diffusion, exocytosis, endocytosis, organelle, osmosis, eukaryote, passive transport, prokaryote
+9.2.1.1. Explains the studies about cell theory.
+a. The scientists who contribute to the knowledge of the cell in the historical process such as Robert Hooke, Antoine van Leeuwenhoek, Matthias Schleiden, Theodor Schwann and Rudolf Virchow are mentioned. However, the memorization of these names and the chronological order is not expected to be known.
+b. The contributions of the microscope types and use of advanced imaging technologies in cell theory are investigated.
+9.2.1.2. Explains cellular structures and their functions.
+a. The parts of prokaryotic cells are shown.
+b. The structure of the eukaryotic cells and the parts forming this structure are shown.
+c. It is ensured that organelles are examined in terms of the tasks they receive in the cell.
+ç. Cell samples are examined by microscopy.
+d. It is provided to discuss the possible effect of a problem that occurs in an organelle to cell by drawing attention to intracellular cooperation and organization.
+e. It is taken advantage of microscope, visual elements (photos, pictures, drawings, cartoons, etc.), graphic editors (concept maps, mind maps, diagrams, etc.), learning object and applications (animation, video, simulation, infographic, increased and virtual reality applications, etc.) previously when the different cell samples are compared.
+9.2.1.3. Performs a controlled experiment on the passage of matter through the cell membrane.
+a. The steps of pre-experiment scientific method for the passage through cell membrane to matter are explained.
+b. The laboratory safety are emphasized by introducing the basic tools used in biology laboratory.
+c. An experiment is carried out regarding the factors (surface area, concentration difference, temperature) affecting cell passage through the membrane to cell.
+9.3. World of Living Beings
+9.3.1. Diversity and Classification of Living Beings
+Key Concepts: double naming, classification, type
+9.3.1.1. Explains the importance of classification in understanding the diversity of living things.
+a. The different criteria and approaches used by scientists in classifying living things are discussed.
+b. Changes in the diversity of livings are discussed through the example of extinct creatures. 9.3.1.2. Explains the categories used in the classification of living things and the
+hierarchy between these categories with examples.
+a. In the classification of living things, only the general characteristics of species, genus, family,
+team, class, branch and world categories are mentioned.
+b. The classification studies of Carolus Linnaeus are mentioned.
+c. The examples of bilateral naming regarding the species to be selected from the environment are given by considering hierarchical categories.
+ç. It is provided that the students create a video or a product from the photos taken / acquired about the world of creatures.
+9.3.2. Worlds of Living Beings and Features
+Key Concepts: arches, bacteria, plants, animals, fungi, protists, viruses
+9.3.2.1. Explains the realms used in the classification of living things and the general characteristics of these realms.
+a. The general characteristics of realms of bacteria, arches, protists, plants, fungi, animals are explained by exemplifying. The classification of other realms, except the world of animals, is not explained.
+b. The general characteristics of animal world as invertebrate animals (sponges, dishwashers, worms, molluscs, arthropods, arthropods) and vertebrate animals (fish, biennials, reptiles, birds, mammals) are given by exemplifying. Its structure and systematic are not explained.
+c. In the context of the classification of living things, it is mentioned that the scientific knowledge is tested, corrected or renewed.
+9.3.2.2. Explains the contribution of living things to biological processes, economy and technology by examples.
+Examples of technologies developed by inspiring from living things are given.
+9.3.2.3. Explains the general characteristics of viruses.
+a. The reasons for not taking viruses into biological classification categories are discussed.
+b. The effects of viruses on human health are discussed through rabies, hepatitis, flu, herpes and AIDS diseases. The measures to be taken against viral diseases are highlighted.
+c. It is emphasized that viruses offer new opportunities for studies in the field of genetic engineering.

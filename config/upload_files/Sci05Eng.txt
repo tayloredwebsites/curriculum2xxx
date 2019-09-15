@@ -1,0 +1,35 @@
+en,sci,5
+S.5. CLASSROOM SCIENCE TEACHING PROGRAM
+S.S.1. [Unit]Sun, Earth and Moon [Subject Name]Earth and Universe
+S.5.2. [Unit]World of Living [Subject Name]Living
+S.5.3. [Unit]Force Measurement and Friction [Subject Name]Physical Events
+S.5.4. [Unit]Substance and Exchange [Subject Name]Matter and Nature
+S.5.5. [Unit]Propagation of Light [Subject Name]Physical Events
+S.5.6. [Unit]Human and Environment [Subject Name]Living
+S.5.7. [Unit]Electrical Circuit Components [Subject Name]Physical Events
+S.5.1. Sun, Earth and Moon / Earth and Universe
+S.5.1.1. Structure and Properties of the Sun
+ S.5.1.2. Structure and Features of the Moon
+ S.5.1.3. Moon's Movements and Phases
+ S.5.1.4. Sun, Earth and Moon
+S.5.2. World of Living / Life and Life
+S.5.2.1. Let's Know Living Things
+ S.5.3. Measurement of Force and Friction / Physical Events
+ S.5.3.1. Measuring Force
+ S.5.3.2. Frictional force
+S.5.4. Substance and Change / Substance and its Nature
+S.5.4.1. Change of Matter
+S.5.4.2. Distinctive Properties of Matter
+S.5.4.3. Heat and temperature
+S.5.4.4. Effects of Heat Materials
+ S.5.5. Spread of Light / Physical Events
+ S.5.5.1. Propagation of Light
+ S.5.5.2. Reflection of Light
+ S.5.5.3. The Encounter of Light With Matter
+ S.5.5.4. Umbra
+S.5.6. Human and Environment / Living
+S.5.6.1. Biodiversity
+S.5.6.2. Human and Environmental Relations
+S.5.6.3. Destructive Nature Events
+ S.5.7. Electrical Circuit Elements / Physical Events
+ S.5.7.1. Display of Circuit Components with Symbols and Circuit Diagrams

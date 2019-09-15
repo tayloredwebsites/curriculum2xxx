@@ -85,118 +85,100 @@ end
 throw "Invalid GradeBand Count" if GradeBand.count != 13
 grades = GradeBand.all
 @gb_k = grades[0]
-@gb_1 = grades[0]
-@gb_2 = grades[0]
-@gb_3 = grades[0]
-@gb_4 = grades[0]
-@gb_5 = grades[0]
-@gb_6 = grades[0]
-@gb_7 = grades[0]
-@gb_8 = grades[0]
-@gb_9 = grades[0]
-@gb_10 = grades[0]
-@gb_11 = grades[0]
-@gb_12 = grades[0]
+@gb_1 = grades[1]
+@gb_2 = grades[2]
+@gb_3 = grades[3]
+@gb_4 = grades[4]
+@gb_5 = grades[5]
+@gb_6 = grades[6]
+@gb_7 = grades[7]
+@gb_8 = grades[8]
+@gb_9 = grades[9]
+@gb_10 = grades[10]
+@gb_11 = grades[11]
+@gb_12 = grades[12]
 @grade_bands = GradeBand.all
+@gb_hs = [@gb_9, @gb_10, @gb_11, @gb_12]
+@gb_mid = [@gb_5, @gb_6, @gb_7, @gb_8]
 puts "grades: #{grades.pluck(:id)}"
 
 if Subject.count < 4
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'Bio'
+    code: 'bio'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'Phy'
+    code: 'che'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'Che'
+    code: 'mat'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'Mat'
+    code: 'phy'
+  )
+  Subject.create(
+    tree_type_id: @tfv.id,
+    code: 'sci'
   )
 end
 throw "Invalid Subject Count" if Subject.count != 4
 @bio = Subject.first
-@phy = Subject.second
-@che = Subject.third
-@mat = Subject.fourth
+@che = Subject.second
+@mat = Subject.third
+@phy = Subject.fourth
+@sci = Subject.fifth
 @subjects = Subject.all
+@subj_hs = [@bio, @che, @mat, @phy]
+@subj_mid = [@sci]
 
+# high school subjects:
 
-# if Upload.count != 80
-#   @subjects.each do |s|
-#     @grade_bands.each do |gb|
-#       # don't create grades 3 and 6 for Hem (Chemistry) and Fiz (Physics)
-#       if (
-#           !['Hem', 'Fiz'].include?(s.code) ||
-#           !['3', '6'].include?(gb.code)
-#         )
-#         Upload.create(
-#           subject_id: s.id,
-#           grade_band_id: gb.id,
-#           locale_id: @loc_bs.id,
-#           status: 0,
-#           filename: "#{s.code}_#{gb.code}_bs.csv"
-#         )
-#         Upload.create(
-#           subject_id: s.id,
-#           grade_band_id: gb.id,
-#           locale_id: @loc_hr.id,
-#           status: 0,
-#           filename: "#{s.code}_#{gb.code}_hr.csv"
-#         )
-#         Upload.create(
-#           subject_id: s.id,
-#           grade_band_id: gb.id,
-#           locale_id: @loc_sr.id,
-#           status: 0,
-#           filename: "#{s.code}_#{gb.code}_sr.csv"
-#         )
-#         Upload.create(
-#           subject_id: s.id,
-#           grade_band_id: gb.id,
-#           locale_id: @loc_en.id,
-#           status: 0,
-#           filename: "#{s.code}_#{gb.code}_en.csv"
-#         )
-#       end
-#     end
-#   end
-#   # Upload.create(
-#   #   subject_id: @hem.id,
-#   #   grade_band_id: @gb_09.id,
-#   #   locale_id: @loc_en.id,
-#   #   status: 0,
-#   #   filename: 'Hem_9_en.csv'
-#   # )
-#   # Upload.create(
-#   #   subject_id: @hem.id,
-#   #   grade_band_id: @gb_13.id,
-#   #   locale_id: @loc_en.id,
-#   #   status: 0,
-#   #   filename: 'Hem_13_en.csv'
-#   # )
-#   # Upload.create(
-#   #   subject_id: @mat.id,
-#   #   grade_band_id: @gb_03.id,
-#   #   locale_id: @loc_en.id,
-#   #   status: 0,
-#   #   filename: 'mat_3_en.csv'
-#   # )
-# end
-# # valid count:
-# #   96 (4 grade bands * 6 subjects * 4 languages)
-# #   - 16 physics and chemistry for grades 3 and 6 for 4 languages
-# #   = 80 valid uploads
-# throw "Invalid Upload Count" if Upload.count != 80
-# @hem_09 = Upload.where(filename: 'Hem_9_en.csv').first
-# @hem_13 = Upload.where(filename: 'Hem_13_en.csv').first
-# @bio_03 = Upload.where(filename: 'Bio_3_bs.csv').first
-
-
+if Upload.count != 40
+  @gb_hs.each do |g|
+    @subj_hs.each do |s|
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_en.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Eng.txt"
+      )
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_tr.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Tur.txt"
+      )
+    end
+  end
+  @gb_mid.each do |g|
+    @subj_mid.each do |s|
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_en.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Eng.txt"
+      )
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_tr.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Tur.txt"
+      )
+    end
+  end
+end
+# valid count:
+#   32 high school (4 grades * 4 subjects * 2 languages)
+#   + 8 middle school (4 grades * 1 subject * 2 languages)
+#   = 40 valid uploads
+throw "Invalid Upload Count" if Upload.count != 80
 
 
 ################################

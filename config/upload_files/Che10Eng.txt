@@ -1,0 +1,111 @@
+en,che,10
+10.1. FUNDAMENTAL LAWS OF CHEMISTRY AND CHEMICAL CALCULATIONS
+Key concepts: analysis (decomposition) reaction, acid-base reaction, dissolution- precipitation reaction, law, chemical reaction, mole, synthesis (formation) reaction, limiting component, reaction equations, combustion reaction, percent yield
+10.1.1. Fundamental Laws of Chemistry
+10.1.1.1. Explains the fundamental laws of chemistry.
+a. Calculations are made regarding the conservation of mass, fixed rates and the stipulated rates laws.
+b. Tests are made to obtain iron (II) sulfur compound.
+10.1.2. Concept of Mol
+10.1.2.1. Explains the concept of Mol.
+a. The concept of mole change in the historical process is emphasized. b. The relative atomic mass is defined.
+c. The concept of isotope and the fact that the molar masses of some elements do not have an integer are explained by examples.
+ç. Mol calculations are made.
+10.1.3. Chemical Reactions and Equations
+10.1.3.1. Explains the chemical reactions.
+a. The equalization of the equations of chemical reaction is provided. The redox reactions are not mentioned.
+b. The combustion, synthesis (formation), analysis (decomposition), acid-base, dissolution- precipitation reactions are explained by examples.
+c. The test of breakdown of lead (II) iodide is done.
+d. Information technologies (animation, simulation, video, etc.) are used in explaining chemical reactions.
+10.1.4. Calculations in Chemical Reactions
+10.1.4.1. Makes calculations of the mass, molar number, number of molecules, number of atoms and the concepts of volume under normal conditions for gases by associating with each other.
+a. Limiting component calculations are emphasized.
+b. % Yield calculations are made based on reaction equations. 10.2. MIXTURES
+Key concepts: ordinary mixture, aerosol, solvent, soluble, dissolution, distillation, concentration, dialysis, emulsion, heterogeneous mixture, homogeneous mixture (solution), colloidal property, colloid, crystallization, extraction, ppm, suspension, filtration, flotation
+10.2.1. Homogeneous and Heterogeneous Mixtures
+10.2.1.1. Classifies mixtures according to their properties.
+a. Describes the properties of homogenous and heterogeneous mixtures.
+b. It is emphasized that homogeneous mixtures are called solutions and samples of solution are given from daily life.
+c. The heterogeneous mixtures are classified according to the physical state of the dispersant and the dispersion medium.
+d. The mixtures are classified based on the particle size of the solute and / or the dispersed.
+10.2.1.2. Explains the dissolution process at the molecular level.
+a. The dissolution is explained by using inter-particle interactions.
+b. The dissolution is associated with polycycle, hydrogen bond and solvent-soluble analogy.
+c. Water solubility tests of different substances (sodium chloride, ethyl alcohol, carbon tetrachloride) are carried out.
+d. Information technologies (animation, simulation, video, etc.) are used to explain the dissolution processes of different physical substances.
+10.2.1.3. Interpret the expressions of dissolved substance content.
+a. Examples are given to solutions in which the solute content is high (concentrated) and low (dilute).
+b. Percent by volume, percent by volume and ppm concentrations are introduced; Calculations related to ppm are not entered.
+c. Samples are given in mass and / or by volume percent concentrations of solute in common aqueous solutions (tap water, sea water, serum, cologne, sugary water).
+ç. Different solutions are prepared in concentrations of percent by mass and percent by volume.
+d. The data on the concentration in the labels of the daily consumables are highlighted.
+e. Information technologies (animation, simulation, video, etc.) are used in the preparation of the sample solution.
+10.2.1.4. Explains the properties of solutions with examples from daily life.
+a. It is explained that the freezing and boiling point of the solutions are different from that of the solvents and its change in terms of concentration. Calculations are not entered.
+b. The precautions taken against icing on roads and vehicles are mentioned; the positive and negative effects of these measures are provided to be discussed. It is explained that the impact on the efficiency of the effect of listening to other and behaving properly to the manners in class discussions.
+10.2.2. Separation and Purification Techniques
+10.2.2.1. Explains mixing techniques used in industry and health.
+a. It is dwelled on the separation techniques such as the separation by magnet, particle size (sieving, filtration, dialysis), density (separating funnel, flotation), melting point, boiling point (simple distillation, fractional distillation) and the difference of solubility (extraction, crystallization, differential crystallization).
+b. The test regarding separation of mixtures are carried out.
+10.3. ACIDS, BASES AND SALTS
+Key concepts: active metal, amphoteric metal, acid, base, indicator, neutralization, pH /
+pOH, noble metal, salt, semi-noble metal
+10.3.1. Acids and Bases
+10.3.1.1. Distinguishes acids and bases with their known properties.
+a. The properties of sourness and corrosion of the matters such as lemon juice and vinegar are associated with their acidities.
+b. The sensibility of greasiness that lime, soap and detergents make on skin is associated with alkalinity.
+c. The indicator concept and pH paper are introduced by making tests regarding acids and bases change the colour of some matters (tea, grape juice, red cabbage).
+ç. The acidity or alkalinity values of vinegar, lemon juice, bleach, sodium hydroxide, hydrochloric acid and sodium chloride solutions are interpreted using pH paper.
+d. The concept of pH is explained by correlating with acidity and basicity. Logarithmic recognition is not mentioned.
+e. It is ensured that the pH values in the packaging of the consumables used in daily life are related to acidity and alkalinity.
+10.3.1.2. Explains the acidity and basic properties of the substances at the molecular level.
+a. Simple examples are given by introducing acids are forming H3O+ ion in water environment and bases are forming OH-ion.
+b. It is explained by the interactions indicating the reason of the solutions of substances of CO2, SO2 and N2O5, which form acid / base when interacted with water, are reacting as acids and the solutions of substances of NH3 and CaO are reacting as base. The concept of Lewis acid-base is not mentioned.
+10.3.2. Reactions of Acids and Bases
+10.3.2.1. Explains the reactions between acids and bases.
+a. Neutralization reactions are explained by the number of moles of acid and base.
+b. The acid, base and salt concepts are associated by performing tests related to the form of sodium sulphate by the interaction of Sodium hydroxide and sulfuric acid.
+10.3.2.2. Explains the important reactions of acids and bases in daily life.
+a. Examples of reactions of acids and bases to hydrogen gas by interacting with metals are given; it focuses on the concepts of active metal, semi-noble metal, noble metal and amphoteric metal.
+b. Tests are performed to show the amphoteric characteristic of aluminium metal.
+c. The noble metal and glass / porcelain etching properties of nitric acid, sulfuric acid and hydrofluoric acid are mentioned. Reaction equations are not mentioned.
+ç. The dangers of concentrated sulfuric acid, phosphoric acid and acetic acid due to their heat release properties are highlighted.
+10.3.3. Acids and bases in our lives
+10.3.3.1. Explains the benefits and harms of acids and bases.
+a. The effects of acid rain on the environment and historical artefacts are mentioned. b. The effect of lime and caustic on oil, hair and skin is explained by tests.
+c. The students are expected to make researches about the benefits and harms of acids and bases by using information technologies, summarize the information they obtained and summarize them in writing. When using information technologies, the necessity to comply with cyber security rules is reminded.
+10.3.3.2. Explains the health and safety measures to be taken when working with acids and bases.
+a. Examples of incompatible household chemicals (salt spirit with bleach) are given which are dangerous to mix with themselves.
+b. Safety notices in acid and base packages are noted.
+c. It is focused on the health, environment and installation drawbacks due to the usage of extreme cleaning materials and sink openers.
+ç. The issues to be considered on the selection of material and method to remove the rustiness of kitchen wares and prevent the rustiness of metal wares are dwelled on.
+10.3.4. Salts
+10.3.4.1. Explains the properties and usage areas of salts.
+Sodium chloride, sodium carbonate, sodium bicarbonate, calcium carbonate and ammonium chloride salts are contemplated.
+10.4. CHEMISTRY ON EVERYWHERE
+Key concepts: bleach, apolar group, mer / monomer / polymer, polar tip, surfactant,
+hygiene, organic food, recycling
+10.4.1. Common Daily Life Chemicals
+10.4.1.1. Explains the properties of cleaning agents.
+a. Without entering into the structural details, it is stated how the soap and detergent cleans the impurities.
+b. The benefits and damages of the cleaning agents used in personal hygiene (shampoo, toothpaste, solid soap, liquid soap) are highlighted.
+c. Cleaning agents used for hygiene purposes (bleach, lime cream) are introduced. 10.4.1.2. Gives examples of usage areas of common polymers.
+a. Describing the polymerization event, the concepts of -mer, monomer and polymer are emphasized.
+b. The main use area of rubber, polyethylene (PE), polyethylene terephthalate (PET), Kevlar, polyvinyl chloride (PVC), polytetrafluoroethylene (TEFLON) and polystyrene (PS) are mentioned.
+c. The positive and negative properties of polymers are emphasized when they are used in different areas.
+ç. It is mentioned that the damages of toys and textile products that are consisted of polymer materials.
+10.4.1.3. Explains the contribution of recycling of polymer, paper, glass and metal materials to the national economy.
+10.4.1.4. Explains harmful chemicals which may contain cosmetic materials.
+It is focused on perfume, hair dye, permanent tattoo paint and jelly for personal care and aesthetic purposes.
+10.4.1.5. Explains the reasons of using drugs in different forms.
+a. The basic properties of the drug forms (pills, syrups, needles, ointments) are mentioned.
+b. It is emphasized how the use of drug wrongly and unnecessarily damages human health, the country's economy and the environment.
+10.4.2. Food
+10.4.2.1. Explains the issues to be considered when choosing and consuming fast foods.
+a. The main differences of fast foods from natural foods (preservatives, colorants, emulsifiers, sweeteners, pasteurization, processing of UHT milk) are mentioned.
+b. The importance of production and expiry dates in fast food labels is emphasized.
+c. The effects of the use of preservatives, colorants and artificial sweeteners on health is mentioned.
+ç. The reading component for the additive content and additive codes in daily consumables are given.
+10.4.2.2. Categorize edible oil types.
+a. The types of solid oil (solid butter, margarine) and liquid oil (olive oil, sunflower oil, corn oil, hazelnut oil) are mentioned.
+b. The concepts of infiltration, refining, riviera and visceral used in oil industry are explained.
+c. The effects of misuse of edible oils on health are emphasized.
