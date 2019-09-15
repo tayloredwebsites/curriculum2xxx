@@ -6,7 +6,7 @@ en:
     Che: "Chemistry"
     Mat: "Mathematics"
   app:
-    title: "Future Visions Curriculum App."
+    title: "Turkey STEM Web App"
     labels:
       all: "All"
       save: "Save"
@@ -68,18 +68,18 @@ en:
       missing_version_record: "error - missing Version Record"
       missing_version_code: "error - invalid Version Code"
   home:
-    name: "Future Visions Curriculum App Home Page"
-    title: "Home Page"
+    name: "Turkey STEM Home Page"
+    title: "Turkey STEM Home Page"
   nav_bar:
     home:
       name: "Home"
-      hover: "Home Page"
+      hover: "Turkey STEM Home Page"
     curriculum:
-      name: "Curriculum"
-      hover: "Lists the Curriculum Tree"
+      name: "Future Curriculum"
+      hover: "Displays the Curriculum Tree"
     sectors:
-      name: "Future Visions"
-      hover: "Lists the Curriculum by Future Visions"
+      name: "Future Sectors"
+      hover: "Displays the Curriculum by Future Sectors"
     documents:
       name: "Documents"
       hover: "Documents Management for Administrators"
@@ -127,8 +127,8 @@ en:
       error_creating_code_val: "error creating translation #{code} to: #{val}"
   trees:
     index:
-      name: "Curriculum Listing"
-      title: "Curriculum Listing"
+      name: "Turkey STEM Curriculum"
+      title: "Turkey STEM Curriculum"
     show:
       name: "Curriculum Detail Page"
     labels:
@@ -165,10 +165,10 @@ en:
       too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"
   sectors:
     index:
-      name: "Curriculum by Future Visions"
-      title: "Curriculum by Future Visions"
+      name: "Turkey STEM Curriculum for Future Competencies"
+      title: "Turkey STEM Curriculum for Future Competencies"
     labels:
-      future_vision_filter: "Curriculum by Future Visions"
+      future_vision_filter: "Turkey STEM Curriculum for Future Competencies"
   uploads:
     index:
       name: "Uploads Listing"
