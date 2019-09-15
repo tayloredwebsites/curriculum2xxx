@@ -16,7 +16,7 @@ module Curriculum
     # -- all .rb files in that directory are automatically loaded.
 
     config.i18n.available_locales = [:en, :tr]
-    config.i18n.default_locale = :en
+    config.i18n.default_locale = :tr
 
     # missing translations fallback to en (English))
     config.i18n.fallbacks = {'tr_TR' => 'tr', 'tr' => 'en'}
