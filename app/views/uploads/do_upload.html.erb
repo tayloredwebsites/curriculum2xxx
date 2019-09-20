@@ -35,33 +35,10 @@
 <div><%= @messages %></div>
 <h5 class='h6'><%= @message %></h5>
 <%= form_tag do_upload_upload_path, {multipart: true, class: 'text-center'} do |form| %>
-  <%= file_field(:upload, :file, accept: 'text/csv', class: 'text-center') %>
+  <%= file_field(:upload, :file, accept: 'text/txt', class: 'text-center') %>
   <br>
+  <input type='hidden' id='phase1' name='phase' value='1'/>
   <div class='text-center'>
-    <div>
-      <span class='col col-md-4 label-col'>
-        <label for='phase1' style='margin-left: 76px;'>Initial KBE Load</label>
-      </span>
-      <span class='col col-md-8 input-col' >
-        <% if @upload.status > 2 %>
-          <input type='radio' id='phase1' name='phase' value='1'/>
-        <% else %>
-          <input type='radio' id='phase1' name='phase' value='1' checked='checked'/>
-        <% end %>
-      </span>
-    </div>
-    <div>
-      <span class='col col-md-4 label-col'>
-        <label for='phase2'>Cross Reference Subjects</label>
-      </span>
-      <span class='col col-md-8 input-col'>
-        <% if @upload.status > 2 %>
-          <input type='radio' id='phase2' name='phase' value='2' checked='checked'/>
-        <% else %>
-          <input type='radio' id='phase2' name='phase' value='2'/>
-        <% end %>
-      </span>
-    </div>
   <button class='btn btn-primary' type='submit'>Upload</button>
 <% end %>
 

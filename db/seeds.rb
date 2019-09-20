@@ -102,7 +102,7 @@ grades = GradeBand.all
 @gb_mid = [@gb_5, @gb_6, @gb_7, @gb_8]
 puts "grades: #{grades.pluck(:id)}"
 
-if Subject.count < 4
+if Subject.count < 5
   Subject.create(
     tree_type_id: @tfv.id,
     code: 'bio'
@@ -124,7 +124,7 @@ if Subject.count < 4
     code: 'sci'
   )
 end
-throw "Invalid Subject Count" if Subject.count != 4
+throw "Invalid Subject Count" if Subject.count != 5
 @bio = Subject.first
 @che = Subject.second
 @mat = Subject.third
@@ -144,14 +144,14 @@ if Upload.count != 40
         grade_band_id: g.id,
         locale_id: @loc_en.id,
         status: 0,
-        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Eng.txt"
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
       )
       Upload.create(
         subject_id: s.id,
         grade_band_id: g.id,
         locale_id: @loc_tr.id,
         status: 0,
-        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Tur.txt"
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
       )
     end
   end
@@ -162,14 +162,14 @@ if Upload.count != 40
         grade_band_id: g.id,
         locale_id: @loc_en.id,
         status: 0,
-        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Eng.txt"
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
       )
       Upload.create(
         subject_id: s.id,
         grade_band_id: g.id,
         locale_id: @loc_tr.id,
         status: 0,
-        filename: "#{s.code.capitalize}#{sprintf('%02d', gb.code)}Tur.txt"
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
       )
     end
   end
@@ -178,7 +178,7 @@ end
 #   32 high school (4 grades * 4 subjects * 2 languages)
 #   + 8 middle school (4 grades * 1 subject * 2 languages)
 #   = 40 valid uploads
-throw "Invalid Upload Count" if Upload.count != 80
+throw "Invalid Upload Count" if Upload.count != 40
 
 
 ################################
