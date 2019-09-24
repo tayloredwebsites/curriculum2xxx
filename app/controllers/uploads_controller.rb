@@ -364,6 +364,7 @@ class UploadsController < ApplicationController
       translation_val = ''
     else # if save_status not error
       # update translation if not an error and value changed
+      puts("find or update translation: #{@localeRec.code}, #{@rowTreeRec.base_key}#{numCodes.join('.')}.name, #{localText}")
       transl, text_status, text_msg = Translation.find_or_update_translation(
         @localeRec.code,
         "#{@rowTreeRec.base_key}.name",
@@ -407,10 +408,11 @@ class UploadsController < ApplicationController
   # returns array of codes (without trailing empty string)
   # returns an error string
   def parseCodeIn(codeIn)
-    codes = codeIn.split('.', 999) # need limit to return all trailing empty fields
+    codes = codeIn.split('.') # add ', 999' to limit to return all trailing empty fields
     Rails.logger.debug("codes: #{codes.inspect}")
-    error = (codes[codes.length-1] != '') ? 'Invalid code - no trailing .' : ''
-    sbNullStr = codes.pop(1)
+    # error = (codes[codes.length-1] != '') ? 'Invalid code - no trailing .' : ''
+    error = ''
+    # sbNullStr = codes.pop(1)
     return codes, error
   end
 
@@ -421,7 +423,7 @@ class UploadsController < ApplicationController
       begin
         numCode = Integer(code)
         numCodes << numCode
-      rescue e
+      rescue
         numCodes << -1
         errors << "invalid code at: #{ix} with value: #{code}"
       end

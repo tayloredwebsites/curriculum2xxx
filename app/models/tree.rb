@@ -68,6 +68,14 @@ class Tree < BaseRec
     end
   end
 
+  def codeArrayAt(n)
+    if n >= codeArray.length
+      return nil
+    else
+      return self.codeArray[n]
+    end
+  end
+
   # return the last code in the code string (return c from a.b.c)
   def subCode
     if self.code.present?
@@ -87,33 +95,43 @@ class Tree < BaseRec
     end
   end
 
-  def area
-    return self.codeArray[0]
+  # overrides of deprecated depth field
+  def depth
+    return codeArray.length
   end
 
-  def component
-    if self.depth.present? && self.depth > 0
-      return self.codeArray[1]
-    else
-      return nil
-    end
+  # overrides of deprecated name_key field
+  def name_key
+    return base_key + ".name"
   end
 
-  def outcome
-    if self.depth.present? && self.depth > 1
-      return self.codeArray[2]
-    else
-      return nil
-    end
-  end
+  # def area
+  #   return self.codeArray[0]
+  # end
 
-  def indicator
-    if self.depth.present? && self.depth > 2
-      return self.codeArray[3]
-    else
-      return nil
-    end
-  end
+  # def component
+  #   if self.depth.present? && self.depth > 0
+  #     return self.codeArray[1]
+  #   else
+  #     return nil
+  #   end
+  # end
+
+  # def outcome
+  #   if self.depth.present? && self.depth > 1
+  #     return self.codeArray[2]
+  #   else
+  #     return nil
+  #   end
+  # end
+
+  # def indicator
+  #   if self.depth.present? && self.depth > 2
+  #     return self.codeArray[3]
+  #   else
+  #     return nil
+  #   end
+  # end
 
   def self.engIndicatorLetter(letter, seq)
     # convert cyrillic to western alphabet depending upon sequencing
@@ -130,13 +148,13 @@ class Tree < BaseRec
     end
   end
 
-  def self.validCyrIndicatorLetter?(letter)
-    if INDICATOR_SEQ_CYR.include?(letter)
-      return true
-    else
-      return false
-    end
-  end
+  # def self.validCyrIndicatorLetter?(letter)
+  #   if INDICATOR_SEQ_CYR.include?(letter)
+  #     return true
+  #   else
+  #     return false
+  #   end
+  # end
 
   # return the indicator letter by locale (translating SR to latin equivalent)
   # indicators are mapped in either:
@@ -154,17 +172,17 @@ class Tree < BaseRec
     end
   end
 
-  def self.cyrIndicatorCode(codeIn)
-    # indicator code letter is in english - map to cyrillic
-    codeArray = codeIn.split('.')
-    if codeArray.length > 3
-      indicLetter = codeArray[3]
-      if INDICATOR_SEQ_ENG.include?(indicLetter)
-        codeArray[3] = GET_CYR_IND_H[indicLetter]
-        return codeArray.join('.')
-      end
-    end
-  end
+  # def self.cyrIndicatorCode(codeIn)
+  #   # indicator code letter is in english - map to cyrillic
+  #   codeArray = codeIn.split('.')
+  #   if codeArray.length > 3
+  #     indicLetter = codeArray[3]
+  #     if INDICATOR_SEQ_ENG.include?(indicLetter)
+  #       codeArray[3] = GET_CYR_IND_H[indicLetter]
+  #       return codeArray.join('.')
+  #     end
+  #   end
+  # end
 
   def codeByLocale(locale, ix=0)
     retCode = code_by_ix(ix)
@@ -255,10 +273,10 @@ class Tree < BaseRec
       tree.base_key = "#{treeTypeRec.code}."\
         "#{versionRec.code}."\
         "#{subjectRec.code}."\
-        # "#{gradeBandRec.code}."\
         "#{fullCode}"
       tree.depth = depth
       ret = tree.save
+      puts "++++ add tree.base_key: #{tree.base_key}"
       if tree.errors.count > 0
         return fullCode, nil, BaseRec::REC_ERROR, "#{I18n.t('trees.errors.save_curriculum_code_error', code: fullCode)} #{tree.errors.full_messages}"
       else
@@ -266,6 +284,7 @@ class Tree < BaseRec
       end
     elsif matched_codes.count == 1
       # it already exists, skip
+      puts "++++ skip tree.base_key: #{tree.base_key}"
       return fullCode, matched_codes.first, BaseRec::REC_NO_CHANGE, "#{fullCode}"
     else
       # too many matching items in database: system error.

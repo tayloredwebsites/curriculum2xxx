@@ -2,11 +2,11 @@
 #pageHeader {
   #pageHeaderLogo {
      margin-left: 0px;
-     min-width: 300px;
+     min-width: 100px;
      .logoImage {
        background-image: url(asset_path('logo.png'));
        background-repeat: no-repeat;
-       width: 300px;
+       width: 100px;
        height: 77px;
      }
   }

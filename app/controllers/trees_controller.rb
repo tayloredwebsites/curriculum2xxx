@@ -40,65 +40,70 @@ class TreesController < ApplicationController
     # note: Active Record had problems with placeholder conditions in join clause.
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
-    name_keys= @trees.pluck(:name_key)
+    base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    puts "base_keys: #{base_keys.inspect}"
     @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: name_keys).all
+    translations = Translation.where(locale: @locale_code, key: base_keys).all
     translations.each do |t|
+      puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
       @translations[t.key] = t.value
     end
 
-    otcHash = {}
+    treeHash = {}
     areaHash = {}
     componentHash = {}
     newHash = {}
 
     # create ruby hash from tree records, to easily build tree from record codes
+    @translations.each do |k,v|
+    end
     @trees.each do |tree|
       translation = @translations[tree.name_key]
       areaHash = {}
       depth = tree.depth
       case depth
 
-      when 0
+      when 2
         newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         # add area if not there already
-        otcHash[tree.area] = newHash if !otcHash[tree.area].present?
-
-      when 1
-        newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
-        if otcHash[tree.area].blank?
-          raise I18n.t('trees.errors.missing_area_in_tree')
-        end
-        Rails.logger.debug("*** #{tree.subCode.inspect} to area #{tree.area.inspect} in otcHash")
-        addNodeToArrHash(otcHash[tree.area], tree.subCode, newHash)
-
-      when 2
-        newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
-        if otcHash[tree.area].blank?
-          raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif otcHash[tree.area][:nodes][tree.component].blank?
-          raise I18n.t('trees.errors.missing_component_in_tree')
-        end
-        addNodeToArrHash(otcHash[tree.area][:nodes][tree.component], tree.subCode, newHash)
+        treeHash[tree.codeArrayAt(1)] = newHash if !treeHash[tree.codeArrayAt(1)].present?
 
       when 3
+        newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
+        puts ("+++ codeArray: #{tree.codeArray.inspect}")
+        if treeHash[tree.codeArrayAt(1)].blank?
+          raise I18n.t('trees.errors.missing_area_in_tree')
+        end
+        Rails.logger.debug("*** #{tree.codeArrayAt(2)} to area #{tree.codeArrayAt(1)} in treeHash")
+        addNodeToArrHash(treeHash[tree.codeArrayAt(1)], tree.subCode, newHash)
+
+      when 4
+        newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        if treeHash[tree.codeArrayAt(1)].blank?
+          raise I18n.t('trees.errors.missing_area_in_tree')
+        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+          raise I18n.t('trees.errors.missing_component_in_tree')
+        end
+        addNodeToArrHash(treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
+
+      when 5
         # to do - look into refactoring this
         # check to make sure parent in hash exists.
         Rails.logger.debug("*** tree index - tree: #{tree.inspect}")
-        if otcHash[tree.area].blank?
+        if treeHash[tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif otcHash[tree.area][:nodes][tree.component].blank?
+        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
           raise I18n.t('trees.errors.missing_component_in_tree')
-        elsif otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome].blank?
+        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.outcome].blank?
           Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
-          Rails.logger.error "area: #{tree.area}"
-          Rails.logger.error otcHash[tree.area]
+          Rails.logger.error "area: #{tree.codeArrayAt(1)}"
+          Rails.logger.error treeHash[tree.codeArrayAt(1)]
           Rails.logger.error "component: #{tree.component}"
-          Rails.logger.error otcHash[tree.area][:nodes][tree.component]
+          Rails.logger.error treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)]
           Rails.logger.error "outcome: #{tree.outcome}"
-          Rails.logger.error otcHash[tree.area][:nodes][tree.component][:nodes]
-          Rails.logger.error otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome]
-          raise I18n.t('trees.errors.missing_outcome_in_tree', otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome])
+          Rails.logger.error treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes]
+          Rails.logger.error treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)]
+          raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
         end
         Rails.logger.debug("*** translation: #{translation.inspect}")
 
@@ -120,26 +125,13 @@ class TreesController < ApplicationController
 
         Rails.logger.debug("*** translate - tree.matching_codes: #{tree.matching_codes.inspect}")
         all_codes = JSON.load(tree.matching_codes)
-        if @gb.present?
-          # add indicator level item directly under outcome
-          Rails.logger.debug("*** add to #{}")
-          all_codes.each_with_index do |c, ix|
-            newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
-            Rails.logger.debug("*** #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}, id: #{tree.id}")
-            addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.subCode, newHash)
-            Rails.logger.debug("*** area: #{tree.area}, component: #{tree.component}, outcome: #{tree.outcome}, subCode: #{tree.subCode}, ")
-          end
-        else
-          Rails.logger.debug("*** no @gb present")
-          # add grade band level item under outcome
-          newGradeBand = {text: "#{I18n.translate('app.labels.grade_band_num', num: tree.grade_band.code)}", id: "#{tree.grade_band.id}", nodes: {}}
-          addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome], tree.grade_band.code, newGradeBand)
-          # add indicator level item under grade band
-          all_codes.each_with_index do |c, ix|
-            thisCode = tree.codeByLocale(@locale_code, ix)
-            newHash = {text: "#{I18n.translate('app.labels.indicator')} #{thisCode}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
-            addNodeToArrHash(otcHash[tree.area][:nodes][tree.component][:nodes][tree.outcome][:nodes][tree.grade_band.code], thisCode, newHash)
-          end
+        # add indicator level item directly under outcome
+        Rails.logger.debug("*** add to #{}")
+        all_codes.each_with_index do |c, ix|
+          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
+          Rails.logger.debug("*** #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}, id: #{tree.id}")
+          addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.codeArrayAt(3), newHash)
+          Rails.logger.debug("*** area: #{tree.codeArrayAt(0)}, component: #{tree.codeArrayAt(1)}, outcome: #{tree.codeArrayAt(2)}, subCode: #{tree.codeArrayAt(3)}, ")
         end
 
       else
@@ -147,41 +139,22 @@ class TreesController < ApplicationController
       end
     end
     # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
+    puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
     otcArrHash = []
-    otcHash.each do |key1, area|
+    treeHash.each do |key1, area|
       a2 = {text: area[:text], href: "javascript:void(0);"}
       if area[:nodes]
         area[:nodes].each do |key2, comp|
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            if @gb.present?
-              a4 = {text: outc[:text], href: tree_path(outc[:id]), setting: 'outcome'}
-            else
-              a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
+            a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
+            outc[:nodes].each do |key4, indic|
+              a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
+              a4[:nodes] = [] if a4[:nodes].blank?
+              a4[:nodes] << a5
             end
-            if @gb.present?
-              outc[:nodes].each do |key4, indic|
-                a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
-                a4[:nodes] = [] if a4[:nodes].blank?
-                a4[:nodes] << a5
-              end
-              a3[:nodes] = [] if a3[:nodes].blank?
-              a3[:nodes] << a4
-            else
-              # all gradebands selected - list gradebands under outcomes (with indicators below)
-              outc[:nodes].each do |key4, gb|
-                a5 = {text: gb[:text], href: "javascript:void(0);", setting: 'grade_band'}
-                gb[:nodes].each do |key5, indic|
-                  a6 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
-                  a5[:nodes] = [] if a5[:nodes].blank?
-                  a5[:nodes] << a6
-                end
-                a4[:nodes] = [] if a4[:nodes].blank?
-                a4[:nodes] << a5
-              end
-              a3[:nodes] = [] if a3[:nodes].blank?
-              a3[:nodes] << a4
-            end
+            a3[:nodes] = [] if a3[:nodes].blank?
+            a3[:nodes] << a4
           end
           a2[:nodes] = [] if a2[:nodes].blank?
           a2[:nodes] << a3
@@ -190,11 +163,12 @@ class TreesController < ApplicationController
       # done with area, append it to otcArrHash
       otcArrHash << a2
     end
+    puts ("+++ otcArrHash: #{JSON.pretty_generate(otcArrHash)}")
 
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
     respond_to do |format|
-      format.html
+      format.html { render 'index'}
       format.json { render json: {trees: @trees, subjects: @subjects, grade_bands: @gbs}}
     end
 
@@ -339,10 +313,12 @@ class TreesController < ApplicationController
     if !parent[:nodes].present?
       parent[:nodes] = {}
     end
-    # add hash if not there already
-    if !parent[:nodes][subCode].present?
-      parent[:nodes][subCode] = newHash
-    end
+    # # add hash if not there already
+    # if !parent[:nodes][subCode].present?
+    #   parent[:nodes][subCode] = newHash
+    # end
+    # always add (or replace hash)
+    parent[:nodes][subCode] = newHash
   end
 
   def index_prep
