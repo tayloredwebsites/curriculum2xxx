@@ -1,0 +1,75 @@
+en,bio,10
+10.1. Cell Divisions
+10.1.1. Mitosis and Asexual Reproduction
+Key Concepts: cell division, asexual reproduction, interphase, cancer, mitosis
+10.1.1.1. Explains the necessity of cell division in living things.
+a. It is ensured that cell division is explained in relation to reproduction, growth and development in living things.
+b. It focuses on the cellular reasons of division.
+10.1.1.2. Explains mitosis.
+a. Interphase is explained at the basic level.
+b. The phases of mitosis are explained at the basic level. It is taken advantage of microscope, visual elements (photos, pictures, illustrations, cartoons, etc.) and graphic editors (concept maps, mind maps, schemes, etc.), e-learning object and applications (animation, video, simulation, infographic, increased and virtual reality applications, etc.) when the phases are explained.
+c. It is dwelled on the control of cell division and its importance for living beings. The names of molecules controlling the cleavage are not given.
+ç. The relationship of cell division with cancer is set.
+d. It is provided that the students prepare a product or electronic presentation (animation, video, etc.) explaining mitosis and sharing this presentation.
+10.1.1.3. Explains asexual reproduction with examples.
+a. The examples of reproduction, budding, sport reproduction, asexual reproduction, parthenogenesis and vegetative reproduction in plants are given. Only the examples are given on the reproduction with sport, the progeny are not mentioned.
+b. The practices of asexual reproduction techniques in horticulture and agriculture (types of reproduction with steel and onion) reproductive patterns) are exemplified.
+10.1.2. Meiosis and sexual reproduction
+Key Concepts: diploid, fertilization, sexual reproduction, haploit, krossing over, meiosis,
+synapsis, tetrate
+10.1.2.1. Explains meiosis.
+a. Meiosis stages are processed at the basic level. Phases of microscope, visual elements, graphics editors, e-learning objects and applications.
+b. Students will prepare an electronic presentation (animation, video, etc.) sharing is provided.
+10.1.2.2. Explains sexual reproduction with examples.
+a. The topic of external fertilization and internal fertilization are not given.
+b. It is explained that the basis of sexual reproduction is meiosis and fertilization. 10.2. General Principles of Inheritance
+10.2.1. Heredity and Biological Diversity
+Key Concepts: allele, biodiversity, dihybrid, dominant, co-dominance, hereditary, phenotype, gene, genotype, gonosome, hemophilia, heterozygote, homozygous, monohybrid, mutation, autosome, Punnett square, recombination, colour blindness, recessive, pedigree, variation
+10.2.1.1. Explains the general principles of inheritance.
+a. Mendel's principles are explained with examples.
+b. Monohybrid, dihybrid and control crosses, spouse dominance, multiple allelicity (it is associated with blood groups) are explained by examples. The incomplete dominance and pleiotropism are not mentioned.
+c. The sex engaged inheritance is discussed in the context of haemophilia and partial color blindness disorders. It is indicated that the sex engaged inheritance is also seen on the Y chromosome.
+ç. Genealogy is explained by examples.
+d. It is emphasized that the possibility of occurrence of hereditary diseases increases as a result of consanguineous marriages.
+10.2.1.2. Questions the role of genetic variations in explaining biological diversity.
+a. The sources of variations (mutation, independent distribution of chromosomes and crossing over) discussion is provided. Mutation types are not mentioned.
+b. Biological diversity is explained by differences in genotypes of living things.
+10.3. Ecosystem Ecology and Current Environmental Problems 10.3.1. Ecosystem Ecology
+Key Concepts: separator, food network, food pyramid, food chain, biological accumulation, ecosystem, energy pyramid, heterotroph, holozoic, substance cycle, ototrof
+10.3.1.1. Explains the relationship between the living and inanimate components of the ecosystem.
+a. The relationship between population, community and ecosystem is explained by examples. b. The possible consequences of any changes in the ecosystem in the system are emphasized. c. It is provided that the students prepare a presentation regarding ecosystem of their choice. 10.3.1.2. Explains the nutrition forms of living things with examples.
+The symbiotic life is not explained.
+10.3.1.3. Analyses the flow of matter and energy in ecosystem.
+a. It is provided to examine the role of producers, consumers and separators in the flow of matter and energy.
+b. The flow of matter and energy in ecosystems are exemplified comparing the food chain, food network and food pyramid.
+c. It is provided to investigate and discuss the negative effects of biological accumulation on human health and other living things.
+ç. It is provided to establish a food network that shows the nutritional relationships between living beings.
+10.3.1.4. Establishes the relationship between substance cycles and sustainability of life.
+a. Nitrogen, carbon and water cycles are reminded.
+b. The species names of microorganisms in the nitrogen cycle are not mentioned. 10.3.2. Current Environmental Problems and Human
+Key Concepts: environmental problem, ecological footprint, carbon footprint, water footprint, 10.3.2.1. Evaluates the causes and possible consequences of current environmental
+problems.
+a. The negative effects of the problems on living beings are indicated by summarizing the current environmental problems (biodiversity reduction, air pollution, water pollution, soil pollution, radioactive pollution, noise pollution, acid rain, global climate change, erosion, natural life the destruction of the areas and forest fires).
+b. Diseases caused by environmental problems are emphasized.
+10.3.2.2. Questions the role of individuals in the emergence of environmental problems.
+a. Ecological footprint, water footprint and carbon footprint applications are made.
+b. It is provided to develop solutions to reduce ecological footprint, water footprint and carbon footprint.
+10.3.2.3. Makes solutions for the prevention of environmental pollution in the local and global context.
+a. Examples of studies for prevention of environmental pollution in local and global context are given.
+b. It is ensured of discussion of human activities that harm the environment at local and global level.
+c. Gives examples of how biology is associated with other disciplines in the prevention of environmental pollution.
+10.3.3. Natural Resources and Biodiversity Conservation
+Key Concepts: biofuels, endemic species, natural resource, gene bank, sustainability
+10.3.3.1. Explains the importance of sustainability of natural resources.
+a. The importance of environmental awareness is emphasized by exemplifying the successful practices across Turkey regarding the sustainability of natural resources.
+b. The necessity of not wasting natural resources in order to entrust a healthy world to future generations is highlighted.
+10.3.3.2. Questions the importance of biological diversity for life.
+a. It is provided that the factors ensuring of that Turkey is rich in biodiversity are discussed.
+b. By dwelling on the importance and value of endemic species in terms of biodiversity of our country, the examples related to their contributions to health and economy are given a place.
+c. It is emphasized that biodiversity and endemic species are global and national heritage.
+ç. By highlighting that each living being has important functions in nature, it is explained that the importance of respecting the natural operation of ecosystem and biological diversity and avoidance of intervention against these are explained.
+d. The endangered species are an irreplaceable loss in terms of biodiversity is highlighted.
+10.3.3.3. Suggests solutions for protection of biological diversity.
+a. The studies regarding the protection of endemic species and extinction species under threat of extinction in Turkey are exemplified.
+b. It is provided that the solution proposals regarding the protection of biodiversity and the prevention of biodiversity is discussed.
+c. The need for gene banks is indicated.

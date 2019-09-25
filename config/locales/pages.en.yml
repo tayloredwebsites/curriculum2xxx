@@ -22,8 +22,8 @@ en:
       language: "Language"
       row: "Row Number"
       row_num: "Row: %{num} - "
-      area: "Area"
-      component: "Component"
+      area: "Unit"
+      component: "Chapter"
       outcome: "Outcome"
       indicator: "Indicator"
       indicators: "Indicators"
@@ -132,8 +132,8 @@ en:
     show:
       name: "Curriculum Detail Page"
     labels:
-      show_areas: "Show Areas"
-      show_components: "Show Components"
+      show_areas: "Show Units"
+      show_components: "Show Chapters"
       show_outcomes: "Show Outcomes"
       show_indicators: "Show Indicators"
       filter_by_subject_grade: "Filter by Subject & Grade"

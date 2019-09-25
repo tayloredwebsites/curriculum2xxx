@@ -1,0 +1,137 @@
+en,mat,10
+10.1. (DATA, COUNTING AND PROBABILITY) Counting and Probability
+10.1.1. Sorting and Selecting
+Terms and Concepts: collection method, multiplication method, factorial, permutation, repeated permutation, combination, Pascal triangle, binomial expansion
+10.1.1.1. Calculates the number of occurrences of events using addition and multiplication methods.
+a) It is mentioned about the historical development process of counting and the works of.
+b) The concept of factorial is related to the basic principle of counting.
+10.1.1.2. Calculates how many different types of permutations can be made with n kinds of objects.
+10.1.1.3. Solve problems by explaining the array (permutations) of a limited number of repetitive objects.
+a) The number of all the different sequences of objects that are at least two identical are handled in the context of examples / problems.
+b) Real life problems are included.
+10.1.1.4. It calculates how many different elements can be chosen in a set with n elements and r elements.
+a) The combination concept is associated with the number of subsets.
+b) The following basic features of the combination concept are examined:
+a) C(n,r)=C(n,n-r)
+b) 𝐶(𝑛,0)+ 𝐶(𝑛,1)+⋯+C(n,n)=2n
+10.1.1.5. Explains the Pascal triangle.
+In this context, the role of different cultures and scientists in the formation of mathematical knowledge is emphasized.
+10.1.1.6. Explains Binomial expands.
+a) Binomial expansion is associated with the Pascal triangle. b) Only two-term expressions are discussed.
+c) Examples of binomial formulas are made.
+10.1.2. Probability of Simple Events
+Terms and Concepts: example space, event, experiment, output, definitive event, impossible event, discrete event, non-discrete event, complement of an event, probability
+Symbols and Impressions: E, P(A),P(A’)
+10.1.2.1. Explain the concepts of sample space, experiment, output, complement of an event,
+definite event, impossible event, discrete event and non-discrete event.
+a) Sample space, experiment, output concepts are exemplified and described for non-co-occurrence situations based on co-occurrences.
+b) Discrete event and non-discrete event are emphasized.
+c) The works of El Kindî and Laplace are included.
+10.1.2.2. Makes applications about the concept of probability.
+a) The probabilities of the possible and non-coherent events are calculated.
+b) Probabilities related to complement, discrete event and non-discrete event are calculated. c) Real life problems are included.
+
+10.2. (NUMBERS AND ALGEBRA) Functions
+10.2.1. Concept of Functions and Representation
+Terms and Concepts: function, definition set, value set, image set, function chart, fixed function, function inside, overlay function, one to one function, equal function, unit function, linear function, single function, double function, vertical (vertical) correct test
+a) The concept of function is explained.
+b) Only functions defined on real numbers are considered.
+c) Into function, covering function, one-to-one function, equal function, unit (identity) function, fixed function, linear function, single function, dual function and segmented function is described.
+ç) Equality of two functions is explained by examples.
+d) By using functions of f and g, the operations of f+g, f-g, f.g, f/g are solved. e) Real life problems and use of table-graphics.
+10.2.1.2. Draws graphs of functions.
+a) The practices are made regarding graphics of functions such as f(x)=ax+b. b) Graphs of the functions given in the part defined in the part are plotted.
+c) The graph of the functions of f (x) = ax + b type is drawn by means of information and communication technologies, and the relationship between the coefficients a and b and the function graph are discussed.
+10.2.1.3. Interprets the graphs of functions.
+a) Descriptions and image sets of the given functions are shown.
+b) In a function graph, it is indicated that the lines drawn parallel to the y axis from each point where the function is defined on the x-axis, cut the graph only at one point (vertical / vertical test).
+c) It is emphasized that the graph of a f function is the graph of the equation y = f (x) and that the f (x) = 0 equation of the points where the graph (if any) cut the x axis is the solution set in real numbers.
+10.2.1.4. Makes graphic representations of the real life situations that can be expressed with linear functions.
+10.2.2. Compound of two functions and the opposite of a function
+Terms and Concepts: compound function, inverse of function, horizontal correct test Symbols and representations: f o g
+10.2.2.1. Performs applications related to one to one and covering functions.
+a) The one-to-one and the overlay of a function are examined on the graph by a horizontally correct test and algebraically related.
+b) With the help of information and communication technologies, it is determined whether a function is one to one and it is covered.
+10.2.2.2. Perform operations related to the composition process.
+a) The concurrent process is dealt with in relation to algebraic and graphical representations of functions.
+b) It is stated that there is a merger property of functions in the functions.
+c) It is not entered into the combination of the functions defined as part.
+10.2.2.3. Find the inverse of a given function.
+a) The conditions necessary for the function to be the inverse of a function are specified.
+b) Plot the graph of the inverse of the linear function which covers only one and one; The graph of the function and its inverse are shown to be symmetric with respect to the y = x line.
+c) The inverse functions of the parted functions are not allowed.
+10.3. (NUMBERS AND ALGEBRA) Polynomials
+10.3.1. Polynomial Concept and Operations with Polynomials
+Terms and Concepts: polynomial, degree of polynomial, coefficients of polynomial, coefficient of polynomial, constant polynomial, constant polynomial, zero polynomial, zeros of polynomial
+Symbols and representations: P (x)
+10.3.1.1. Explain the concept of a variable polynomial.
+a) The degree, coefficients and constant term of the polynomial are indicated.
+b) Fixed polynomial, zero polynomial and equality of two polynomials are explained by examples.
+10.3.1.2. Makes addition, subtraction, multiplication and division with polynomials.
+10.3.2. Factorization of Polynomials Terms and Concepts: multiplier, identity, variable change, rational expression
+10.3.2.1. Separates a polynomial into factors.
+a) Multipliers are applied by using common multiplier parenthesis and variable replacement methods.
+b) Factorization applications are made by using the exact frames, two square differences, the cube of the sum and difference of the two terms, the sum of the cubes of the two terms and the differences of the difference.
+c) Separates into factors such expressions as ax2 + bx +c.
+10.3.2.2. Performs operations related to the simplification of rational expressions.
+a) The concept of rational expression is introduced.
+b) Multipliers are not included in non-polynomial expressions. 10.4. Second Order Equations
+10.4.1. (NUMBERS AND ALGEBRA) Equations with a second order unknown
+Terms and Concepts: the equation of a second order, the root of the equation, the sum of the roots, the multiplication of the roots, the discriminant, the complex number,
+Symbols and Impressions: Δ, i, a+ib, z, Ȼ, İm(z), Re(z)
+10.4.1.1. Explain the concept of a second order unknown equation.
+a) Brahmagupta, Harezmî and Abdulhamid İbn Türk, who take part in the process of historical development of equations with a second degree and are involved in this process are included.
+10.4.1.2. Solves the equations of a second-order unknown.
+a) Algebraic expressions in the form ax2 + bx + c; applications related to multiplication by using the exact square and two square differences.
+b) Different methods (factorization, complete frame completion, variable change, two frame difference, and discriminant) are used to solve the equations.
+c) Real life problems are included.
+10.4.1.3. Explains that a complex number is expressed in the form a + ib (a, b b).
+a) In cases where the discriminant is less than zero, it is explained by examples that the definition of a new set of numbers that includes a real set of numbers to find the roots of a second order unknown equation.
+c) It is stated that the roots are conjugates of each other.
+ç) Properties and transactions other than the equivalent of the complex number are not entered.
+10.4.1.4. Using the relationships between the roots and coefficients of a quadratic equation.
+a) Only the relationship between the sum and multiplication of roots and the coefficients of the equation are discussed.
+b) Applications related to obtaining the second order equation given roots.
+5.10. (GEOMETRY) Quadrangles and Polygons
+10.5.1. Polygons
+Terms and Concepts: polygons, smooth polygons, diagonal
+10.5.1.1. Explains the concept of polygons.
+a) Concave polygons are not entered.
+b) Smooth polygons are reminded, internal and external angles are available.
+c) The features and area problems related to the diagonal of the polygons are not included.
+10.5.2. Quadrangles and Properties
+Terms and Concepts: convex quadrilateral, concave quadrilateral, diagonal, perimeter, area
+Symbols and representations: C (ABCD), A (ABCD)
+10.5.2.1. Solve problems by explaining the basic elements and properties of rectangle.
+a) The concepts of convex and concave quadrilateral are explained. (Hereafter, the quadrangle is to be understood when it is called a quadrilateral.)
+b) The sum of the dimensions of the inner and outer angles of the quadrangle is found. c) Circumference of the quadrilateral.
+10.5.3. Special Quadrangles
+Terms and Concepts: trapezoid, trapezoidal, perpendicular trapezoid, parallelogram, rhombus, rectangular, square, deltoid
+10.5.3.1. Solve problems by explaining the angle, edge, diagonal and area properties of special quadrilaterals.
+a) Hierarchical relations between trapezoid, parallelogram, rhombus, rectangle, square and deltoid are included.
+b) According to the hierarchical relationship, each special quadrilateral; angle, edge, diagonal and field properties.
+c) Applications using origami, tangram.
+ç) Examples of polygons in motifs used in traditional architecture.
+d) Information and communication technologies are used.
+10.5.2. Quadrangles and Properties
+Terms and Concepts: convex quadrilateral, concave quadrilateral, diagonal, perimeter, area
+Symbols and representations: C (ABCD), A (ABCD)
+10.5.2.1. Solve problems by explaining the basic elements and properties of quadrangle.
+a) The concepts of convex and concave quadrilateral are explained.
+b) The sum of the dimensions of the inner and outer angles of the rectangle is found.
+c) Circumference of the quadrilateral is explained.
+10.5.3. Special Quadrangles
+Terms and Concepts: trapezoid, trapezoidal, perpendicular trapezoid, parallelogram, rhombus, rectangular, square, deltoid
+10.5.3.1. Solve problems by explaining the angle, edge, diagonal and area properties of special quadrilaterals.
+a) Hierarchical relations between trapezoid, parallelogram, and rhombus, rectangle, square and deltoid are included.
+b) According to the hierarchical relationship, each special quadrilateral; angle, edge, diagonal and field properties.
+c) Applications using origami, tangram.
+ç) Examples of polygons in motifs used in traditional architecture.
+d) Information and communication technologies are used.
+10.6. (GEOMETRY) Solid Geometry
+10.6.1. Solid Materials
+Terms and Concepts: upright prism, upright pyramid, height, floor area, surface area, lateral area, volume
+10.6.1.1. It forms the length, area and volume relations of upright prisms and upright pyramids.
+a) Triangle, quadrangular and hexagonal perpendicular to the prism / pyramid.
+b) Real life problems are included.
+c) Information and communication technologies are used.
