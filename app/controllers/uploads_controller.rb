@@ -107,6 +107,7 @@ class UploadsController < ApplicationController
     @rptRecs = []
     abortRun = false
     @abortRow = false
+    @processedCount = 0
     @status_detail = ''
 
     @phaseOne =  (params['phase'] == '1') ? true : false
@@ -128,11 +129,12 @@ class UploadsController < ApplicationController
         abortRun = true
         Rails.logger.debug("*** seed filename: #{@upload.filename.inspect}")
         Rails.logger.debug("*** upload filename: #{upload_params['file'].original_filename.inspect}")
-      elsif @upload.status == BaseRec::UPLOAD_DONE
-        # skip processing if already done, otherwise process)
-        Rails.logger.debug("*** file done")
-        flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
-        abortRun = true
+      # elsif @upload.status == BaseRec::UPLOAD_DONE
+      #   # skip processing if already done, otherwise process)
+      #   Rails.logger.debug("*** file done")
+      #   flash[:notify] = I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
+      #   flash[:notify] = "ERROR: "+I18n.translate('uploads.warnings.already_completed', filename: @upload.filename)
+      #   abortRun = true
       else
         Rails.logger.debug("*** process file")
         # stacks is an array whose elements correspond to the depth of the code tree (level of processing)
@@ -144,6 +146,7 @@ class UploadsController < ApplicationController
 
         grade_band = 0
         File.foreach(upload_params['file'].path).with_index do |line, line_num|
+          puts "Process Line #: #{line_num}, line: #{line}"
           @abortRow = false
           @rowErrs = []
           if line_num == 0
@@ -153,15 +156,16 @@ class UploadsController < ApplicationController
             rescue ArgumentError, TypeError
               grade_band = 0
             end
-            puts "grade_band: #{grade_band}"
-            puts "@gradeBandRec.code: #{@gradeBandRec.code}"
-            if grade_band != @gradeBandRec.code
+            puts "grade_band: #{grade_band.inspect}"
+            puts "@gradeBandRec.code: #{@gradeBandRec.code.inspect}"
+            if grade_band.to_s != @gradeBandRec.code
+              puts "Abort"
+              flash[:alert] = "ERROR: Invalid grade_band: #{grade_band}"
               abortRun = true
               @abortRow = true
             end
             next
           end
-          puts "Line #: #{line_num}, line: #{line}"
 
           stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
 
@@ -183,7 +187,9 @@ class UploadsController < ApplicationController
           # Determine what type of line this is:
           lineType = ''
           Rails.logger.debug("codeErr: #{codeErr}, #{toNumErrors}, #{numCodes.length}")
-          if codeErr == '' && toNumErrors.length == 0 && numCodes.length > 0
+          if abortRun || @abortRow
+            lineType = 'abort'
+          elsif codeErr == '' && toNumErrors.length == 0 && numCodes.length > 0
             # We have a standard Unit, Chapter or LO entry line #.#, #.#.#, or #.#.#,#
             Rails.logger.debug("codes: #{codes.inspect} - #{codes.length}")
             case codes.length
@@ -223,7 +229,7 @@ class UploadsController < ApplicationController
             Rails.logger.debug("stacks: #{stacks.inspect}")
             stacks[CODES_STACK][0] = numCodes[0]
             stacks[CODES_STACK][1] = numCodes[1]
-            stacks = processTfvTree(line_num, numCodes, 1, lineDesc)
+            processTfvTree(line_num, numCodes, 1, lineDesc)
             Rails.logger.debug("stacks: #{stacks.inspect}")
 
             Rails.logger.debug("Report: #{@rptRecs}")
@@ -275,8 +281,8 @@ class UploadsController < ApplicationController
             abort "just developing for now"
           end
 
-          # break if @abortRow || @rowErrs.count > 0
-          # @errs.concat(@rowErrs)
+          break if abortRun || @abortRow || @rowErrs.count > 0
+          @errs.concat(@rowErrs)
         end # File.foreach
       end # check filename and then process file
     else
@@ -285,42 +291,22 @@ class UploadsController < ApplicationController
       abortRun = true
     end # if upload
     if abortRun
+      Rails.logger.error("ERROR:  abort run: #{flash[:alert]}")
       index_prep
       render :index
     else
       # Update status level
-      if stacks[IDS_STACK][ROCESSING_AREA].count > 0
-        Rails.logger.debug("processing area count: #{stacks[IDS_STACK][ROCESSING_AREA].count}")
+      Rails.logger.debug("*** Update Status Level.")
+      if  @processedCount > 0
         @upload.status = BaseRec::UPLOAD_TREE_UPLOADING
         Rails.logger.debug("tree errors: #{@treeErrs.inspect}")
         if !@treeErrs
           Rails.logger.debug("no tree errors")
           @upload.status = BaseRec::UPLOAD_TREE_UPLOADED
-          # to do - update this to wait till sector explanation done.
-          Rails.logger.debug("processing sector count: #{stacks[IDS_STACK][PROCESSING_SECTOR].count}")
-          Rails.logger.debug("processing sector explain count: #{stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN].count}")
-          Rails.logger.debug("sector errors: #{@sectorErrs.inspect}")
-          if stacks[IDS_STACK][PROCESSING_SECTOR].count > 0 &&
-            stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN] &&
-            stacks[IDS_STACK][PROCESSING_SECTOR_EXPLAIN].count > 0 &&
-              !@sectorErrs
-            @upload.status = BaseRec::UPLOAD_SECTOR_RELATED
-          end
-        end
-        Rails.logger.debug("processing subjects count: #{stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count}")
-        Rails.logger.debug("subject errors: #{@subjectErrs.inspect}")
-        # @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
-        if stacks[IDS_STACK][PROCESSING_SUBJECT_REL].count > 0
-          @upload.status = BaseRec::UPLOAD_SUBJ_RELATING
-          @upload.status = BaseRec::UPLOAD_SUBJ_RELATED if !@subjectErrs
         end
       # save all errors into the upload status detail field for easy review of last run of errors
-        if @phaseOne
-          @upload.status_detail = @errs.join('$$$')
-        elsif @phaseTwo
-          @upload.statusPhase2 = @errs.join('$$$')
-        end
-        @upload.status = BaseRec::UPLOAD_DONE if @upload.status == BaseRec::UPLOAD_SUBJ_RELATED
+        @upload.status_detail = @errs.join('$$$')
+        @upload.status = BaseRec::UPLOAD_DONE if @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
         @upload.save
       end
       render :do_upload
@@ -363,6 +349,7 @@ class UploadsController < ApplicationController
       # Note: no update of translation if error
       translation_val = ''
     else # if save_status not error
+      @processedCount += 1
       # update translation if not an error and value changed
       puts("find or update translation: #{@localeRec.code}, #{@rowTreeRec.base_key}#{numCodes.join('.')}.name, #{localText}")
       transl, text_status, text_msg = Translation.find_or_update_translation(
@@ -385,7 +372,8 @@ class UploadsController < ApplicationController
     rptRec << new_code
     rptRec << translation_val
     rptRec << statMsg
-    @rptRecs << rptRec if !@phaseTwo
+    Rails.logger.debug("+++ final rptRec: #{rptRec.inspect}")
+    @rptRecs << rptRec
 
   end
 

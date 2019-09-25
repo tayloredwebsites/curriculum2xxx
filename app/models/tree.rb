@@ -284,7 +284,7 @@ class Tree < BaseRec
       end
     elsif matched_codes.count == 1
       # it already exists, skip
-      puts "++++ skip tree.base_key: #{tree.base_key}"
+      puts "++++ skip matched_codes[0].base_key: #{matched_codes[0].base_key}"
       return fullCode, matched_codes.first, BaseRec::REC_NO_CHANGE, "#{fullCode}"
     else
       # too many matching items in database: system error.
