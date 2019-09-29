@@ -110,13 +110,6 @@ class UploadsController < ApplicationController
     @processedCount = 0
     @status_detail = ''
 
-    @phaseOne =  (params['phase'] == '1') ? true : false
-    @phaseTwo =  (params['phase'] == '2') ? true : false
-    @phaseOne = true if !@phaseOne && !@phaseTwo
-
-    Rails.logger.debug("*** @phaseOne: #{@phaseOne}")
-    Rails.logger.debug("*** @phaseTwo: #{@phaseTwo}")
-
     if @upload && params['upload']
       @subjectRec = @upload.subject
       @gradeBandRec = @upload.grade_band
@@ -145,8 +138,11 @@ class UploadsController < ApplicationController
         stacks[IDS_STACK] = Array.new(PROCESSING_DEPTH) {[]} # ids of records at each level of procesing (Areas, ..., sectors, relations)
 
         grade_band = 0
+        stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
+
         File.foreach(upload_params['file'].path).with_index do |line, line_num|
-          puts "Process Line #: #{line_num}, line: #{line}"
+          puts "Process Line #: #{line_num}"
+          puts "Process line: #{line}"
           @abortRow = false
           @rowErrs = []
           if line_num == 0
@@ -167,11 +163,7 @@ class UploadsController < ApplicationController
             next
           end
 
-          stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
-
-          # # skip rows if missing required fields (beside row number and grade band)
-          # # otherwise blank rows produce errors stopping the upload
-          # break if !validUploadRow?(@localeRec.code, row)
+          # stacks[CODES_STACK] = Array.new(CODE_DEPTH) {''}
 
           # split the line at the first space to get the code and description
           codeIn, lineDesc = parseUpTo(line, ' ')
@@ -202,13 +194,13 @@ class UploadsController < ApplicationController
             else
               lineType = 'Error in code'
             end
-          elsif codeErr == '' && toNumErrors != '' && numCodes.length == 1
-            # we have a standard indicator (letter followed by .)
-            lineType = 'Indicator'
           elsif lineValue.length > 0 && lineKey.length < 20
             # we have a key value pair (usually attached to a chapter)
             # e.g. Key Concepts: nutrition, biology, ...
             lineType = 'Keyed Description'
+          elsif codeErr == '' && toNumErrors != '' && numCodes.length == 1
+            # we have a standard indicator (letter followed by .)
+            lineType = 'Indicator'
           else
             lineType = 'Error parsing line'
           end
@@ -227,11 +219,10 @@ class UploadsController < ApplicationController
             @rowErrs << "grade mismatch: #{grade_band.inspect} != #{numCodes[0].inspect}" if grade_band != numCodes[0]
             Rails.logger.debug("@rowErrs: #{@rowErrs.inspect}")
             Rails.logger.debug("stacks: #{stacks.inspect}")
-            stacks[CODES_STACK][0] = numCodes[0]
-            stacks[CODES_STACK][1] = numCodes[1]
+            stacks[CODES_STACK] = [ numCodes[0], numCodes[1] ]
+            Rails.logger.debug("+++ stacks[CODES_STACK]: #{stacks[CODES_STACK]}")
             processTfvTree(line_num, numCodes, 1, lineDesc)
             Rails.logger.debug("stacks: #{stacks.inspect}")
-
             Rails.logger.debug("Report: #{@rptRecs}")
 
           when 'Chapter'
@@ -242,12 +233,10 @@ class UploadsController < ApplicationController
             @rowErrs << toNumErrors if toNumErrors && toNumErrors.length > 0
             @rowErrs << "grade mismatch: #{grade_band.inspect} != #{numCodes[0].inspect}" if grade_band != numCodes[0]
             Rails.logger.debug("@rowErrs: #{@rowErrs.inspect}")
-            stacks[CODES_STACK][0] = numCodes[0]
-            stacks[CODES_STACK][1] = numCodes[1]
-            stacks[CODES_STACK][2] = numCodes[2]
+            stacks[CODES_STACK] = [ numCodes[0], numCodes[1], numCodes[2] ]
+            Rails.logger.debug("+++ stacks[CODES_STACK]: #{stacks[CODES_STACK]}")
             processTfvTree(line_num, numCodes, 2, lineDesc)
             Rails.logger.debug("stacks: #{stacks.inspect}")
-
             Rails.logger.debug("Report: #{@rptRecs}")
 
           when 'LO'
@@ -258,13 +247,10 @@ class UploadsController < ApplicationController
             @rowErrs << toNumErrors if toNumErrors && toNumErrors.length > 0
             @rowErrs << "grade mismatch: #{grade_band.inspect} != #{numCodes[0].inspect}" if grade_band != numCodes[0]
             Rails.logger.debug("@rowErrs: #{@rowErrs.inspect}")
-            stacks[CODES_STACK][0] = numCodes[0]
-            stacks[CODES_STACK][1] = numCodes[1]
-            stacks[CODES_STACK][2] = numCodes[2]
-            stacks[CODES_STACK][3] = numCodes[3]
+            stacks[CODES_STACK] = [ numCodes[0], numCodes[1], numCodes[2], numCodes[3] ]
+            Rails.logger.debug("+++ stacks[CODES_STACK]: #{stacks[CODES_STACK]}")
             processTfvTree(line_num, numCodes, 3, lineDesc)
             Rails.logger.debug("stacks: #{stacks.inspect}")
-
             Rails.logger.debug("Report: #{@rptRecs}")
 
           when 'Keyed Description'
@@ -275,7 +261,26 @@ class UploadsController < ApplicationController
           when 'Indicator'
             # indicator (with a letter) - note it is passed without code hierarchy
             # note: top item in displayed code is grade number, so is ignored in hierarchy
-            Rails.logger.debug("Indicator: #{codes.join('.')}, #{lineValue}")
+            Rails.logger.debug("Indicator: #{codes.join('.')}, #{lineDesc}")
+            indCodes = stacks[CODES_STACK].dup
+            indCodes.concat(codes)
+            Rails.logger.debug("Indicator indCodes: #{indCodes.inspect}")
+            processTfvTree(line_num, indCodes, 4, lineDesc)
+            Rails.logger.debug("stacks: #{stacks.inspect}")
+            Rails.logger.debug("Report: #{@rptRecs}")
+
+            # if stacks[CODES_STACK].length != 4
+            #   @abortRow = true
+            #   @rowErrs << "Indicator has invalid codes from previous line"
+            # else
+            #   Rails.logger.debug("Indicator: #{codes.join('.')}, #{lineDesc}")
+            #   indCodes = stacks[CODES_STACK].dup
+            #   indCodes.concat(codes)
+            #   Rails.logger.debug("Indicator indCodes: #{indCodes.inspect}")
+            #   processTfvTree(line_num, indCodes, 4, lineDesc)
+            #   Rails.logger.debug("stacks: #{stacks.inspect}")
+            #   Rails.logger.debug("Report: #{@rptRecs}")
+            # end
 
           else
             abort "just developing for now"

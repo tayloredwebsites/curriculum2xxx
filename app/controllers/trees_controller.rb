@@ -41,11 +41,10 @@ class TreesController < ApplicationController
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
     base_keys= @trees.map { |t| "#{t.base_key}.name" }
-    puts "base_keys: #{base_keys.inspect}"
     @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: base_keys).all
+    translations = Translation.where(locale: @locale_code, key: base_keys)
     translations.each do |t|
-      puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
+      # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
       @translations[t.key] = t.value
     end
 
@@ -55,8 +54,6 @@ class TreesController < ApplicationController
     newHash = {}
 
     # create ruby hash from tree records, to easily build tree from record codes
-    @translations.each do |k,v|
-    end
     @trees.each do |tree|
       translation = @translations[tree.name_key]
       areaHash = {}
@@ -89,12 +86,16 @@ class TreesController < ApplicationController
       when 5
         # to do - look into refactoring this
         # check to make sure parent in hash exists.
-        Rails.logger.debug("*** tree index - tree: #{tree.inspect}")
+        Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
+        Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
+        Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
+        newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        Rails.logger.debug("indicator newhash: #{newHash.inspect}")
         if treeHash[tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
         elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
           raise I18n.t('trees.errors.missing_component_in_tree')
-        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.outcome].blank?
+        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)].blank?
           Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
           Rails.logger.error "area: #{tree.codeArrayAt(1)}"
           Rails.logger.error treeHash[tree.codeArrayAt(1)]
@@ -106,33 +107,7 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
         end
         Rails.logger.debug("*** translation: #{translation.inspect}")
-
-        # attempt to stop json parser errors on regular string.
-        all_translations = []
-        begin
-          all_translations = translation.present? ? JSON.load(translation) : []
-        rescue JSON::ParserError
-          all_translations = (translation.present? && translation.is_a?(String) ) ? [translation]: ['']
-        end
-
-        # attempt to stop json parser errors on regular strings
-        all_codes = []
-        begin
-          all_codes = tree.matching_codes.present? ? JSON.load(tree.matching_codes) : []
-        rescue JSON::ParserError
-          all_codes = (tree.matching_codes.present? && tree.matching_codes.is_a?(String) ) ? [tree.matching_codes]: ['']
-        end
-
-        Rails.logger.debug("*** translate - tree.matching_codes: #{tree.matching_codes.inspect}")
-        all_codes = JSON.load(tree.matching_codes)
-        # add indicator level item directly under outcome
-        Rails.logger.debug("*** add to #{}")
-        all_codes.each_with_index do |c, ix|
-          newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}", id: "#{tree.id}", nodes: {}}
-          Rails.logger.debug("*** #{tree.codeByLocale(@locale_code, ix)}: #{all_translations[ix]}, id: #{tree.id}")
-          addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.codeArrayAt(3), newHash)
-          Rails.logger.debug("*** area: #{tree.codeArrayAt(0)}, component: #{tree.codeArrayAt(1)}, outcome: #{tree.codeArrayAt(2)}, subCode: #{tree.codeArrayAt(3)}, ")
-        end
+        addNodeToArrHash(treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
 
       else
         raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
