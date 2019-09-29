@@ -256,7 +256,7 @@ class UploadsController < ApplicationController
           when 'Keyed Description'
             # indicator (with a letter) - note it is passed without code hierarchy
             # note: top item in displayed code is grade number, so is ignored in hierarchy
-            Rails.logger.debug("Keyed Description: #{lineKey}, #{lineValue}")
+            Rails.logger.debug("Keyed Description - #{lineKey}: #{lineValue}")
 
           when 'Indicator'
             # indicator (with a letter) - note it is passed without code hierarchy

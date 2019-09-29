@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181110170331) do
+ActiveRecord::Schema.define(version: 20190929205845) do
 
   create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20181110170331) do
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "base_key"
     t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
   end
 

@@ -102,26 +102,32 @@ grades = GradeBand.all
 @gb_mid = [@gb_5, @gb_6, @gb_7, @gb_8]
 puts "grades: #{grades.pluck(:id)}"
 
+
 if Subject.count < 5
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'bio'
+    code: 'bio',
+    base_key: 'subject.bio'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'che'
+    code: 'che',
+    base_key: 'subject.che'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'mat'
+    code: 'mat',
+    base_key: 'subject.mat'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'phy'
+    code: 'phy',
+    base_key: 'subject.phy'
   )
   Subject.create(
     tree_type_id: @tfv.id,
-    code: 'sci'
+    code: 'sci',
+    base_key: 'subject.sci'
   )
 end
 throw "Invalid Subject Count" if Subject.count != 5
@@ -133,6 +139,48 @@ throw "Invalid Subject Count" if Subject.count != 5
 @subjects = Subject.all
 @subj_hs = [@bio, @che, @mat, @phy]
 @subj_mid = [@sci]
+
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.bio.name', 'Biology')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.bio.abbr', 'Bio')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.bio.name', 'Biyoloji')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.bio.abbr', 'Biy')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.che.name', 'Chemistry')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.che.abbr', 'Chem')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.che.name', 'Kimya')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.che.abbr', 'Kim')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.mat.name', 'Mathematics')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.mat.abbr', 'Math')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.mat.name', 'Matematik')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.mat.abbr', 'Mat')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.phy.name', 'Physics')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.phy.abbr', 'Phy')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.phy.name', 'Fizik')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.phy.abbr', 'Fiz')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.sci.name', 'Science')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.sci.abbr', 'Sci')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.sci.name', 'Bilim')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.sci.abbr', 'Bil')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
 
 # high school subjects:
 
@@ -224,4 +272,21 @@ throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.7.name', 'Internet of Objects / 5G')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.8.name', 'Population Increase vs Resource Consumption')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.1.name', 'Endüstri 4.0')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.2.name', 'Sensörler ve Görüntüleme Teknolojisi')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.3.name', 'Yeni Gıda Teknolojileri')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.4.name', 'Biyomedikal Teknoloji')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.5.name', 'Nanoteknoloji / Uzay Teknolojisi')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.6.name', 'Küresel Isınma')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.7.name', 'Nesnelerin İnterneti / 5G')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'sector.8.name', 'Nüfus artışı karşı Kaynak Tüketimi')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR

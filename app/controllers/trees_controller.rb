@@ -191,13 +191,14 @@ class TreesController < ApplicationController
 
   def show
     process_tree = false
+    Rails.logger.debug("*** depth: #{@tree.depth}")
     case @tree.depth
       # process this tree item, is at proper depth to show detail
-    when 3
+    when 5
       # process this single indicator
       @trees = [@tree]
       process_tree = true
-    when 2
+    when 4
       # get all indicators for this outcome and single grade band
       @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
       process_tree = true
