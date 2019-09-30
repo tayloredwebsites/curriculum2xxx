@@ -6,8 +6,7 @@ Key Concepts: nutrition, biology, excretion, growth, vitality, development, move
 a. It is mentioned briefly how the biology is used with the present meaning through the concept of living.
 b. The features of living creatures such as cellular structure, nutrition, respiratory, excretory, movement, reaction to stimuli, metabolism, homeostasis, harmony, organization, reproduction, growth and development are highlighted.
 9.1.2. Basic Compounds in the Structure of Living Things
-Key Concepts: acid, ATP, base, DNA, enzyme, hormone, inorganic, carbohydrate, mineral,
-organic, protein, RNA, water, salt, vitamin, lipid
+Key Concepts: acid, ATP, base, DNA, enzyme, hormone, inorganic, carbohydrate, mineral, organic, protein, RNA, water, salt, vitamin, lipid
 9.1.2.1. Explains the organic and inorganic compounds that make up the structure of living things.
 a. The importance of water, minerals, acids, bases and salts for living beings is indicated.
 b. The importance of minerals of calcium, potassium, iron, iodine, fluorine, magnesium, sodium, phosphorus, chlorine, sulphur, zinc for living beings is emphasized.
@@ -43,8 +42,7 @@ Key Concepts: double naming, classification, type
 9.3.1.1. Explains the importance of classification in understanding the diversity of living things.
 a. The different criteria and approaches used by scientists in classifying living things are discussed.
 b. Changes in the diversity of livings are discussed through the example of extinct creatures.
-9.3.1.2. Explains the categories used in the classification of living things and the
-hierarchy between these categories with examples.
+9.3.1.2. Explains the categories used in the classification of living things and the hierarchy between these categories with examples.
 a. In the classification of living things, only the general characteristics of species, genus, family, team, class, branch and world categories are mentioned.
 b. The classification studies of Carolus Linnaeus are mentioned.
 c. The examples of bilateral naming regarding the species to be selected from the environment are given by considering hierarchical categories.
@@ -55,8 +53,7 @@ Key Concepts: arches, bacteria, plants, animals, fungi, protists, viruses
 a. The general characteristics of realms of bacteria, arches, protists, plants, fungi, animals are explained by exemplifying. The classification of other realms, except the world of animals, is not explained.
 b. The general characteristics of animal world as invertebrate animals (sponges, dishwashers, worms, molluscs, arthropods, arthropods) and vertebrate animals (fish, biennials, reptiles, birds, mammals) are given by exemplifying. Its structure and systematic are not explained.
 c. In the context of the classification of living things, it is mentioned that the scientific knowledge is tested, corrected or renewed.
-9.3.2.2. Explains the contribution of living things to biological processes, economy and technology by examples.
-Examples of technologies developed by inspiring from living things are given.
+9.3.2.2. Explains the contribution of living things to biological processes, economy and technology by examples. Examples of technologies developed by inspiring from living things are given.
 9.3.2.3. Explains the general characteristics of viruses.
 a. The reasons for not taking viruses into biological classification categories are discussed.
 b. The effects of viruses on human health are discussed through rabies, hepatitis, flu, herpes and AIDS diseases. The measures to be taken against viral diseases are highlighted.

@@ -143,12 +143,11 @@ en:
       how_sectors_related: 'How Vision is related.'
       indicator_connections: 'Connections to Other Indicators:'
       current_subject: "This Subject"
-      Bio: "Biology"
-      Hem: "Chemistry"
-      Geo: "Geography"
-      IT: "Information Technology"
-      Mat: "Mathematics"
-      Fiz: "Physics"
+      bio: "Biology"
+      che: "Chemistry"
+      mat: "Mathematics"
+      phy: "Physics"
+      sci: "Science"
       teacher_header: "Supporting Resources"
       teacher_field_1: "Multi, inter or trans disciplinary Future Vision based projects"
       teacher_field_2: "Rough Learning Progression - When to teach"
