@@ -74,54 +74,62 @@ class TreesController < ApplicationController
       depth = tree.depth
       case depth
 
+      when 1
+        newHash = {text: "#{I18n.translate('app.labels.grade_band')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        # add grade (band) if not there already
+        treeHash[tree.codeArrayAt(0)] = newHash if !treeHash[tree.codeArrayAt(0)].present?
+
       when 2
-        newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
-        # add area if not there already
-        treeHash[tree.codeArrayAt(1)] = newHash if !treeHash[tree.codeArrayAt(1)].present?
+        newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", nodes: {}}
+        # puts ("+++ codeArray: #{tree.codeArray.inspect}")
+        if treeHash[tree.codeArrayAt(0)].blank?
+          raise I18n.t('trees.errors.missing_grade_in_tree')
+        end
+        Rails.logger.debug("*** #{tree.codeArrayAt(1)} to area #{tree.codeArrayAt(0)} in treeHash")
+        addNodeToArrHash(treeHash[tree.codeArrayAt(0)], tree.subCode, newHash)
 
       when 3
         newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
         # puts ("+++ codeArray: #{tree.codeArray.inspect}")
-        if treeHash[tree.codeArrayAt(1)].blank?
+        if treeHash[tree.codeArrayAt(0)].blank?
+          raise I18n.t('trees.errors.missing_grade_in_tree')
+        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
         end
         Rails.logger.debug("*** #{tree.codeArrayAt(2)} to area #{tree.codeArrayAt(1)} in treeHash")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(1)], tree.subCode, newHash)
+        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
       when 4
         newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
-        if treeHash[tree.codeArrayAt(1)].blank?
+        if treeHash[tree.codeArrayAt(0)].blank?
+          raise I18n.t('trees.errors.missing_grade_in_tree')
+        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
           raise I18n.t('trees.errors.missing_component_in_tree')
         end
-        addNodeToArrHash(treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
+        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
 
       when 5
-        # to do - look into refactoring this
-        # check to make sure parent in hash exists.
-        Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
-        Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
-        Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
+        # # to do - look into refactoring this
+        # # check to make sure parent in hash exists.
+        # Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
+        # Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
+        # Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
         newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
-        Rails.logger.debug("indicator newhash: #{newHash.inspect}")
-        if treeHash[tree.codeArrayAt(1)].blank?
+        # Rails.logger.debug("indicator newhash: #{newHash.inspect}")
+        if treeHash[tree.codeArrayAt(0)].blank?
+          raise I18n.t('trees.errors.missing_grade_in_tree')
+        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
           raise I18n.t('trees.errors.missing_component_in_tree')
-        elsif treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)].blank?
+        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)].blank?
           Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
-          Rails.logger.error "area: #{tree.codeArrayAt(1)}"
-          Rails.logger.error treeHash[tree.codeArrayAt(1)]
-          Rails.logger.error "component: #{tree.component}"
-          Rails.logger.error treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)]
-          Rails.logger.error "outcome: #{tree.outcome}"
-          Rails.logger.error treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes]
-          Rails.logger.error treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)]
           raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
         end
         Rails.logger.debug("*** translation: #{translation.inspect}")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
+        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
 
       else
         raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)

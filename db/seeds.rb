@@ -102,7 +102,6 @@ grades = GradeBand.all
 @gb_mid = [@gb_5, @gb_6, @gb_7, @gb_8]
 puts "grades: #{grades.pluck(:id)}"
 
-
 if Subject.count < 5
   Subject.create(
     tree_type_id: @tfv.id,

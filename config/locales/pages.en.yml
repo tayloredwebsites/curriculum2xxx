@@ -156,6 +156,7 @@ en:
       teacher_field_5: "Additional Background and Resource Materials for the Teacher"
       teacher_field_6: "Goal behaviour (What students will do, Practical learning targets)"
     errors:
+      missing_grade_in_tree: "error: missing grade in report tree."
       missing_area_in_tree: "error: missing area in report tree."
       missing_component_in_tree: "error: missing component in report tree."
       missing_outcome_in_tree: "error: missing outcome in report tree."
