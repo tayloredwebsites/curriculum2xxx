@@ -67,8 +67,7 @@ scope "(:locale)", locale: /tr|en/ do
 
 
   # root to: 'application#index'
-  root to: 'users#home'
-  get '/elm', to: 'application#index'
+  root to: 'trees#index'
 
 end # end routes scope
 

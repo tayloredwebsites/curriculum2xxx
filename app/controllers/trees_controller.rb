@@ -3,22 +3,36 @@ class TreesController < ApplicationController
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
 
   def index
-    index_prep
-    respond_to do |format|
-      format.html
-      format.json { render json: {subjects: @subjects, grade_bands: @gbs}}
-    end
-
+    index_listing
   end
 
   def index_listing
     # to do - refactor this
-    @subjects = Subject.all.order(:code)
+    @subjects = {}
+    subjIds = {}
+    Subject.all.each do |s|
+      @subjects[s.code] = s
+      subjIds[s.id.to_s] = s
+    end
     @gbs = GradeBand.all
-    @gbs_upper = GradeBand.where(code: ['9','13'])
+    # @gbs_upper = GradeBand.where(code: ['9','13'])
 
-    @subj = params[:tree].present? && params[:tree][:subject_id].present? ? Subject.find(params[:tree][:subject_id]) : nil
+    if params[:tree].present? && tree_params[:subject_id].present?
+      @subj = subjIds[tree_params[:subject_id]]
+      Rails.logger.debug("*** index_listing params ID: #{tree_params[:subject_id]}")
+    elsif @subject_code.present? && @subjects[@subject_code].present?
+      @subj = @subjects[@subject_code]
+      Rails.logger.debug("*** index_listing @subject_code: #{@subject_code.inspect}")
+    else
+      subjCode, @subj = @subjects.first
+      Rails.logger.debug("*** index_listing no match: #{subjCode} #{@subj.inspect}")
+    end
     @gb = params[:tree].present? && params[:tree][:grade_band_id].present? ? GradeBand.find(params[:tree][:grade_band_id]) : nil
+
+    Rails.logger.debug("*** @subject_code: #{@subject_code.inspect}")
+    Rails.logger.debug("*** @subj: #{@subj.inspect}")
+    Rails.logger.debug("*** @subj.abbr(@locale_code): #{@subj.abbr(@locale_code).inspect}")
+    setSubjectCode(@subj.code)
 
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
@@ -67,7 +81,7 @@ class TreesController < ApplicationController
 
       when 3
         newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
-        puts ("+++ codeArray: #{tree.codeArray.inspect}")
+        # puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
         end
@@ -114,7 +128,7 @@ class TreesController < ApplicationController
       end
     end
     # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
-    puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
+    # puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
     otcArrHash = []
     treeHash.each do |key1, area|
       a2 = {text: area[:text], href: "javascript:void(0);"}
@@ -138,7 +152,7 @@ class TreesController < ApplicationController
       # done with area, append it to otcArrHash
       otcArrHash << a2
     end
-    puts ("+++ otcArrHash: #{JSON.pretty_generate(otcArrHash)}")
+    # puts ("+++ otcArrHash: #{JSON.pretty_generate(otcArrHash)}")
 
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
@@ -300,7 +314,7 @@ class TreesController < ApplicationController
   def index_prep
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all
-    @gbs_upper = GradeBand.where(code: ['9','13'])
+    # @gbs_upper = GradeBand.where(code: ['9','13'])
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
