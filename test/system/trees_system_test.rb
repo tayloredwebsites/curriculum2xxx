@@ -171,7 +171,7 @@ class TreesSystemTest < ApplicationSystemTestCase
     within('.area-row') { assert page.has_content?('Area 1: Structure and property of matter'), 'missing matching area row' }
     within('.component-row') { assert page.has_content?('Component 1: differentiates composition and type of matter'), 'missing matching component row' }
     within('.outcome-row') { assert page.has_content?('Outcome 1: ["Distinguishes between pure matter (atoms and molecules) and mixtures (homogenous and heterogeneous)"]'), 'missing matching outcome row' }
-    within('.indicator-name') { assert page.has_content?("Indicator 1.1.1.a: [\"Distinguishes between pure matter (atoms and molecules) and mixtures (homogenous and heterogeneous)\"]"), 'missing indicator' }
+    within('.related-items-name') { assert page.has_content?("Indicator 1.1.1.a: [\"Distinguishes between pure matter (atoms and molecules) and mixtures (homogenous and heterogeneous)\"]"), 'missing indicator' }
     assert_equal 'Knowing properties of materials is a basis for modern production of materials', page.find('.rel-reason-col.val').text
     within('.rel-sector-col.val') do
       assert page.has_content?("3 - Technology of materials")

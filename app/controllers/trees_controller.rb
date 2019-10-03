@@ -216,11 +216,11 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** depth: #{@tree.depth}")
     case @tree.depth
       # process this tree item, is at proper depth to show detail
-    when 5
+    when 4
       # process this single indicator
       @trees = [@tree]
       process_tree = true
-    when 4
+    when 3
       # get all indicators for this outcome and single grade band
       @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
       process_tree = true
@@ -243,13 +243,16 @@ class TreesController < ApplicationController
       Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
       # get all translation keys for this learning outcome
       treeKeys = @tree.getAllTransNameKeys
+      Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
       @trees.each do |t|
         Rails.logger.debug("*** tree: #{t.base_key}")
         # get translation key for this indicator
         treeKeys << t.name_key
+        Rails.logger.debug("*** add tree name_key: #{t.name_key}")
         # get translation key for each sector for this indicator
         if treeKeys
           t.sectors.each do |s|
+            Rails.logger.debug("*** add sector name_key: #{s.name_key}")
             treeKeys << s.name_key
           end
         end
@@ -258,6 +261,7 @@ class TreesController < ApplicationController
         t.related_trees.each do |r|
           Rails.logger.debug("*** related: #{r.inspect}")
           treeKeys << r.name_key
+          Rails.logger.debug("*** add related name_key: #{r.name_key}")
           subCode = @subjById[r.subject_id]
           Rails.logger.debug("*** @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
           @relatedBySubj[subCode] << {
@@ -268,13 +272,16 @@ class TreesController < ApplicationController
         end
         # get the translation key for the indicators in the group of matched (indicators)
         JSON.load(t.matching_codes).each do |j|
+          Rails.logger.debug("*** add indicator name_key: #{j.name_key}")
           treeKeys << "#{t.buildRootKey}.#{j}.name"
         end
+        Rails.logger.debug("*** add explain name_key: #{t.base_key}.explain")
         treeKeys << "#{t.base_key}.explain"
         @indicators << t
       end
       Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
       @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+      Rails.logger.debug("*** @translations: #{@translations.inspect}")
     end
   end
 

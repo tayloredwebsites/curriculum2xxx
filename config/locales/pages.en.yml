@@ -142,6 +142,7 @@ en:
       related_sectors: 'Related Visions'
       how_sectors_related: 'How Vision is related.'
       indicator_connections: 'Connections to Other Indicators:'
+      outcome_connections: 'Connections to Other Outcomes:'
       current_subject: "This Subject"
       bio: "Biology"
       che: "Chemistry"

@@ -37,15 +37,28 @@
       pointer-events:none;
     }
   }
+  #main-container.trees .detail-page .related-items-table .center-label {
+    background-color: #ddd;
+    text-align: center !important;
+    border-bottom: 1px solid black;
+  }
 
   .detail-page {
-    .col {
-      text-align: left;
-    }
     .label {
       background-color: #ddd;
     }
-    .indicator-table {
+    .center-label-bold {
+      background-color: #ddd;
+      text-align: center !important;
+      border-bottom: 1px solid black;
+      font-weight: bold;
+    }
+    .center-label {
+      background-color: #ddd;
+      text-align: center !important;
+      border-bottom: 1px solid black;
+    }
+    .related-items-table {
       overflow: hidden;
       margin-right: -15px;
       margin-left: -15px;
@@ -62,6 +75,7 @@
     }
     .row.teacher-label .col {
       text-align: center !important;
+      font-weight: bold;
       border-top: 1px solid black;
       border-right: 1px solid black;
       border-bottom: 0px solid black;
@@ -82,14 +96,14 @@
     }
   }
 
-  .indicator-table {
+  .related-items-table {
     word-wrap: break-word;
   }
 
   @media only screen and (max-width: 767px) {
-    .indicator-table {
+    .related-items-table {
       // detail page indicator move to top on thin screens
-      .indicator-name {
+      .related-items-name {
         float: none;
         width: 100%;
         border-bottom:1px solid black;
@@ -118,10 +132,10 @@
 
   @media only screen and (min-width: 768px) {
     // detail page indicator move to top on thin screens
-    .indicator-table {
+    .related-items-table {
       border-left: 1px solid black;
     }
-    .indicator-name {
+    .related-items-name {
       float: left;
       min-width: 200px;
       width: 30%;

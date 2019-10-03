@@ -11,85 +11,104 @@
   <!--  loop through all indicators for this outcome -->
   <% @indicators.each do |tree| %>
     <div class='detail-page'>
-      <div class='row subject-grade-row'><%= tree.subject.code %> <%= tree.grade_band.code %></div>
-      <div class='row area-row'><%= "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div>
-      <div class='row component-row'><%= "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div>
-      <div class='row outcome-row'><%= "#{I18n.translate('app.labels.outcome')} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %></div>
+      <div class='row subject-grade-row'><div class='col col-lg-12 text-left'><%= I18n.translate('app.labels.grade_band') %>: <%= tree.grade_band.code %></div></div>
+      <div class='row area-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div></div>
+      <div class='row component-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div></div>
+      <div class='row outcome-row'>
+        <div class='col col-lg-6 text-left'><%= "#{I18n.translate('app.labels.outcome')} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %></div>
+        <div class='col col-lg-6 text-right'><a href='#'>Edit</a></div>
+      </div>
 
-      <div class='indicator-table'>
-        <div class='indicator-name'>
-          <%
-            ind_codes = JSON.load(tree.matching_codes)
-            ind_codes.each do |ia|
-              code = "#{tree.buildRootKey}.#{ia}.name"
-          %>
-            <p><%= "#{I18n.translate('app.labels.indicator')} #{ia}: #{@translations[code]}" %></p>
-          <% end %>
+      <div class='related-indicators'>
+        <div class='row center-label-bold'>
+          <div class='col col-lg-12'>
+            <%-#= I18n.t('nav_bar.sectors.name') %>
+          </div>
         </div>
-        <div class='col indicator-info'>
-          <div class='row'>
-            <div class='col col-lg-6 rel-sector-col label'>
-              <%= I18n.t('trees.labels.related_sectors') %>
-            </div>
-            <div class='col col-lg-6 rel-reason-col label'>
-              <%= I18n.t('trees.labels.how_sectors_related') %>
-            </div>
+        <div class='row'>
+          <div class='col col-lg-6 rel-sector-col center-label'>
+            <%-#= I18n.t('trees.labels.related_sectors') %>
           </div>
-          <div class='row'>
-            <div class='col col-lg-6 rel-sector-col val'>
-              <% tree.sectors.each do |s| %>
-                <div class='row'>
-                  <div class='col col-lg-12 rel-sectors'>
-                    <%= link_to(
-                      "#{s.code} - #{@translations[s.name_key]}",
-                      sectors_path(
-                        controller: 'sector',
-                        action: 'index',
-                        tree: {
-                          sector_id: "#{s.id}",
-                          grade_band_id: "#{@tree.grade_band_id}",
-                          subject_id: "#{@tree.subject_id}"
-                        }
-                      ),
-                      html_options = {data: { :sector => s.id }}
-                    ) %>
-                  </div>
+          <div class='col col-lg-6 rel-reason-col center-label'>
+            <%-#= I18n.t('trees.labels.how_sectors_related') %>
+          </div>
+        </div>
+        <%
+          ind_codes = JSON.load(tree.matching_codes)
+          ind_codes.each do |ia|
+            code = "#{tree.buildRootKey}.#{ia}.name"
+        %>
+          <p><%= "#{I18n.translate('app.labels.indicator')} #{ia}: #{@translations[code]}" %></p>
+        <% end %>
+      </div>
+      <div class='related-items-table'>
+        <div class='row center-label-bold'>
+          <div class='col col-lg-12'>
+            <%= I18n.t('nav_bar.sectors.name') %>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col col-lg-6 rel-sector-col center-label'>
+            <%= I18n.t('trees.labels.related_sectors') %>
+          </div>
+          <div class='col col-lg-6 rel-reason-col center-label'>
+            <%= I18n.t('trees.labels.how_sectors_related') %>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col col-lg-6 rel-sector-col val'>
+            <% tree.sectors.each do |s| %>
+              <div class='row'>
+                <div class='col col-lg-12 rel-sectors'>
+                  <%= link_to(
+                    "#{s.code} - #{@translations[s.name_key]}",
+                    sectors_path(
+                      controller: 'sector',
+                      action: 'index',
+                      tree: {
+                        sector_id: "#{s.id}",
+                        grade_band_id: "#{@tree.grade_band_id}",
+                        subject_id: "#{@tree.subject_id}"
+                      }
+                    ),
+                    html_options = {data: { :sector => s.id }}
+                  ) %>
                 </div>
-              <% end %>
-            </div>
-            <div class='col col-lg-6 rel-reason-col val'>
-              <%= @translations["#{tree.base_key}.explain"] %>
-            </div>
-          </div>
-          <div class='row subject-relations label'>
-            <div class='col col-lg-12'>
-              <%= I18n.t('trees.labels.indicator_connections') %>
-            </div>
-          </div>
-          <% @relatedBySubj.each do |subj, rel|%>
-            <div class='row subject-relations'>
-              <div class='col col-lg-12' style='background-color: #eee;'>
-                <%= I18n.t("trees.labels.#{subj}") %>
               </div>
-              <% rel.each do |r| %>
-                <div class='col col-lg-12' style='padding-left: 30px;'>
-                  <div class='row'>
-                    <div class='col col-lg-1'>
-                      <%= r[:code] %>
-                    </div>
-                    <div class='col col-lg-11'>
-                      <% if r[:tid] == 0 %>
-                        <%= @translations[r[:tkey]] %>
-                      <% else %>
-                        <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
-                      <% end %>
-                    </div>
+            <% end %>
+          </div>
+          <div class='col col-lg-6 rel-reason-col val'>
+            <%= @translations["#{tree.base_key}.explain"] %>
+          </div>
+        </div>
+        <div class='row subject-relations center-label-bold'>
+          <div class='col col-lg-12'>
+            <%= I18n.t('trees.labels.outcome_connections') %>
+          </div>
+        </div>
+        <% @relatedBySubj.each do |subj, rel|%>
+          <div class='row subject-relations'>
+            <div class='col col-lg-12' style='background-color: #eee;'>
+              <%= I18n.t("trees.labels.#{subj}") %>
+            </div>
+            <% rel.each do |r| %>
+              <div class='col col-lg-12' style='padding-left: 30px;'>
+                <div class='row'>
+                  <div class='col col-lg-1'>
+                    <%= r[:code] %>
+                  </div>
+                  <div class='col col-lg-11'>
+                    <% if r[:tid] == 0 %>
+                      <%= @translations[r[:tkey]] %>
+                    <% else %>
+                      <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+                    <% end %>
                   </div>
                 </div>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
       </div>
       <div class='row teacher-label label'>
         <div class='col col-lg-12'>
@@ -121,6 +140,9 @@
           <%= I18n.t('trees.labels.teacher_field_6') %>
           <br><br><br>
         </div>
+      </div>
+      <div class='row outcome-row'>
+        <div class='col col-lg-12 text-right'><a href='#'>Edit</a></div>
       </div>
     </div>
   <% end %>

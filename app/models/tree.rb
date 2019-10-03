@@ -194,17 +194,21 @@ class Tree < BaseRec
   end
 
   def self.buildNameKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
-    return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}.name"
+    # return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}.name"
+    return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{fullCode}.name"
   end
   def buildNameKey
-    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}.name"
+    # return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}.name"
+    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.code}.name"
   end
 
   def self.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
-    return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}"
+    # return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}"
+    return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{fullCode}"
   end
   def buildBaseKey
-    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}"
+    # return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}"
+    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.code}"
   end
 
   def buildRootKey
@@ -236,6 +240,7 @@ class Tree < BaseRec
       parents << parent
       parent = parent.getParentRec
     end
+    Rails.logger.debug("*** tree parents: #{parents.inspect}")
     return parents
   end
 
