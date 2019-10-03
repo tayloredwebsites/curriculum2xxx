@@ -1,0 +1,78 @@
+
+tr:
+  app:
+    title: "Türkiye STEM Ana Sayfa"
+    labels:
+      all: "Her Sey"
+      save: "Save"
+      cancel: "Cancel"
+      submit: "Submit"
+      edit: "Edit"
+      create: "Create"
+      subject: "Konusu"
+      grade_band: "seviyesi"
+      grade_band_num: "seviyesi %{num}"
+      action: "Aksiyon"
+      actions: "Aksiyon"
+      language: "Language"
+      row: "Row Number"
+      row_num: "Row: %{num} - "
+      area: "Birim"
+      component: "Bölüm"
+      outcome: "Çıktılarını"
+      indicator: "Indicator"
+      indicators: "Göstergeler"
+      code: "Code"
+      description: 'Description'
+      message: "Message"
+      gen_list: "Liste Oluştur"
+      sector: "Gelecek Vizyonu"
+  nav_bar:
+    home:
+      name: "Ev"
+      hover: "Türkiye STEM Ana Sayfa"
+    curriculum:
+      name: "Gelecek Müfredat"
+      hover: "Müfredat Ağacı'nı görüntüler"
+    sectors:
+      name: "Gelecek Sektörler"
+      hover: "Gelecekteki Sektörlere Göre Müfredatı görüntüler"
+    documents:
+      name: "Belge"
+      hover: "Yöneticiler İçin Belge Yönetimi"
+    uploads:
+      name: "Yüklemeler"
+      hover: "Müfredat E-Tablo Yüklemeleri"
+    translations:
+      name: "Çeviriler"
+      hover: "Yöneticiler İçin Tercüme Yönetimi"
+    users:
+      name: "Kullanıcılar"
+      hover: "Kullanıcı yönetimi"
+    my_account:
+      name: "Hesabım"
+      hover: "Hesap bilgilerimi değiştir"
+    signin:
+      name: "Oturum aç"
+      hover: "web sitesine giriş"
+    signout:
+      name: "Oturumu Kapat"
+      hover: "Web Sitesinden Çıkış Yap"
+  trees:
+    index:
+      name: "Türkiye STEM Müfredatı"
+      title: "Türkiye STEM Müfredatı"
+    show:
+      name: "Müfredat Ayrıntı Sayfası"
+    labels:
+      show_areas: "Birimleri Göster"
+      show_components: "Bölümlerini Göster"
+      show_outcomes: "ÖÇıktılarını Göster"
+      show_indicators: "Göstergeler Göster"
+      filter_by_subject_grade: "Konuya ve Dereceye Göre Filtrele"
+      future_vision: "Gelecek Vizyonu"
+      future_vision_hover: "Gelecek Vizyonu"
+      related_sectors: 'İlgili Vizyonlar'
+      how_sectors_related: 'Vizyonun ilişkisi'
+      indicator_connections: 'Diğer Öğrenme Çıktılarına Bağlantılar:'
+      current_subject: "Bu Konusu"

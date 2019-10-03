@@ -10,14 +10,15 @@
         <div class='col col-md-4 border-top border-right'><%= translate('app.labels.actions') %></div>
       </div>
       <div class='row'>
-        <!-- div class='col col-md-4 border-left border-bottom subject-with-gb'><%= collection_select(:tree, :subject_id, @subjects, :id, :code) %></div -->
         <div class='col col-md-4 border-left border-bottom subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
           <% Subject.all.each do |s| %>
-            <option value=<%= s.id%>><%=s.abbr( @locale_code )%></option>
+            <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
+            <%= Rails.logger.debug("index match output: #{selectedStr}") %>
+            <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
           <% end %>
         </select></div>
         <div id='gb-container' class='col col-md-4 border-left border-bottom'>
-          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs_upper, :id, :code, {include_blank: I18n.t('app.labels.all')}, {} ) %></span>
+          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, {include_blank: I18n.t('app.labels.all')}, {} ) %></span>
           <span id='all-gbs-select'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
         </div>
 
