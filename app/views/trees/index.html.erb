@@ -6,14 +6,10 @@
 <% if @otcJson %>
 <br>
 <div class='text-center'>
-  <button id='showAreas' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 1, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_areas') %></button>
-  <button id='showComponents' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 2, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_components') %></button>
-  <button id='showOutcomes' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 3, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_outcomes') %></button>
-  <% if @gb.present? %>
-    <button id='showIndicators' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 4, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
-  <% else %>
-    <button id='showIndicators' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 5, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
-  <% end %>
+  <button id='showAreas' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 2, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_areas') %></button>
+  <button id='showComponents' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 3, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_components') %></button>
+  <button id='showOutcomes' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 4, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_outcomes') %></button>
+  <button id='showIndicators' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 5, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button>
 </div>
 <div id="tree"></div>
 
