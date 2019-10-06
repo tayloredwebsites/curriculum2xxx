@@ -21,7 +21,6 @@
         </div>
         <div class='col col-md-2 border-bottom'>
           <span id='all-gbs-select'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
-          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs_upper, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
         </div>
 
         <div class='col col-md-6 border-bottom'>
