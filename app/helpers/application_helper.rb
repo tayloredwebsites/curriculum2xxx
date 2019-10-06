@@ -42,7 +42,8 @@ module ApplicationHelper
   def sectorsOptions(selected_id, transl)
     ret = [['All', '']]
     Sector.all.each do |s|
-      ret << [ transl["sector.#{s.code}.name"], s.id ]
+      # ret << [ transl["sector.#{s.code}.name"], s.id ]
+      ret << [ Translation.where(locale: @locale_code, key: s.name_key).first.value, s.id ]
     end
     return ret
   end

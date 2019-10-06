@@ -72,7 +72,10 @@ tr:
       filter_by_subject_grade: "Konuya ve Dereceye Göre Filtrele"
       future_vision: "Gelecek Vizyonu"
       future_vision_hover: "Gelecek Vizyonu"
-      related_sectors: 'İlgili Vizyonlar'
-      how_sectors_related: 'Vizyonun ilişkisi'
-      indicator_connections: 'Diğer Öğrenme Çıktılarına Bağlantılar:'
+      related_sectors: 'İlgili Sektörler'
+      how_sectors_related: 'Sektör ile ilgili nasıl.'
+      indicator_connections: 'Diğer Öğrenme Bağlantılar:'
+      outcome_connections: 'Diğer Öğrenme Çıktıları:'
+      how_outcome_related: 'Çıktıları Nasıl İlişkilidir:'
+
       current_subject: "Bu Konusu"

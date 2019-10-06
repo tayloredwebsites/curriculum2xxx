@@ -5,20 +5,12 @@ class SectorsController < ApplicationController
 
     @subjects = Subject.all.order(:code)
     @gbs = GradeBand.all
-    @gbs_upper = GradeBand.where(code: ['9','13'])
     @sectors = Sector.all
     @sector = Sector.new
 
     # get translation from hash of pre-cached translations.
-    name_keys = @sectors.pluck(:name_key)
-    # to do - add translations for grade bands and sectors into translations table
-    name_keys.concat(@subjects.map {|s| "subject.#{s.code}.name"} )
-    name_keys.concat(@gbs.map { |g| "grade_band.#{g.code}.name"} )
-    @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: name_keys).all
-    translations.each do |t|
-      @translations[t.key] = t.value
-    end
+    # name_keys.concat(@subjects.map {|s| "subject.#{s.code}.name"} )
+    # name_keys.concat(@gbs.map { |g| "grade_band.#{g.code}.name"} )
 
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
@@ -61,24 +53,23 @@ class SectorsController < ApplicationController
       # note: Active Record had problems with placeholder conditions in join clause.
       # Consider having Translations belong_to trees and sectors.
       # Current solution: get translation from hash of pre-cached translations.
-      name_keys= @trees.pluck(:name_key)
-      translations = Translation.where(locale: @locale_code, key: name_keys).all
-      translations.each do |t|
-        @translations[t.key] = t.value
-      end
-
       # to do - allow for top level sort by subject
       # to do - allow for sort of grade band above indicator
       if @sector_id.present?
         @sector = Sector.find(@sector_id)
-        sectorTreeIds = @sector.trees.pluck(:tree_id)
+        name_keys = getNamesForSector(@sector)
+        translations = getTranslationsForKeys(name_keys)
+        # sectorTreeIds = @sector.trees.pluck(:tree_id)
         # filter tree listing to only include ones in selected sector
-        @rptRows = outputRowsForSector(@sector)
+        @rptRows = outputRowsForSector(@sector, translations)
       else
         # filter tree to list tree items by sector
         @rptRows = []
+        Rails.logger.debug("*** @sectors: #{@sectors.inspect}")
         @sectors.each do |s|
-          @rptRows.concat(outputRowsForSector(s))
+          name_keys = getNamesForSector(s)
+          translations = getTranslationsForKeys(name_keys)
+          @rptRows.concat(outputRowsForSector(s, translations))
         end
       end
     end # if params[:tree].present? (generating report)
@@ -87,25 +78,36 @@ class SectorsController < ApplicationController
 
   private
 
-  def outputRowsForSector(sector)
+  def getNamesForSector(sector)
+    # To Do: filter out subjects and grades not diaplayed
+    name_keys = [sector.name_key]
+    sector.sector_trees.each do |st|
+      name_keys << st.explanation_key
+      name_keys << st.tree.name_key
+    end
+    return name_keys
+  end
+
+  def getTranslationsForKeys(keys)
+    translations = {}
+    translationRecs = Translation.where(locale: @locale_code, key: keys)
+    translationRecs.each do |t|
+      translations[t.key] = t.value
+    end
+    return translations
+  end
+
+
+  def outputRowsForSector(sector, translations)
     rptRows = []
-    rptRows << [sector.code, '', @translations[sector.name_key], '-1']
+    rptRows << [sector.code, '', translations[sector.name_key], '-1', '']
     # filter out records when pulling from the join
-    if @grade_band_id.present? && @subject_id.present?
-      sector.trees.where(grade_band_id: @grade_band_id, subject_id: @subject_id ).each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
-      end
-    elsif @grade_band_id.present?
-      sector.trees.where(grade_band_id: @grade_band_id).each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
-      end
-    elsif @subject_id.present?
-      sector.trees.where(subject_id: @subject_id ).each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
-      end
-    else
-      sector.trees.each do |t|
-        rptRows << ['', t.codeByLocale(@locale_code), @translations[t.name_key], t.id.to_s] if t.indicator.present?
+    # To Do: put grade band and subject into sector_trees join record to efficiently filter out selected grade or subject
+    sector.sector_trees.each do |st|
+      if @grade_band_id.present? && st.tree.grade_band_id.to_s != @grade_band_id
+      elsif @subject_id.present? && st.tree.subject_id.to_s != @subject_id
+      else
+        rptRows << [ '', st.tree.codeByLocale(@locale_code), translations[st.tree.name_key], st.tree.id.to_s, translations[st.explanation_key] ]
       end
     end
     return  rptRows

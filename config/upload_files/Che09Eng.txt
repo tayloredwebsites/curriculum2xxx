@@ -1,7 +1,6 @@
 en,che,9
 9.1. SCIENCE OF CHEMISTRY
-Key Concepts: compound, scientist, element, formula, chemistry, laboratory safety,
-substance, symbol, alchemy
+Key Concepts: compound, scientist, element, formula, chemistry, laboratory safety,    substance, symbol, alchemy
 9.1.1. From Alchemy to Chemistry
 9.1.1.1. Explains the process of science being science.
 a. The difference between alchemy and chemistry is highlighted.
@@ -26,8 +25,7 @@ b. It is emphasized that the importance of knowing the basic warning signs for o
 9.1.4.2. Explains the effects of chemicals on human health and environment.
 a. The importance of Na, K, Fe, Ca, Mg, H2O for human health and environment is mentioned.
 b. Harmful effects of Hg, Pb, CO2, NO2, SO3, CO, Cl2 substances on human health and environment are highlighted.
-9.1.4.3. Recognizes some basic materials used in chemistry laboratory.
-The basic tools such as Beherglas, Erlenmayer, Graduated Cylinder (Mesh), Pipette, Glass Balloon, Balloon Floating, Burette and separation funnel found in the laboratory are introduced.
+9.1.4.3. Recognizes some basic materials used in chemistry laboratory. The basic tools such as Beherglas, Erlenmayer, Graduated Cylinder (Mesh), Pipette, Glass Balloon, Balloon Floating, Burette and separation funnel found in the laboratory are introduced.
 9.2. ATOM AND PERIODIC SYSTEM
 Key concepts: absorption, nonmetal, atom, atomic model, atomic radius, electron affinity, electron, electronegativity, emission (emission), group, ion, ionization energy, isobar, isoelectronic, isotone, isotope, metal, neutron, periodic system, period, proton, theory, semi-metal
 9.2.1. Atom Models
@@ -43,8 +41,7 @@ b. The issue of in which way the loads and masses of the electrons, protons have
 9.2.3.1. Explains the principles of settlement of the elements in the periodic system.
 a. The work of Mendeleev on the periodic system and the contributions of Moseley are mentioned.
 b. Describes the relationship between the layer-electron distributions of atoms and their locations in the periodic system. The first 20 elements are essential and the layer electron distributions of other elements are not mentioned.
-9.2.3.2. Classifies the elements according to their place in the periodic system.
-The classification of the elements is made of as metal, nonmetal, semi-metal and noble (lineage) gases.
+9.2.3.2. Classifies the elements according to their place in the periodic system. The classification of the elements is made of as metal, nonmetal, semi-metal and noble (lineage) gases.
 9.2.3.3. Explains the changing tendencies of periodic properties.
 a. The concepts of periodic properties of metallic-ametalic, atomic radius, ionization energy, electron affinity and the electronegativity are explained; but it is not explained how to measure them.
 b. The definitions of covalent, ionic, metallic, van der Waals radius cannot be mentioned.
@@ -52,8 +49,7 @@ c. Information technologies (animation, simulation, video, etc.) are utilized in
 9.3. INTERACTIONS BETWEEN CHEMICAL SPECIES
 Key concepts: apolar covalent bond, bond energy, valence electron, hydrogen bond, ion, ionic bond, chemical bond, covalent bond, metallic bond, molecule, intermolecular interaction, polar covalent bond
 9.3.1. Chemical Type
-9.3.1.1. Explains chemical types.
-The concept of radical is not mentioned.
+9.3.1.1. Explains chemical types. The concept of radical is not mentioned.
 9.3.2. Classification of Chemical Interactions
 9.3.2.1. Classify the interactions between chemical species.
 a. The inter-species classification is made between interatomic and intermolecular; the difficulties of this classification are addressed.
@@ -68,8 +64,7 @@ c. The information technologies (animation, simulation, video, etc.) are utilize
 9.3. INTERACTIONS BETWEEN CHEMICAL SPECIES
 Key concepts: apolar covalent bond, bond energy, valence electron, hydrogen bond, ion, ionic bond, chemical bond, covalent bond, metallic bond, molecule, intermolecular interaction, polar covalent bond
 9.3.1. Chemical Type
-9.3.1.1. Explains chemical types.
-The concept of radical concept is not mentioned.
+9.3.1.1. Explains chemical types. The concept of radical concept is not mentioned.
 9.3.2. Classification of Chemical Interactions
 9.3.2.1. Classify the interactions between chemical species.
 a. The inter-species classification is made between interatomic and intermolecular; the difficulties which are brought by this classification are mentioned.
@@ -87,10 +82,8 @@ c. Nomenclature of hydrate compounds are not made.
 a. When the covalent bonds are classified, polar and apolar covalent bonds are mentioned; the coordinated covalent bonds are not explained.
 b. The polemical-apolarian states of molecules are dwelled on over Lewis electron spot formulas of simple molecules (H2, Cl2, O2, N2, HCl, H2O, BH3, NH3, CH4, CO2).
 c. Information technologies (animation, simulation, video, etc.) are used in explaining covalent bonds.
-9.3.3.4. Makes systematic nomenclature of covalent bonded compounds.
-Systematic names of the examples of compounds as H2O, HCl, H2SO4, HNO3, NH3 are given.
-9.3.3.5. Explains the formation of metallic bond.
-The electron sea model is used to explain the metallic bond.
+9.3.3.4. Makes systematic nomenclature of covalent bonded compounds. Systematic names of the examples of compounds as H2O, HCl, H2SO4, HNO3, NH3 are given.
+9.3.3.5. Explains the formation of metallic bond. The electron sea model is used to explain the metallic bond.
 9.3.4. Weak Interactions
 9.3.4.1. Distinguish weak and strong interactions based on bond energy.
 9.3.4.2. Classify weak interactions between chemical species.
@@ -99,11 +92,9 @@ b. The overall interaction forces of Dipole-dipole interactions, ion-dipole inte
 9.3.4.3. Relates the physical properties of substances with hydrogen bonds.
 a. Describes the formation of the hydrogen bond.
 b. The boiling point variations of suitable compound series are explained on the graph, using hydrogen bonds and other interactions.
-c. Aziz Sancar's studies on DNA repair and his brief biography are given as a part of reading.
-It is emphasized that the importance of being patient, decisive and determined in the success of scientific studies.
+c. Aziz Sancar's studies on DNA repair and his brief biography are given as a part of reading. It is emphasized that the importance of being patient, decisive and determined in the success of scientific studies.
 9.3.5. Physical and Chemical Changes
-9.3.5.1. Distinguishes the physical and chemical changes on the basis of the severity of the broken and formed bond energies.
-The Information technologies (animation, simulation, video, etc.) are used in the explanation of physical and chemical changes between species.
+9.3.5.1. Distinguishes the physical and chemical changes on the basis of the severity of the broken and formed bond energies. The Information technologies (animation, simulation, video, etc.) are used in the explanation of physical and chemical changes between species.
 9.4. CONDITIONS OF THE MATTER
 Key concepts: fluidity, Avogadro number, relative humidity, pressure, vapor pressure, evaporation, freezing, melting, expansion, volume, boiling, flushing (back sublimation), moles, absolute temperature, humidity, plasma, sublimation, viscosity, condensation
 9.4.1. Physical Conditions of Matter
@@ -112,8 +103,7 @@ a. It is emphasized that the physical conditions of water (solid, liquid, gas) p
 b. The importance of state changes is emphasized over the behaviors of LPG (liquefied petroleum gas), propellants in deodorants, LNG (liquefied natural gas) and gases used in refrigerators.
 c. It is dwelled on that nitrogen and oxygen obtained from the air.
 9.4.2. Solids
-9.4.2.1. Establishes the relationship between the properties of solids and the strength of bonds.
-The forces that hold the particles of salt, iodine, diamond and zinc solids together are emphasized by classifying the solids.
+9.4.2.1. Establishes the relationship between the properties of solids and the strength of bonds. The forces that hold the particles of salt, iodine, diamond and zinc solids together are emphasized by classifying the solids.
 9.4.3. Liquids
 9.4.3.1. Explains the concept of viscosity in liquids. 9.4.3.2. Explains the factors affecting viscosity in liquids.
 a. It is ensured that viscosity is correlated with intermolecular interaction. b. The viscosities of different liquids are associated with temperature.
@@ -125,24 +115,19 @@ b. The boiling and evaporation events are different from each other without ente
 a. It is stated that the presence of water vapor in the atmosphere is expressed by the concept of moisture.
 b. It is indicated that the concepts of actual and sensed temperature given in the news of meteorology is expressed with the concept of relative humidity. The relative humidity calculations are not added.
 9.4.4. Gases
-9.4.4.1. Explains the general properties of gases.
-Gas laws and kinetic-molecular theory are not mentioned.
-9.4.4.2. Explains the properties of pressure, temperature, volume and quantity of gases by units.
-It is explained that Atm and mmHg as pressure units; liters (L) as volume units; celsius (oC) and Kelvin (K) as temperature units; mole as quantity unit. Unit conversions and calculations are not mentioned.
+9.4.4.1. Explains the general properties of gases. Gas laws and kinetic-molecular theory are not mentioned.
+9.4.4.2. Explains the properties of pressure, temperature, volume and quantity of gases by units. It is explained that Atm and mmHg as pressure units; liters (L) as volume units; celsius (oC) and Kelvin (K) as temperature units; mole as quantity unit. Unit conversions and calculations are not mentioned.
 9.4.4.3. Interprets state change graphs of pure substances.
 a. The melting, freezing, evaporation-condensation and boiling processes are examined over the graphics of state changes.
 b. Calculation of the processes of the hidden heating-cooling, melting and evaporation are not mentioned.
 c. It is provided to draw the graph of the pure water by making the state change experiment.
 9.4.5. Plasma
-9.4.5.1. Explains plasma state.
-The classification of hot and cold plasma is not mentioned.
+9.4.5.1. Explains plasma state. The classification of hot and cold plasma is not mentioned.
 9.5. NATURE AND CHEMISTRY
 Key concepts: chemical pollutant, pollution, global warming, greenhouse effect, hard / soft water
 9.5.1. Water and Life
-9.5.1.1. Explains the importance of water for livings.
-The importance of water resources and its conservation is explained.
-9.5.1.2. Develop solutions for water conservation and protection of water resources.
-It is emphasized that it is a responsibility / duty for every citizen to use water-saving.
+9.5.1.1. Explains the importance of water for livings. The importance of water resources and its conservation is explained.
+9.5.1.2. Develop solutions for water conservation and protection of water resources. It is emphasized that it is a responsibility / duty for every citizen to use water-saving.
 9.5.1.3. Explains the hardness and softness properties of water.
 9.5.2. Environment’s Chemistry
 9.5.2.1. Explains chemical pollutants causing air, water and soil pollution.
