@@ -143,6 +143,7 @@ en:
       how_sectors_related: 'How Sector is related.'
       indicator_connections: 'Connections to Other Indicators:'
       outcome_connections: 'Connections to Other Outcomes:'
+      how_outcome_related: 'How Outcome is Related:'
       current_subject: "This Subject"
       bio: "Biology"
       che: "Chemistry"

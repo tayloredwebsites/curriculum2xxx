@@ -57,8 +57,8 @@
             <%= I18n.t('trees.labels.how_sectors_related') %>
           </div>
         </div>
-        <div class='row'>
-          <% tree.sector_trees.each do |st| %>
+        <% tree.sector_trees.each do |st| %>
+          <div class='row'>
             <div class='col col-lg-6 rel-sectors'>
               <%= link_to(
                 "#{@translations[st.sector.name_key]}",
@@ -77,8 +77,8 @@
             <div class='col col-lg-6 rel-reason-col val'>
               <%= @translations["#{st.explanation_key}"] %>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
       <div class='related-items-table'>
         <div class='row subject-relations center-label-bold top-label'>
@@ -87,53 +87,54 @@
           </div>
         </div>
         <div class='connections-grid'>
-          <div class='connections-item'>
+          <div class='connections-header'>
             <div class='center-label sub-header-margin'>
               <%= I18n.t('app.labels.subject') %>
             </div>
           </div>
-          <div class='connections-item'>
+          <div class='connections-header'>
             <div class='center-label sub-header-margin'>
               <%= I18n.t('app.labels.code') %>
             </div>
           </div>
-          <div class='connections-item'>
+          <div class='connections-header'>
             <div class='center-label sub-header-margin'>
               <%= I18n.t('app.labels.code') %>
             </div>
           </div>
-          <div class='connections-item'>
+          <div class='connections-header'>
             <div class='center-label sub-header-margin'>
               <%= I18n.t('app.labels.description') %>
             </div>
           </div>
+          <div class='connections-header'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('trees.labels.how_outcome_related') %>
+            </div>
+          </div>
+
         </div>
         <div class='connections-grid'>
           <% @relatedBySubj.each do |subj, rel|%>
             <% rel.each do |r| %>
               <div class='connections-item'>
-                <div class='center-label sub-header-margin'>
-                  <%= I18n.t("trees.labels.#{subj}") %>
-                </div>
+                <%= I18n.t("trees.labels.#{subj}") %>
               </div>
               <div class='connections-item'>
-                <div class='center-label sub-header-margin'>
-                  <%= r[:code] %>
-                </div>
+                <%= r[:code] %>
               </div>
               <div class='connections-item'>
-                <div class='center-label sub-header-margin'>
-                  <%= r[:code] %>
-                </div>
+                <%= r[:relationship] %>
               </div>
               <div class='connections-item'>
-                <div class='center-label sub-header-margin'>
-                  <% if r[:tid] == 0 %>
-                    <%= @translations[r[:tkey]] %>
-                  <% else %>
-                    <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
-                  <% end %>
-                </div>
+                <% if r[:tid] == 0 %>
+                  <%= @translations[r[:tkey]] %>
+                <% else %>
+                  <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+                <% end %>
+              </div>
+              <div class='connections-item'>
+                <%= @translations[r[:explanation]] %>
               </div>
             <% end %>
           <% end %>
