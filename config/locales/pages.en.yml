@@ -139,8 +139,8 @@ en:
       filter_by_subject_grade: "Filter by Subject & Grade"
       future_vision: "Future Vision"
       future_vision_hover: "Future Vision"
-      related_sectors: 'Related Visions'
-      how_sectors_related: 'How Vision is related.'
+      related_sectors: 'Related Sectors'
+      how_sectors_related: 'How Sector is related.'
       indicator_connections: 'Connections to Other Indicators:'
       outcome_connections: 'Connections to Other Outcomes:'
       current_subject: "This Subject"

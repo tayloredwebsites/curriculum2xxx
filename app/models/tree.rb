@@ -20,13 +20,12 @@ class Tree < BaseRec
   belongs_to :subject
   belongs_to :grade_band
 
-  has_and_belongs_to_many :sectors
-  # has_and_belongs_to_many :related_trees, class_name: "Tree", join_table: "related_trees_trees"
-  has_and_belongs_to_many(:related_trees,
-    :class_name => "Tree",
-    :join_table => "related_trees_trees",
-    :foreign_key => "tree_id",
-    :association_foreign_key => "related_tree_id")
+  has_many :tree_referencers, foreign_key: :tree_referencer_id, class_name: 'TreeTree'
+  # has_many :tree_referencer_trees, through: :tree_referencers
+  has_many :tree_referencees, foreign_key: :tree_referencee_id, class_name: 'TreeTree'
+  # has_many :tree_referencee_trees, through: :tree_referencees
+  has_many :sector_trees
+  has_many :sectors, through: :sector_trees
 
   # does not seem to be working ?
   # has_many :my_translations
@@ -242,6 +241,13 @@ class Tree < BaseRec
     end
     Rails.logger.debug("*** tree parents: #{parents.inspect}")
     return parents
+  end
+
+  # get all children records for this item as appropriate (e.g. indicators for outcome record)
+  def getAllChildren
+    children = Tree.where("tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code like ?", tree_type_id, version_id, subject_id, grade_band_id, code+'.%')
+    Rails.logger.debug("*** tree children: #{children.inspect}")
+    return children
   end
 
   # get all translation name keys needed for this record and parents (Area, Component and Outcome)

@@ -39,13 +39,14 @@
   <table class='tree-listing table'>
     <thead>
       <% if @rptRows.count > 0 %>
-        <!-- tr class='rpt-header'>
+        <tr class='rpt-header'>
           <th colspan="3"><%= translate('app.labels.sector') %></th>
-        </tr -->
+        </tr>
         <tr class='rpt-header'>
           <!-- th class='sector-col'>&nbsp;</th -->
-          <th class='code-col'><%= translate('app.labels.sector') %></th>
+          <th class='code-col'><%= translate('app.labels.code') %></th>
           <th class='translation-col'><%= translate('app.labels.indicators') %></th>
+          <th class='translation-col'><%= translate('app.labels.explanation') %></th>
         </tr>
       <% end %>
     </thead>
@@ -54,13 +55,13 @@
         if r[0].present?
       %>
         <tr class='rpt' data-sector='<%= r[0] %>' data-row='<%= ix %>'>
-          <td colspan='2' class='sector-row'>&nbsp;<%= r[2] %></td>
+          <td colspan='3' class='sector-row'>&nbsp;<%= r[2] %></td>
         </tr>
       <% else %>
         <tr class='rpt' data-tree='<%= r[1] %>' data-row='<%= ix %>'>
-          <td class='sector-col'>&nbsp;</td>
-          <td class='code-col'><%= r[1] %></td>
+          <td class='code-col'><a href='<%= tree_path(r[3]) %>'><%= r[1] %></a></td>
           <td class='translation-col'><a href='<%= tree_path(r[3]) %>'><%= r[2] %></a></td>
+          <td class='explanation-col'><%= r[4] %></td>
         </tr>
       <% end %>
     <% end %>

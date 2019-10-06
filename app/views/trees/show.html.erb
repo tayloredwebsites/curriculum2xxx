@@ -20,19 +20,21 @@
       </div>
 
       <div class='related-indicators'>
-        <div class='row center-label-bold'>
+        <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
-            <%-#= I18n.t('nav_bar.sectors.name') %>
+            <%= I18n.t('app.labels.indicators') %>
           </div>
         </div>
+        <% tree.getAllChildren.each do |c| %>
         <div class='row'>
-          <div class='col col-lg-6 rel-sector-col center-label'>
-            <%-#= I18n.t('trees.labels.related_sectors') %>
+          <div class='col col-lg-2 ind-col'>
+            <%= c.code %>
           </div>
-          <div class='col col-lg-6 rel-reason-col center-label'>
-            <%-#= I18n.t('trees.labels.how_sectors_related') %>
+          <div class='col col-lg-10 ind-col last-col'>
+            <%= @translations[c.buildNameKey] %>
           </div>
         </div>
+        <% end %>
         <%
           ind_codes = JSON.load(tree.matching_codes)
           ind_codes.each do |ia|
@@ -42,7 +44,7 @@
         <% end %>
       </div>
       <div class='related-items-table'>
-        <div class='row center-label-bold'>
+        <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
             <%= I18n.t('nav_bar.sectors.name') %>
           </div>
@@ -56,89 +58,122 @@
           </div>
         </div>
         <div class='row'>
-          <div class='col col-lg-6 rel-sector-col val'>
-            <% tree.sectors.each do |s| %>
-              <div class='row'>
-                <div class='col col-lg-12 rel-sectors'>
-                  <%= link_to(
-                    "#{s.code} - #{@translations[s.name_key]}",
-                    sectors_path(
-                      controller: 'sector',
-                      action: 'index',
-                      tree: {
-                        sector_id: "#{s.id}",
-                        grade_band_id: "#{@tree.grade_band_id}",
-                        subject_id: "#{@tree.subject_id}"
-                      }
-                    ),
-                    html_options = {data: { :sector => s.id }}
-                  ) %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-          <div class='col col-lg-6 rel-reason-col val'>
-            <%= @translations["#{tree.base_key}.explain"] %>
-          </div>
+          <% tree.sector_trees.each do |st| %>
+            <div class='col col-lg-6 rel-sectors'>
+              <%= link_to(
+                "#{@translations[st.sector.name_key]}",
+                sectors_path(
+                  controller: 'sector',
+                  action: 'index',
+                  tree: {
+                    sector_id: "#{st.sector.id}",
+                    grade_band_id: "#{@tree.grade_band_id}",
+                    subject_id: "#{@tree.subject_id}"
+                  }
+                ),
+                html_options = {data: { :sector => st.sector.id }}
+              ) %>
+            </div>
+            <div class='col col-lg-6 rel-reason-col val'>
+              <%= @translations["#{st.explanation_key}"] %>
+            </div>
+          <% end %>
         </div>
-        <div class='row subject-relations center-label-bold'>
+      </div>
+      <div class='related-items-table'>
+        <div class='row subject-relations center-label-bold top-label'>
           <div class='col col-lg-12'>
             <%= I18n.t('trees.labels.outcome_connections') %>
           </div>
         </div>
-        <% @relatedBySubj.each do |subj, rel|%>
-          <div class='row subject-relations'>
-            <div class='col col-lg-12' style='background-color: #eee;'>
-              <%= I18n.t("trees.labels.#{subj}") %>
+        <div class='connections-grid'>
+          <div class='connections-item'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.subject') %>
             </div>
+          </div>
+          <div class='connections-item'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.code') %>
+            </div>
+          </div>
+          <div class='connections-item'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.code') %>
+            </div>
+          </div>
+          <div class='connections-item'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.description') %>
+            </div>
+          </div>
+        </div>
+        <div class='connections-grid'>
+          <% @relatedBySubj.each do |subj, rel|%>
             <% rel.each do |r| %>
-              <div class='col col-lg-12' style='padding-left: 30px;'>
-                <div class='row'>
-                  <div class='col col-lg-1'>
-                    <%= r[:code] %>
-                  </div>
-                  <div class='col col-lg-11'>
-                    <% if r[:tid] == 0 %>
-                      <%= @translations[r[:tkey]] %>
-                    <% else %>
-                      <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
-                    <% end %>
-                  </div>
+              <div class='connections-item'>
+                <div class='center-label sub-header-margin'>
+                  <%= I18n.t("trees.labels.#{subj}") %>
+                </div>
+              </div>
+              <div class='connections-item'>
+                <div class='center-label sub-header-margin'>
+                  <%= r[:code] %>
+                </div>
+              </div>
+              <div class='connections-item'>
+                <div class='center-label sub-header-margin'>
+                  <%= r[:code] %>
+                </div>
+              </div>
+              <div class='connections-item'>
+                <div class='center-label sub-header-margin'>
+                  <% if r[:tid] == 0 %>
+                    <%= @translations[r[:tkey]] %>
+                  <% else %>
+                    <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+                  <% end %>
                 </div>
               </div>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
-      <div class='row teacher-label label'>
+      <div class='row teacher-label top-label'>
         <div class='col col-lg-12'>
           <%= I18n.t('trees.labels.teacher_header') %>
         </div>
       </div>
       <div class='teacher-grid'>
         <div class='teacher-item'>
-          <%= I18n.t('trees.labels.teacher_field_1') %>
-          <br><br><br>
+          <div class='center-label sub-header-margin'>
+            <%= I18n.t('trees.labels.teacher_field_1') %>
+          </div>
         </div>
         <div class='teacher-item'>
-          <%= I18n.t('trees.labels.teacher_field_2') %>
-          <br><br><br>
+          <div class='center-label sub-header-margin'>
+            <%= I18n.t('trees.labels.teacher_field_2') %>
+          </div>
         </div>
         <div class='teacher-item'>
-          <%= I18n.t('trees.labels.teacher_field_3') %>
-          <br><br><br>
+          <div class='center-label sub-header-margin'>
+            <%= I18n.t('trees.labels.teacher_field_3') %>
+          </div>
         </div>
         <div class='teacher-item'>
-          <%= I18n.t('trees.labels.teacher_field_4') %>
-          <br><br><br>
+          <div class='center-label sub-header-margin'>
+            <%= I18n.t('trees.labels.teacher_field_4') %>
+          </div>
         </div>
         <div class='teacher-item'>
-          <%= I18n.t('trees.labels.teacher_field_5') %>
-          <br><br><br>
+          <div class='center-label sub-header-margin'>
+            <%= I18n.t('trees.labels.teacher_field_5') %>
+          </div>
         </div>
         <div class='teacher-item'>
-          <%= I18n.t('trees.labels.teacher_field_6') %>
-          <br><br><br>
+          <div class='center-label sub-header-margin'>
+            <%= I18n.t('trees.labels.teacher_field_6') %>
+          </div>
         </div>
       </div>
       <div class='row outcome-row'>

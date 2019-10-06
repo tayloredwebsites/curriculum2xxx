@@ -47,6 +47,14 @@
     .label {
       background-color: #ddd;
     }
+    .top-label {
+      margin-top: 10px;
+      background-color: #ddd;
+      border-top: 3px solid black;
+      border-right: 1px solid black;
+      border-bottom: 0px solid black;
+      border-left: 1px solid black;
+    }
     .center-label-bold {
       background-color: #ddd;
       text-align: center !important;
@@ -59,16 +67,25 @@
       border-bottom: 1px solid black;
     }
     .related-items-table {
-      overflow: hidden;
-      margin-right: -15px;
-      margin-left: -15px;
-      border-top: 1px solid black;
-      border-right: 1px solid black;
+      // border-top: 1px solid black;
+      // border-right: 1px solid black;
+      // border-bottom: 1px solid black;
       text-align: left;
     }
-    .rel-sector-col, .rel-reason-col, .subject-relations {
+    .ind-col {
+      text-align: left;
       border-left: 1px solid black;
       border-bottom: 1px solid black;
+    }
+    .last-col {
+      border-right: 1px solid black;
+    }
+    .rel-sector-col, .rel-reason-col, .subject-relations, .rel-sectors {
+      border-left: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+    .rel-sectors {
+      padding: 0, 10px;
     }
     .subject-relations:last-child {
       border-bottom: none;
@@ -91,8 +108,24 @@
     .teacher-item {
       border-bottom: 1px solid black;
       border-left: 1px solid black;
-      padding: 10px;
-      margin: px;
+      padding-bottom: 10px;
+    }
+    .connections-grid {
+      display: grid;
+      grid-template-columns: 15% 10% 15% 60%;
+      margin-left: -15px;
+      margin-right: -15px;
+      border-top: 1px solid black;
+      border-right: 1px solid black;
+    }
+    .connections-item {
+      border-bottom: 1px solid black;
+      border-left: 1px solid black;
+      padding-bottom: 10px;
+    }
+    .sub-header-margin {
+      margin: 0 10px;
+      border: 1px solid black;
     }
   }
 

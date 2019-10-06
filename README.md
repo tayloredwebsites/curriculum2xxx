@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
 
-* Ruby version
+## Manually Create a Sector Tree relation
+### till add edit features are written to do this)
 
-* System dependencies
+    > st = SectorTree.new
+    > st.sector_id = 6
+    > st.tree_id = 4
+    > st.explanation_key = "TFV.v01.bio.9.1.1.1.sector.6.expl"
+    > st.save
+    > tran = Translation.new
+    > tran.locale = 'en'
+    > tran.key = "TFV.v01.bio.9.1.1.1.sector.6.expl"
+    > tran.value = "Nihil lobortis platonem est ei, ut sit prompta veritus."
+    > tran.save
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

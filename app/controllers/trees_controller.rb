@@ -234,7 +234,7 @@ class TreesController < ApplicationController
     if process_tree
       # prepare to output detail page
       @indicators = []
-      @subjects = Subject.all
+      @subjects = Subject.all.order(:code)
       subjById = @subjects.map{ |rec| [rec.id, rec.code]}
       @subjById = Hash[subjById]
       Rails.logger.debug("*** @subjById: #{@subjById.inspect}")
@@ -243,6 +243,12 @@ class TreesController < ApplicationController
       Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
       # get all translation keys for this learning outcome
       treeKeys = @tree.getAllTransNameKeys
+      if @tree.depth == 4
+        # when outcome level, get children (indicators), to in outcome page
+        @tree.getAllChildren.each do |c|
+          treeKeys << c.name_key
+        end
+      end
       Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
       @trees.each do |t|
         Rails.logger.debug("*** tree: #{t.base_key}")
@@ -251,25 +257,27 @@ class TreesController < ApplicationController
         Rails.logger.debug("*** add tree name_key: #{t.name_key}")
         # get translation key for each sector for this indicator
         if treeKeys
-          t.sectors.each do |s|
-            Rails.logger.debug("*** add sector name_key: #{s.name_key}")
-            treeKeys << s.name_key
+          t.sector_trees.each do |st|
+            Rails.logger.debug("*** add sector name_key: #{st.sector.name_key}")
+            treeKeys << st.sector.name_key
+            Rails.logger.debug("*** add sector explanation_key: #{st.explanation_key}")
+            treeKeys << st.explanation_key
           end
         end
         # get translation key for each related indicators for this indicator
         Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
-        t.related_trees.each do |r|
-          Rails.logger.debug("*** related: #{r.inspect}")
-          treeKeys << r.name_key
-          Rails.logger.debug("*** add related name_key: #{r.name_key}")
-          subCode = @subjById[r.subject_id]
-          Rails.logger.debug("*** @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
-          @relatedBySubj[subCode] << {
-            code: r.code,
-            tkey: r.name_key,
-            tid: (r.depth < 2) ? 0 : r.id
-          } if !@relatedBySubj[subCode].include?(r.code)
-        end
+        # t.related_trees.each do |r|
+        #   Rails.logger.debug("*** related: #{r.inspect}")
+        #   treeKeys << r.name_key
+        #   Rails.logger.debug("*** add related name_key: #{r.name_key}")
+        #   subCode = @subjById[r.subject_id]
+        #   Rails.logger.debug("*** @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
+        #   @relatedBySubj[subCode] << {
+        #     code: r.code,
+        #     tkey: r.name_key,
+        #     tid: (r.depth < 2) ? 0 : r.id
+        #   } if !@relatedBySubj[subCode].include?(r.code)
+        # end
         # get the translation key for the indicators in the group of matched (indicators)
         JSON.load(t.matching_codes).each do |j|
           Rails.logger.debug("*** add indicator name_key: #{j.name_key}")

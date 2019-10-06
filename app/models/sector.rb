@@ -1,6 +1,7 @@
 class Sector < BaseRec
 
-  has_and_belongs_to_many :trees
+  has_many :sector_trees
+  has_many :trees, through: :sector_trees
 
   def self.sectorCodeFromTranslationCode(sectorCode)
     matches = sectorCode.split('.')
