@@ -23,8 +23,7 @@ c. It is ensured that the voluntary redox reaction between the two separate half
 ç. Studies on the calculation of electrode potentials under non-standard conditions are included.
 12.1.4. Electricity Production from Chemicals
 12.1.4.1. Explains the voltage and service life of electroplating batteries under the standard conditions.
-12.1.4.2. Explain the importance of lithium ion batteries by using them.
-Students are expected to prepare a poster and present it describing lithium-ion batteries and their current uses.
+12.1.4.2. Explain the importance of lithium ion batteries by using them. Students are expected to prepare a poster and present it describing lithium-ion batteries and their current uses.
 12.1.5. Electrolysis
 12.1.5.1. Explains the electrolysis event in terms of electric current, time and the mass of matter undergoing change.
 a. An electrical charge-mass relation is established over the total load of 1 mol.
@@ -32,8 +31,7 @@ b. The load unit is defined as Coulomb (C).
 c. Faraday relation is explained and calculations are made using this relation.
 ç. It is provided that the students construct Faraday equation by using an electronic spreadsheet program, observe the differences by changing the values and.
 d. The coating test is carried out.
-12.1.5.2. Explains the process of obtaining chemical substances by electrolysis method.
-Electrolysis of water and hydrogen and oxygen are obtained.
+12.1.5.2. Explains the process of obtaining chemical substances by electrolysis method. Electrolysis of water and hydrogen and oxygen are obtained.
 12.1.6. Corrosion
 12.1.6.1. Explains the electrochemical basis of corrosion prevention methods.
 a. Explain the concept of corrosion.
@@ -52,15 +50,13 @@ b. The properties of inorganic and organic compounds are emphasized.
 a. The relationship is established between the property of the carbon element forming lots of compounds and the property of the ability to bond.
 b. By diamond and graphite are provided to examine, the structure and importance of fullerene, nanotube and graphene are emphasized.
 12.2.4. Lewis Formulas
-12.2.4.1. Writes Lewis formulas of covalently bound chemical species.
-The molecules in which the octet is exceeded are out of scope.
+12.2.4.1. Writes Lewis formulas of covalently bound chemical species. The molecules in which the octet is exceeded are out of scope.
 12.2.5. Hybridization-Molecular Geometries
 12.2.5.1. Explains the formation of single, double and triple bonds on the basis of hybrid and atomic orbitals.
 12.2.5.2. Determines the geometry of molecules based on the hybridization of the central atom orbitals.
-a. Hybridization and VSEPR (Valence Layer Electron Pair Push) approach are emphasized.
-The others, except the compounds of second period elements made with hydrogen, are not given.
+a. Hybridization and VSEPR (Valence Layer Electron Pair Push) approach are emphasized. The others, except the compounds of second period elements made with hydrogen, are not given.
 b. Students are expected to make molecular models by using information technologies (animation, simulation, video etc.) on hybridization and VSEPR approach.
-3.12. ORGANIC COMPOUNDS
+12.3. ORGANIC COMPOUNDS
 Key concepts: aldehyde, aliphatic compound, alkane, alkene, alkyl halide, alkyne, alcohol, aromatic compound, ester, ether, functional group, cyclic structures, hydrocarbon, isomerism, carboxylic acid, ketone, fatty acid, structural isomeric, chain structure compounds
 12.3.1. Hydrocarbons
 12.3.1.1. Distinguishes hydrocarbon types.
@@ -73,13 +69,10 @@ ç. A reading article about the octane number in petrol is given.
 a. Cis-trans isomerism is emphasized.
 b. It is emphasized that alkene is a raw material for alkyl halide and alcohols as a field of use.
 c. The use of alkenes in the food industry and their polymerization properties are given.
-12.3.1.4. Explains the names, formulas, properties and application areas of simple alkynes.
-Production of acetylene, application areas, addition properties and primary explosive salts are emphasized. Other alkyne samples are not allowed.
-12.3.1.5. Explains the names, formulas and application areas of simple aromatic compounds.
-Benzene, naphthalene, aniline, toluene and phenol compounds are introduced and their structures and application areas are mentioned.
+12.3.1.4. Explains the names, formulas, properties and application areas of simple alkynes. Production of acetylene, application areas, addition properties and primary explosive salts are emphasized. Other alkyne samples are not allowed.
+12.3.1.5. Explains the names, formulas and application areas of simple aromatic compounds. Benzene, naphthalene, aniline, toluene and phenol compounds are introduced and their structures and application areas are mentioned.
 12.3.2. Functional Groups
-12.3.2.1. Classifies organic compounds according to their functional groups.
-The compounds formed when the hydroxy-groups are bonded to the hydroxy-, alkoxy-, halo-, carbonyl-, carboxyl-, amino-, nitro-, phenyl- groups are generally disclosed.
+12.3.2.1. Classifies organic compounds according to their functional groups. The compounds formed when the hydroxy-groups are bonded to the hydroxy-, alkoxy-, halo-, carbonyl-, carboxyl-, amino-, nitro-, phenyl- groups are generally disclosed.
 12.3.3. Alcohols
 12.3.3.1. Explains the names, formulas, properties and application areas of alcohols.
 a. Ethanol is obtained by fermentation method.
@@ -127,8 +120,6 @@ b. The importance of obtaining hydrogen from boron mineral for the development o
 c. Turhan Nejat Veziroğlu's short curriculum vitae and his use of hydrogen as a fuel are included as part of his study.
 12.4.2.2. Evaluates the use of nuclear energy in terms of science, society, technology, environment and economy.
 12.4.3. Sustainability
-12.4.3.1. Explains the importance of sustainable life and development for society and environment by associating with chemistry science.
-The effects of energy, polymer, paper and metal sectors on sustainable life are mentioned.
+12.4.3.1. Explains the importance of sustainable life and development for society and environment by associating with chemistry science. The effects of energy, polymer, paper and metal sectors on sustainable life are mentioned.
 12.4.4. Nanotechnology
-12.4.4.1. Evaluates the developments in nanotechnology in terms of science, society, technology, environment and its effects on economy.
-The concept of nanotechnology is explained through examples.
+12.4.4.1. Evaluates the developments in nanotechnology in terms of science, society, technology, environment and its effects on economy. The concept of nanotechnology is explained through examples.

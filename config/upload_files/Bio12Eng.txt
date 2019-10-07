@@ -2,8 +2,7 @@ en,bio,12
 12.1. From Gene to Protein
 12.1.1. The Discovery and Importance of Nucleic Acids
 Key Concepts: DNA ligase, DNA polymerase, gene, helicase, chromosome, nucleic acid, nucleotide, DNA replication
-12.1.1.1. Summarizes the process of discovery of nucleic acids.
-Rosalind Franklin, James Watson, Francis Crick's studies are briefly described but memorization of these names and chronological order are not expected to be known.
+12.1.1.1. Summarizes the process of discovery of nucleic acids. Rosalind Franklin, James Watson, Francis Crick's studies are briefly described but memorization of these names and chronological order are not expected to be known.
 12.1.1.2. Explains the types and functions of nucleic acids.
 12.1.1.3. Establishes the whole relationship of the genetic material in the cell.
 a. Modelling of genetic material organization from DNA and chromosome from nucleotides is provided.
@@ -16,8 +15,7 @@ Key Concepts: antibiotics, anticodon, bioethics, biosafety, biotechnology, DNA f
 12.1.2.1. Explains the mechanism of protein synthesis.
 a. The relationship between genetic code and protein synthesis is emphasized.
 b. While explaining protein synthesis, the visual elements, graphic organizers, e-learning object and applications are used.
-12.1.2.2. Explains the concepts of genetic engineering and biotechnology.
-The discussion of the differences between genetic engineering and biotechnology is provided.
+12.1.2.2. Explains the concepts of genetic engineering and biotechnology. The discussion of the differences between genetic engineering and biotechnology is provided.
 12.1.2.3. Explains genetic engineering and biotechnology applications.
 a. It is provided to research and share the results of the gene technologies, DNA fingerprint analysis, stem cell technologies and their using areas.
 b. The properties of the model organisms are discussed.
@@ -34,10 +32,10 @@ a. Describes the structure of the ATP molecule.
 b. Phosphorylation types are briefly mentioned.
 12.2.2. Photosynthesis
 Key Concepts: photosynthesis, photolysis, light, chlorophyll, chloroplast
-12.2.2.1. Questions the importance of photosynthesis for living things.
-Examples of scientists who contribute to the understanding of the process of photosynthesis are given and their studies briefly are mentioned.
+12.2.2.1. Questions the importance of photosynthesis for living things. Examples of scientists who contribute to the understanding of the process of photosynthesis are given and their studies briefly are mentioned.
 12.2.2.2. Explains the process of photosynthesis on the scheme.
-a. The structure of chlorophyll a and chlorophyll b is not given. b. The photolysis of water is indicated.
+a. The structure of chlorophyll a and chlorophyll b is not given.
+b. The photolysis of water is indicated.
 c. The light-dependent and light-independent reactions are compared in terms of product. The steps of the reactions are not mentioned and the mathematical calculations are not included.
 ç. CAM and C4 plants are not indicated.
 d. The process of photosynthesis is explained by using visual elements, graphic organizers, e- learning object and applications.
@@ -51,8 +49,7 @@ Key Concepts: chemosynthesis, oxidation
 a. Examples of living creatures making chemosynthesis are given.
 b. It is summarized that chemosynthesis’s contributions to the substance cycle and its use in industrial areas.
 12.2.4. Cellular Respiration
-Key Concepts: fermentation, glycolysis, mitochondria, oxygenated respiration, cellular
-respiration, Krebs cycle, oxygen-free respiration
+Key Concepts: fermentation, glycolysis, mitochondria, oxygenated respiration, cellular respiration, Krebs cycle, oxygen-free respiration
 12.2.4.1. Explains cellular respiration.
 a. Oxygen respiration is told as glycolysis, Krebs cycle and ETS-oxidative phosphorylation.
 b. NADH, FADH2, ATP production and consumption in reactions are given without mathematical calculations.
@@ -66,7 +63,7 @@ f. The cellular breathing processes are explained by using the visual elements, 
 a. The importance of photosynthesis and respiration in ensuring the balance of matter and energy in nature is highlighted.
 b. It is provided to design and made experiments in which photosynthesis and respiratory events can be observed together.
 c. The kemiosmotic view of the mechanism of energy generation in photosynthesis and oxygen respiration briefly introduced on the schema.
-3.12. Plant Biology
+12.3. Plant Biology
 12.3.1. Structure of plants
 Key Concepts: photoperiodism, nasti, auxin, tropism, end meristem, lateral meristem, age rings
 12.3.1.1. Explains the structure and functions of basic parts of a flowering plant.
@@ -80,8 +77,7 @@ d. It is ensured that the students share photographs regarding the plant varieti
 a. By observing Nasti and tropism movements, it is provided that the observations on these movements are shared.
 b. The effect of auxin on tropism is emphasized.
 12.3.2. Transport of Substance in Plants
-Key Concepts: adhesion, pressure flow theory, phloem, gutation, fertilizer, cohesion stress
-theory, root pressure, xylem, mycorrhiza, minimum rule, nodule, stoma, perspiration
+Key Concepts: adhesion, pressure flow theory, phloem, gutation, fertilizer, cohesion stress theory, root pressure, xylem, mycorrhiza, minimum rule, nodule, stoma, perspiration
 12.3.2.1. Explains water and mineral absorption in roots.
 a. The importance of water and minerals for plants is emphasized.
 b. The removal of minerals from the soil, the formation of nodules and mycorrhizae are emphasized.
@@ -98,8 +94,7 @@ Key Concepts: flower, germination, dormancy, fertilization, fruit, seed, pollina
 12.3.3.2. Explains fertilization in flowering plants, seed and fruit formation.
 a. Sexual reproduction of plants in a plant sample editors are explained by using visual objects, e-learning object and applications.
 b. The role of seed and fruit in the reproduction and propagation of plants is handled with examples.
-12.3.3.3. Designs an experiment to observe seed germination.
-The factors affecting germination are determined.
+12.3.3.3. Designs an experiment to observe seed germination. The factors affecting germination are determined.
 12.3.3.4. Establishes the relationship between dormancy and germination.
 12.4. Living Beings and Environment
 12.4.1. Living Beings and Environment
@@ -109,4 +104,3 @@ a. The concepts of variation, adaptation, mutation, natural and artificial selec
 b. The reasons for the development of resistance of bacteria to antibiotics are emphasized.
 c. The reasons for the loss of effects of herbicides and pesticides over time are emphasized.
 12.4.1.2. Gives examples of artificial selection practices in agriculture and animal husbandry.
-2

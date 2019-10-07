@@ -177,6 +177,7 @@ class UploadsController < ApplicationController
 
           # split line into into key: value items (: separating them)
           lineKey, lineValue = parseUpTo(line, ':')
+          Rails.logger.debug("lineKey: #{lineKey.inspect}, lineValue: #{lineValue.inspect}")
 
           # Determine what type of line this is:
           lineType = ''
@@ -198,7 +199,7 @@ class UploadsController < ApplicationController
             else
               lineType = 'Error in code'
             end
-          elsif lineValue.length > 0 && lineKey.length < 20
+          elsif lineValue.length > 0 && lineKey.length < 40
             # we have a key value pair (usually attached to a chapter)
             # e.g. Key Concepts: nutrition, biology, ...
             lineType = 'Keyed Description'
@@ -390,12 +391,22 @@ class UploadsController < ApplicationController
     end
   end
 
-  # Parse the codeIn string (split by .). Note last item split should be empty string
-  # returns array of codes (without trailing empty string)
-  # returns an error string
+  # Parse the codeIn string (split by .).
+  # returns array of codes
   def parseCodeIn(codeIn)
     codes = codeIn.split('.') # add ', 999' to limit to return all trailing empty fields
     Rails.logger.debug("codes: #{codes.inspect}")
+    # removes ) at end of any indicator codes
+    if codes.length == 1 && codes[0].length > 1
+      if codes[0][1] == ')'
+        codes[0] = codes[0][0]
+      elsif codes[0][2] == ')'
+        codes[0] = codes[0][0] + codes[0][1]
+      elsif codes[0][3] == ')'
+        codes[0] = codes[0][0] + codes[0][1] + codes[0][2]
+      end
+      Rails.logger.debug("updated codes: #{codes.inspect}")
+    end
     # error = (codes[codes.length-1] != '') ? 'Invalid code - no trailing .' : ''
     error = ''
     # sbNullStr = codes.pop(1)
