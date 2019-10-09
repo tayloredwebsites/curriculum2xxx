@@ -11,7 +11,8 @@ a. It is emphasized whether the electron exchange between the reductant and the 
 b. The relevance / involuntary state of the redox reaction is associated with electrical energy.
 12.1.2. Electrodes and Electrochemical Cells
 12.1.2.1. Explain electrode and electrochemical cell concepts.
-a. The concepts of cathode and anode are discussed in relation to reduction-oxidation. b. The concepts of electrode, semi-cell and cell are emphasized.
+a. The concepts of cathode and anode are discussed in relation to reduction-oxidation.
+b. The concepts of electrode, semi-cell and cell are emphasized.
 c. Inert electrodes are indicated where necessary.
 ç. The function of the salt bridge is explained in the batteries.
 d. Zn / Cu electrochemical cell test is performed and it is explained by taking advantage of the information technologies (animation, simulation, video, etc.).

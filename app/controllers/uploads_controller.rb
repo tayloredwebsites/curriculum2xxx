@@ -229,7 +229,14 @@ class UploadsController < ApplicationController
             Rails.logger.debug("toNumErrors: #{toNumErrors.inspect}")
             @rowErrs << toNumErrors if toNumErrors && toNumErrors.length > 0
             @rowErrs << "grade mismatch: #{grade_band.inspect} != #{numCodes[0].inspect}" if grade_band != numCodes[0]
-            stacks[CODES_STACK] = [ numCodes[0], numCodes[1] ]
+            if stacks[CODES_STACK][0] == numCodes[0]
+              Rails.logger.debug("*** Unit matched prior record codes #{stacks[CODES_STACK][0].inspect}")
+              stacks[CODES_STACK] = [ numCodes[0], numCodes[1] ]
+            else
+              Rails.logger.debug("ERROR: Unit MISMATCH prior record codes #{stacks[CODES_STACK][0].inspect} != #{numCodes[0].inspect}")
+              @rowErrs << "Unit MISMATCH prior record codes"
+              @abortRow = true
+            end
             processTfvTree(line_num, numCodes, 1, lineDesc)
 
           when 'Chapter'
@@ -238,7 +245,14 @@ class UploadsController < ApplicationController
             Rails.logger.debug("toNumErrors: #{toNumErrors.inspect}")
             @rowErrs << toNumErrors if toNumErrors && toNumErrors.length > 0
             @rowErrs << "grade mismatch: #{grade_band.inspect} != #{numCodes[0].inspect}" if grade_band != numCodes[0]
-            stacks[CODES_STACK] = [ numCodes[0], numCodes[1], numCodes[2] ]
+            if stacks[CODES_STACK][0..1] == [ numCodes[0], numCodes[1] ]
+              Rails.logger.debug("*** Chapter matched prior record codes #{stacks[CODES_STACK].inspect}")
+              stacks[CODES_STACK] = [ numCodes[0], numCodes[1], numCodes[2] ]
+            else
+              Rails.logger.debug("ERROR: Chapter MISMATCH prior record codes #{stacks[CODES_STACK].inspect}")
+              @rowErrs << "Chapter MISMATCH prior record codes"
+              @abortRow = true
+            end
             processTfvTree(line_num, numCodes, 2, lineDesc)
 
           when 'LO'
@@ -247,7 +261,14 @@ class UploadsController < ApplicationController
             Rails.logger.debug("toNumErrors: #{toNumErrors.inspect}")
             @rowErrs << toNumErrors if toNumErrors && toNumErrors.length > 0
             @rowErrs << "grade mismatch: #{grade_band.inspect} != #{numCodes[0].inspect}" if grade_band != numCodes[0]
-            stacks[CODES_STACK] = [ numCodes[0], numCodes[1], numCodes[2], numCodes[3] ]
+            if stacks[CODES_STACK][0..2] == [ numCodes[0], numCodes[1], numCodes[2] ]
+              Rails.logger.debug("*** LO matched prior record codes #{stacks[CODES_STACK].inspect}")
+              stacks[CODES_STACK] = [ numCodes[0], numCodes[1], numCodes[2], numCodes[3] ]
+            else
+              Rails.logger.debug("ERROR: LO MISMATCH prior record codes #{stacks[CODES_STACK].inspect}")
+              @rowErrs << "LO MISMATCH prior record codes"
+              @abortRow = true
+            end
             processTfvTree(line_num, numCodes, 3, lineDesc)
 
           when 'Keyed Description'
@@ -262,20 +283,6 @@ class UploadsController < ApplicationController
             indCodes = stacks[CODES_STACK].dup
             indCodes.concat(codes)
             processTfvTree(line_num, indCodes, 4, lineDesc)
-
-            # if stacks[CODES_STACK].length != 4
-            #   @abortRow = true
-            #   @rowErrs << "Indicator has invalid codes from previous line"
-            # else
-            #   Rails.logger.debug("Indicator: #{codes.join('.')}, #{lineDesc}")
-            #   indCodes = stacks[CODES_STACK].dup
-            #   indCodes.concat(codes)
-            #   Rails.logger.debug("Indicator indCodes: #{indCodes.inspect}")
-            #   processTfvTree(line_num, indCodes, 4, lineDesc)
-            #   Rails.logger.debug("stacks: #{stacks.inspect}")
-            #   Rails.logger.debug("Report: #{@rptRecs}")
-            # end
-
           else
             abort "just developing for now"
           end
@@ -331,38 +338,42 @@ class UploadsController < ApplicationController
 
 
   def processTfvTree(line_num, numCodes, depth, localText)
-    # insert record into tree
-    new_code, @rowTreeRec, save_status, message = Tree.find_or_add_code_in_tree(
-      @treeTypeRec,
-      @versionRec,
-      @subjectRec,
-      @gradeBandRec,
-      numCodes.join('.'),
-      depth
-    )
 
     # update text translation for this locale (if not skipped)
-    if save_status == BaseRec::REC_ERROR
-      @rowErrs << message if message.present?
-      # stacks[NUM_ERRORS_STACK][depth] += 1
-      # Note: no update of translation if error
-      translation_val = ''
-    else # if save_status not error
-      @processedCount += 1
-      # update translation if not an error and value changed
-      puts("find or update translation: #{@localeRec.code}, #{@rowTreeRec.base_key}#{numCodes.join('.')}.name, #{localText}")
-      transl, text_status, text_msg = Translation.find_or_update_translation(
-        @localeRec.code,
-        "#{@rowTreeRec.base_key}.name",
-        localText
+    if !@abortRow
+      # insert record into tree
+      new_code, @rowTreeRec, save_status, message = Tree.find_or_add_code_in_tree(
+        @treeTypeRec,
+        @versionRec,
+        @subjectRec,
+        @gradeBandRec,
+        numCodes.join('.'),
+        depth
       )
-      if text_status == BaseRec::REC_ERROR
-        @rowErrs << text_msg
-      end
-      translation_val = transl.value.present? ? transl.value : ''
-    end # if save_status ...
+      if save_status == BaseRec::REC_ERROR
+        @rowErrs << message if message.present?
+        # stacks[NUM_ERRORS_STACK][depth] += 1
+        # Note: no update of translation if error
+        translation_val = ''
+      else # if save_status not error
+        @processedCount += 1
+        # update translation if not an error and value changed
+        puts("find or update translation: #{@localeRec.code}, #{@rowTreeRec.base_key}#{numCodes.join('.')}.name, #{localText}")
+        transl, text_status, text_msg = Translation.find_or_update_translation(
+          @localeRec.code,
+          "#{@rowTreeRec.base_key}.name",
+          localText
+        )
+        if text_status == BaseRec::REC_ERROR
+          @rowErrs << text_msg
+        end
+        translation_val = transl.value.present? ? transl.value : ''
+      end # if save_status ...
 
-    statMsg = I18n.translate('uploads.labels.saved_code', code: numCodes.join('.')) if save_status == BaseRec::REC_ADDED || save_status == BaseRec::REC_UPDATED
+      statMsg = I18n.translate('uploads.labels.saved_code', code: numCodes.join('.')) if save_status == BaseRec::REC_ADDED ||save_status == BaseRec::REC_UPDATED
+
+    end # if !@abortRow
+
     statMsg = statMsg.blank? ? "#{@rowErrs.join(', ')}" : statMsg + ", #{@rowErrs.join(', ')}" if @rowErrs.count > 0
 
     # generate report record if not skipped

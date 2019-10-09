@@ -1,7 +1,7 @@
 # dummy_data.rake
 namespace :dummy_data do
 
-  desc "create dummy data after bio 9 and che 9 loads"
+  desc "create dummy data after bio 9 and che 9 load (must run bio 9, then chem 9, then run this)"
   task create: :environment do
 
     puts "sector 3 relation"
@@ -79,22 +79,22 @@ namespace :dummy_data do
       value: "Nihil lobortis platonem est ei, ut sit prompta veritus."
     )
 
-    puts "bio 4 applies che 164"
+    puts "bio 4 applies che 166"
     TreeTree.create!(
       tree_referencer_id: 4,
-      tree_referencee_id: 164,
+      tree_referencee_id: 166,
       relationship: 'applies',
-      explanation_key: 'TFV.v01.bio.9.1.1.1.tree.164'
+      explanation_key: 'TFV.v01.bio.9.1.1.1.tree.166'
     )
     Translation.create!(
       locale:'en',
-      key: 'TFV.v01.bio.9.1.1.1.tree.164',
+      key: 'TFV.v01.bio.9.1.1.1.tree.166',
       value: "Impedit persequeris eos ea."
     )
 
-    puts "che 164 depends bio 4"
+    puts "che 166 depends bio 4"
     TreeTree.create!(
-      tree_referencer_id: 164,
+      tree_referencer_id: 166,
       tree_referencee_id: 4,
       relationship: 'depends',
       explanation_key: 'TFV.v01.che.9.5.1.1.tree.4'

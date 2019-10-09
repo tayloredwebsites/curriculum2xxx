@@ -31,7 +31,8 @@ b) The concept of set of equivalents is not given.
 Terms and Concepts: combination, intersection, difference, integration, discrete sets, De Morgan rules, ordered binary, Cartesian multiplication
 Symbols and Impressions: ∪,∩,𝐴−𝐵 or 𝐴∖𝐵,𝐴’,𝐴x𝐵,𝑠(𝐴x𝐵)
 9.2.2.1. Solve problems in clusters by means of combination, intersection, difference, integration processes.
-a) The properties of the combination, intersection, difference and integration of the sets are given. b) The concept of discrete set is included.
+a) The properties of the combination, intersection, difference and integration of the sets are given.
+b) The concept of discrete set is included.
 c) The relations that give the number of elements of the combination of up to three clusters are considered.
 ç) The following associations are made between the symbol, the representation and the processes used in the symbolic logic with the sets.; [Symbolic Logic]0 [Sets]∅; [Symbolic Logic]1 [Sets]E;    [Symbolic Logic]∨ [Sets]∪;    [Symbolic Logic]∧ [Sets]∩;    [Symbolic Logic]′ [Sets]′;    [Symbolic Logic]≡ [Sets]=;    [Symbolic Logic]p∨p′≡1 [Sets]A∪A′=E;    [Symbolic Logic]p∧p′=0 [Sets]A∧A′=∅;    [Symbolic Logic]p∧(q∨r)≡(p∧q)∨(p∧r) [Sets]A∩(B∪C)=(A∩B)∪(A∩C);    [Symbolic Logic](p∧q)′≡p′∨q′ [Sets](A∩B)′≡A′∪B′
 d) Real life problems are included.
@@ -49,8 +50,7 @@ b) Locate such numbers as √2,√3,√5 on the number line.
 c) The characteristics of collection and multiplication operations in real numbers are emphasized. ç) The geometric representation of R×R is emphasized as the Cartesian coordinate system.
 9.3.2. Divisibility Rules
 Symbols and Representations: EKOK, EBOB
-9.3.2.1. Solves problems related to divergence rules in whole numbers. By the numbers of 2, 3, 4,
-5, 8, 9, 10, 11 and the numbers of 6, 12, 15 which are obtained from these numbers can be divided.
+9.3.2.1. Solves problems related to divergence rules in whole numbers. By the numbers of 2, 3, 4, 5, 8, 9, 10, 11 and the numbers of 6, 12, 15 which are obtained from these numbers can be divided.
 9.3.2.2. Performs applications related to EBOB and EKOK in whole numbers.
 a) Real life problems are included.
 b) EBOB and EKOK functions in spreadsheets are used.
@@ -72,7 +72,8 @@ a) The solution sets of equations of first order two unknowns are found while su
 b) Equation of two unknowns and the solution of inequality systems are shown in the analytical plane.
 9.3.4. Exponents and Equations Terms and Concepts: exponential expression, base, exponent, rooted expression, rational force
 Symbols and representations: xn ...
-9.3.4.1. Solves equations containing expansive expressions. a) Explained the concept of exponential expression.
+9.3.4.1. Solves equations containing expansive expressions.
+a) Explained the concept of exponential expression.
 b) Applications related to the integer force of a real number.;    |x|≤a⇔-a≤x≤a;    |x|≥a⇔(x≥a∨x≤-a); 	a≤|x|≤b⇔(a≤x≤b ∧ -b≤x≤-a);       |x.y|=|x|.|y|;     |x|=|-x|; |xnn| = |x|nn;  |x+y|≤|x|+|y|
 c) Explain the characteristics of exponential expressions.
 9.3.4.2. Solves equations containing radical expressions.
@@ -118,7 +119,7 @@ ç) Information and communication technologies are used.
 9.4.2.4. Solves problems related to the similarity of triangles. Real life problems are included.
 9.4.3. Triangle Auxiliary Elements
 Terms and Concepts: bisector, inner bisector, outer bisector, edge, elevation, vertical center, edge center strut, center of gravity
-9.4.3 .1. Gain the properties of the inner and outer angles of the triangle.
+9.4.3.1. Gain the properties of the inner and outer angles of the triangle.
 a) It is shown that the lengths of the angles lowered to the arms of the angle from a point taken on the angle are equal.
 b) The internal and external bisector lengths are not calculated by the formula. c) The compass-ruler is used in the display of the angular features.
 ç) Information and communication technologies are used.
