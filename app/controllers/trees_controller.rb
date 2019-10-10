@@ -41,7 +41,7 @@ class TreesController < ApplicationController
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # Note: sort order does matter for sequence of siblings in tree.
-    @trees = listing.order(:code).all
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, code").all
 
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,

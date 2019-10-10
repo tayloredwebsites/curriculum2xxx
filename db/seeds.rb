@@ -75,7 +75,8 @@ if GradeBand.count < 13
     begin
       GradeBand.create(
         tree_type_id: @tfv.id,
-        code: g
+        code: g,
+        sort_order: "%02d" % [g]
       )
     rescue
     end
