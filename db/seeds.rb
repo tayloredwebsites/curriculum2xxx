@@ -72,10 +72,12 @@ throw "Invalid Locale Count" if Locale.count != 2
 
 if GradeBand.count < 13
   %w(k 1 2 3 4 5 6 7 8 9 10 11 12).each do |g|
+    gf = (g == 'k') ? 0 : g
     begin
       GradeBand.create(
         tree_type_id: @tfv.id,
-        code: g
+        code: g,
+        sort_order: "%02d" % [gf]
       )
     rescue
     end
