@@ -22,7 +22,8 @@ c. The relationship of sequential ionization energies with the group number is s
 11.1.4. Getting to Know the Elements
 11.1.4.1. Explain the relationships between the elements and their properties in the periodic system.
 a. The metal / nonmetal character of the s, p, d block elements is associated with the ion loads, their activeness, and their chemical bond type electron sequence.
-b. The special cases of the f-block elements in the periodic system are highlighted. c. The inert gas properties are associated with electron strings.
+b. The special cases of the f-block elements in the periodic system are highlighted.
+c. The inert gas properties are associated with electron strings.
 11.1.5. Oxidation Steps
 11.1.5.1. Explains the relationship between oxidation steps and electron arrays.
 a. The difference between the anion loads of the ametals and the oxidation steps is exemplified.
@@ -38,7 +39,8 @@ a. The laws on the properties of gases (Boyle, Charles, Gay Lussac and Avogadro)
 b. Students will be able to draw and interpret graphs of gas laws by using ready data.
 11.2.2. The Ideal Gas Act
 11.2.2.1. Explains the relationship between experimental gas-derived laws and ideal gas law.
-a. The ideal gas equation is derived with the help of Boyle, Charles and Avogadro law. b. Sample calculations are made using the ideal gas equation.
+a. The ideal gas equation is derived with the help of Boyle, Charles and Avogadro law.
+b. Sample calculations are made using the ideal gas equation.
 c. Gas volumes are normally associated with mass and molar numbers.
 11.2.3. Kinetic Theory in Gases
 11.2.3.1. Explains gas behaviours by kinetic theory.
@@ -46,8 +48,7 @@ a. The basic assumptions of kinetic theory are emphasized.
 b. The Graham Diffusion and Effusion Law are derived by using the basic assumptions of kinetic theory.
 c. Diffusion test is performed and it is explained by taking advantage of the information technologies (animation, simulation, video, etc.). It is reminded that safety warnings must be observed when testing.
 11.2.4. Gas Mixtures
-11.2.4.1. Explains the partial pressures of gas mixtures with examples from daily life.
-Saturated vapor pressures of liquids are associated with the concept of partial pressure and calculations are made on the gases collected on water.
+11.2.4.1. Explains the partial pressures of gas mixtures with examples from daily life. Saturated vapor pressures of liquids are associated with the concept of partial pressure and calculations are made on the gases collected on water.
 11.2.5. Real Gases
 11.2.5.1. Compare the actual gas and ideal gas concepts in the compression / expansion process of gases.
 a. It is stated in which situations real gases deviate from idealism.
@@ -62,8 +63,7 @@ Key concepts: solubility, dipole-dipole interactions, dipole-induced dipole inte
 11.3.2.1. Associates different concentration units with the amount of solute.
 a. Molarity and molarity are introduced as concentration units.
 b. Normality and formality definitions are not mentioned.
-11.3.2.2. Prepares solutions at different concentrations.
-Calculations related to concentration are made by calculating molarity and molarity as well as percentage, volume, molar fraction and ppm.
+11.3.2.2. Prepares solutions at different concentrations. Calculations related to concentration are made by calculating molarity and molarity as well as percentage, volume, molar fraction and ppm.
 11.3.3. Colligative Properties
 11.3.3.1. Establishes relationship between the colligative properties of the solutions and their concentration.
 a. It is dwelled on the colligative properties include steam pressure reduction, freezing point down (cryoscopy), boiling point rise (ebusoscopy) and osmotic pressure.
@@ -82,8 +82,7 @@ b. Calculations of the concentration and crystallization of the salts at differe
 c. It is emphasized that the solubility of gases changes with pressure and temperature; Interpretation of resolution curves is provided.
 ç. Students are expected to use the electronic spreadsheet program to analyse the relationship between resolution and temperature and to observe and interpret the changes.
 11.4. ENERGY IN CHEMICAL REACTION
-Key concepts: bond energy, exothermic reaction, endothermic reaction, enthalpy, Hess's
-law, enthalpy of standard formation, enthalpy of reaction
+Key concepts: bond energy, exothermic reaction, endothermic reaction, enthalpy, Hess's law, enthalpy of standard formation, enthalpy of reaction
 11.4.1. Heat Exchange in Reactions
 11.4.1.1. Explain the energy changes occurring in reactions.
 a. Exothermic and endothermic reactions are associated with heat exchange.
@@ -94,11 +93,9 @@ a. The standard formation enthalpy is defined.
 b. The reaction enthalpy is explained by the potential energy-reaction coordinate graph.
 c. Students will be able to create graphs by using an electronic spreadsheet for reaction enthalpies, and observe and interpret the changes taking place by changing the values.
 11.4.3. Bond Energies
-11.4.3.1. Explains the relationship between bond energies and reaction enthalpy.
-Reaction enthalpy calculations are made through the energies formed and broken.
+11.4.3.1. Explains the relationship between bond energies and reaction enthalpy. Reaction enthalpy calculations are made through the energies formed and broken.
 11.4.4. Aggregation of Reaction Heat
-11.4.4.1. Explain the Hess Law.
-Calculations related to Hess Law are made.
+11.4.4.1. Explain the Hess Law. Calculations related to Hess Law are made.
 11.5. SPEED IN CHEMICAL REACTIONS
 Key concepts: activation energy, rate constant, inhibitor, catalyst, average reaction rate
 11.5.1. Rate of Reaction
@@ -111,14 +108,14 @@ c. Examples of homogeneous and heterogeneous phase reactions are given.
 11.5.2.1. Explains the factors affecting the rate of reaction.
 a. In one-step reactions, the concentration-dependent expressions of the reaction rate in both directions are given.
 b. For multi-step reactions, the speed-determining step is emphasized.
-c. The effect of the type of substance, concentration, temperature, catalyst (not entered into enzymes) and surface touch to the reaction rate is emphasized.
-The Arrhenius argument is not mentioned.
+c. The effect of the type of substance, concentration, temperature, catalyst (not entered into enzymes) and surface touch to the reaction rate is emphasized. The Arrhenius argument is not mentioned.
 ç. Oktay Sinanoğlu's short biography and his studies regarding the reaction mechanisms are given as a reading article.
 11.6. BALANCE IN CHEMICAL REACTIONS
 Key concepts: acid-base pair, acidity / basicity constant, Brönsted-Lowry acid / some, precipitation reaction, solubility product, equilibrium constant, equivalence point, indicator, chemical equilibrium, strong acid / base, Le Chatelier's principle, auto-ionization, pH / pOH, buffer solution, titration, weak acid / base
 11.6.1. Chemical Equilibrium
 11.6.1.1. Explains the balance in physical and chemical changes.
-a. Describes the equilibrium over maximum irregularity and minimum energy trends. b. The balance is explained by forward and reverse reaction rates.
+a. Describes the equilibrium over maximum irregularity and minimum energy trends.
+b. The balance is explained by forward and reverse reaction rates.
 c. Calculations are made by deriving equilibrium expressions in terms of concentration and pressure for reversible reactions.
 ç. The relationship between different equilibrium constants is examined.
 11.6.2. Factors Affecting Balance
@@ -131,8 +128,7 @@ c. The catalyst-balance relationship is highlighted.
 11.6.3.3. Explains the acidity of cations and the basis of anions based on their interactions with water.
 a. Strong / weak acids and bases are introduced; examples of conjugated acid-base pairs are given.
 b. The reaction of cations acting as acid and the anions acting as bases with the water are discussed.
-11.6.3.4. It establishes a relationship between the power of acidity / basicity and decomposition equilibrium constants.
-It is ensured that the ionization rates of the acids / bases are associated with the equilibrium constants.
+11.6.3.4. It establishes a relationship between the power of acidity / basicity and decomposition equilibrium constants. It is ensured that the ionization rates of the acids / bases are associated with the equilibrium constants.
 11.6.3.5. Calculates the pH values of strong and weak monoprotic acid / base solutions.
 a. The pH values of very concentrated and very dilute acid / base solution are not mentioned.
 b. For weak acids / bases, the [H +] = (Ka.Ca) 1/2 and [OH-] = (Kb.Cb) 1/2 equations are based.
@@ -145,7 +141,9 @@ a. The concepts of acidic, basic and neutral salt are explained.
 b. Examples of salts with anionic weak base are given.
 c. The acidity of salts with cation NH4 + or anion HSO4– is emphasized.
 ç. The hydrolysis calculations are not entered.
-11.6.3.8. Determines the strong acid / base concentrations by titration method. a. Titration test is performed and the results are interpreted by means of graph. b. Calculation examples are given for titration.
+11.6.3.8. Determines the strong acid / base concentrations by titration method.
+a. Titration test is performed and the results are interpreted by means of graph.
+b. Calculation examples are given for titration.
 c. Provide students to compute the calculations for the titration method with the help of electronic spreadsheet program, change the values and observe the differences and interpret.
 11.6.3.9. Explains the equilibrium of precipitation and sedimentation in aqueous environments.
 a. Examples of dissolution-precipitation equilibrium are given; The concepts of resolution product (Kch) and resolution (s) are associated.

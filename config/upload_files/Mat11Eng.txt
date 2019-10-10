@@ -26,8 +26,7 @@ c) Real life problems are included.
 a) Only the information and communication technologies are used in the graphical drawings of functions other than y = sinx and y = cosx functions.
 b) Periodic function definition is given, trigonometric functions are shown to be periodic.
 c) With the help of graphs, trigonometric functions are determined as single or double functions. d) Charts of secant and cosecant functions are not included.
-11.1.2.5. Explains inverse functions of sine, cosine and tangent functions.
-Graphs of inverse trigonometric functions are not included.
+11.1.2.5. Explains inverse functions of sine, cosine and tangent functions. Graphs of inverse trigonometric functions are not included.
 11.2. Analytical Geometry
 11.2.1. Analytical Investigation of Straight
 Terms and Concepts: analytical plane, distance between two points, slope of the line, slope angle, parallel of two lines, steepness of two lines
@@ -65,11 +64,10 @@ d) The conditions of a right and a parabola are examined.
 Terms and Concepts: translation, symmetry, transformation
 11.3.3.1. Draws new function graphs with the help of transformations from the graph of a function.
 a) The symmetry properties of the graph of single and double functions are emphasized.
-b) The graphics of transformations of 𝑦=𝑓(x)+𝑏,𝑦=𝑓(𝐴−𝑎),𝑦=𝑘 𝑓(x),𝑦=𝑓(𝑘x),𝑦=−𝑓(x),𝑦=𝑓(−x) are given by using information and communication technologies.
+b) The graphics of transformations of y=f(x)+b,y=f(A−a),y=k f(x),y=f(kx),y=−f(x),y=f(−x) are given by using information and communication technologies.
 11.4. (NUMBERS AND ALGEBRA) Equation and Inequality Systems
 11.4.1. Second Order Systems with Two Unknown Equations
-11.4.1.1. He / she finds the solution set of systems of equations with two unknowns.
-The solution is interpreted with the help of graphs drawn from information and communication technologies.
+11.4.1.1. He / she finds the solution set of systems of equations with two unknowns. The solution is interpreted with the help of graphs drawn from information and communication technologies.
 11.4.2. Secondary Inequalities and Inequality Systems
 Terms and Concepts: second order inequalities
 11.4.2.1. Finds a solution set of inequalities of a second degree.
@@ -115,8 +113,7 @@ Symbols and representations: P (A | B), P (A veB), P (AUB)
 11.7.1.1. Solves problems by explaining the conditional probability.
 a) Historical development process of probability is mentioned.
 b) Real life problems are included.
-11.7.1.2. Explains the probability of realization by explaining dependent and independent events.
-Real life problems are included.
+11.7.1.2. Explains the probability of realization by explaining dependent and independent events. Real life problems are included.
 11.7.1.3. Calculates the probability of occurrence by explaining the compound event.
 a) Tree scheme is used.
 b) The selection is made from a maximum of three stages of events.

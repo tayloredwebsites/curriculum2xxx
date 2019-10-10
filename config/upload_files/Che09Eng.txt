@@ -53,27 +53,14 @@ Key concepts: apolar covalent bond, bond energy, valence electron, hydrogen bond
 9.3.2. Classification of Chemical Interactions
 9.3.2.1. Classify the interactions between chemical species.
 a. The inter-species classification is made between interatomic and intermolecular; the difficulties of this classification are addressed.
-b. The ionic, covalent and metallic bonding as examples of strong interactions and hydrogen bond and van der Waals forces as examples of poor interactions are given.
+b. The ionic, covalent and metallic bonding as examples of strong interactions and hydrogen bond and van der Waals forces as examples of poor interactions are given. As examples of strong interactions include ionic, covalent and metallic bonding; examples of weak interactions include hydrogen bond and van der Waals forces.
 9.3.3. Strong Interactions
 9.3.3.1. Associates the formation of ionic bonds with interactions between ions.
 a. The Lewis symbols of the neutral atoms and the monatomic ions are given. Examples are selected from the first 20 elements in the periodic system.
 b. It is emphasized that the structural units of ionic compounds are not confused with the concept of molecule.
-a. The concepts of periodic properties of metallic-ametalic, atomic radius, ionization energy, electron affinity and electronegativity are mentioned but it is not mentioned that how to measure them.
-b. The definitions of Covalent, ionic, metallic, van der Waals radius definitions are not mentioned.
-c. The information technologies (animation, simulation, video, etc.) are utilized in the explanation of ionic bond.
-9.3. INTERACTIONS BETWEEN CHEMICAL SPECIES
-Key concepts: apolar covalent bond, bond energy, valence electron, hydrogen bond, ion, ionic bond, chemical bond, covalent bond, metallic bond, molecule, intermolecular interaction, polar covalent bond
-9.3.1. Chemical Type
-9.3.1.1. Explains chemical types. The concept of radical concept is not mentioned.
-9.3.2. Classification of Chemical Interactions
-9.3.2.1. Classify the interactions between chemical species.
-a. The inter-species classification is made between interatomic and intermolecular; the difficulties which are brought by this classification are mentioned.
-b. As examples of strong interactions include ionic, covalent and metallic bonding; examples of weak interactions include hydrogen bond and van der Waals forces.
-9.3.3. Strong Interactions
-9.3.3.1. Associates the formation of ionic bonds with interactions between ions.
-a. The Lewis symbols of the neutral atoms and the monatomic ions are given. Examples are selected from the first 20 elements in the periodic system.
-b. It is emphasized that the structural units of ionic compounds are not confused with the concept of molecule.
-c. The information technologies (animation, simulation, video, etc.) are used to explain ionic bonds.
+c. The concepts of periodic properties of metallic-ametalic, atomic radius, ionization energy, electron affinity and electronegativity are mentioned but it is not mentioned that how to measure them (???).
+ç. The definitions of Covalent, ionic, metallic, van der Waals radius definitions are not mentioned (???).
+d. The information technologies (animation, simulation, video, etc.) are utilized in the explanation of ionic bond.
 9.3.3.2. Makes systematic naming of ionic bonded compounds.
 a. The compounds that are formed by monatomic and polyatomic ions (NH4 +, OH-, NO3- SO42-, CO32-, PO43-, CN-, CH3COO-) are being named.
 b. The compounds consist of variable valence metals (Cu, Fe, Hg, Sn, Pb) are being named.

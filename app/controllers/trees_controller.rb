@@ -81,7 +81,7 @@ class TreesController < ApplicationController
 
       when 2
         newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", nodes: {}}
-        # puts ("+++ codeArray: #{tree.codeArray.inspect}")
+        puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
         end
@@ -90,7 +90,7 @@ class TreesController < ApplicationController
 
       when 3
         newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
-        # puts ("+++ codeArray: #{tree.codeArray.inspect}")
+        puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
         elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
@@ -232,6 +232,12 @@ class TreesController < ApplicationController
     end
 
     if process_tree
+      editMe = params['editme']
+      @editMe = false
+      if editMe && editMe == @tree.id.to_s
+        @editMe = true
+      end
+      Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
       # prepare to output detail page
       @indicators = []
       @subjects = Subject.all.order(:code)

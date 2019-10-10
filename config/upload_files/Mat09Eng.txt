@@ -3,25 +3,19 @@ en,mat,9
 9.1.1. Propositions and Compound Propositions
 Terms and Concepts: proposition, compound proposition, not the proposition, and, or, or its conjunctions, De Morgan rules, conditional proposition, opposite of the contingent statement, inverse of the conditional statement, inverse of the conditional statement, opposite inverse, two-way conditional proposition (required and sufficient condition), explicit proposition, all, some, definition, axiom, theorem, proof, hypothesis, judgment.
 Symbols: 𝑝𝑝,𝑝𝑝′(𝑣𝑣𝑒𝑒𝑦𝑦𝑎𝑎 ~𝑝𝑝),≡,∀,∃,∧,∨,∨ ,⇒,⇔
-9.1.1.1. Explains the proposition, the value of the proposition, the equivalence of the two
-propositions, and not the proposition.
-17
-Boole and Leibniz's works are included.
+9.1.1.1. Explains the proposition, the value of the proposition, the equivalence of the two propositions, and not the proposition. Boole and Leibniz's works are included.
 9.1.1.2. Explains the compound proposition with examples, shows the properties of the compound propositions with “and, or” and shows De Morgan rules using the truth table.
 9.1.1.3. Explains the conditional statement and two-way conditional statement.
 a) The opposite of the conditional statement is given the opposite.
-b) 𝑝𝑝⇒𝑞𝑞≡𝑝𝑝′∨𝑞𝑞 is shown with the truth table.
+b) pp⇒qq≡pp′∨qq is shown with the truth table.
 c) The simplest propositions are found that correspond to the four-component compound propositions that contain up to three propositions that are given by using “and, or”.
-ç) 𝑝𝑝⇔𝑞𝑞≡(𝑝𝑝⇒𝑞𝑞)∧(𝑞𝑞⇒𝑝𝑝) is shown with the truth table.
-9.1.1.4. It explains each (∀) and some (∃) with the examples.
-Verbally given and quantitative open propositions, with the symbolic logic language; The explicit propositions given by the symbolic logic language and containing the quantitative language are also expressed orally.
-9.1.1.5. It explains the concepts of definition, axiom, theorem and proof.
-The hypothesis and provision of a theorem is indicated.
+ç) pp⇔qq≡(pp⇒qq)∧(qq⇒pp) is shown with the truth table.
+9.1.1.4. It explains each (∀) and some (∃) with the examples. Verbally given and quantitative open propositions, with the symbolic logic language; The explicit propositions given by the symbolic logic language and containing the quantitative language are also expressed orally.
+9.1.1.5. It explains the concepts of definition, axiom, theorem and proof. The hypothesis and provision of a theorem is indicated.
 9.2. (NUMBERS AND ALGEBRA) Sets
 9.2.1. Basic Concepts in Clusters
 Terms and Concepts: set, element, universal set, empty set, subset, subset, finite set, infinite set, equal sets.
-Symbols: ∈,∉,∅,{ },⊂,⊃,⊆,⊇,⊈,s(A)
-{x1, x2, x3,...,xn}, {The subsidiary properties owned by x∣x }
+Symbols: ∈,∉,∅,{ },⊂,⊃,⊆,⊇,⊈,s(A) {x1, x2, x3,...,xn}, {The subsidiary properties owned by x∣x }
 9.2.1.1. It is remembered of the fundamental concepts regarding sets.
 a) Real life examples related to sets are included.
 b) Different representations of the sets are included.
@@ -36,21 +30,11 @@ b) The concept of set of equivalents is not given.
 9.2.2. Operations on Sets
 Terms and Concepts: combination, intersection, difference, integration, discrete sets, De Morgan rules, ordered binary, Cartesian multiplication
 Symbols and Impressions: ∪,∩,𝐴−𝐵 or 𝐴∖𝐵,𝐴’,𝐴x𝐵,𝑠(𝐴x𝐵)
-18
 9.2.2.1. Solve problems in clusters by means of combination, intersection, difference, integration processes.
-a) The properties of the combination, intersection, difference and integration of the sets are given. b) The concept of discrete set is included.
+a) The properties of the combination, intersection, difference and integration of the sets are given.
+b) The concept of discrete set is included.
 c) The relations that give the number of elements of the combination of up to three clusters are considered.
-ç) The following associations are made between the symbol, the representation and the processes used in the symbolic logic with the sets.
-   [Symbolic Logic]0 [Sets]∅
-   [Symbolic Logic]1 [Sets]𝐸
-   [Symbolic Logic]∨ [Sets]∪
-   [Symbolic Logic]∧ [Sets]∩
-   [Symbolic Logic]‘ [Sets]‘
-   [Symbolic Logic]≡ [Sets]=
-   [Symbolic Logic]𝑝∨𝑝′≡1 [Sets]𝐴∪𝐴′=𝐸
-   [Symbolic Logic]𝑝∧𝑝′≡0 [Sets]𝐴∩𝐴′=∅
-   [Symbolic Logic]p∧(𝑞∨𝑟)≡(𝑝∧𝑞)∨(𝑝∧𝑟) [Sets]𝐴∩(𝐵∪𝐶)=(𝐴∩𝐵)∪ (𝐴∩𝐶)
-   [Symbolic Logic](𝑝∧𝑞)’ ≡p’∨q’ [Sets](𝐴∩𝐵)’ ≡ A’∪B’
+ç) The following associations are made between the symbol, the representation and the processes used in the symbolic logic with the sets.; [Symbolic Logic]0 [Sets]∅; [Symbolic Logic]1 [Sets]E;    [Symbolic Logic]∨ [Sets]∪;    [Symbolic Logic]∧ [Sets]∩;    [Symbolic Logic]′ [Sets]′;    [Symbolic Logic]≡ [Sets]=;    [Symbolic Logic]p∨p′≡1 [Sets]A∪A′=E;    [Symbolic Logic]p∧p′=0 [Sets]A∧A′=∅;    [Symbolic Logic]p∧(q∨r)≡(p∧q)∨(p∧r) [Sets]A∩(B∪C)=(A∩B)∪(A∩C);    [Symbolic Logic](p∧q)′≡p′∨q′ [Sets](A∩B)′≡A′∪B′
 d) Real life problems are included.
 9.2.2.2. Carry out processes related to the Cartesian product of two sets.
 a) The equality of ordered binary and ordered pairs is explained by examples.
@@ -66,13 +50,11 @@ b) Locate such numbers as √2,√3,√5 on the number line.
 c) The characteristics of collection and multiplication operations in real numbers are emphasized. ç) The geometric representation of R×R is emphasized as the Cartesian coordinate system.
 9.3.2. Divisibility Rules
 Symbols and Representations: EKOK, EBOB
-9.3.2.1. Solves problems related to divergence rules in whole numbers. By the numbers of 2, 3, 4,
-5, 8, 9, 10, 11 and the numbers of 6, 12, 15 which are obtained from these numbers can be divided.
+9.3.2.1. Solves problems related to divergence rules in whole numbers. By the numbers of 2, 3, 4, 5, 8, 9, 10, 11 and the numbers of 6, 12, 15 which are obtained from these numbers can be divided.
 9.3.2.2. Performs applications related to EBOB and EKOK in whole numbers.
 a) Real life problems are included.
 b) EBOB and EKOK functions in spreadsheets are used.
-9.3.2.3. Solve problems with periodic repetitive situations in real life.
-Problems that include periodic status are included without entering into modular arithmetic.
+9.3.2.3. Solve problems with periodic repetitive situations in real life. Problems that include periodic status are included without entering into modular arithmetic.
 9.3.3. First Degree Equations and Inequalities
 Terms and Concepts: the unknown, variable, equation, degree of equation, inequality, actual number ranges, solution set, absolute value
 Symbols and Representations: <,≤,>,≥,[𝑎,𝑏], (𝑎,𝑏],[𝑎,𝑏), (𝑎,𝑏),(−∞,∞),|x|
@@ -83,21 +65,16 @@ b) Cartesian products of intervals are not included.
 a) Equation of a first degree equation and the solution of inequalities are reminded.
 b) Harezmî's studies on equations are given.
 9.3.3.3. Finds solution sets of inequalities and a first order unknown unknown with absolute value.
-a) By specifying the absolute value of a real number, the absolute value properties are given (x,∈R,𝑛∈Z and 𝑎,𝑏∈R+)
+a) By specifying the absolute value of a real number, the absolute value properties are given (X,∈R,n∈Z and a,b∈R+)
 b) Equations and inequalities containing more than two absolute values are not entered.
 9.3.3.4. Finds solution sets of first order two equations of inequality and inequality systems.
 a) The solution sets of equations of first order two unknowns are found while substitution, destruction or graphical solution methods are used.
 b) Equation of two unknowns and the solution of inequality systems are shown in the analytical plane.
 9.3.4. Exponents and Equations Terms and Concepts: exponential expression, base, exponent, rooted expression, rational force
 Symbols and representations: xn ...
-9.3.4.1. Solves equations containing expansive expressions. a) Explained the concept of exponential expression.
-b) Applications related to the integer force of a real number.
-   |x|≤𝑎⇔−𝑎≤x≤𝑎
-   |x|≥𝑎⇔(x≥𝑎∨x≤−𝑎)
-𝑎≤|x|≤𝑏⇔(𝑎≤x≤𝑏∨ −𝑏≤x≤−𝑎)
-      |x.𝑦|=|x|.|𝑦|
-    |x|=|−x|
-|x𝑛𝑛|=|x|𝑛𝑛 |x+𝑦|≤|x|+|𝑦|
+9.3.4.1. Solves equations containing expansive expressions.
+a) Explained the concept of exponential expression.
+b) Applications related to the integer force of a real number.;    |x|≤a⇔-a≤x≤a;    |x|≥a⇔(x≥a∨x≤-a); 	a≤|x|≤b⇔(a≤x≤b ∧ -b≤x≤-a);       |x.y|=|x|.|y|;     |x|=|-x|; |xnn| = |x|nn;  |x+y|≤|x|+|y|
 c) Explain the characteristics of exponential expressions.
 9.3.4.2. Solves equations containing radical expressions.
 a) The characteristics of radical expressions are emphasized.
@@ -138,12 +115,11 @@ a) Edge-Angle-Edge (K.A.K.), Edge-Edge-Edge (K.K.K.) and Angle-Angle (A.A.) simi
 b) The relationship between similarity and similarity is examined.
 c) It is shown that the mutual auxiliary elements of similar triangles have the same similarity ratio.
 ç) Information and communication technologies are used.
-9.4.2.3. It establishes the relationship between the correct parts separated by the line drawn
-parallel to one edge of the triangle and the other two sides. Thales' work is included.
+9.4.2.3. It establishes the relationship between the correct parts separated by the line drawn parallel to one edge of the triangle and the other two sides. Thales' work is included.
 9.4.2.4. Solves problems related to the similarity of triangles. Real life problems are included.
 9.4.3. Triangle Auxiliary Elements
 Terms and Concepts: bisector, inner bisector, outer bisector, edge, elevation, vertical center, edge center strut, center of gravity
-9.4.3 .1. Gain the properties of the inner and outer angles of the triangle.
+9.4.3.1. Gain the properties of the inner and outer angles of the triangle.
 a) It is shown that the lengths of the angles lowered to the arms of the angle from a point taken on the angle are equal.
 b) The internal and external bisector lengths are not calculated by the formula. c) The compass-ruler is used in the display of the angular features.
 ç) Information and communication technologies are used.

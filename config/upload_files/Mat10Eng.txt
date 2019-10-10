@@ -11,26 +11,23 @@ a) The number of all the different sequences of objects that are at least two id
 b) Real life problems are included.
 10.1.1.4. It calculates how many different elements can be chosen in a set with n elements and r elements.
 a) The combination concept is associated with the number of subsets.
-b) The following basic features of the combination concept are examined:
-a) C(n,r)=C(n,n-r)
-b) 𝐶(𝑛,0)+ 𝐶(𝑛,1)+⋯+C(n,n)=2n
-10.1.1.5. Explains the Pascal triangle.
-In this context, the role of different cultures and scientists in the formation of mathematical knowledge is emphasized.
+b) The following basic features of the combination concept are examined: a) C(n,r)=C(n,n-r); b) C(n,0)+ C(n,1)+⋯+C(n,n)=2n
+10.1.1.5. Explains the Pascal triangle. In this context, the role of different cultures and scientists in the formation of mathematical knowledge is emphasized.
 10.1.1.6. Explains Binomial expands.
-a) Binomial expansion is associated with the Pascal triangle. b) Only two-term expressions are discussed.
+a) Binomial expansion is associated with the Pascal triangle.
+b) Only two-term expressions are discussed.
 c) Examples of binomial formulas are made.
 10.1.2. Probability of Simple Events
 Terms and Concepts: example space, event, experiment, output, definitive event, impossible event, discrete event, non-discrete event, complement of an event, probability
 Symbols and Impressions: E, P(A),P(A’)
-10.1.2.1. Explain the concepts of sample space, experiment, output, complement of an event,
-definite event, impossible event, discrete event and non-discrete event.
+10.1.2.1. Explain the concepts of sample space, experiment, output, complement of an event, definite event, impossible event, discrete event and non-discrete event.
 a) Sample space, experiment, output concepts are exemplified and described for non-co-occurrence situations based on co-occurrences.
 b) Discrete event and non-discrete event are emphasized.
 c) The works of El Kindî and Laplace are included.
 10.1.2.2. Makes applications about the concept of probability.
 a) The probabilities of the possible and non-coherent events are calculated.
-b) Probabilities related to complement, discrete event and non-discrete event are calculated. c) Real life problems are included.
-
+b) Probabilities related to complement, discrete event and non-discrete event are calculated.
+c) Real life problems are included.
 10.2. (NUMBERS AND ALGEBRA) Functions
 10.2.1. Concept of Functions and Representation
 Terms and Concepts: function, definition set, value set, image set, function chart, fixed function, function inside, overlay function, one to one function, equal function, unit function, linear function, single function, double function, vertical (vertical) correct test
@@ -40,7 +37,8 @@ c) Into function, covering function, one-to-one function, equal function, unit (
 ç) Equality of two functions is explained by examples.
 d) By using functions of f and g, the operations of f+g, f-g, f.g, f/g are solved. e) Real life problems and use of table-graphics.
 10.2.1.2. Draws graphs of functions.
-a) The practices are made regarding graphics of functions such as f(x)=ax+b. b) Graphs of the functions given in the part defined in the part are plotted.
+a) The practices are made regarding graphics of functions such as f(x)=ax+b.
+b) Graphs of the functions given in the part defined in the part are plotted.
 c) The graph of the functions of f (x) = ax + b type is drawn by means of information and communication technologies, and the relationship between the coefficients a and b and the function graph are discussed.
 10.2.1.3. Interprets the graphs of functions.
 a) Descriptions and image sets of the given functions are shown.
@@ -75,7 +73,8 @@ b) Factorization applications are made by using the exact frames, two square dif
 c) Separates into factors such expressions as ax2 + bx +c.
 10.3.2.2. Performs operations related to the simplification of rational expressions.
 a) The concept of rational expression is introduced.
-b) Multipliers are not included in non-polynomial expressions. 10.4. Second Order Equations
+b) Multipliers are not included in non-polynomial expressions.
+10.4. Second Order Equations
 10.4.1. (NUMBERS AND ALGEBRA) Equations with a second order unknown
 Terms and Concepts: the equation of a second order, the root of the equation, the sum of the roots, the multiplication of the roots, the discriminant, the complex number,
 Symbols and Impressions: Δ, i, a+ib, z, Ȼ, İm(z), Re(z)
@@ -92,7 +91,7 @@ ç) Properties and transactions other than the equivalent of the complex number
 10.4.1.4. Using the relationships between the roots and coefficients of a quadratic equation.
 a) Only the relationship between the sum and multiplication of roots and the coefficients of the equation are discussed.
 b) Applications related to obtaining the second order equation given roots.
-5.10. (GEOMETRY) Quadrangles and Polygons
+10.5. (GEOMETRY) Quadrangles and Polygons
 10.5.1. Polygons
 Terms and Concepts: polygons, smooth polygons, diagonal
 10.5.1.1. Explains the concept of polygons.
@@ -105,20 +104,6 @@ Symbols and representations: C (ABCD), A (ABCD)
 10.5.2.1. Solve problems by explaining the basic elements and properties of rectangle.
 a) The concepts of convex and concave quadrilateral are explained. (Hereafter, the quadrangle is to be understood when it is called a quadrilateral.)
 b) The sum of the dimensions of the inner and outer angles of the quadrangle is found. c) Circumference of the quadrilateral.
-10.5.3. Special Quadrangles
-Terms and Concepts: trapezoid, trapezoidal, perpendicular trapezoid, parallelogram, rhombus, rectangular, square, deltoid
-10.5.3.1. Solve problems by explaining the angle, edge, diagonal and area properties of special quadrilaterals.
-a) Hierarchical relations between trapezoid, parallelogram, rhombus, rectangle, square and deltoid are included.
-b) According to the hierarchical relationship, each special quadrilateral; angle, edge, diagonal and field properties.
-c) Applications using origami, tangram.
-ç) Examples of polygons in motifs used in traditional architecture.
-d) Information and communication technologies are used.
-10.5.2. Quadrangles and Properties
-Terms and Concepts: convex quadrilateral, concave quadrilateral, diagonal, perimeter, area
-Symbols and representations: C (ABCD), A (ABCD)
-10.5.2.1. Solve problems by explaining the basic elements and properties of quadrangle.
-a) The concepts of convex and concave quadrilateral are explained.
-b) The sum of the dimensions of the inner and outer angles of the rectangle is found.
 c) Circumference of the quadrilateral is explained.
 10.5.3. Special Quadrangles
 Terms and Concepts: trapezoid, trapezoidal, perpendicular trapezoid, parallelogram, rhombus, rectangular, square, deltoid
