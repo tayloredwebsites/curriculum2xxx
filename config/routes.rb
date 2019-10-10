@@ -32,6 +32,7 @@ scope "(:locale)", locale: /tr|en/ do
     collection do
       get 'index_listing'
       post 'index_listing'
+      get 'sequence'
     end
   end
 

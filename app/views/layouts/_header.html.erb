@@ -61,6 +61,16 @@
       </li>
     <%
     end
+    if controller.controller_name == 'trees' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
+      </li>
+    <%
+    end
     if current_user.present? && current_user.is_admin?
       if controller.controller_name == 'uploads'
     %>
