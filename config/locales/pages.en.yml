@@ -129,6 +129,8 @@ en:
     index:
       name: "Turkey STEM Curriculum"
       title: "Turkey STEM Curriculum"
+    sequencing:
+      title: "Sequencing"
     show:
       name: "Curriculum Detail Page"
     labels:

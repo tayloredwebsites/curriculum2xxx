@@ -62,6 +62,8 @@ tr:
     index:
       name: "Türkiye STEM Müfredatı"
       title: "Türkiye STEM Müfredatı"
+    sequencing:
+      title: "Dizileme"
     show:
       name: "Müfredat Ayrıntı Sayfası"
     labels:

@@ -1,0 +1,23 @@
+<% content_for(:title_code, 'trees.index.name') %>
+<% content_for(:page_class, 'trees') %>
+
+<%= render partial: 'select_form' %>
+
+<% if @otcJson %>
+<br>
+<div class='text-center'>
+  <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
+</div>
+<div id="tree"></div>
+<div><%= @otcJson %></div>
+
+<script>
+var otcTree = <%= raw @otcJson %>;
+$('#tree').treeview({
+  data: otcTree,
+  levels: 4,
+  enableLinks: true // ,
+  // showCheckbox: true
+});
+</script>
+<% end %>
