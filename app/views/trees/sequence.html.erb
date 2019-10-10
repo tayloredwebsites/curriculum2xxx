@@ -1,23 +1,26 @@
 <% content_for(:title_code, 'trees.index.name') %>
 <% content_for(:page_class, 'trees') %>
 
-<%= render partial: 'select_form' %>
-
-<% if @otcJson %>
 <br>
 <div class='text-center'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
 </div>
-<div id="tree"></div>
-<div><%= @otcJson %></div>
+<div id="trees" class="sequence-page">
+  <div class="sequence-grid">
+	<% @s_o_hash.each do |i, j| %>
+      <div class="sequence-item">
+        <ul>
+          <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
+        <% j.each do |k| %>
+          <li class="sequence-item"> 
+            <a href="<%= tree_path(k[:id])%>"><%= k[:text] %></a>
+          </li>
+        <% end %>
+        </ul>
+      </div>
+  <% end %>
+  </div>
+</div>
 
-<script>
-var otcTree = <%= raw @otcJson %>;
-$('#tree').treeview({
-  data: otcTree,
-  levels: 4,
-  enableLinks: true // ,
-  // showCheckbox: true
-});
-</script>
-<% end %>
+
+

@@ -231,6 +231,150 @@ class TreesController < ApplicationController
   #   end
   # end
 
+  def sequence
+    index_prep
+
+    @subjects = {}
+    subjIds = {}
+    Subject.all.each do |s|
+      @subjects[s.code] = s
+      subjIds[s.id.to_s] = s
+    end
+    
+    listing = Tree.where(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+    @trees = listing.order(:code).all
+
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+
+    # Translations table no longer belonging to I18n Active record gem.
+    # note: Active Record had problems with placeholder conditions in join clause.
+    # Consider having Translations belong_to trees and sectors.
+    # Current solution: get translation from hash of pre-cached translations.
+    base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    @translations = Hash.new
+    translations = Translation.where(locale: @locale_code, key: base_keys)
+    translations.each do |t|
+      # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
+      @translations[t.key] = t.value
+    end
+
+    treeHash = {}
+    areaHash = {}
+    componentHash = {}
+    newHash = {}
+    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
+    # create ruby hash from tree records, to easily build tree from record codes
+    @trees.each do |tree|
+      translation = @translations[tree.name_key]
+      areaHash = {}
+      depth = tree.depth
+      case depth
+
+      # when 1
+      #   newHash = {text: "#{I18n.translate('app.labels.grade_band')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+      #   # add grade (band) if not there already
+      #   treeHash[tree.codeArrayAt(0)] = newHash if !treeHash[tree.codeArrayAt(0)].present?
+
+      # when 2
+      #   newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", nodes: {}}
+      #   puts ("+++ codeArray: #{tree.codeArray.inspect}")
+      #   if treeHash[tree.codeArrayAt(0)].blank?
+      #     raise I18n.t('trees.errors.missing_grade_in_tree')
+      #   end
+      #   Rails.logger.debug("*** #{tree.codeArrayAt(1)} to area #{tree.codeArrayAt(0)} in treeHash")
+      #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)], tree.subCode, newHash)
+
+      # when 3
+      #   newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
+      #   puts ("+++ codeArray: #{tree.codeArray.inspect}")
+      #   if treeHash[tree.codeArrayAt(0)].blank?
+      #     raise I18n.t('trees.errors.missing_grade_in_tree')
+      #   elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
+      #     raise I18n.t('trees.errors.missing_area_in_tree')
+      #   end
+      #   Rails.logger.debug("*** #{tree.codeArrayAt(2)} to area #{tree.codeArrayAt(1)} in treeHash")
+      #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
+
+      when 4
+        newHash = {text: "#{tree.code}: #{translation}", id: "#{tree.id}", nodes: {}}
+        # if treeHash[tree.codeArrayAt(0)].blank?
+        #   raise I18n.t('trees.errors.missing_grade_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
+        #   raise I18n.t('trees.errors.missing_area_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+        #   raise I18n.t('trees.errors.missing_component_in_tree')
+        #end
+        @s_o_hash[tree.subject.code] << newHash
+        #addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
+
+      # when 5
+      #   # # to do - look into refactoring this
+      #   # # check to make sure parent in hash exists.
+      #   # Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
+      #   # Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
+      #   # Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
+      #   newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+      #   # Rails.logger.debug("indicator newhash: #{newHash.inspect}")
+      #   if treeHash[tree.codeArrayAt(0)].blank?
+      #     raise I18n.t('trees.errors.missing_grade_in_tree')
+      #   elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
+      #     raise I18n.t('trees.errors.missing_area_in_tree')
+      #   elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+      #     raise I18n.t('trees.errors.missing_component_in_tree')
+      #   elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)].blank?
+      #     Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
+      #     raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
+      #   end
+      #   Rails.logger.debug("*** translation: #{translation.inspect}")
+      #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
+
+      else
+        # raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
+      end
+    end
+    # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
+    # puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
+    otcArrHash = []
+    treeHash.each do |key1, area|
+      a2 = {text: area[:text], href: "javascript:void(0);"}
+      if area[:nodes]
+        area[:nodes].each do |key2, comp|
+          a3 = {text: comp[:text], href: "javascript:void(0);"}
+          comp[:nodes].each do |key3, outc|
+            a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
+            outc[:nodes].each do |key4, indic|
+              a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
+              a4[:nodes] = [] if a4[:nodes].blank?
+              a4[:nodes] << a5
+            end
+            a3[:nodes] = [] if a3[:nodes].blank?
+            a3[:nodes] << a4
+          end
+          a2[:nodes] = [] if a2[:nodes].blank?
+          a2[:nodes] << a3
+        end
+      end
+      # done with area, append it to otcArrHash
+      otcArrHash << a2
+    end
+    # puts ("+++ otcArrHash: #{JSON.pretty_generate(otcArrHash)}")
+
+    # convert array of areas into json to put into bootstrap treeview
+    @otcJson = otcArrHash.to_json
+
+
+    puts "count: #{@s_o_hash.length}, TREEEEEEEEES:#{@s_o_hash}" 
+    respond_to do |format|
+      format.html { render 'sequence'}
+    end
+  end
+
   def show
     process_tree = false
     Rails.logger.debug("*** depth: #{@tree.depth}")
@@ -348,7 +492,7 @@ class TreesController < ApplicationController
   end
 
   def tree_params
-    params.require('tree').permit(:id,
+    params.require(:tree).permit(:id,
       :tree_type_id,
       :version_id,
       :subject_id,
