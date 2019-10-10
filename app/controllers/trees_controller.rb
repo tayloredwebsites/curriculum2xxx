@@ -17,6 +17,7 @@ class TreesController < ApplicationController
     @gbs = GradeBand.all
     # @gbs_upper = GradeBand.where(code: ['9','13'])
 
+    # get subject from tree param or from cookie (app controller getSubjectCode)
     if params[:tree].present? && tree_params[:subject_id].present?
       @subj = subjIds[tree_params[:subject_id]]
       Rails.logger.debug("*** index_listing params ID: #{tree_params[:subject_id]}")
@@ -27,12 +28,30 @@ class TreesController < ApplicationController
       subjCode, @subj = @subjects.first
       Rails.logger.debug("*** index_listing no match: #{subjCode} #{@subj.inspect}")
     end
-    @gb = params[:tree].present? && params[:tree][:grade_band_id].present? ? GradeBand.find(params[:tree][:grade_band_id]) : nil
 
     Rails.logger.debug("*** @subject_code: #{@subject_code.inspect}")
     Rails.logger.debug("*** @subj: #{@subj.inspect}")
     Rails.logger.debug("*** @subj.abbr(@locale_code): #{@subj.abbr(@locale_code).inspect}")
     setSubjectCode(@subj.code)
+
+    # get gradeBand from tree param or from cookie (app controller getSubjectCode)
+    if params[:tree].present? && tree_params[:grade_band_id].present?
+      @gb = GradeBand.find(tree_params[:grade_band_id])
+      @grade_band_code = @gb.code
+      Rails.logger.debug("*** index_listing gb params ID: #{tree_params[:grade_band_id]}, code: #{@gb.code}")
+    elsif @grade_band_code.present?
+      @gb = GradeBand.where(code: @grade_band_code).first
+      Rails.logger.debug("*** index_listing @grade_band_code: #{@grade_band_code.inspect}")
+      @grade_band_code = @gb.code
+    else
+      # defaults to all
+      Rails.logger.debug("*** defaults: #{@grade_band_code}")
+      @gb = nil
+      @grade_band_code = GradeBand.all.first
+    end
+    setGradeBandCode(@grade_band_code) if @gb
+    Rails.logger.debug("*** @grade_band_code: #{@grade_band_code.inspect}")
+    Rails.logger.debug("*** @gb: #{@gb.inspect}")
 
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
@@ -43,6 +62,7 @@ class TreesController < ApplicationController
     # Note: sort order does matter for sequence of siblings in tree.
     @trees = listing.joins(:grade_band).order("grade_bands.sort_order, code").all
 
+    # @tree is used for filtering form
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id

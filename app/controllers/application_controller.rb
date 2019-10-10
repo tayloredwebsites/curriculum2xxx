@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :getLocaleCode
   before_action :getSubjectCode
+  before_action :getGradeBandCode
   before_action :set_type_and_version
   before_action :config_devise_params, if: :devise_controller?
 
@@ -29,7 +30,7 @@ class ApplicationController < ActionController::Base
     def setSubjectCode(code)
       Rails.logger.debug("app setSubjectCode code: #{code.inspect}")
       if Subject.all.map{ |s| s.code}.include?(code)
-        # next default locale to cookie:
+        # next default Subject to cookie:
         Rails.logger.debug("app Subject code matched! #{code.inspect}")
         @subject_code = code
         cookies['subject'] = code
@@ -37,6 +38,18 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug("app Subject code not matched! #{code} - #{@subject_code.inspect}")
       end
       Rails.logger.debug "@subject_code: #{@subject_code.inspect}"
+    end
+
+    # set the current gradeBand ID
+    def setGradeBandCode(code)
+      Rails.logger.debug("app setGradeBand code: #{code.inspect}")
+      if GradeBand.all.map{ |gb| gb.code}.include?(code)
+        # next default gradeBand to cookie:
+        Rails.logger.debug("app gradeBand code matched! #{code.inspect}")
+        cookies['gradeBand'] = code
+      else
+        Rails.logger.debug("app gradeBand code not matched! #{code}")
+      end
     end
 
   private
@@ -51,11 +64,11 @@ class ApplicationController < ActionController::Base
         validSubjects << s.code
       end
       if validSubjects.include?(subp)
-        # first set locale to the locale passed as the locale param
+        # first set Subject to the Subject passed as the Subject param
         Rails.logger.debug("app param set subject code: param: #{subp} cookie: #{subc}")
         @subject_code = subp
       elsif validSubjects.include?(subc)
-        # next default locale to cookie:
+        # next default Subject to cookie:
         Rails.logger.debug("app cookie set subject code: param: #{subp} cookie: #{subc}")
         @subject_code = subc
       else
@@ -64,6 +77,28 @@ class ApplicationController < ActionController::Base
       Rails.logger.debug "app @subject_code: #{@subject_code.inspect}"
       cookies[:subject] = @subject_code
       Rails.logger.debug "app cookies[:subject]: #{cookies[:subject].inspect}"
+    end
+
+    # set the GradeBand code
+    def getGradeBandCode
+      gbp = params['gradeBand'].to_s
+      gbc = cookies['gradeBand'].to_s
+      @grade_band_code = ''
+      validGradeBands = GradeBand.pluck(:code)
+      if validGradeBands.include?(gbp)
+        # first set gradeBand to the gradeBand passed as the gradeBand param
+        Rails.logger.debug("app param set GradeBand code: param: #{gbp} cookie: #{gbc}")
+        @grade_band_code = gbp
+      elsif validGradeBands.include?(gbc)
+        # next default gradeBand to cookie:
+        Rails.logger.debug("app cookie set GradeBand code: param: #{gbp} cookie: #{gbc}")
+        @grade_band_code = gbc
+      else
+        Rails.logger.debug("app no set subject code: param: #{gbp} cookie: #{gbc}")
+      end
+      Rails.logger.debug "app @grade_band_code: #{@grade_band_code.inspect}"
+      cookies[:gradeBand] = @grade_band_code
+      Rails.logger.debug "app cookies[:gradeBand]: #{cookies[:gradeBand].inspect}"
     end
 
     # set the locale code
