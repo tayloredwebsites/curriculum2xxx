@@ -39,12 +39,13 @@ class TreesController < ApplicationController
       @gb = GradeBand.find(tree_params[:grade_band_id])
       @grade_band_code = @gb.code
       Rails.logger.debug("*** index_listing gb params ID: #{tree_params[:grade_band_id]}, code: #{@gb.code}")
-    elsif @grade_band_code.present? && @subjects[@grade_band_code].present?
-      @gb = @GradeBand.find(@grade_band_code)
+    elsif @grade_band_code.present?
+      @gb = GradeBand.where(code: @grade_band_code).first
       Rails.logger.debug("*** index_listing @grade_band_code: #{@grade_band_code.inspect}")
       @grade_band_code = @gb.code
     else
       # defaults to all
+      Rails.logger.debug("*** defaults: #{@grade_band_code}")
       @gb = nil
       @grade_band_code = GradeBand.all.first
     end

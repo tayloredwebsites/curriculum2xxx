@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
       else
         Rails.logger.debug("app no set subject code: param: #{gbp} cookie: #{gbc}")
       end
-      Rails.logger.debug "app @GradeBand_code: #{@grade_band_code.inspect}"
+      Rails.logger.debug "app @grade_band_code: #{@grade_band_code.inspect}"
       cookies[:gradeBand] = @grade_band_code
       Rails.logger.debug "app cookies[:gradeBand]: #{cookies[:gradeBand].inspect}"
     end
