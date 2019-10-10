@@ -18,8 +18,16 @@
           <% end %>
         </select></div>
         <div id='gb-container' class='col col-md-4 border-left border-bottom'>
-          <span id='upper-gbs-select' class='hidden'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, {include_blank: I18n.t('app.labels.all')}, {} ) %></span>
-          <span id='all-gbs-select'><%= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) %></span>
+          <span id='all-gbs-select'>
+          <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
+          <select id='tree_grade_band_id' name='tree[grade_band_id]'>
+          <% @gbs.all.each do |gb| %>
+            <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
+            <%= Rails.logger.debug("index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
+            <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
+          <% end %>
+        </select>
+          </span>
         </div>
 
         <div class='col col-md-4 border-bottom border-right'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
