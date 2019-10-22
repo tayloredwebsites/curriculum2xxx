@@ -147,6 +147,10 @@ en:
       outcome_connections: 'Connections to Other Outcomes:'
       relation: 'Relation'
       how_outcome_related: 'How Outcome is Related:'
+      relation_types:
+        applies: 'Applies to:'
+        depends: 'Depends on:'
+        akin: 'Akin to:'
       current_subject: "This Subject"
       bio: "Biology"
       che: "Chemistry"

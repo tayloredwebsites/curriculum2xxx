@@ -52,6 +52,7 @@
       border-top: 1px solid black;
     }
 
+
     ul {
       list-style-type: none;
       list-style-position: none;
@@ -73,6 +74,33 @@
         width: 100%;
         padding: 0 5px;
       }
+      .icon-link {
+        color: black;
+      }
+      .icon-link:hover {
+        color: blue;
+      }
+      .highlight .icon-link {
+        color: brown;
+      }
+      .highlight .icon-link:hover {
+        color: yellow;
+      }
+    }
+    .collapsed .hide-if-collapsed {
+      display: none;
+    }
+
+    .collapsed .truncate-if-collapsed {
+      display: inline-block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-height: 20px;
+      white-space: nowrap;
+    }
+
+    .highlight {
+      background: lightblue;
     }
   }
 

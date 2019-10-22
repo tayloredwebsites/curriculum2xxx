@@ -273,6 +273,14 @@ class TreesController < ApplicationController
     componentHash = {}
     newHash = {}
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
+    @so_code_by_id_hash = Hash.new
+
+    @relations = Hash.new { |h, k| h[k] = [] }
+    relations = TreeTree.all
+    relations.each do |rel|
+      @relations[rel.tree_referencer_id] << rel
+    end
+    puts "+++++++relations: #{@relations.inspect}"
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
       translation = @translations[tree.name_key]
@@ -306,7 +314,12 @@ class TreesController < ApplicationController
       #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{tree.code}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {
+          text: "#{tree.code}: #{translation}", 
+          id: "#{tree.id}",
+          connections: @relations[tree.id], 
+          nodes: {}
+        }
         # if treeHash[tree.codeArrayAt(0)].blank?
         #   raise I18n.t('trees.errors.missing_grade_in_tree')
         # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
@@ -315,6 +328,7 @@ class TreesController < ApplicationController
         #   raise I18n.t('trees.errors.missing_component_in_tree')
         #end
         @s_o_hash[tree.subject.code] << newHash
+        @so_code_by_id_hash[tree.id] = {subj: tree.subject.code, code: tree.code}
         #addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
 
       # when 5
