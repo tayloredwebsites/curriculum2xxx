@@ -1,35 +1,35 @@
 en,sci,7
-S.7. CLASSROOM SCIENCE TEACHING PROGRAM
-S.7.1. [Unit]Solar System and Beyond [Subject Name]Earth and Universe
-S.7.2. [Unit]Cells and Divisions [Subject Name]Living
-S.7.3. [Unit]Force and Energy [Subject Name]hysical Events
-S.7.4. [Unit]Pure Materials and Mixtures [Subject Name]Matter and Nature
-S.7.5. [Unit]Interaction of Light with Matter [Subject Name]Physical Events
-S.7.6. [Unit]Reproduction, Growth and Development of Living Things [Subject Name]Living
-S.7.7. [Unit]Electric circuits [Subject Name]Physical Events
-S.7.1. Solar System and Beyond / World and Universe
-S.7.1.1. Space researches
-S.7.1.2. Beyond the Solar System: Sky Bodies
-S.7.2. Cells and Divisions / Living
-S.7.2.1. Cell
-S.7.2.2. Mitosis
-S.7.2.3. Meiosis
-S.7.3. Force and Energy / Physical Events
-S.7.3.1. Mass and Weight Relationship
-S.7.3.2. Relationship Between Force, Work and Energy
-S.7.3.3. Energy Transformations
-S.7.4. Pure Substances and Mixtures / Substance and Its Nature
-S.7.4.1. Particulate Structure of Matter
-S.7.4.2. Pure Ingredients
-S.7.4.3. Mixtures
-S.7.4.4. Separation of Mixtures
-S.7.4.5. Domestic Waste and Recycling
-S.7.5. Interaction of Light with Matter / Physical Events
-S.7.5.1. Absorption of Light
-S.7.5.2. Mirrors
-S.7.5.3. Light Breaks and Lenses
-S.7.6. Reproduction, Growth and Development / Living and Living in Living Things
-S.7.6.1. Reproduction, Growth and Development in Human
-S.7.6.2. Reproduction, Growth and Development in Plants and Animals
-S.7.7. Electrical Circuits / Physical Events
-S.7.7.1. Attachments of Light Bulbs
+7. CLASSROOM SCIENCE TEACHING PROGRAM
+7.1. Solar System and Beyond
+7.1.1 World and Universe / Earth and Universe
+7.1.1.1 Space researches
+7.1.1.2. Beyond the Solar System: Sky Bodies
+7.2. Cells and Divisions
+7.2.1 Living
+7.2.1.1. Cell
+7.2.1.2. Mitosis
+7.2.1.3. Meiosis
+7.3. Force and Energy
+7.3.1. Physical Events
+7.3.1.1. Mass and Weight Relationship
+7.3.1.2. Relationship Between Force, Work and Energy
+7.3.1.3. Energy Transformations
+7.4. Pure Substances and Mixtures / Pure Materials and Mixtures
+7.4.1. Substance and Its Nature / Matter and Nature
+7.4.1.1. Particulate Structure of Matter
+7.4.1.2. Pure Ingredients
+7.4.1.3. Mixtures
+7.4.1.4. Separation of Mixtures
+7.4.1.5. Domestic Waste and Recycling
+7.5. Interaction of Light with Matter
+7.5.1 Physical Events
+7.5.1.1. Absorption of Light
+7.5.1.2. Mirrors
+7.5.1.3. Light Breaks and Lenses
+7.6. Reproduction, Growth and Development / Reproduction, Growth and Development of Living Things
+7.6.1 Living / Living in Living Things
+7.6.1.1. Reproduction, Growth and Development in Human
+7.6.1.2. Reproduction, Growth and Development in Plants and Animals
+7.7. Electrical Circuits
+7.7.1. Physical Events
+7.7.1.1. Attachments of Light Bulbs
