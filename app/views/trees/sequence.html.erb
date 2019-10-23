@@ -21,9 +21,9 @@
               </div>
                 <% k[:connections].each do |c| %>
                   <div><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
-                  ref = @so_code_by_id_hash[c.tree_referencee_id]
+                  ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code]
                   %>
-                  <a href="<%= tree_path(c.tree_referencee_id)%>"><%= ref[:subj] + '.' + ref[:code] %></a>
+                  <a href="<%= tree_path(c.tree_referencee_id)%>"><%= ref %></a>
                   </div>
                 <% end %>
               </div>
