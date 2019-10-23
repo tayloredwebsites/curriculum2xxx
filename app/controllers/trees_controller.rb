@@ -35,7 +35,11 @@ class TreesController < ApplicationController
     setSubjectCode(@subj.code)
 
     # get gradeBand from tree param or from cookie (app controller getSubjectCode)
-    if params[:tree].present? && tree_params[:grade_band_id].present?
+    if params[:tree].present? && tree_params[:grade_band_id] == '0'
+      Rails.logger.debug("*** defaults: #{@grade_band_code}")
+      @gb = nil
+      @grade_band_code = GradeBand.all.first
+    elsif params[:tree].present? && tree_params[:grade_band_id].present?
       @gb = GradeBand.find(tree_params[:grade_band_id])
       @grade_band_code = @gb.code
       Rails.logger.debug("*** index_listing gb params ID: #{tree_params[:grade_band_id]}, code: #{@gb.code}")
