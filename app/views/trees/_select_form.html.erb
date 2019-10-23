@@ -21,6 +21,7 @@
           <span id='all-gbs-select'>
           <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
           <select id='tree_grade_band_id' name='tree[grade_band_id]'>
+            <option value='0'><%= I18n.t('app.labels.all') %></option>
           <% @gbs.all.each do |gb| %>
             <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
             <%= Rails.logger.debug("index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
