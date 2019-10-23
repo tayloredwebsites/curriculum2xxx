@@ -60,7 +60,7 @@ class TreesController < ApplicationController
     listing = listing.where(subject_id: @subj.id) if @subj.present?
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     # Note: sort order does matter for sequence of siblings in tree.
-    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, code").all
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
 
     # @tree is used for filtering form
     @tree = Tree.new(
@@ -240,7 +240,7 @@ class TreesController < ApplicationController
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end
-    
+
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -369,7 +369,7 @@ class TreesController < ApplicationController
     @otcJson = otcArrHash.to_json
 
 
-    puts "count: #{@s_o_hash.length}, TREEEEEEEEES:#{@s_o_hash}" 
+    puts "count: #{@s_o_hash.length}, TREEEEEEEEES:#{@s_o_hash}"
     respond_to do |format|
       format.html { render 'sequence'}
     end
