@@ -14,7 +14,7 @@
   <% end %>
 </div>
 <div id="trees" class="sequence-page">
-  <div class="sequence-grid">
+  <div class="sequence-grid cols-<%= @s_o_hash.keys.count %>">
 	<% @s_o_hash.each do |i, j| %>
     <div id="<%=i%>-column" class="sequence-item subject-column">
       <ul>

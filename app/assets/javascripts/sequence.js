@@ -17,6 +17,8 @@ $(function() {
   	else {
   	   $('#'+subj_abbr+'-column').addClass('hidden')
   	}
+  	$('.sequence-grid').removeClass('cols-0 cols-1 cols-2 cols-3 cols-4 cols-5')
+  	$('.sequence-page .sequence-grid').addClass('cols-' + $('.subj-checkbox input:checked').length )
   }
 
   /**
