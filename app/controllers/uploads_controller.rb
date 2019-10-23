@@ -348,7 +348,8 @@ class UploadsController < ApplicationController
         @subjectRec,
         @gradeBandRec,
         numCodes.join('.'),
-        depth
+        depth,
+        line_num
       )
       if save_status == BaseRec::REC_ERROR
         @rowErrs << message if message.present?
