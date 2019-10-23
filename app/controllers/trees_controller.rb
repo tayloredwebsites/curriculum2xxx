@@ -240,7 +240,8 @@ class TreesController < ApplicationController
 
     @subjects = {}
     subjIds = {}
-    Subject.all.each do |s|
+    subjects = Subject.all
+    subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end
@@ -260,6 +261,10 @@ class TreesController < ApplicationController
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
     base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    base_keys =  base_keys | subjects.map { |s| "#{s.base_key}.name" }
+    base_keys = base_keys | subjects.map { |s| "#{s.base_key}.abbr" }
+    puts "++++++++BaseKEYS: #{base_keys[base_keys.length - 1 ]}"
+    puts
     @translations = Hash.new
     translations = Translation.where(locale: @locale_code, key: base_keys)
     translations.each do |t|

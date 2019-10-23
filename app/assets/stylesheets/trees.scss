@@ -51,7 +51,13 @@
       margin-right: -15px;
       border-top: 1px solid black;
     }
+    
+    .hidden { display: none; }
 
+    .subj-checkbox { 
+      display: inline;
+      margin: 10px; 
+    }
 
     ul {
       list-style-type: none;

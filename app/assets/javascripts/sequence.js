@@ -4,6 +4,20 @@
 
 
 $(function() {
+  /**
+   * Hide or show a subject column when the corresponding 
+   * checkbox is checked or unchecked.
+   * @param  {String} subj_abbr Abbreviation for a subject.
+   *                            E.g. 'bio', 'phy', etc.
+   */
+  subject_visibility = (subj_abbr) => {
+  	if ($('#check-' + subj_abbr).prop('checked')) {
+  	   $('#'+subj_abbr+'-column').removeClass('hidden')
+  	}
+  	else {
+  	   $('#'+subj_abbr+'-column').addClass('hidden')
+  	}
+  }
 
   /**
    * Expand and highlight related LOs 

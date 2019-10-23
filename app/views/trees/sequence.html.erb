@@ -2,13 +2,21 @@
 <% content_for(:page_class, 'trees') %>
 
 <br>
-<div class='text-center'>
+<div class='text-center sequence-page'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
+  <% @s_o_hash.keys.each do |i| %>
+    <div class='subj-checkbox'>
+      <label for="check-<%= i %>">      
+        <%= @translations["subject.#{i}.name"] %>
+      </label>
+      <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+    </div>
+  <% end %>
 </div>
 <div id="trees" class="sequence-page">
   <div class="sequence-grid">
 	<% @s_o_hash.each do |i, j| %>
-    <div class="sequence-item">
+    <div id="<%=i%>-column" class="sequence-item subject-column">
       <ul>
         <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
         <% j.each do |k| %>
