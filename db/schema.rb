@@ -65,8 +65,7 @@ ActiveRecord::Schema.define(version: 20191023160310) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_translations_on_key"
-    t.index ["locale", "key"], name: "index_translations_on_keys"
-    t.index ["value"], name: "index_translations_on_value", length: { value: 256 }
+    t.index ["value"], name: "index_translations_on_value", length: { value: 255 }
   end
 
   create_table "tree_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
