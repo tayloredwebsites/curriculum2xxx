@@ -10,7 +10,7 @@ $(function() {
    * @param  {String} subj_abbr Abbreviation for a subject.
    *                            E.g. 'bio', 'phy', etc.
    */
-  subject_visibility = (subj_abbr) => {
+  subject_visibility = function (subj_abbr) {
   	if ($('#check-' + subj_abbr).prop('checked')) {
   	   $('#'+subj_abbr+'-column').removeClass('hidden')
   	}
@@ -25,7 +25,7 @@ $(function() {
    * Expand and highlight related LOs 
    */
 
-  related_LO_display = (rel) => {
+  related_LO_display = function (rel) {
     if ($("#lo_" + rel[rel.length - 1]).hasClass('highlight')) {
 	  	$('.sequence-item--collapsable')
 	  	  .removeClass('collapsed')
