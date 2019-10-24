@@ -30,7 +30,7 @@ $(function() {
 	  	$('.sequence-item--collapsable')
 	  	  .removeClass('collapsed')
 	  	  .removeClass('highlight');
-	  	for (let r in rel) {
+	  	for (var r in rel) {
 	  		$('li[data-lo-id='+rel[r]+']')
 	  		 .find('.connections-icon')
 	  		 .attr('title', 'highlight related LOs');
@@ -40,7 +40,7 @@ $(function() {
       $('.sequence-item--collapsable')
   	  .addClass('collapsed')
   	  .removeClass('highlight');
-	  	for (let r in rel) {
+	  	for (var r in rel) {
 	  	  console.log('highlight ', rel[r])
 	  	  $("#lo_" + rel[r])
 	  		.removeClass('collapsed')
