@@ -240,7 +240,8 @@ class TreesController < ApplicationController
 
     @subjects = {}
     subjIds = {}
-    Subject.all.each do |s|
+    subjects = Subject.all
+    subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end
@@ -249,8 +250,7 @@ class TreesController < ApplicationController
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
-    @trees = listing.order(:code).all
-
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -261,6 +261,10 @@ class TreesController < ApplicationController
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
     base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    base_keys =  base_keys | subjects.map { |s| "#{s.base_key}.name" }
+    base_keys = base_keys | subjects.map { |s| "#{s.base_key}.abbr" }
+    puts "++++++++BaseKEYS: #{base_keys[base_keys.length - 1 ]}"
+    puts
     @translations = Hash.new
     translations = Translation.where(locale: @locale_code, key: base_keys)
     translations.each do |t|
@@ -273,6 +277,12 @@ class TreesController < ApplicationController
     componentHash = {}
     newHash = {}
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
+
+    @relations = Hash.new { |h, k| h[k] = [] }
+    relations = TreeTree.all
+    relations.each do |rel|
+      @relations[rel.tree_referencer_id] << rel
+    end
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
       translation = @translations[tree.name_key]
@@ -306,7 +316,12 @@ class TreesController < ApplicationController
       #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{tree.code}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {
+          text: "#{tree.code}: #{translation}", 
+          id: "#{tree.id}",
+          connections: @relations[tree.id], 
+          nodes: {}
+        }
         # if treeHash[tree.codeArrayAt(0)].blank?
         #   raise I18n.t('trees.errors.missing_grade_in_tree')
         # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
@@ -372,8 +387,6 @@ class TreesController < ApplicationController
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
 
-
-    puts "count: #{@s_o_hash.length}, TREEEEEEEEES:#{@s_o_hash}"
     respond_to do |format|
       format.html { render 'sequence'}
     end

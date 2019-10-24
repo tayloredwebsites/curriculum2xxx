@@ -76,6 +76,10 @@ tr:
       future_vision_hover: "Gelecek Vizyonu"
       related_sectors: 'İlgili Sektörler'
       how_sectors_related: 'Sektör ile ilgili nasıl.'
+      relation_types:
+        applies: 'İçin geçerlidir:'
+        depends: 'Bağlıdır:'
+        akin: 'Yakın:'
       indicator_connections: 'Diğer Öğrenme Bağlantılar:'
       outcome_connections: 'Diğer Öğrenme Çıktıları:'
       relation: 'Ilişki'

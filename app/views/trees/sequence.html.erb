@@ -2,22 +2,44 @@
 <% content_for(:page_class, 'trees') %>
 
 <br>
-<div class='text-center'>
+<div class='text-center sequence-page'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
+  <% @s_o_hash.keys.each do |i| %>
+    <div class='subj-checkbox'>
+      <label for="check-<%= i %>">      
+        <%= @translations["subject.#{i}.name"] %>
+      </label>
+      <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+    </div>
+  <% end %>
 </div>
 <div id="trees" class="sequence-page">
-  <div class="sequence-grid">
+  <div class="sequence-grid cols-<%= @s_o_hash.keys.count %>">
 	<% @s_o_hash.each do |i, j| %>
-      <div class="sequence-item">
-        <ul>
-          <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
+    <div id="<%=i%>-column" class="sequence-item subject-column">
+      <ul>
+        <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
         <% j.each do |k| %>
-          <li class="sequence-item"> 
-            <a href="<%= tree_path(k[:id])%>"><%= k[:text] %></a>
+          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable" data-lo-id="<%= k[:id] %>"> 
+            <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>"><%= k[:text] %></a>
+            <% if k[:connections].length > 0 %>
+              <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
+              <div><strong><%= translate('trees.labels.outcome_connections') %></strong>
+                <a class="icon-link" onclick="related_LO_display(<%= k[:connections].pluck(:tree_referencee_id) << k[:id] %> );"><i class="fa fa-plug connections-icon" title="highlight connected LOs"></i></a>
+              </div>
+                <% k[:connections].each do |c| %>
+                  <div><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
+                  ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code]
+                  %>
+                  <a href="<%= tree_path(c.tree_referencee_id)%>"><%= ref %></a>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
           </li>
         <% end %>
-        </ul>
-      </div>
+      </ul>
+    </div>
   <% end %>
   </div>
 </div>

@@ -20,3 +20,4 @@
 //
 // include other js in this directory tree.
 //= require_tree .
+//= require sequence
