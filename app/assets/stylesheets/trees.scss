@@ -44,6 +44,15 @@
   }
 
   .sequence-page {
+
+    .hide-unless-condition {
+      display: none;
+    }
+
+    .show-connections-condition .hide-unless-condition {
+      display: inline-block;
+    }
+
     .sequence-grid {
       display: grid;
       margin-left: -15px;
