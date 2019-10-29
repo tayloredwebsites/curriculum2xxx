@@ -24,11 +24,11 @@
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>"><%= k[:text] %></a>
             <% if k[:connections].length > 0 %>
               <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
-              <div><strong><%= translate('trees.labels.outcome_connections') %></strong>
+              <div><strong class='hide-unless-condition'><%= translate('trees.labels.outcome_connections') %></strong>
                 <a class="icon-link" onclick="related_LO_display(<%= k[:connections].pluck(:tree_referencee_id) << k[:id] %> );"><i class="fa fa-plug connections-icon" title="highlight connected LOs"></i></a>
               </div>
                 <% k[:connections].each do |c| %>
-                  <div><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
+                  <div class="hide-unless-condition"><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
                   ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code]
                   %>
                   <a href="<%= tree_path(c.tree_referencee_id)%>"><%= ref %></a>
