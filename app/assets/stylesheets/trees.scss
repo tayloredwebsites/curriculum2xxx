@@ -53,6 +53,10 @@
       display: inline-block;
     }
 
+    .show-connections-condition .hide-unless-condition:first-child {
+      display: inline;
+    }
+
     .sequence-grid {
       display: grid;
       margin-left: -15px;
