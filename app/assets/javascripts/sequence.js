@@ -52,5 +52,9 @@ $(function() {
  
   }
 
+  $( ".sequence-item--collapsable" ).draggable({
+  appendTo: "body"
+  });
+
 
 });
