@@ -52,9 +52,14 @@ $(function() {
  
   }
 
-  $( ".sequence-item--collapsable" ).draggable({
-  appendTo: "body"
-  });
+ $('.list-group').sortable({
+  placeholder: 'drop-placeholder',
+  handle: '.sort-handle'
+  })
 
+// $('.list-group-item').draggable({
+// placeholder: 'drop-placeholder',
+// handle: '.connect-handle'
+// })
 
 });

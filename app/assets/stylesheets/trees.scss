@@ -45,6 +45,14 @@
 
   .sequence-page {
 
+    .drop-placeholder {
+      background-color: lightgray;
+      height: 3.5em;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      line-height: 1.2em;
+    }
+
     .hide-unless-condition {
       display: none;
     }

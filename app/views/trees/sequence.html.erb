@@ -17,10 +17,10 @@
   <div class="sequence-grid cols-<%= @s_o_hash.keys.count %>">
 	<% @s_o_hash.each do |i, j| %>
     <div id="<%=i%>-column" class="sequence-item subject-column">
-      <ul>
+      <ul class="list-group">
         <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
         <% j.each do |k| %>
-          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable" data-lo-id="<%= k[:id] %>"> 
+          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item" data-lo-id="<%= k[:id] %>"> 
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
             <% if k[:connections].length > 0 %>
               <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
@@ -34,10 +34,14 @@
                   </div>
                 <% end %>
               </div>
+              <div>
                <a class="icon-link hide-if-collapsed" onclick="related_LO_display(<%= k[:connections].pluck(:tree_referencee_id) << k[:id] %> );"><i class="fa fa-plug connections-icon pull-right" title="highlight connected LOs"></i></a>
-                <a class="draggable-handle" onclick=""><i class="fa fa-link pull-right" title="drag LO"></i></a>
-                <a class="draggable-handle" onclick=""><i class="fa fa-thumb-tack pull-right" title="drag LO"></i></a>
+            <% else %>
+            <div>
             <% end %>
+            <a class="connect-handle" onclick=""><i class="fa fa-link pull-right" title="drag LO"></i></a>
+            <a class="sort-handle" onclick=""><i class="fa fa-thumb-tack pull-right" title="drag LO"></i></a>
+            </div>
           </li>
         <% end %>
       </ul>
