@@ -265,7 +265,8 @@ class Tree < BaseRec
   #   fullCode - code including parent codes (e.g. 1.1.1.a for a indicator).
   #   depth - record depth - stored in record
   #   sort_order - originally in record read order, is used to adjust for sort issues, and may be used for moving LOs around
-  def self.find_or_add_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode, depth, sort_order)
+  #   sequence_order - originally in record read order, is used to resequence LOs in Sequencing page
+  def self.find_or_add_code_in_tree(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode, depth, sort_order, sequence_order)
     # get the tree records for this hierarchy item
     matched_codes = Tree.where(
       tree_type_id: treeTypeRec.id,
@@ -288,6 +289,7 @@ class Tree < BaseRec
         "#{fullCode}"
       tree.depth = depth
       tree.sort_order = sort_order
+      tree.sequence_order = sequence_order
       ret = tree.save
       puts "++++ add tree.base_key: #{tree.base_key}"
       if tree.errors.count > 0

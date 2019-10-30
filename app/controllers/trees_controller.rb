@@ -252,7 +252,7 @@ class TreesController < ApplicationController
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
-    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sequence_order, code").all
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -513,7 +513,7 @@ class TreesController < ApplicationController
     ActiveRecord::Base.transaction do
     params[:id_order].each do |id|
       t = Tree.find(id)
-      t.sort_order = count
+      t.sequence_order = count
       t.save
       count += 1
     end

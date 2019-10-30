@@ -102,7 +102,13 @@
 
     .sequence-header {
       background: lightgrey;
+      text-align: center;
     }
+
+    .sequence-item {
+      text-align: left;
+    }
+
     .sequence-item, .sequence-header {
       list-style-type: none;
       list-style-position: none;
@@ -114,7 +120,10 @@
       }
       .icon-link {
         color: black;
-        i { margin-right: 3px; }
+        i { 
+
+          margin: 0 5px;  
+        }
       }
       .icon-link:hover {
         color: blue;
@@ -125,6 +134,11 @@
       .highlight .icon-link:hover {
         color: yellow;
       }
+      .lo-handle {
+        cursor: pointer;
+      }
+
+
     }
     .collapsed .hide-if-collapsed {
       display: none;

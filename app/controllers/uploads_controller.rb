@@ -349,6 +349,7 @@ class UploadsController < ApplicationController
         @gradeBandRec,
         numCodes.join('.'),
         depth,
+        line_num,
         line_num
       )
       if save_status == BaseRec::REC_ERROR
