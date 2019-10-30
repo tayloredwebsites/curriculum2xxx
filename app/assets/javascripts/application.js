@@ -18,7 +18,6 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require doc-ready
-// require bootstrap-modal
 //
 // include other js in this directory tree.
 //= require_tree .
