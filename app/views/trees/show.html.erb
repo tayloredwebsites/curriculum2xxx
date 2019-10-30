@@ -20,7 +20,7 @@
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) %>
+            <!-- %= # link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) % -->
           <% end %>
         </div>
       </div>
@@ -91,7 +91,7 @@
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-trash fa-lg"></i>
                 </span></a>
-                <%= link_to 'Edit LO', edit_tree_path(st.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}  %>
+                <!-- %= # link_to 'Edit LO', edit_tree_path(st.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}  % -->
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-edit fa-lg"></i>
                 </span></a>
@@ -215,7 +215,7 @@
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) %>
+            <!-- %= # link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) % -->
           <% end %>
         </div>
       </div>
