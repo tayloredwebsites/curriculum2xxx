@@ -506,6 +506,22 @@ class TreesController < ApplicationController
     end
   end
 
+  def reorder
+    Rails.logger.debug(params[:id_order].inspect)
+    count = 1
+    ActiveRecord::Base.transaction do
+    params[:id_order].each do |id|
+      t = Tree.find(id)
+      t.sort_order = count
+      t.save
+      count += 1
+    end
+    end
+    respond_to do |format|
+      format.json {render json: {hello_message: 'hello world'}}
+    end
+  end
+
   private
 
   def find_tree
@@ -520,6 +536,10 @@ class TreesController < ApplicationController
       :grade_band_id,
       :code
     )
+  end
+
+  def reorder_params
+    params.permit(:id_order)
   end
 
   def addNodeToArrHash (parent, subCode, newHash)

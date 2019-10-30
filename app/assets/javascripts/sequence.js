@@ -54,7 +54,30 @@ $(function() {
 
  $('.list-group').sortable({
   placeholder: 'drop-placeholder',
-  handle: '.sort-handle'
+  handle: '.sort-handle', 
+  stop: function (e, ui) {
+    console.log('e:', e)
+    console.log('ui:', ui)
+    tree_ids = $.map($(this).find('.sequence-item'), function(el) {
+               return el.id.split('_')[1]
+            });
+    console.log(tree_ids);
+    token = $("meta[name='csrf-token']").attr('content');
+
+    $.ajax({
+      "type": 'post', 
+      "url": '/trees/reorder', 
+      "headers": { 'X-CSRF-Token': token },
+      "data": {
+        "source_controller": 'trees',
+        "source_action": 'reorder',
+        "id_order": tree_ids
+      },
+      "dataType": 'json',
+      "async": false
+    })
+    .catch(function (err) { console.log("ERROR:", err) })
+  }
   })
 
 // $('.list-group-item').draggable({
