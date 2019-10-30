@@ -342,6 +342,8 @@ class UploadsController < ApplicationController
     # update text translation for this locale (if not skipped)
     if !@abortRow
       # insert record into tree
+      sequence_order = 1 + Tree.where(:subject_id=> @subjectRec.id).pluck(:sequence_order).max() 
+      new_seq = depth == 3 ? sequence_order : 0
       new_code, @rowTreeRec, save_status, message = Tree.find_or_add_code_in_tree(
         @treeTypeRec,
         @versionRec,
@@ -350,7 +352,7 @@ class UploadsController < ApplicationController
         numCodes.join('.'),
         depth,
         line_num,
-        line_num
+        new_seq
       )
       if save_status == BaseRec::REC_ERROR
         @rowErrs << message if message.present?
