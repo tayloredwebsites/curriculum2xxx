@@ -17,6 +17,7 @@
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
+//= require doc-ready
 //
 // include other js in this directory tree.
 //= require_tree .
