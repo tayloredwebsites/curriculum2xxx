@@ -5,6 +5,13 @@
   <div id='pageHeaderTitle' class=''>
     <h1 class='text-center'><%= content_for?(:title) ? yield(:title) : (content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') ) %></h1>
   </div>
+  <div id='pageHeaderFontSize' class='font-size-select'>
+    <span class='smallest-text'>A</span>
+    <span class='smaller-text'>A</span>
+    <span class='medium-text'>A</span>
+    <span class='larger-text'>A</span>
+    <span class='largest-text'>A</span>
+  </div>
   <div id='pageHeaderShowNav' class=''>
     <ul id='locale-select'>
       <% if @locale_code == 'tr' %>

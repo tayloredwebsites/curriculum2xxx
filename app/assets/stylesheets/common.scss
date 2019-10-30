@@ -1,4 +1,26 @@
 // styles common throughout pages
+body {
+  .smallest-text {
+    font-size: 0.6rem;
+  }
+  .smaller-text {
+    font-size: 0.8rem;
+  }
+  .medium-text {
+    font-size: 1.0rem;
+  }
+  .larger-text {
+    font-size: 1.2rem;
+  }
+  .largest-text {
+    font-size: 1.4rem;
+  }
+  .font-size-select span {
+    margin: 2px;
+    cursor: pointer;
+    // list-style-position: none;
+  }
+}
 
 // use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)
 .treeview {
