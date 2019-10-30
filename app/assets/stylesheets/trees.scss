@@ -45,16 +45,20 @@
 
   .sequence-page {
 
+    .drop-placeholder {
+      background-color: lightgray;
+      height: 3.5em;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      line-height: 1.2em;
+    }
+
     .hide-unless-condition {
       display: none;
     }
 
     .show-connections-condition .hide-unless-condition {
       display: inline-block;
-    }
-
-    .show-connections-condition .hide-unless-condition:first-child {
-      display: inline;
     }
 
     .sequence-grid {
@@ -98,7 +102,13 @@
 
     .sequence-header {
       background: lightgrey;
+      text-align: center;
     }
+
+    .sequence-item {
+      text-align: left;
+    }
+
     .sequence-item, .sequence-header {
       list-style-type: none;
       list-style-position: none;
@@ -110,6 +120,10 @@
       }
       .icon-link {
         color: black;
+        i { 
+
+          margin: 0 5px;  
+        }
       }
       .icon-link:hover {
         color: blue;
@@ -120,6 +134,11 @@
       .highlight .icon-link:hover {
         color: yellow;
       }
+      .lo-handle {
+        cursor: pointer;
+      }
+
+
     }
     .collapsed .hide-if-collapsed {
       display: none;

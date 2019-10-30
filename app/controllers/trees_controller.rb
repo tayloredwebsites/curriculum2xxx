@@ -238,19 +238,21 @@ class TreesController < ApplicationController
   def sequence
     index_prep
 
+    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
     subjects = Subject.all
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
+      @s_o_hash[s.code] = []
     end
 
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
-    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sequence_order, code").all
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -276,7 +278,6 @@ class TreesController < ApplicationController
     areaHash = {}
     componentHash = {}
     newHash = {}
-    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
 
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = TreeTree.all
@@ -506,6 +507,22 @@ class TreesController < ApplicationController
     end
   end
 
+  def reorder
+    Rails.logger.debug(params[:id_order].inspect)
+    count = 1
+    ActiveRecord::Base.transaction do
+    params[:id_order].each do |id|
+      t = Tree.find(id)
+      t.sequence_order = count
+      t.save
+      count += 1
+    end
+    end
+    respond_to do |format|
+      format.json {render json: {hello_message: 'hello world'}}
+    end
+  end
+
   private
 
   def find_tree
@@ -520,6 +537,10 @@ class TreesController < ApplicationController
       :grade_band_id,
       :code
     )
+  end
+
+  def reorder_params
+    params.permit(:id_order)
   end
 
   def addNodeToArrHash (parent, subCode, newHash)
