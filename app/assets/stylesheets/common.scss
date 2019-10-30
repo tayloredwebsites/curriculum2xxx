@@ -100,3 +100,12 @@ form {
 .hidden {
   display: none;
 }
+
+#modal_popup .close {
+  text-align: right;
+  padding: 5px;
+}
+
+#modal_popup #modal-body {
+  margin-top: -30px;
+}

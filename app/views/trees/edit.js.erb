@@ -1,5 +1,3 @@
-console.log("started edit.js.erb");
-$("#modal-body").html("escape_javascript(render 'trees/edit')");
-// $("#modal-window").show;
-console.log("done with edit.js.erb");
+$("#modal-body").html("<%= escape_javascript(render('trees/edit')) %>");
+$("#modal_popup").modal();
 
