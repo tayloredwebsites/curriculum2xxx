@@ -238,12 +238,14 @@ class TreesController < ApplicationController
   def sequence
     index_prep
 
+    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
     subjects = Subject.all
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
+      @s_o_hash[s.code] = []
     end
 
     listing = Tree.where(
@@ -276,7 +278,6 @@ class TreesController < ApplicationController
     areaHash = {}
     componentHash = {}
     newHash = {}
-    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
 
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = TreeTree.all
