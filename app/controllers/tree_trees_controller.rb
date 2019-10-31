@@ -63,15 +63,15 @@ class TreeTreesController < ApplicationController
     @tree_tree_reciprocal = TreeTree.new(
       :tree_referencer_id => tree_tree_params[:tree_referencee_id], 
       :tree_referencee_id => tree_tree_params[:tree_referencer_id],
-      :relationship => TreeTree.reciprocal_relationship(tree_tree_params[:relationship]),
+      :relationship => @tree_tree.reciprocal_relationship(tree_tree_params[:relationship]),
       :explanation_key => reciprocal_explanation_key
       )
 
     errors = []
-    ActiveRecord::Base.transaction do
-      @tree_tree.save
-      @tree_tree_reciprocal.save
-    end
+    # ActiveRecord::Base.transaction do
+    #   @tree_tree.save
+    #   @tree_tree_reciprocal.save
+    # end
 
     if errors.length > 0
       flash[:alert] = 'Error'

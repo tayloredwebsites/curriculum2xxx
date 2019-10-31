@@ -11,6 +11,11 @@ class TreeTree < BaseRec
   recip_lookup[DEPENDS_KEY] = APPLIES_KEY
 
   def reciprocal_relationship(relation)
-  	recip_lookup[relation]
+  	lookup = {
+      :akin => 'akin',
+      :applies => 'depends',
+      :depends => 'applies'
+    }
+    lookup[relation]
   end
 end
