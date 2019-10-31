@@ -84,10 +84,31 @@ initializeSortAndDrag = function () {
     }
     })
 
-  // $('.list-group-item').draggable({
-  // placeholder: 'drop-placeholder',
-  // handle: '.connect-handle'
-  // })
+   $('.list-group-item').draggable({
+     revert: true,
+     cursorAt: {
+            top: 60,
+            left: 60
+          }, 
+     helper: 'clone',
+     handle: '.connect-handle',
+     start: function (e, ui) {
+        console.log(ui)
+        $(ui.helper).addClass("ui-draggable-helper");
+     },
+     drag: function (e, ui) {
+      //  var el_under_mouse = document.elementFromPoint(e.clientX, e.clientY);
+      // //closest() returns null if no parent found with selector
+      // el_under_mouse.closest('.list-group-item').className += 'highlight';
+     },
+     stop: function (e,ui) {
+      console.log(e)
+      var el_under_mouse = document.elementFromPoint(e.clientX, e.clientY);
+      //closest() returns null if no parent found with selector
+      el_under_mouse.closest('.list-group-item').style.background = 'blue';
+
+     }
+   })
 }
 
 $(document).on('turbolinks:load', function(event, state) {
