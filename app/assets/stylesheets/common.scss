@@ -20,6 +20,9 @@ body {
     cursor: pointer;
     // list-style-position: none;
   }
+  #modal_popup label {
+    font-weight: bold;
+  }
 }
 
 // use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)

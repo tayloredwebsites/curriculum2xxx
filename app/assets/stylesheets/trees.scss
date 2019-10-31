@@ -148,7 +148,8 @@
       display: inline-block;
       text-overflow: ellipsis;
       overflow: hidden;
-      max-height: 20px;
+      max-height: 30px;
+      max-width: 72%;
       white-space: nowrap;
     }
 
@@ -157,9 +158,8 @@
     }
 
     .ui-draggable-helper {
-      z-index: 100;
-      width: 100px;
-      height: 70px;
+      width: 120px;
+      height: 80px;
       overflow: hidden;
     }
   }

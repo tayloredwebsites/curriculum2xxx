@@ -90,6 +90,7 @@ initializeSortAndDrag = function () {
 
    $('.list-group-item').draggable({
      revert: true,
+     zIndex: 100,
      cursorAt: {
             top: 60,
             left: 60
@@ -130,7 +131,7 @@ initializeSortAndDrag = function () {
         .then(function (res) { 
           console.log("RESPONSE:", res) 
           html = '<div class="modal-header"> \
-                  <h3 id="myModalLabel">LO Connection</h3> \
+                  <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
                   </div> \
                   <div class="modal-body"> \
                     <div> \
@@ -151,11 +152,11 @@ initializeSortAndDrag = function () {
                     + res.translations.akin 
                     + '</option> \
                     </select>\
+                    <div>' + res.referencee_code + '</div><br> \
                     </fieldset> \
-                    <br><div>' + res.referencee_code + '</div><br> \
-                    <fieldset>\
-                      <label for="explanation">' + res.translations.explanation + ' \
-                      <input type="text"> \
+                    <fieldset> \
+                      <label for="explanation">' + res.translations.explanation + '<br> \
+                      <textarea type="text" name=tree_tree["explanation"]></textarea> \
                     </fieldset>\
                     <button onclick="makeConnection()" >SAVE</button>\
                     </div> \

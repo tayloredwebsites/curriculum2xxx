@@ -8,12 +8,22 @@ class TreeTreesController < ApplicationController
     @referencee = Tree.find(tree_tree_params[:tree_referencee_id])
     Rails.logger.debug('tree_referencee:'+ @referencee.code)
     @explanation = ''
+    puts "referencer subject key: #{@referencer.subject[:base_key] + '.abbr'}, locale: #{@locale_code}"
+    referencer_subject_translation = Translation.where(
+      :key => @referencer.subject[:base_key] + '.name',
+      :locale => @locale_code
+      ).first.value
+    referencee_subject_translation = Translation.where(
+      :key => @referencee.subject[:base_key] + '.name',
+      :locale => @locale_code
+      ).first.value
     respond_to do |format|
       format.json {render json: { 
         :tree_tree => @tree_tree,
-        :referencer_code => @referencer.subject.code + "." + @referencer.code,
-        :referencee_code => @referencee.subject.code + "." + @referencee.code,
+        :referencer_code => referencer_subject_translation + " " + @referencer.code,
+        :referencee_code => referencee_subject_translation + " " + @referencee.code,
         :translations => {
+          :modal_title => translate('trees.labels.outcome_connections'),
           :explanation => translate('tree_trees.labels.explanation'),
           :relationship => I18n.translate('trees.labels.relation'),
           :akin => I18n.translate('trees.labels.relation_types.akin'),
