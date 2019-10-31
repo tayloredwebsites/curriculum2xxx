@@ -37,6 +37,11 @@ scope "(:locale)", locale: /tr|en/ do
     end
   end
 
+  resources :tree_trees,
+    only: [:index, :new, :create, :show, :edit, :update] do
+    collection do
+    end
+  end
 
   resources :sectors, only: [:index] do
     collection do

@@ -148,12 +148,19 @@
       display: inline-block;
       text-overflow: ellipsis;
       overflow: hidden;
-      max-height: 20px;
+      max-height: 30px;
+      max-width: 72%;
       white-space: nowrap;
     }
 
     .highlight {
       background: lightblue;
+    }
+
+    .ui-draggable-helper {
+      width: 120px;
+      height: 80px;
+      overflow: hidden;
     }
   }
 

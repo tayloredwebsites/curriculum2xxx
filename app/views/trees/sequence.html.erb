@@ -34,13 +34,13 @@
                   </div>
                 <% end %>
               </div>
-              <div>
+              <div class="pull-right">
                <a class="icon-link hide-if-collapsed lo-handle" onclick="related_LO_display(<%= k[:connections].pluck(:tree_referencee_id) << k[:id] %> );"><i class="fa fa-plug connections-icon pull-right" title="highlight connected LOs"></i></a>
             <% else %>
-            <div>
+            <div class="pull-right">
             <% end %>
-            <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="drag LO"></i></a>
-            <a class="sort-handle lo-handle" onclick=""><i class="fa fa-thumb-tack pull-right" title="drag LO"></i></a>
+            <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection between this LO and another"></i></a>
+            <a class="sort-handle lo-handle" onclick=""><i class="fa fa-thumb-tack pull-right" title="resequence this LO within its subject"></i></a>
             </div>
           </li>
         <% end %>
@@ -48,6 +48,9 @@
     </div>
   <% end %>
   </div>
+</div>
+<div class="hidden">
+  
 </div>
 
 
