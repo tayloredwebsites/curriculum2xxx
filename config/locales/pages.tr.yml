@@ -85,3 +85,6 @@ tr:
       relation: 'Ilişki'
       how_outcome_related: 'Çıktıları Nasıl İlişkilidir:'
       current_subject: "Bu Konusu"
+  tree_trees:
+    labels:
+      explanation: "Açıklama"
