@@ -39,13 +39,13 @@ gem 'jbuilder', '~> 2.5'
 gem 'foreman'
 
 # devise for authentication
-gem 'devise'
+gem 'devise', '~> 4.7.1'
 gem 'devise-i18n'
 
 # # internationalization tables in database
 # gem 'i18n-active_record', :require => 'i18n/active_record'
 
-gem 'bootstrap', '~> 4.0.0'
+gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails'
 gem 'font-awesome-rails'
 gem 'jquery-ui-rails'
