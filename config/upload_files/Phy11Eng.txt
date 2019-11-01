@@ -1,70 +1,163 @@
-en,Phy,11
-11.1. Force and Motion
-11.1.1. Force and Motion
-11.1.1.1 Learning Outcome 1
-11.1.1.2 Learning Outcome 2
-11.1.1.3 Learning Outcome 3
-11.1.1.4 Learning Outcome 4
-11.1.1.5 Learning Outcome 5
-11.1.1.6 Learning Outcome 6
-11.1.1.7 Learning Outcome 7
-11.1.1.8 Learning Outcome 8
-11.1.1.9 Learning Outcome 9
-11.1.1.10 Learning Outcome 10
-11.1.1.11 Learning Outcome 11
-11.1.1.12 Learning Outcome 12
-11.1.1.13 Learning Outcome 13
-11.1.1.14 Learning Outcome 14
-11.1.1.15 Learning Outcome 15
-11.1.1.16 Learning Outcome 16
-11.1.1.17 Learning Outcome 17
-11.1.1.18 Learning Outcome 18
-11.1.1.19 Learning Outcome 19
-11.1.1.20 Learning Outcome 20
-11.1.1.21 Learning Outcome 21
-11.1.1.22 Learning Outcome 22
-11.1.1.23 Learning Outcome 23
-11.1.1.24 Learning Outcome 24
-11.1.1.25 Learning Outcome 25
-11.1.1.26 Learning Outcome 26
-11.1.1.27 Learning Outcome 27
-11.1.1.28 Learning Outcome 28
-11.1.1.29 Learning Outcome 29
-11.1.1.30 Learning Outcome 30
-11.1.1.31 Learning Outcome 31
-11.1.1.32 Learning Outcome 32
-11.1.1.33 Learning Outcome 33
-11.2. Electricity and Magnetism
-11.2.1. Electricity and Magnetism
-11.2.1.1 Learning Outcome 34
-11.2.1.2 Learning Outcome 35
-11.2.1.3 Learning Outcome 36
-11.2.1.4 Learning Outcome 37
-11.2.1.5 Learning Outcome 38
-11.2.1.6 Learning Outcome 39
-11.2.1.7 Learning Outcome 40
-11.2.1.8 Learning Outcome 41
-11.2.1.9 Learning Outcome 42
-11.2.1.10 Learning Outcome 43
-11.2.1.11 Learning Outcome 44
-11.2.1.12 Learning Outcome 45
-11.2.1.13 Learning Outcome 46
-11.2.1.14 Learning Outcome 47
-11.2.1.15 Learning Outcome 48
-11.2.1.16 Learning Outcome 49
-11.2.1.17 Learning Outcome 50
-11.2.1.18 Learning Outcome 51
-11.2.1.19 Learning Outcome 52
-11.2.1.20 Learning Outcome 53
-11.2.1.21 Learning Outcome 54
-11.2.1.22 Learning Outcome 55
-11.2.1.23 Learning Outcome 56
-11.2.1.24 Learning Outcome 57
-11.2.1.25 Learning Outcome 58
-11.2.1.26 Learning Outcome 59
-11.2.1.27 Learning Outcome 60
-11.2.1.28 Learning Outcome 61
-11.2.1.29 Learning Outcome 62
-11.2.1.30 Learning Outcome 63
-11.2.1.31 Learning Outcome 64
-11.2.1.32 Learning Outcome 65
+en,phy,11
+11.1. FORCE AND MOVEMENT
+Keywords: vector, relative motion, accelerated motion, free fall, vertical shot, horizontal shot, oblique shot, limit velocity, energy, Hooke's Law, push, linear momentum, conservation of linear momentum, torque, balance, center of mass, center of gravity.
+11.1.1. VECTORS
+11.1.1.1. Explains the properties of vectors.
+11.1.1.2. Draws vectors in two and three dimensional Cartesian coordinate system. 
+a) Unit vector system (i, j, k) operations are not entered.
+11.1.1.3. Calculates the components of vectors using different methods.
+a) End-to-end insertion and parallel edge methods should be used.
+b) By giving the Cosine theorem, it is provided to be found of the size of the resultant vector.
+c) When calculating the composition of equal vectors, special occasions are given according to angles.
+11.1.1.4. By drawing the compounds of a vector in a two-dimensional Cartesian coordinate system, they calculate their sizes.
+11.1.2. RELATIVE MOVEMENT
+11.1.2.1. Interprets the motion of two objects with constant speed.
+11.1.2.2. Interprets the motion of fixed fast objects in a moving environment according to different observation frames.
+11.1.2.3. Makes calculations related to relative movement. 
+a) Care is taken to select problems related to calculations from daily life.
+11.1.3. NEWTON'S MOTION LAWS
+11.1.3.1. Calculates the magnitude by determining the direction of the net force.
+a) It is provided to calculate the size of the friction force by determining the direction of friction force in horizontal, vertical and inclined plane.
+b) It is ensured that the forces acting on the free objects diagrams are shown on the frictional and frictionless surfaces.
+11.1.3.2. Makes calculations related to the movement of the object under the influence of net force.
+a)The calculations are carried out on daily life samples.
+b) Frictional and frictionless surfaces must be considered.
+11.1.4. MOTION WITH CONSTANT ACCELERATION IN ONE DIMENSION
+11.1.4.1. Analyzes the motion with constant acceleration in one dimension.
+a) The equations of motion are given.
+b) Students will be able to draw, interpret and graph between position-time, velocity-time and acceleration-time graphs related to constant acceleration movement.
+11.1.4.2. Makes calculations related to constant acceleration motion in one dimension.
+11.1.4.3. Analyzes the movements of falling objects in the environment where air resistance is neglected. 
+a) Equations of motion, initial-time, velocity-time and acceleration-time graph mathematical calculations are provided.
+11.1.4.4. Analyzes the variables of the air resistance force acting on falling objects.
+a) It is provided that the students determine the variables by experiment or by using simulations.
+11.1.4.5. Explains the concept of limit speed.
+a) The concept of limit speed is explained by examples from daily life (rain drops do not hurt us).
+b) The mathematical model of the limit velocity is given. No mathematical calculations are made.
+11.1.4.6. Analyzes the movements of objects with first velocity and constant acceleration in vertical direction. 
+a) Equations of motion in vertical direction (top to bottom and bottom to top), position-time, velocity-time and acceleration-time graphs are given and mathematical calculations are made.
+11.1.5. MOTION OF TWO DIMENSIONS
+11.1.5.1. Analyze shooting movements in horizontal and vertical dimensions.
+a) It is provided for the students to examine and interpret the projectile movements by experimenting or simulating.
+11.1.5.2. Makes calculations related to constant acceleration motion in two dimensions.
+11.1.6. ENERGY AND MOVEMENT
+11.1.6.1. Analyzes the relationship between work and energy.
+a) Work calculations are made by using the force-road graph.
+b) The Hooke Act is issued.
+c) By using graphs, it is provided to reach the mathematical models of types of kinetics, gravitational potential and flexibility of potential energy. 
+ç) Mathematical calculations are made.
+11.1.6.2. Analyzes the motion of objects using conservation of mechanical energy.
+a) It is provided for the students to observe the free fall, firing movements and flexible bow events and to make mathematical calculations by using mechanical conservation of energy.
+b) Information about the studies of Canan Dağdeviren is given.
+11.1.6.3. Analyzes energy conservation and transformations on friction surfaces.
+a) It is ensured that mathematical calculations related to energy conservation and transformation related to moving objects on friction surfaces.
+11.1.7. PUSH AND LINEAR MOMENTUM
+11.1.7.1. Explains the concepts of push and linear momentum.
+a) Examples of daily life related to linear momentum are given.
+b) The mathematical model of push and linear momentum concepts are given.
+11.1.7.2. Establishes the relationship between push and linear momentum change.
+a) It is provided for the student to obtain the mathematical model between pushing and momentum by getting benefit of Newton's second law.
+b) It is provided for the students to make the calculations of the force-time graphs and associate them with the momentum change of the object.
+c) Mathematical calculations related to push and linear momentum changes are provided.
+11.1.7.3. Analyzes the conservation of linear momentum.
+a) It is provided for the students to make inferences related to the conservation of linear momentum by using experiments or simulations.
+b) The conservation of linear momentum is limited to one and two dimensional motion.
+11.1.7.4. Makes calculations related to conservation of linear momentum.
+a) It is ensured to make mathematical calculations regarding conservation of linear momentum in one and two dimensions, collisions and explosions by considering the situations of both no conservation and conservation of energy.
+11.1.8. TORQUE
+11.1.8.1. Explains the concept of torque. 
+a) The right hand rule is given to determine the direction of torque.
+11.1.8.2. Analyzes the variables to which the torque is connected.
+a) It is provided for the students to get results of variables which of torque is dependent on by using experiment or simulations.
+b) Students will be able to find problems in daily life related to torque and find solutions for them.
+11.1.8.3. Makes calculations related to torque.
+11.1.9. BALANCE AND BALANCE CONDITIONS
+11.1.9.1. Explains the equilibrium conditions of objects.
+11.1.9.2. Explain the concepts of center of mass and center of gravity. 
+a) It is dwelled on the concepts of mass and center of gravity are different.
+11.1.9.3. Make calculations about the center of mass and center of gravity.
+11.1.10. SIMPLE MACHINES
+11.1.10.1. Explains the functions of simple machines used in daily life.
+a) It is stayed limited to leverage, fixed and movable pulley, inclined plane, screw, spinning wheel and pulley.
+11.1.10.2. Makes calculations about simple machines.
+a) The mathematical calculations related to systems where more than two simple machines are found together are not mentioned.
+b) It is provided that the calculations are performed over simple machine examples (such as keys) used in daily life.
+c) The mathematical calculations related to yield in simple machines are made.
+11.1.10.3. Designs a safe system of simple machines to make life easier.
+a) It must be encouraged the use of waste materials and information technologies.
+b) In the areas where simple machine systems are used, research is provided to be carried out to increase occupational health and safety measures.
+c) Students should be encouraged to participate in project competitions by emphasizing that the original designs can be patented.
+11.2. ELECTRICITY AND MAGNETISM
+Keywords: electrical force, electric field, electrical potential energy, electrical potential, difference in electrical potential, capacitance (capacitor), magnetic field, magnetic force, magnetic flux, electromotive force, alternating current, inductance, capacitance, impedance, resonance, induction current, self-induction current, transformer.
+11.2.1. ELECTRICAL FORCES AND ELECTRICITY AREA
+11.2.1.1. Determines the variables that affect the electrical force between charged objects.
+a) Students are provided to use experiments and simulations.
+b) The relation of the Coulomb constant (k) with the electrical permeability of the medium is emphasized.
+11.2.1.2. Explains the electric field for point load.
+11.2.1.3. Calculates the electrical force and electric field in point loads.
+11.2.2. ELECTRICAL POTENTIAL
+11.2.2.1. Explains the electrical potential energy, electrical potential, electrical potential difference and electrical business concepts for the point loads.
+a)Concepts are explained with daily life examples.
+b) It is provided for the students to recognize the electrical potential and co-potential at a point of point loads surfaces.
+11.2.2.2. Calculates the potential difference between two points in a uniform electric field.
+11.2.2.3. Makes calculations related to electrical potential energy, electrical potential, electrical potential difference and electrical work for the point loads.
+11.2.3. CLEAN ELECTRICITY AND SHELF
+11.2.3.1. It explains electric field formed between charged, conductive and parallel plates by drawing field lines.
+11.2.3.2. Analyzes the variables that are connected to the electric field that is formed between the installed, conductive and parallel plate.
+a) Variables are determined by experiments and simulations.
+11.2.3.3. Explains the behavior of charged particles in a uniform electric field.
+a) The direction of deflection of the particles that are perpendicular to the area is emphasized. The mathematical calculations are not made on any occasion.
+b) It is provided for students to make researches of charged particles in the electric field in the use areas of technology and then make a presentation on this.
+11.2.3.4. Explains the concept of capacity. 
+a) No mathematical calculations are made.
+11.2.3.5. Analyzes the variables that the capacitance is connected to.
+a) Variables are determined by experiments and simulations.
+b) Students are provided to obtain mathematical model. No mathematical calculations are performed.
+11.2.3.6. Explains the function of capacitor by using the properties of loaded boards.
+a) It is provided to make researches on the use areas of shallows.
+b) It is provided for students to discuss how to store and use the electrical charges and to associate them with electrical energy.
+11.2.4. MAGNETISM AND ELECTROMAGNETIC INDUCTION
+11.2.4.1. Analyzes the variables that affect the magnitude of the magnetic field, occurring in the center of the ring and in the center axis of the flow coil (coil), around a conductive straight wire that is over current. 
+a) The direction of the magnetic field is shown by the right-hand rule.
+11.2.4.2. The conductor conducts calculations about the magnetic field in the center of the ring and in the center axis of the current spool.
+11.2.4.3. Analyzes the variables on the direction and intensity of the force acting on the magnetic field in a conductive flat wire.
+a) The mathematical model of the magnitude of the magnetic force is given, the right hand rule is applied. 
+b) No mathematical calculations are performed.
+11.2.4.4. Explains the effect of the forces acting on the rectangular wire frame carrying current in the magnetic field. 
+a) The direction of the magnetic forces acting on the rotating frame is shown.
+11.2.4.5. Analyzes the movement of charged particles in the magnetic field.
+a) It is provided for the students to find the direction of the magnetic force acting on the charged particles by using the right-hand rule to draw the trajectory on the magnetic field by the effect of the force.
+b) Mathematical models of the movement of charged particles in the magnetic field are not given. No mathematical calculations are performed.
+c) Students are encouraged to make researches about the use of magnetic force in technology.
+11.2.4.6. Explains the concept of magnetic flux. 
+a) Mathematical model of magnetic flux is given.
+11.2.4.7. Makes inferences about the causes of induction current.
+a) It is provided performing the inferences by using experiments or simulations and mathematical model of the induction current.
+11.2.4.8. Makes calculations about magnetic flux and induction current.
+11.2.4.9. Explains the cause of self-induction current. 
+a) Mathematical calculations related to self-induction current are not performed.
+11.2.4.10. Explains the behavior of charged particles in magnetic field and electric field.
+a) The mathematical model of the Lorentz force is given. No mathematical calculations are performed.
+b) The applications of The Lorentz force in daily life are given.
+11.2.4.11. Makes inferences about the causes of electromotive force.
+a)Extraction is ensured with the help of experiments or simulations.
+b) Students are provided to compare the principles of operation of the electric motor and dynamon.
+11.2.5. ALTERNATIVE CURRENT
+11.2.5.1. Explains the alternating current.
+a) It is provided for students to research on the voltage values used in electrical networks in different countries and to discuss the reasons for using these values based on their findings 
+11.2.5.2. Compares alternative and direct current.
+a) It is provided to explain the places where alternative and direct current is used and compare these currents.
+b) Comparison of Edison and Tesla's opinions on alternating current and direct current are provided.
+c) The effective and maximum values of the alternating current are highlighted.
+11.2.5.3. Explains the behavior of resistance, coil and capacitor in alternative and direct current circuits. 
+a) It is provided for the students to examine, observe and interpret the resistance, coil and capacitor behavior in alternative and direct current circuits separately with the help of simulations.
+11.2.5.4. Explains inductance, capacitance, resonance and impedance concepts.
+a) Vector illustration is not made. It is not mentioned about the current and voltagedependent change graphs.
+b) It is emphasized that each circuit element has a unique ohmic resistance.c) Mathematical calculations related to alternating current circuits are not performed.
+11.2.6. TRANSFORMERS
+11.2.6.1. Explains the working principle of transformers.
+a) It is explained that primary and secondary voltage, primary and secondary current intensity, primary and secondary power concepts. No mathematical calculations are made.
+b) The working principle of ideal and non-ideal transformers is emphasized.
+11.2.6.2. Explains the intended use of transformers.
+a) Students are encouraged to investigate where the transformers are used.
+b) The role of transformers in the transport process of electrical energy is emphasized.

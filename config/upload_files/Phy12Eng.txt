@@ -1,80 +1,173 @@
-en,Phy,12
-12.1. Circular Motion
-12.1.1. Circular Motion
-12.1.1.1 Learning Outcome 1
-12.1.1.2 Learning Outcome 2
-12.1.1.3 Learning Outcome 3
-12.1.1.4 Learning Outcome 4
-12.1.1.5 Learning Outcome 5
-12.1.1.6 Learning Outcome 6
-12.1.1.7 Learning Outcome 7
-12.1.1.8 Learning Outcome 8
-12.1.1.9 Learning Outcome 9
-12.1.1.10 Learning Outcome 10
-12.1.1.11 Learning Outcome 11
-12.1.1.12 Learning Outcome 12
-12.1.1.13 Learning Outcome 13
-12.1.1.14 Learning Outcome 14
-12.2. Simple Harmonic Motion
-12.2.1. Simple Harmonic Motion
-12.2.1.1 Learning Outcome 15
-12.2.1.2 Learning Outcome 16
-12.2.1.3 Learning Outcome 17
-12.2.1.4 Learning Outcome 18
-12.2.1.5 Learning Outcome 19
-12.3. Wave Mechanics
-12.3.1. Wave Mechanics
-12.3.1.1 Learning Outcome 20
-12.3.1.2 Learning Outcome 21
-12.3.1.3 Learning Outcome 22
-12.3.1.4 Learning Outcome 23
-12.3.1.5 Learning Outcome 24
-12.3.1.6 Learning Outcome 25
-12.3.1.7 Learning Outcome 26
-12.3.1.8 Learning Outcome 27
-12.4. Introduction to Atomic Physics and Radioactivity
-12.4.1. Introduction to Atomic Physics and Radioactivity
-12.4.1.1 Learning Outcome 28
-12.4.1.2 Learning Outcome 29
-12.4.1.3 Learning Outcome 30
-12.4.1.4 Learning Outcome 31
-12.4.1.5 Learning Outcome 32
-12.4.1.6 Learning Outcome 33
-12.4.1.7 Learning Outcome 34
-12.4.1.8 Learning Outcome 35
-12.4.1.9 Learning Outcome 36
-12.4.1.10 Learning Outcome 37
-12.4.1.11 Learning Outcome 38
-12.5. Modern Physics
-12.5.1. Modern Physics
-12.5.1.1 Learning Outcome 39
-12.5.1.2 Learning Outcome 40
-12.5.1.3 Learning Outcome 41
-12.5.1.4 Learning Outcome 42
-12.5.1.5 Learning Outcome 43
-12.5.1.6 Learning Outcome 44
-12.5.1.7 Learning Outcome 45
-12.5.1.8 Learning Outcome 46
-12.5.1.9 Learning Outcome 47
-12.5.1.10 Learning Outcome 48
-12.5.1.11 Learning Outcome 49
-12.5.1.12 Learning Outcome 50
-12.5.1.13 Learning Outcome 51
-12.5.1.14 Learning Outcome 52
-12.5.1.15 Learning Outcome 53
-12.6. Applications of Modern Physics in Technology
-12.6.1. Applications of Modern Physics in Technology
-12.6.1.1 Learning Outcome 54
-12.6.1.2 Learning Outcome 55
-12.6.1.3 Learning Outcome 56
-12.6.1.4 Learning Outcome 57
-12.6.1.5 Learning Outcome 58
-12.6.1.6 Learning Outcome 59
-12.6.1.7 Learning Outcome 60
-12.6.1.8 Learning Outcome 61
-12.6.1.9 Learning Outcome 62
-12.6.1.10 Learning Outcome 63
-12.6.1.11 Learning Outcome 64
-12.6.1.12 Learning Outcome 65
-12.6.1.13 Learning Outcome 66
-12.6.1.14 Learning Outcome 67
+en,phy,12
+12.1. CIRCULAR MOTION
+Keywords: linear velocity, angular velocity, centripetal force, centripetal acceleration, moment of inertia, angular momentum, gravitational force.
+12.1.1. PROPER CIRCULAR MOTION
+12.1.1.1. Describes smooth circular motion.
+a) The concepts of the period, frequency, linear velocity, angular velocity and centripetal acceleration are given.
+b) Students can use the linear velocity vector at two different points on the circle draw the centripetal acceleration and show the direction. Concept of linear acceleration are not mentioned.
+12.1.1.2. Analyzes the variables that are connected to the centripetal force in uniform circular motion. It is provided for the students to draw the linear velocity vector at two different points on the circle in a smooth circular motion and show the direction of the centripetal acceleration. Mathematical model is given. Mathematical calculations are made.
+12.1.1.3. Analyzes the motion of smoothly moving objects.
+a) Free body diagrams of objects that act smoothly on horizontal and vertical plane to be drawn.
+b) Calculations of position, velocity and acceleration in uniform circular motion are made. In the calculations, no trigonometric functions are performed.
+12.1.1.4. Calculations are made on the safe return conditions of vehicles on horizontal, vertical and inclined surfaces. The importance of adhering to the speed limit for safe rotation in corners is emphasized.
+12.1.2. SHIFTING MOVEMENT BY ROTATING
+12.1.2.1. Compares the motion of rotation and rotation.
+12.1.2.2. Explains the concept of moment of inertia. Mathematical calculations related to moment of inertia cannot be made.
+12.1.2.3. Explains the variables of the kinetic energy of the rotating and shifting movement. No mathematical calculations are made.
+12.1.3. ANOMATIC MOMENTUM
+12.1.3.1. Explains that angular momentum is a physical quantity. It is stated that angular momentum is a physical quantity in atomic dimension.
+12.1.3.2. Explains angular momentum with linear momentum.
+12.1.3.3. Associates angular momentum with torque.
+a) It is provided for students to able to obtain angular momentum, moment of inertia and angular velocity.
+b) It is provided for students to obtain the angular acceleration by using the concepts of torque, moment of inertia and angular acceleration.
+12.1.3.4. Explains the conservation of angular momentum with examples from daily life. Mathematical calculations related to conservation of angular momentum are not entered.
+12.1.4. MASS SHOOTING FORCE
+12.1.4.1. Explains the gravitational force.
+a) Mass gravitational force is mentioned. Mathematical model is given. No mathematical calculations are performed.
+b) Artificial satellites, moon and planets are explained. No mathematical calculations are performed.
+12.1.4.2. Using Newton's Laws of Motion, he determines the variables to which the gravitational acceleration depends.
+a) It is provided for the students to express the gravitational acceleration; to express in terms of the world’s radius and mass.
+b) Students are provided to draw force lines in a homogeneous sphere, showing the gravitational field on the surface and outside.
+c) It is emphasized that each mass forms a gravitational field.
+12.1.4.3. Explains the potential energy of mass shooting. The concepts of attachment and recovery energy are emphasized.
+12.1.5. KEPLER LAWS
+12.1.5.1. Explains Kepler Laws.
+a)No mathematical calculations are performed.
+b) Galileo Galilei, Ali Kuscu and Ulug Bey's studies related on celestial bodies and celestial bodies’ movement are included.
+12.2. SIMPLE HARMONIC MOVEMENT
+Keywords: extension, amplitude, recall force, balance point, spring pendulum, and simple pendulum.
+12.2.1. SIMPLE HARMONIC MOVEMENT
+12.2.1.1. Simple harmonic motion explains the smooth circular motion.
+a)Examples are given regarding the simple harmonic motion from daily life.
+b) Extension, amplitude, period, frequency, restoring force and balance for bow pendulum and simple pendulum point concepts are explained by examples of harmonic motion.
+c) Mathematical calculations related to extension, amplitude, period, frequency are not perfomed.
+ç) Derivatives and operations of simple harmonic motion related functions are not entered.
+12.2.1.2. Analyzes the change of time in simple harmonic motion. Students will be able to graph position-time using experiments or simulations. interpretations are provided.
+12.2.1.3. Makes calculations regarding simple harmonic motion related to position of force, velocity and acceleration.
+12.2.1.4. Determines the variables that the period is connected to in the pendulum and simple pendulum. Students determine the variables that affect the period by experiment or simulations. Mathematical model of the period is given.
+12.2.1.5. Makes calculations about the period of spring pendulum and simple pendulum.
+a) Parallel and series connected springs provide equal spring constant calculations are made.
+b) The movement of the flexible springs is limited to one dimension.
+12.3. WAVE MECHANICS
+Key concepts: interference, diffraction, Doppler event, electromagnetic wave, electromagnetic spectrum.
+12.3.1. BREAKING, INTERFERENCE AND DOPPLER EVENTS IN WAVES
+12.3.1.1. Determines the relationship between diffraction event and wavelength and slit width in water waves. It is provided for students to make comments by using data obtained by experiment or by using simulations.
+12.3.1.2. Explains interference in water waves.
+a) Students are expected to design the interference pattern by experiment or using simulations.
+b) The mathematical calculations related to the initiative shall not be entered.
+c) The concept of phase difference is not mentioned.
+12.3.1.3. Explains the variables affecting the double slit interference of light.
+a) Students are expected to design the interference pattern by experiment or by using simulations. b) No mathematical calculations related to interference in the double slit are performed.
+12.3.1.4. Explains the variables affecting the single-slit diffraction of light.
+a) Students are allowed to draw the diffraction pattern by experiment or by using simulations.
+b) No mathematical calculations related to single-slit diffraction are performed.
+c) No interference shall be entered in the membrane, air wedge and dissolving power.
+12.3.1.5. Examines diffraction and interference phenomena and draws conclusions about the wave nature of light.
+12.3.1.6. Explains the effects of the Doppler event by examples of light and sound waves. Samples are selected from daily life. No mathematical calculations are made.
+12.3.2. ELECTROMAGNETIC WAVES
+12.3.2.1. Explains the common properties of electromagnetic waves. It is emphasized that Maxwell is the founder of electromagnetic theory.
+12.4. INTRODUCTION TO ATOMIC PHYSICS AND RADIOACTIVITY
+Key concepts: atom, Bohr atomic theory, energy level, excitation, ionization, radiation, large explosion, sub-particle, antimatter, radioactivity, fission, fusion.
+12.4.1. HISTORICAL DEVELOPMENT OF THE ATOM CONCEPT
+12.4.1.1. Explains the concept of atom.
+a) Other theories other than Bohr atomic theory are given in the historical development process without entering into details
+b) It should be emphasized that atomic theories are developed in relation to each other.
+c) In Bohr atomic theory, the concepts of atomic radius, energy levels, arousal, ionization and radiation are emphasized. No mathematical calculations are made.
+ç) It is limited to Milikan oil drop, Thomson e / m determination, Rutherford scattering experiment. Mathematical calculations related to these experiments are not entered.
+12.4.1.2. Explains the ways of stimulation of the atom. Discussion of the conditions of atoms, electron, and photon and heat excitation is provided.
+12.4.1.3. Explains the importance of modern atom theory.
+a) It is dwelled on Heisenberg Uncertainty Principle, quantum numbers, probability wave and Schrödinger wave equation.
+b) No mathematical calculations are made.
+c) It is emphasized that Feza Gürsey, Asım Orhan Barut and Behram N. Kurşunoğlu conducted studies on atomic physics.
+12.4.2. LARGE EXPLOSION AND THE FORMATION OF THE UNIVERSE
+12.4.2.1. Explains the big bang theory.
+a) It is emphasized that there are different theories about the formation and future of the universe.
+b) Research and research of scientific studies supporting the students' big bang theory results are provided as a report.
+c) The Hubble Act shall be referred to. Mathematical model is not given.
+12.4.2.2. Explains the basic properties of subatomic particles.
+a) Students are provided to define sub-atomic particles within the framework of the standard model.
+b) No mathematical calculations related to conservation laws are entered.
+c) Four basic forces are explained.
+ç) It is emphasized that Abdus Salam, Sheldon Lee Glashow and Steven Weinberg took the Nobel prize upon discovering that the electromagnetic and weak force is in the appearance of a unified force.
+12.4.2.3. Explains the process of substance formation.
+a) It is provided that the formation of matter starting from subatomic particles is explained by the model.
+b) The Higgs boson is briefly mentioned.
+12.4.2.4. Explains the concepts of matter and antimatter.
+12.4.3. RADIOACTIVITY
+12.4.3.1. Compares the properties of stable and unstable atoms.
+a) The concepts of radioactive material, radioactivity, radioactive radiation are given.
+b) It is emphasized that some atomic nuclei can be irradiated in various ways.
+c) Studies by Marie Curie and Wilhelm Conrad Röntgen on radioactivity are taught.
+12.4.3.2. Explains the changes in the atomic number and energy of the atom, as a result of radioactive decay.
+a) Alpha, beta, gamma irradiation other than the type of degradation is not entered.
+b) Mathematical calculations are not entered when explaining the change in energy.
+12.4.3.3. Explains nuclear fission and fusion events.
+a) It is ensured to conduct research on nuclear powered systems.
+b) The effects of nuclear reactors on science, technology, country economy and the environment are emphasized.
+c) The destructive effects of the atomic bomb are explained through historical facts and the importance of nuclear disarmament in terms of world peace is emphasized.
+12.4.3.4. Explains the effects of radiation on living things.
+a) Radiation sources, radiation protection routes and radiation safety in the living areas are investigated and information is shared.
+b) Ionizing radiation is mentioned, and the biological effects are used.
+12.5. MODERN PHYSICS
+Key concepts: special relativity, black body radiation, photoelectric event, Compton event, de Broglie wavelength
+12.5.1. SPECIAL RELATIONSHIP
+12.5.1.1. Explains the purpose and results of the Michelson-Morley experiment.
+a) The stages of the experiment are emphasized.
+b) It is focused on the reason why the experiment was repeated many times under different conditions by different scientists. The importance of patience and determination in scientific studies is emphasized.
+c) No mathematical calculations are performed.
+12.5.1.2. Expresses the fundamental postulates of Einstein's special theory of relativity.
+12.5.1.3. Explains relative time and relative length concepts. No mathematical calculations can be performed in special relativity.
+12.5.1.4. Explains the mass-energy equivalence. No math calculations are made.
+12.5.2. INTRODUCTION TO QUANTUM PHYSICS
+12.5.2.1. Explains black body radiation.
+a) The Planck hypothesis is explained.
+b) By the wavelength-radiation intensity graph, the contradiction between the classical approach and the modern approach and the effect of this contradiction on the birth of quantum physics are emphasized.
+c) No mathematical calculations related to black body radiation are performed.
+12.5.3. PHOTOELECTRIC EVENT
+12.5.3.1. Explains the concept of photon.
+12.5.3.2. Explains the photoelectric effect.
+a) Hertz's studies are emphasized.
+b) Einstein's photoelectric equation is emphasized.
+c) Students are expected to observe and interpret the variables affecting the photoelectric phenomenon with the help of simulations.
+12.5.3.3. Draws the maximum kinetic energy-frequency graph for different metals.
+12.5.3.4. Explains the mathematical relationship between the maximum kinetic energy of photoelectrons, the stop voltage and the threshold energy of the metal.
+12.5.3.5. Gives examples of photoelectric effect in daily life. It is dwelled on the positive and negative effects of photoelectric event in daily life (such as ensuring hygiene in taps or the use of sunglasses).
+12.5.3.6. Makes calculations about the photoelectric event.
+12.5.4. COMPTON WRAPPING AND THE BROWN WAVE LENGTH
+12.5.4.1. Explains photon and electron interaction in Compton event. It is provided for students to explain Compton scattering using models or simulations. No mathematical calculations.
+12.5.4.2. Identifies similar aspects of Compton and photoelectric phenomena and makes inferences about the particle nature of light.
+12.5.4.3. Explains the dual nature of light. The events described by the particle, the wave, the particle and the wave nature of light are highlighted.
+12.5.4.4. Explains the relationship between matter and wave.
+a) De Broglie relation is given.
+b) No mathematical calculations are made.
+12.6. APPLICATIONS OF MODERN PHYSICS IN TECHNOLOGY
+Key concepts: imaging technology, semiconductor, diode, transistor, LED, solar cell, superconductor, nanotechnology, nanoscience, LASER.
+12.6.1. IMAGING TECHNOLOGIES
+12.6.1.1. Explains the working principles of imaging devices.
+a) Students questions the role of physics in the creation of these technologies by making researches related to x-ray, MR, PET, tomography, ultrasound, radars, sonar, thermal cameras.
+b) The working principles of imaging devices (x-ray, MR, PET, tomography, ultrasound, radars, sonar, thermal cameras) are briefly mentioned.
+12.6.1.2. Explains the science of physics in LCD and plasma technologies.
+12.6.2. SEMI-CONDUCTIVE TECHNOLOGY
+12.6.2.1. Explains the general properties of semiconductor materials.
+12.6.2.2. Explains the importance of semiconductor materials in technology.
+a) The function of the diodes and transistors is given and their types are not given.
+b) Students will be able to research and share the process of becoming an electronic circuit element of the sand.
+12.6.2.3. Gives examples of where LED technology is used.
+12.6.2.4. Explains how solar cells work.
+a) Details of the features of the building elements are not entered.
+b) Present and future location of solar cells are discussed.
+12.6.2.5. Designs the system using solar cells which are making life easier. Students are asked to explain the contribution of the design to the country's economy and the environment.
+12.6.3. SUPER CONDUCTORS
+12.6.3.1. Explains the basic properties of superconducting materials.
+12.6.3.2. Gives examples of the use of superconductors in technology. The working principles of fast trains and particle accelerators are emphasized.
+12.6.4. NANOTECHNOLOGY
+12.6.4.1. Explains the fundamentals of nanoscience.
+a) The relationship between science of physics, nanoscience and nanotechnology is emphasized.
+b) Examples of systems with functional and natural nanostructures are given. If the materials are reduced to nano dimensions, it is emphasized that they acquire new features.
+12.6.4.2. Explains the basic properties of nanomaterials. If the materials are reduced to nano dimensions, it is emphasized that they acquire new features.
+12.6.4.3. Gives examples of nanomaterials' usage in technology. The impact of nanomaterials on the development of science and technology is emphasized.
+12.6.5. LASER RAYS
+12.6.5.1. Explains the obtaining of LASER rays.
+a) Simulation and videos are used to examine the formation of LASER beam.
+b) No mathematical calculations are performed.
+12.6.5.2. Gives examples of the use of LASER rays in technology.
