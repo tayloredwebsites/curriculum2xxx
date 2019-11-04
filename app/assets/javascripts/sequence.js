@@ -51,12 +51,6 @@ $(function() {
     }
  
   }
-
-  makeConnection = function () {
-     $("#modal_popup").modal('hide');
-  }
-
-
 });
 
 initializeSortAndDrag = function () {
@@ -130,11 +124,18 @@ initializeSortAndDrag = function () {
         })
         .then(function (res) { 
           console.log("RESPONSE:", res) 
-          html = '<div class="modal-header"> \
+          html = res.errors ? 
+                  '<div class="modal-header"><h3>ERROR:</h3></div> \
+                  <div class="modal-body">' + res.errors +
+                  '<br><button type="button" type="button" data-dismiss="modal" \
+                  aria-hidden="true">CLOSE</button></div>' :
+                  '<div class="modal-header"> \
                   <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
                   </div> \
                   <div class="modal-body"> \
+                    <form action="/tree_trees" method="POST"> \
                     <div> \
+                      <input type="hidden" name="authenticity_token" value="' + $('[name="csrf-token"]').attr('content') + '"> \
                       <input type="hidden" name="tree_tree[tree_referencer_id]" value=' + res.tree_tree.tree_referencer_id +'> \
                       <input type="hidden" name="tree_tree[tree_referencee_id]" value=' + res.tree_tree.tree_referencee_id + '> \
                     </div> \
@@ -151,16 +152,18 @@ initializeSortAndDrag = function () {
                     <option value="' + res.relation_values.akin + '">'
                     + res.translations.akin 
                     + '</option> \
-                    </select>\
+                    </select> \
                     <div>' + res.referencee_code + '</div><br> \
                     </fieldset> \
                     <fieldset> \
                       <label for="explanation">' + res.translations.explanation + '<br> \
-                      <textarea type="text" name=tree_tree["explanation"]></textarea> \
-                    </fieldset>\
-                    <button onclick="makeConnection()" >SAVE</button>\
+                      <textarea type="text" name="tree_tree[explanation]"></textarea> \
+                    </fieldset> \
+                    <button type="submit" >SAVE</button>\
+                    <button type="button" type="button" data-dismiss="modal" \
+                    aria-hidden="true">CANCEL</button> \
                     </div> \
-                  '
+                    </form>' 
           $("#modal-container").html(html)
         })
         .catch(function (err) { console.log("ERROR:", err) })

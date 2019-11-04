@@ -1,7 +1,8 @@
 class TreesController < ApplicationController
 
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
-
+  before_action :authenticate_user!, only: [:reorder]
+  
   def index
     index_listing
   end
@@ -258,22 +259,6 @@ class TreesController < ApplicationController
       version_id: @versionRec.id
     )
 
-    # Translations table no longer belonging to I18n Active record gem.
-    # note: Active Record had problems with placeholder conditions in join clause.
-    # Consider having Translations belong_to trees and sectors.
-    # Current solution: get translation from hash of pre-cached translations.
-    base_keys= @trees.map { |t| "#{t.base_key}.name" }
-    base_keys =  base_keys | subjects.map { |s| "#{s.base_key}.name" }
-    base_keys = base_keys | subjects.map { |s| "#{s.base_key}.abbr" }
-    puts "++++++++BaseKEYS: #{base_keys[base_keys.length - 1 ]}"
-    puts
-    @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: base_keys)
-    translations.each do |t|
-      # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
-      @translations[t.key] = t.value
-    end
-
     treeHash = {}
     areaHash = {}
     componentHash = {}
@@ -284,6 +269,23 @@ class TreesController < ApplicationController
     relations.each do |rel|
       @relations[rel.tree_referencer_id] << rel
     end
+
+    # Translations table no longer belonging to I18n Active record gem.
+    # note: Active Record had problems with placeholder conditions in join clause.
+    # Consider having Translations belong_to trees and sectors.
+    # Current solution: get translation from hash of pre-cached translations.
+    base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    base_keys =  base_keys | subjects.map { |s| "#{s.base_key}.name" }
+    base_keys = base_keys | subjects.map { |s| "#{s.base_key}.abbr" }
+    base_keys = base_keys | relations.map { |r| r.explanation_key }
+
+    @translations = Hash.new
+    translations = Translation.where(locale: @locale_code, key: base_keys)
+    translations.each do |t|
+      # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
+      @translations[t.key] = t.value
+    end
+
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
       translation = @translations[tree.name_key]
