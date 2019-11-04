@@ -1,7 +1,8 @@
 class TreesController < ApplicationController
 
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
-
+  before_action :authenticate_user!, only: [:reorder]
+  
   def index
     index_listing
   end

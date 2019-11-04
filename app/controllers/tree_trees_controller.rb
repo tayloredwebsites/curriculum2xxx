@@ -1,5 +1,6 @@
 class TreeTreesController < ApplicationController
   # Controller for the LO connections
+  before_action :authenticate_user!
 
   def new
     errors = []
