@@ -107,6 +107,7 @@ class TreeTreesController < ApplicationController
           )
       else
         @explanation_translation = @explanation_translation.first
+        @explanation_translation.value = tree_tree_params[:explanation]
       end
 
       ActiveRecord::Base.transaction do
@@ -123,7 +124,7 @@ class TreeTreesController < ApplicationController
       flash[:alert] = "Errors prevented the connection from being saved: #{errors.to_s}"
       redirect_to sequence_trees_path
     else
-      flash[:success] = "Created #{tree_tree_params[:relationship]} relationship."
+      flash[:notice] = "Created #{tree_tree_params[:relationship]} relationship."
       redirect_to sequence_trees_path
     end
   end
