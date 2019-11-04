@@ -30,7 +30,8 @@
                   <div class="hide-unless-condition"><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
                   ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code]
                   %>
-                  <a href="<%= tree_path(c.tree_referencee_id)%>"><%= ref %></a>
+                  <a href="<%= tree_path(c.tree_referencee_id)%>" 
+                    title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
                   </div>
                 <% end %>
               </div>

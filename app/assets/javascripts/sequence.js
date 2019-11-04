@@ -125,7 +125,10 @@ initializeSortAndDrag = function () {
         .then(function (res) { 
           console.log("RESPONSE:", res) 
           html = res.errors ? 
-                  '<h3>ERROR:</h3><div>' + res.errors +'</div>' :
+                  '<div class="modal-header"><h3>ERROR:</h3></div> \
+                  <div class="modal-body">' + res.errors +
+                  '<br><button type="button" type="button" data-dismiss="modal" \
+                  aria-hidden="true">CLOSE</button></div>' :
                   '<div class="modal-header"> \
                   <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
                   </div> \
@@ -157,6 +160,8 @@ initializeSortAndDrag = function () {
                       <textarea type="text" name="tree_tree[explanation]"></textarea> \
                     </fieldset> \
                     <button type="submit" >SAVE</button>\
+                    <button type="button" type="button" data-dismiss="modal" \
+                    aria-hidden="true">CANCEL</button> \
                     </div> \
                     </form>' 
           $("#modal-container").html(html)
