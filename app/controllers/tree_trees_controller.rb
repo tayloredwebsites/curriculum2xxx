@@ -47,9 +47,7 @@ class TreeTreesController < ApplicationController
     @referencee = Tree.find(tree_tree_params[:tree_referencee_id])
     Rails.logger.debug('tree_referencee:'+ @referencee.code)
     @explanation = tree_tree_params[:explanation]
-    explanation_key = @treeTypeRec.code + "." + @versionRec.code + "." 
-    + @referencer.subject.code + "." + @referencer.code + ".tree." 
-    + @referencee.id
+    explanation_key = @treeTypeRec.code + "." + @versionRec.code + "." + @referencer.subject.code + "." + @referencer.code + ".tree." + @referencee.id.to_s
     @tree_tree = TreeTree.new(
       :tree_referencer_id => tree_tree_params[:tree_referencer_id], 
       :tree_referencee_id => tree_tree_params[:tree_referencee_id],
@@ -57,26 +55,49 @@ class TreeTreesController < ApplicationController
       :explanation_key => explanation_key
       )
      
-     reciprocal_explanation_key = @treeTypeRec.code + "." + @versionRec.code + "." 
-    + @referencee.subject.code + "." + @referencee.code + ".tree." 
-    + @referencer.id
-    @tree_tree_reciprocal = TreeTree.new(
+     #reciprocal_explanation_key = @treeTypeRec.code + "." + @versionRec.code + "." + @referencee.subject.code + "." + @referencee.code + ".tree." + @referencer.id.to_s
+    @reciprocal_tree_tree = TreeTree.new(
       :tree_referencer_id => tree_tree_params[:tree_referencee_id], 
       :tree_referencee_id => tree_tree_params[:tree_referencer_id],
-      :relationship => @tree_tree.reciprocal_relationship(tree_tree_params[:relationship]),
-      :explanation_key => reciprocal_explanation_key
+      :relationship => @tree_tree.reciprocal_relationship(:"#{tree_tree_params[:relationship]}"),
+      :explanation_key => explanation_key
       )
 
+    @explanation_translation = Translation.where(:locale => @locale_code, 
+      :key => explanation_key)
+    # @reciprocal_explanation_translation = Translation.where(:locale => @locale_code, 
+    #   :key => reciprocal_explanation_key)
+
+    if @explanation_translation.empty?
+      @explanation_translation = Translation.new(
+          :key => explanation_key,
+          :locale => @locale_code,
+          :value => tree_tree_params[:explanation]
+        )
+    else
+      @explanation_translation = @explanation_translation.first
+    end
+
+    puts "TreeTree: #{@tree_tree.inspect} \
+          TreeTree, Recip: #{@reciprocal_tree_tree.inspect} \
+          Translation: #{@explanation_translation.inspect}"
+
     errors = []
-    # ActiveRecord::Base.transaction do
-    #   @tree_tree.save
-    #   @tree_tree_reciprocal.save
-    # end
+    ActiveRecord::Base.transaction do
+       begin
+         @tree_tree.save!
+         @reciprocal_tree_tree.save!
+         @explanation_translation.save!
+       rescue ActiveRecord::StatementInvalid
+         errors << e
+       end
+    end
 
     if errors.length > 0
-      flash[:alert] = 'Error'
+      flash[:alert] = "Errors prevented the connection from being saved: #{errors.to_s}"
       redirect_to sequence_trees_path
     else
+      flash[:success] = "Created #{tree_tree_params[:relationship]} relationship."
       redirect_to sequence_trees_path
     end
   end
