@@ -124,7 +124,9 @@ initializeSortAndDrag = function () {
         })
         .then(function (res) { 
           console.log("RESPONSE:", res) 
-          html = '<div class="modal-header"> \
+          html = res.errors ? 
+                  '<h3>ERROR:</h3><div>' + res.errors +'</div>' :
+                  '<div class="modal-header"> \
                   <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
                   </div> \
                   <div class="modal-body"> \
@@ -152,12 +154,11 @@ initializeSortAndDrag = function () {
                     </fieldset> \
                     <fieldset> \
                       <label for="explanation">' + res.translations.explanation + '<br> \
-                      <textarea type="text" name=tree_tree["explanation"]></textarea> \
+                      <textarea type="text" name="tree_tree[explanation]"></textarea> \
                     </fieldset> \
                     <button type="submit" >SAVE</button>\
                     </div> \
-                    </form> \
-                  '
+                    </form>' 
           $("#modal-container").html(html)
         })
         .catch(function (err) { console.log("ERROR:", err) })
