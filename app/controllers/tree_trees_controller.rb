@@ -124,7 +124,10 @@ class TreeTreesController < ApplicationController
       flash[:alert] = "Errors prevented the connection from being saved: #{errors.to_s}"
       redirect_to sequence_trees_path
     else
-      flash[:notice] = "Created #{tree_tree_params[:relationship]} relationship."
+      flash[:notice] = "Created relationship: \
+      #{@referencer.subject.code}.#{@referencer.code} \
+      #{translate('trees.labels.relation_types.' + tree_tree_params[:relationship]) } \
+      #{@referencee.subject.code}.#{@referencee.code}."
       redirect_to sequence_trees_path
     end
   end
