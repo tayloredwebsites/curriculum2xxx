@@ -124,12 +124,14 @@ initializeSortAndDrag = function () {
         })
         .then(function (res) { 
           console.log("RESPONSE:", res) 
-          html = res.errors ? 
-                  '<div class="modal-header"><h3>ERROR:</h3></div> \
+          html = '';
+          if (res.errors)
+           html = '<div class="modal-header"><h3>ERROR:</h3></div> \
                   <div class="modal-body">' + res.errors +
                   '<br><button type="button" type="button" data-dismiss="modal" \
-                  aria-hidden="true">CLOSE</button></div>' :
-                  '<div class="modal-header"> \
+                  aria-hidden="true">CLOSE</button></div>'
+          else
+            html = '<div class="modal-header"> \
                   <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
                   </div> \
                   <div class="modal-body"> \
