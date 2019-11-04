@@ -1,57 +1,164 @@
-en,Phy,9
-9.1. Introduction to Physics
-9.1.1. Introduction to Physics
-9.1.1.1. Learning Outcome 1
-9.1.1.2. Learning Outcome 2
-9.1.1.3. Learning Outcome 3
-9.1.1.4. Learning Outcome 4
-9.2. Matter and Properties of Matter
-9.2.1. Matter and Properties of Matter
-9.2.1.1. Learning Outcome 5
-9.2.1.2. Learning Outcome 6
-9.2.1.3. Learning Outcome 7
-9.2.1.4. Learning Outcome 8
-9.3. Motion and Force
-9.3.1. Motion and Force
-9.3.1.1. Learning Outcome 9
-9.3.1.2. Learning Outcome 10
-9.3.1.3. Learning Outcome 11
-9.3.1.4. Learning Outcome 12
-9.3.1.5. Learning Outcome 13
-9.3.1.6. Learning Outcome 14
-9.3.1.7. Learning Outcome 15
-9.3.1.8. Learning Outcome 16
-9.3.1.9. Learning Outcome 13
-9.3.1.10. Learning Outcome 14
-9.3.1.11. Learning Outcome 15
-9.4. Energy
-9.4.1. Energy
-9.4.1.1. Learning Outcome 16
-9.4.1.2. Learning Outcome 17
-9.4.1.3. Learning Outcome 18
-9.4.1.4. Learning Outcome 19
-9.4.1.5. Learning Outcome 20
-9.4.1.6. Learning Outcome 21
-9.4.1.7. Learning Outcome 22
-9.4.1.8. Learning Outcome 23
-9.5. Heat and Temperature
-9.5.1. Heat and Temperature
-9.5.1.1. Learning Outcome 24
-9.5.1.2. Learning Outcome 25
-9.5.1.3. Learning Outcome 26
-9.5.1.4. Learning Outcome 27
-9.5.1.5. Learning Outcome 28
-9.5.1.6. Learning Outcome 29
-9.5.1.7. Learning Outcome 30
-9.5.1.8. Learning Outcome 31
-9.5.1.9. Learning Outcome 32
-9.5.1.10. Learning Outcome 33
-9.5.1.11. Learning Outcome 34
-9.5.1.12. Learning Outcome 35
-9.5.1.13. Learning Outcome 36
-9.6. Electrostatics
-9.6.1. Electrostatics
-9.6.1.1. Learning Outcome 37
-9.6.1.2. Learning Outcome 38
-9.6.1.3. Learning Outcome 39
-9.6.1.4. Learning Outcome 40
+en,phy,9
+9.1. INTRODUCTION TO PHYSICS SCIENCE
+Key concepts: physical science, basic-derived quantities, vector-scalar quantities, science research center.
+9.1.1. THE IMPORTANCE OF PHYSICAL SCIENCE
+9.1.1.1. Explains the importance of physics science in understanding the events in the universe. 
+a) The role of physics in understanding and explaining the universe and the events in the universe is emphasized.
+9.1.2. FIELD OF APPLICATION OF PHYSICS
+9.1.2.1. Relates the application fields of physics with sub-branches and other disciplines.
+a) The mechanics, thermodynamics, electromagnetism, optics, solid state physics, atomic physics, nuclear physics, high energy and plasma physics sub-branches are explained with examples from their fields of application. Examples of sub-branches related professions are given.
+b) Examples of daily life are given to the relationship of physics with philosophy, biology, chemistry, technology, engineering, art, sports and mathematics.
+9.1.3. CLASSIFICATION OF PHYSICAL PROPERTIES
+9.1.3.1. Classifies physical quantities.
+a) Defining and classifying the quantities as basic and derived.
+b) Units of basic sizes are introduced in SI unit system. Samples of past subjects are given in science courses for derived quantities.
+c) The scalar and vectors are defined and classified.
+ç) It is ensured that the collections in the vectors are done in one dimension. In scalar and vectoral quantities, collection processes (one size) are given examples from daily life and comparison is provided.
+9.1.4. SCIENCE RESEARCH CENTERS
+9.1.4.1. Explains the importance of science research centers for physics science.
+a) Science research centers are limited to TUBITAK, TAEK, ASELSAN, CERN, NASA and ESA.
+b) The importance of obeying ethical principles in scientific research is emphasized.
+9.2. SUBSTANCE AND PROPERTIES
+Key concepts: mass, volume, core, strength, adhesion (adhesion), cohesion, surface tension, capillary.
+9.2.1. SUBSTANCE AND MASS
+9.2.1.1. Explains the eutrophy by associating it with mass and volume.
+a) Mass and volume concepts are mentioned. Significant unit conversions are made for mass (mg, g, kg and ton) and volume (mL, L, cm3, dm3, m3). It is stated that information technologies can be utilized while making transformations.
+b) The volume calculations are made for the smooth geometric shaped objects such as cube, rectangles prism, cylinder, sphere and non-smooth geometric shaped objects. The sand-water problems are not mentioned.
+c) It is provided that plotting the mass-volume graph by measuring at constant temperature and pressure and the mathematical model between the concepts of mass, volume and nucleus. Mathematical calculations are not made.
+ç) It is provided that drawing and interpreting the mass-density, volume-core graphs.
+d) No mathematical calculations related to equal arm scale are mentioned.
+e) The extracts of the mixtures are referred to. No mathematical calculations are mentioned.
+f) Brief information about Archimedes and al-Khazini's studies on eigencry are indicated.
+9.2.1.2. It gives examples of the use of extracts of pure substances and mixtures in daily life. 
+a) The fields of study that use extractions such as jewelery, porcelain making and marbling are mentioned.
+9.2.2. DURABILITY
+9.2.2.1. Explains the concept of endurance. 
+a) The mathematical calculations related to the concept of durability other than the geometry of the cube, rectangular prism, the ratio of the cross section of the cylinder and sphere to the volume are not entered into.
+9.2.3. ADHESION AND HOLDING EACH OTHER 
+9.2.3.1. Explains adhesion and cohesion events with examples.
+a) Surface tension and capillary phenomena are explained by sticking and interlocking events and examples of daily life are provided.
+b) Factors affecting surface tension are explained by examples in daily life.
+c) No mathematical calculations related to adhesion, cohesion, surface tension and capillarity.
+9.3. MOTION AND FORCE
+Key concepts: translational motion, rotational motion, vibration movement, reference point, position, path taken, displacement, velocity, velocity, instantaneous velocity, average velocity, acceleration, force, gravitational force, balanced force, unbalanced force, net force, acceleration of gravity, weight, friction force, inertia, impact forces.
+9.3.1. MOTION
+9.3.1.1. Classifies the movements of objects. 
+a) Experiments or simulations are used to provide examples of translation, rotation and vibration movements.
+9.3.1.2. The location relates the concepts of road, displacement, speed and speed.
+9.3.1.3. Relates location, speed and time concepts for smooth linear motion.
+a) Students to collect data by experiment or by simulations, to draw position-time and speed-time graphs, to interpret them and to make transformations between drawn graphics is provided.
+b) Students will be able to draw and interpret mathematical models related to motion by using graphs.
+9.3.1.4. Explains the concept of average speed. 
+a) The working principle of green wave system in traffic is emphasized.
+9.3.1.5. Relates the acceleration concept with acceleration and deceleration events.
+a) It is limited with constant acceleration.
+b) The mathematical model of acceleration is obtained. No mathematical calculations are made.
+c) It is provided that to draw and interpret the speed-time and acceleration-time graphs for constant acceleration. Conversions cannot be entered between graphics. The position-time graph is not made.
+d) The concept of instantaneous speed is referred to.
+9.3.1.6. Explains the movement of an object according to different reference points. 
+a) It is ensured that the movement is relative with the observations.
+9.3.2. FORCE
+9.3.2.1. Explains the concept of force with examples.
+a) It is provided to give an example to the forces that require and do not require contact.
+b) Which forces are the four basic forces are mentioned.
+c) Variables depending on the mass gravitational force are given. No mathematical calculations are made.
+d) Balanced and unbalanced forces are highlighted.
+9.3.3. NEWTON'S MOVEMENT LAWS
+9.3.3.1. Explains the movement states of objects under the influence of balanced forces with examples. 
+a) A brief information about Ibn Sina's studies about movement is given.
+9.3.3.2. Explains the relationship between the concepts of force, acceleration and mass.
+a) The mathematical model is given between the net force, acceleration and mass.
+b) The forces acting on the object are shown on the free-body diagram. Size of net force calculated direction is shown.
+c) In the calculations, it is limited to one mass in horizontal plane. Component allocation calculations are not entered.
+ç) Gravity acceleration is explained and weight calculations are made.
+9.3.3.3. Explains effect-reaction forces with examples.
+a) Effect and reaction forces are shown on horizontal and vertical planes.
+b) No mathematical calculations are made.
+9.3.4. FRICTION FORCE
+9.3.4.1. Analyzes the variables that the friction force depends on.
+a) Students make inferences from data obtained from experiments or simulations and determine the relationship between the variables. It is limited to horizontal plane.
+b) Comparison of static and kinetic friction forces are provided to be made.
+c) It is ensured that the friction force is shown on the free body diagrams.
+ç) The mathematical model of the friction force is given. No mathematical calculations are made.
+d) Examples of the advantages and disadvantages of the friction force in daily life are given.
+e) The direction of friction force is explained by examples.
+9.4. ENERGY
+Key concepts: work, energy, power, translational kinetic energy, gravitational potential energy, flexibility potential energy, mechanical energy, energy conservation, energy conversion, yield, renewable energy, non-renewable energy.
+9.4.1. WORK, ENERGY AND POWER
+9.4.1.1. Relates the concepts of work, energy and power.
+a) The relationship between business and energy is given conceptually.
+b) Students are expected to examine mathematical models of work and power.
+c) Physical and work power and daily work and power concepts are different is highlighted.
+9.4.1.2. Makes calculations related to mechanical work and mechanical power. It is confined to forces in the same direction as motion.
+9.4.2. MECHANICAL ENERGY
+9.4.2.1. Analyzes the variables which displacement kinetic energy, gravitational potential energy and flexibility of potential energy are connected.
+a) The mathematical models of kinetic energy of displacement, the potential energy of the gravitational and flexibility of potential energy are given. It is provided to analysis of variables by means of experiments or simulations is provided. No mathematical calculations are made.
+b) Single spring systems should be taken into account in the potential of flexibility energy.
+c) It is emphasized that mechanical energy is equal to the sum of kinetic energy and potential energy.
+9.4.3. ENERGY PROTECTION AND ENERGY CONVERSION
+9.4.3.1. It makes the inference that the total energy is preserved in the transformation of energy from one form to another (mechanical, heat, light, sound).
+a) It is emphasized that due to the friction, all of the energy cannot be converted into the targeted energy form.
+b) Energy conversion calculations are not entered.
+9.4.3.2. Compares the energy consumed by the living things for the daily activities. It is emphasized that living things can spend energy without doing physical work.
+9.4.4. YIELD
+9.4.4.1. Explains the concept of efficiency. The relationship between energy savings and energy efficiency is explained through energy identity documents.
+9.4.4.2. Develops a sample system or recommendations to improve the efficiency of the design. The working principle of various efficiency enhancing systems designed in the historical process is mentioned.
+9.4.5. ENERGY RESOURCES
+9.4.5.1. It is evaluated that renewable and non-renewable energy sources in terms of advantages and disadvantages.
+a) It is considered that the cost, accessibility, ease of production, society, technology and environmental impacts of energy resources.
+b) The necessity of using energy resources economically is emphasized.
+9.5. HEAT AND TEMPERATURE
+Key concepts: heat, temperature, internal energy, heat of heat, heat exchange, state change, thermal balance, energy transmission rate, expansion, contraction, heat insulation, sensible temperature, global warming.
+9.5.1. HEAT AND TEMPERATURE
+9.5.1.1. Explains the concepts of heat, temperature and internal energy.
+a) Enthalpy and entropy concepts are not mentioned.
+b) Units of temperature and temperature concepts and the names of measuring instruments are given.
+9.5.1.2. Compares thermometer types for usage purposes.
+9.5.1.3. Makes calculations about temperature units. Unit conversions for oC, oF, K are provided.
+9.5.1.4. Relates the concepts of heat and heat capacity. 
+a) Examples from daily life (such as the seas are warmed from the land to late cool down) are given.
+9.5.1.5. Analyzes the variables depending on the change in the temperature of the heat or heat source pure substances. 
+a) It is provided to determine the relationship between the variables by using the experiments or simulations. Mathematical model is given. No mathematical calculations are made.
+9.5.2. CHANGE OF STATE
+9.5.2.1. Analyzes the variables to which the amount of heat required for state change in pure substances depends. 
+a) It is provided to determine the relationship between the variables by using the experiments or simulations. Mathematical model is given. No mathematical calculations are made.
+9.5.3. HEAT BALANCE
+9.5.3.1. Analyzes the relationship between thermal equilibrium concept and temperature difference.
+a) The relationship of heat balance to temperature and heat with the use of experiments or simulations is provided.
+b) No mathematical calculations related to thermal balance are mentioned.
+9.5.4. ENERGY TRANSMISSION ROUTES AND ENERGY TRANSMISSION RATE
+9.5.4.1. Explains the ways of energy transmission with examples.
+9.5.4.2. Analyzes the variables affecting the energy transmission rate in solid material.
+a) It is ensured that they determine the relationship between variables by using experiments or simulations.
+b) Examples of daily life (use of insulating materials in heat insulation, small windows in cold areas, thicker walls) are given.
+c) No mathematical calculations related to the energy transmission rate are made.
+9.5.4.3. Designs for isolation of living spaces for energy saving.
+a) The importance of the contribution of the thermal insulation system to the family budget and the national economy is emphasized for energy saving.
+b) It is provided that for students to identify a problem in everyday life related to thermal insulation and for this problem solutions.
+c) Budget calculation for the development of finance awareness should be emphasized.
+9.5.4.4. Interprets the causes of the difference between the sensed and the actual temperature.
+9.5.4.5. Develops a project for measures to be taken against global warming.
+a) Students are encouraged to present their projects with posters, brochures or electronic presentations.
+b) Attention is drawn to the causes of global warming.
+c) The necessity to be sensitive to the environment and the contributions to be made individually can be discussed.
+9.5.5. EXPANSION
+9.5.5.1. Interprets the effects of expansion and contraction in solids and liquids on daily life.
+a) It is ensured that the advantages and disadvantages of expansion and contraction of solids and liquids in daily life are discussed.
+b) The effects of water and ice on their daily life by comparing the Eigen-heat and their own heat.
+c) No mathematical calculations related to expansion are entered.
+9.6. ELECTROSTATIC
+Key concepts: electric charge, unit load, electric charge, load protection, electroscope, conductive material, insulating material, charge distribution, Faraday cage, grounding, electrical force, Coulomb's Law, electric field.
+9.6.1. ELECTRIC LOADS
+9.6.1.1. Explains the types of electrical load with examples.
+a) The concepts of load, unit load and electricity are given.
+b) It should be emphasized that the loads are electrically charged.
+c) Examples of using the electroscope in the determination of the load type are given.
+9.6.1.2. Compares load distributions in electrified conductive and insulating materials.
+a) Students are provided to make comparisons using experiments or by using simulations.
+b) The Faraday cage, its usage areas and its importance are explained.
+c) Earthing process is explained and its importance in daily life is emphasized.
+9.6.1.3. Explains the interaction between electrically charged bodies.
+a) Using the experiment or simulations, it is ensured that the interaction between the electrically charged bodies (Coulomb force) determines the relationship between the variables. Mathematical model is given.
+b) Performing mathematical calculations in one dimension with point loads related to the interaction of loads is provided.
+9.6.1.4. Explains the concept of electric field. 
+a) The relationship between electric field concept and electrical force is explained by using experiments or simulations. Mathematical model is given. No mathematical calculations are made.

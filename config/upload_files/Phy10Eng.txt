@@ -1,48 +1,170 @@
-en,Phy,10
-10.1. Electricity and Magnetism
-10.1.1. Electricity and Magnetism
-10.1.1.1. Learning Outcome 1
-10.1.1.2. Learning Outcome 2
-10.1.1.3. Learning Outcome 3
-10.1.1.4. Learning Outcome 4
-10.1.1.5. Learning Outcome 5
-10.1.1.6. Learning Outcome 6
-10.1.1.7. Learning Outcome 7
-10.1.1.8. Learning Outcome 8
-10.1.1.9. Learning Outcome 9
-10.2. Pressure and Lift
-10.2.1. Pressure and Lift
-10.2.1.1. Learning Outcome 10
-10.2.1.2. Learning Outcome 11
-10.2.1.3. Learning Outcome 12
-10.2.1.4. Learning Outcome 13
-10.3. Waves
-10.3.1. Waves
-10.3.1.1. Learning Outcome 14
-10.3.1.2. Learning Outcome 15
-10.3.1.3. Learning Outcome 16
-10.3.1.4. Learning Outcome 17
-10.3.1.5. Learning Outcome 18
-10.3.1.6. Learning Outcome 19
-10.3.1.7. Learning Outcome 20
-10.3.1.8. Learning Outcome 21
-10.3.1.9. Learning Outcome 22
-10.3.1.10. Learning Outcome 23
-10.3.1.11. Learning Outcome 24
-10.3.1.12. Learning Outcome 25
-10.4. Optics
-10.4.1. Optics
-10.4.1.1. Learning Outcome 26
-10.4.1.2. Learning Outcome 27
-10.4.1.3. Learning Outcome 28
-10.4.1.4. Learning Outcome 29
-10.4.1.5. Learning Outcome 30
-10.4.1.6. Learning Outcome 31
-10.4.1.7. Learning Outcome 32
-10.4.1.8. Learning Outcome 33
-10.4.1.9. Learning Outcome 34
-10.4.1.10. Learning Outcome 35
-10.4.1.11. Learning Outcome 36
-10.4.1.12. Learning Outcome 37
-10.4.1.13. Learning Outcome 38
-10.4.1.14. Learning Outcome 39
+en,phy,10
+10.1 ELECTRICITY AND MAGNETISM
+Key concepts:  electric current, potential difference, resistance, Ohm's Law, equivalent resistance, internal resistance, electromotive force, electrical energy, electrical power, magnetic field.
+10.1.1 THE ELECTRICITY CURRENT, POTENTIAL DIFFERENCE AND RESISTANCE
+10.1.1.1. Explains the concepts of electric current, resistance and potential difference.
+a. Explaining the concept of electric current through the movement of electric charge.
+b. The electric conduction is mentioned in solids, liquids, gases and plasmas.
+10.1.1.2. Analyzes the variables to which the resistance of a solid conductor is connected.
+a. By using experiments and simulations, it is provided to determine the relationship between the variables and to extract the mathematical model. No mathematical calculations are made.
+b. Temperature-dependent change of conductor resistance and resistance readings with color codes are not entered.
+10.1.2. ELECTRIC CIRCUITS
+10.1.2.1. Analyzes the relationship between electrical current, resistance and potential difference.
+a. The voltmeter and ammeter's resistance characteristics are explained in the circuit.
+b. Electrical current, resistance and potential difference by conducting experiments on simple circuits is ensured that the relationship between (Ohm's Law) and mathematical model is removed.
+c. Equivalent resistance in electrical circuits, resistance, potential difference and mathematical calculations related to electric current are provided to be made.
+10.1.2.2. Explains the reasons of serial and parallel connection of generators.
+a. It is provided that students examine the ways in which the generators are connected with experiments or simulations and comparison of exhaustion times. The reverse connection of the generators is also considered.
+b. Electromotive forces and parallel connection of different generators are not mentioned.
+c. Internal resistances of generators are explained by examples and no mathematical calculations related to internal resistances are made.
+d. It is provided that students discuss differences of scientists Galvani and Volta’s conducting experiments on the discovery of the producers.
+e. Kirchhoff's Laws are not mentioned.
+10.1.2.3. Relates the concepts of electrical energy and electrical power.
+a. It is dwelled on the similarity of the relationship between electrical energy and electrical power and the relationship between mechanical energy and mechanical power.
+b. Mathematical except for calculations related to the electrical energy that a resistance consumes per unit time calculations are not allowed.
+c. It is ensured that the students explain the transformation of heat, work, mechanical energy and electrical energy.
+d. Comparison of lamp brightness is ensured.
+10.1.2.4. It is explained that the health and safety measures against electrical hazards.
+10.1.3. MAGNET AND MAGNETIC FIELD
+10.1.3.1. Explains the magnetic field of the magnets and properties of magnets.
+a. It is provided that students examine the magnetic field using experiments or simulations.
+b. It is emphasized that the magnetic field of magnets is represented by magnetic field lines.
+c. The mathematical calculations related to the push-pull forces of the magnets are not mentioned.
+10.1.4. CURRENT AND MAGNETIC FIELD
+10.1.4.1. It analyzes variables affecting the magnetic field formed by a flat conductive wire.
+a. It is provided that students affect the magnetic field by conducting experiments or using simulations variables.
+b. Right hand rule is given. The mathematical calculations related to the direction and intensity of the magnetic field are not entered.
+c. It is mentioned that the effects of the magnetic field in the areas where the high voltage
+lines cross.
+d. Electromagnets are introduced and examples of applications are given.
+10.1.4.2. Explains the results of the world's magnetic field. 
+a. Students are provided with direction with compass.
+b. It is indicated that bees, migratory birds and some bovine animals find their directions by benefiting from the magnetic field of the earth.
+10.2. PRESSURE AND LIFTING FORCE
+Keywords: solid pressure, fluid pressure, pressure force, Pascal principle, Bernoulli principle, Archimedes Principle, lifting force.
+10.2.1. PRESSURE AND ASCENDING FORCE
+10.2.1.1. Explains the variables of pressure and compressive force concepts in solid, stationary liquids and gases.
+a. Students are given examples of the effects of the pressure from daily life. The effects of pressure on state change are emphasized.
+b. Mathematical models regarding solid and stationary fluid pressure and pressure force are given. Disaggregation and mathematical calculations are not made.
+c. Toriçelli experiment is explained and the difference with capillarity is indicated.
+d. Information on the pressure measurement devices as Barometer, altimeter, manometer and batimeter are given.
+e. The Pascal Principle is referred to. No mathematical models related to gas pressure and Pascal Principle are given.
+10.2.1.2. Sets relation between flow velocity and fluid pressure.
+a. It is provided to relate between cross-sectional area, pressure and fluid velocity by benefiting by experiments or simulations.
+b. It is provided the Bernoulli Principle (flying roofs, reversing the umbrella, windy in weather conditions such as hard closing of the doors) to be explained though the examples of daily life.
+c. No mathematical calculations related to the Bernoulli Principle are mentioned.
+d. The convenience of fluid pressure in daily life (such as the flight of aircraft) and health and safety measures against the negative effects are emphasized.
+e. It is emphasized that blood pressure is the blood pressure of the veins and the students are given the opportunity to study the working principle of the sphygmomanometer.
+10.2.2. LIFTING FORCE
+10.2.2.1. It is explained that the lifting force acting on the objects in stationary fluids are based on the difference of pressure force.
+a. The Archimedes Policy is explained. The size of lifting force and the object’s weight is compared on the occasions of swimming, hanging and sinking.
+b. The mathematical model related to the lifting force is given. No mathematical calculations are made.
+10.2.2.2. Creates solutions to the problems regarding lifting force by using lifting force and / or the Bernoulli Policy.
+10.3. WAVES
+Keywords: wave, vibration, wave motion, wavelength, period, frequency, speed, amplitude, throwing, wave peak, wave pit, focal point, center, stroboscope, resonance, loudness, sound, intensity, timbre, echo, buzzing, noise, noise pollution, earthquake wave.
+10.3.1. WAVES
+10.3.1.1. Explains the concepts of vibration, wave motion, wavelength, period, frequency, velocity and amplitude.
+a. It is provided that the concepts are explained by experiments, observations or simulations.
+b. It is provided interrelating the concepts of period and frequency and forming a mathematical model. No mathematical calculations are made.
+c. The mathematical model is given between the wave velocity, wavelength and frequency. No mathematical calculations.
+d. It is emphasized that the speed of the wave depends on the environment and the frequency depends on the source.
+10.3.1.2. Classifies the waves according to their carried energy and vibration direction. 
+a. It is provided that students give examples for wave types.
+10.3.2. SPRING WAVE
+10.3.2.1. Explains the difference between throwing and creating periodic wave.
+a. It is emphasized that the throw is created to study the properties of the waves.
+b. It is provided that students are allowed to do experiment with the throwing and periodic wave using experiments or simulations.
+10.3.2.2. Analyzes the reflection and transmission of the arc in the springs.
+a. It is provided for students to explain the variables which are dependent on the speed of progression of a tethered arc. Mathematical calculations related to the rate of progress of the throw are not entered.
+b. It is provided for students to observe the reflection of fixed and free-of-charge using experiments or simulations.
+c. It is dwelled on the properties of reflected and transmitted pulses when passing from one environment to another.
+d. Students will be able to observe the events in case of encounter of two throws by experiments or simulations.
+10.3.3. WATER WAVE
+10.3.3.1. Explains the direction of wave progression, wave top and wave pit.
+a. Concepts are handled in the context of linear and circular water waves.
+10.3.3.2. Analyzes the reflection movements of linear and circular water waves.
+a. It is provided for students to draw reflection movements of water waves by experimenting or using simulations.
+b. It is taken into consideration that the reflection of linear water waves from linear from parabolic obstacles.
+c. The reflection of the circular water waves from the linear obstacle is taken into consideration and the focal point and the waves sent from the center are taken into account.
+d. No mathematical calculations are made.
+10.3.3.3. Associates the depth of the area with the propagation speed of water waves.
+a. It is provided for students to observe the effect of the depth of the area on the speed of the wave by experiment or simulations and to observe changes in wavelength.
+b. No mathematical calculations related to the wavelength and velocity variation of the environment-changing water waves are entered.
+c. It is mentioned that the stroboscope is used to measure wavelength. The mathematical calculations are not entered.
+10.3.3.4. Analyzes the refractive motion of linear water waves.
+a. It is provided for students to draw the breaking actions of water waves by using experiments or simulations. The refraction movements of the water waves through the lens- shaped water are not mentioned.
+b. No breaking of circular water waves is mentioned.
+c. No mathematical calculations related to the breaking actions of water waves are made.
+10.3.4. VOICE WAVE
+10.3.4.1. Explains the basic concepts of sound waves with examples.
+a. It is being limited by the concepts of height, violence, timbre, resonance and echo.
+b. The concepts of humming, noise and noise pollution are mentioned.
+c. Brief information about Farabi's studies on sound waves is given.
+10.3.4.2. Gives examples of the use of sound waves in the fields of medicine, maritime, art and geography.
+10.3.5. EARTHQUAKE WAVE
+10.3.5.1. Defines the earthquake wave.
+a. It is given information about the magnitude and severity of the earthquake.
+b. Wave types in earthquakes are not mentioned.
+10.3.5.2. Develops solutions to prevent loss of life and property caused by earthquake.
+10.4. OPTICAL
+Keywords: enlightenment intensity, light intensity, luminous flux, shadow, shadow, reflection, focal point, center, vertex, prime axis, refraction, refractive index, Snell's Law, full reflection, boundary angle, visible distance.
+10.4.1. LIGHTING
+10.4.1.1. Explains the behavior models of light. 
+a. Details are not given when explaining models.
+10.4.1.2. Establishes the relationship between light intensity, luminous flux and enlightenment violence.
+a. The relationship is established between the concepts of illumination intensity, light intensity, luminous flux through experimenting or simulations.
+b. Mathematical models of light intensity, luminous flux and enlightenment violence are given. No mathematical calculations are made.
+10.4.2. SHADOW
+10.4.2.1. Explains the properties of transparent, translucent and transparent materials.
+a. Students will be able to draw and explain the shadow and half shadow areas.
+b. No mathematical calculations related to shadow and half shadow are made.
+10.4.3. REFLECTION
+10.4.3.1. Relates the reflection of light to reflection phenomena in water waves.
+a. Reflection Laws are discussed.
+b. A smooth and diffused reflection of the light is shown by drawing.
+c. The role of reflection in the visual event is emphasized.
+10.4.4. PLANE MIRROR
+10.4.4.1. Explains the formation of image in plane mirror.
+a. The image features of the plane mirror are explained on the drawings.
+b. The topics of the intersecting mirror, mirror rotation, moving mirror and moving object are not mentioned.
+c. Inferences about the variables affecting the field of view are provided through experiments or simulations. Transparent and  non-transparent obstacles are also taken into account when making inferences. Mathematical calculations are not made.
+10.4.5. GLOBAL MIRRORS
+10.4.5.1. Explains the concepts of focal point, center, vertex and prime axis in global mirrors. 
+a. It is ensured that the reflection of special rays on the spherical mirrors is drawn.
+10.4.5.2. Explains the formation and properties of spherical mirrors.
+a. Experimental or simulated image formation and interpretation of the resulting image properties are provided.
+b. It is provided for the students to give examples of objects that behave like a global mirror they encounter in daily life.
+c. No mathematical calculations related to spherical mirrors are mentioned.
+10.4.6. BREAKING
+10.4.6.1. Relates the breaking of light to the breaking event in the water waves.
+a. It is provided for students to determine the variables to which the amount of deviation from the direction of advance of the light by using experiments or simulations. The mathematical model of the Snell Law is given.
+b. It is emphasized that the refractive index is a relative variable associated with the speed of light in the medium and its velocity in the void.
+c. No mathematical calculations related to Snell's Law are made.
+10.4.6.2. Analyzes the full reflection event and the angle of the light.
+a. It is provided for the students to comment on the full reflection event and boundary angle generated by experiments or simulations.
+b. Fiber optic technology where complete reflection takes place, mirage event and pool lighting examples are given.
+c. The mathematical calculations related to full reflection and boundary angle are not entered.
+10.4.6.3. Explains the reasons that affect the apparent distance of an object in different environment.
+a. Students are expected to draw the path of light by experimenting and establish relations with the events observed in daily life.
+b. No mathematical model is given about the apparent distance. No mathematical calculations are made.
+10.4.7. LENSES
+10.4.7.1. Explains the properties of lenses and types of lenses.
+a. The factors to which the focal length of the lenses depend are referred to. Mathematical model is not given.
+b. It is explained that glass bottles and glass fractures are treated as lenses causing forest fires. The importance of protecting the environment and protecting the natural life is emphasized.
+10.4.7.2. Explains the properties of lenses formed by lenses.
+a. Special rays in the lens are given. Drawings about image formations are not made.
+b. It is provided that investigation of image properties of lenses by the help of experiments or simulations.
+c. It is provided for students to give examples of where the lens is used for and for what purposes.
+d. No mathematical calculations related to lenses are made.
+10.4.8. PRISMS
+10.4.8.1. Explains the properties of light prisms.
+a. Students are provided to draw the path of monochrome light in prisms with the help of experiments or simulations.
+b. Students are provided to observe the phenomenon of white light in prism by experiment or simulations.
+c. Examples of the use of light prisms are given.
+d. Mathematical models related to prisms are not given.
+10.4.9. COLOR
+10.4.9.1. Explains the reasons for the color of objects.
+a. It is ensured that the students compare the differences between light and paint colors.
+b. It is provided classifying light and paint colors as main, intermediate and complementary. It is emphasized that main colors in light are as the intermediate colors in paint and the intermediate colors in light are as the main color in the paint.
+c. The difference between the mixture yellow and pure yellow is highlighted.
+d. It is provided for students to give examples of white light and different colors of light passing through the filter and absorption.
