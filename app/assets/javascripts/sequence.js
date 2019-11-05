@@ -53,6 +53,51 @@ $(function() {
   }
 });
 
+add_edit_form = function(res) {
+  edit_mode = res.tree_tree.id != null
+  return '<div class="modal-header"> \
+          <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
+          </div> \
+          <div class="modal-body"> \
+          <form action="/tree_trees" method="'
+          + (edit_mode ? 'PATCH' : 'POST') + '"> \
+          <div> \
+          <input type="hidden" name="authenticity_token" value="' + $('[name="csrf-token"]').attr('content') + '"> \
+          <input type="hidden" name="tree_tree[tree_referencer_id]" value=' + res.tree_tree.tree_referencer_id +'> \
+          <input type="hidden" name="tree_tree[tree_referencee_id]" value=' + res.tree_tree.tree_referencee_id + '> \
+          </div> \
+          <fieldset> \
+          <label for="relationship">' + res.translations.relationship + '</label><br>'
+          + res.referencer_code + '<br> \
+          <select id="relationship" name="tree_tree[relationship]"> \
+          <option value="' + res.relation_values.applies 
+          + (res.tree_tree.relationship == 'applies' ? '" selected>': '">')
+          + res.translations.applies 
+          + '</option> \
+          <option value="' + res.relation_values.depends 
+          + (res.tree_tree.relationship == 'depends' ? '" selected>': '">')
+          + res.translations.depends 
+          + '</option> \
+          <option value="' + res.relation_values.akin 
+          + (res.tree_tree.relationship == 'akin' ? '" selected>': '">')
+          + res.translations.akin 
+          + '</option> \
+          </select> \
+          <div>' + res.referencee_code + '</div><br> \
+          </fieldset> \
+          <fieldset> \
+            <label for="explanation">' + res.translations.explanation_label + '<br> \
+            <textarea type="text" name="tree_tree[explanation]">'
+            + (res.translations.explanation != undefined ? res.translations.explanation : '')
+            +'</textarea> \
+          </fieldset> \
+          <button type="submit" >SAVE</button>\
+          <button type="button" type="button" data-dismiss="modal" \
+          aria-hidden="true">CANCEL</button> \
+          </div> \
+          </form>' 
+}
+
 initializeSortAndDrag = function () {
    $('.list-group').sortable({
     placeholder: 'drop-placeholder',
@@ -123,7 +168,7 @@ initializeSortAndDrag = function () {
           "async": false
         })
         .then(function (res) { 
-          console.log("RESPONSE:", res) 
+          console.log("RESPONSE:", res.tree_tree.id) 
           html = '';
           if (res.errors)
            html = '<div class="modal-header"><h3>ERROR:</h3></div> \
@@ -166,7 +211,7 @@ initializeSortAndDrag = function () {
                     aria-hidden="true">CANCEL</button> \
                     </div> \
                     </form>' 
-          $("#modal-container").html(html)
+          $("#modal-container").html(add_edit_form(res))
         })
         .catch(function (err) { console.log("ERROR:", err) })
 

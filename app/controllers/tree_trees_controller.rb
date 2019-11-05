@@ -1,20 +1,17 @@
 class TreeTreesController < ApplicationController
   # Controller for the LO connections
   before_action :authenticate_user!
+  before_action :find_tree_tree, only: [:edit]
 
   def new
     errors = []
-    if TreeTree.where(
+
+    #Check whether a tree_tree for this relationship already exists.
+    tree_tree_matches = TreeTree.where(
       :tree_referencer_id => tree_tree_params[:tree_referencer_id], 
-      :tree_referencee_id => tree_tree_params[:tree_referencee_id]).length > 0
-      errors << "Relationship already exits."
-    end
-    if errors.length == 0 && TreeTree.where(
-      :tree_referencee_id => tree_tree_params[:tree_referencer_id], 
-      :tree_referencer_id => tree_tree_params[:tree_referencee_id]).length > 0
-      errors << "Relationship already exits."
-    end
-    if errors.length == 0
+      :tree_referencee_id => tree_tree_params[:tree_referencee_id])
+
+    if errors.length == 0 && tree_tree_matches.length == 0
       @tree_tree = TreeTree.new(tree_tree_params)
       @referencer = Tree.find(tree_tree_params[:tree_referencer_id])
       Rails.logger.debug('tree_referencer:'+ @referencer.code)
@@ -31,7 +28,7 @@ class TreeTreesController < ApplicationController
         :locale => @locale_code
         ).first.value
     end
-    if errors.length == 0
+    if errors.length == 0 && tree_tree_matches.length == 0
       respond_to do |format|
         format.json {render json: { 
           :tree_tree => @tree_tree,
@@ -39,7 +36,7 @@ class TreeTreesController < ApplicationController
           :referencee_code => referencee_subject_translation + " " + @referencee.code,
           :translations => {
             :modal_title => translate('trees.labels.outcome_connections'),
-            :explanation => translate('tree_trees.labels.explanation'),
+            :explanation_label => translate('tree_trees.labels.explanation'),
             :relationship => I18n.translate('trees.labels.relation'),
             :akin => I18n.translate('trees.labels.relation_types.akin'),
             :applies => I18n.translate('trees.labels.relation_types.applies'),
@@ -52,10 +49,52 @@ class TreeTreesController < ApplicationController
           }
         }}
       end
+    #If a tree_tree for this relationship already exists,
+    #redirect to the edit path for that record. 
+    elsif tree_tree_matches.length > 0
+      redirect_to edit_tree_tree_path(tree_tree_matches.first)
     else
       respond_to do |format|
         format.json {render json: { errors: errors}}
       end
+    end
+  end
+
+  def edit 
+    @referencer = @tree_tree.tree_referencer
+    @referencee = @tree_tree.tree_referencee
+    referencer_subject_translation = Translation.where(
+      :key => @referencer.subject[:base_key] + '.name',
+      :locale => @locale_code
+      ).first.value
+    referencee_subject_translation = Translation.where(
+      :key => @referencee.subject[:base_key] + '.name',
+      :locale => @locale_code
+      ).first.value
+    explanation_translation = Translation.where(
+        :key => @tree_tree[:explanation_key],
+        :locale => @locale_code
+      ).first.value
+    respond_to do |format|
+        format.json {render json: { 
+        :tree_tree => @tree_tree,
+        :referencer_code => referencer_subject_translation + " " + @referencer.code,
+        :referencee_code => referencee_subject_translation + " " + @referencee.code,
+        :translations => {
+          :modal_title => translate('trees.labels.outcome_connections'),            
+          :explanation_label => translate('tree_trees.labels.explanation'),
+          :explanation => explanation_translation,
+          :relationship => I18n.translate('trees.labels.relation'),
+          :akin => I18n.translate('trees.labels.relation_types.akin'),
+          :applies => I18n.translate('trees.labels.relation_types.applies'),
+          :depends => I18n.translate('trees.labels.relation_types.depends')
+        },
+        :relation_values => {
+          :applies => TreeTree::APPLIES_KEY,
+          :akin => TreeTree::AKIN_KEY,
+          :depends => TreeTree::DEPENDS_KEY
+        }
+      }}
     end
   end
  
@@ -142,6 +181,10 @@ class TreeTreesController < ApplicationController
       :relationship,
       :explanation
     )
+  end
+
+  def find_tree_tree
+    @tree_tree = TreeTree.find(params[:id])
   end
 
 
