@@ -1,7 +1,7 @@
 class TreeTreesController < ApplicationController
   # Controller for the LO connections
   before_action :authenticate_user!
-  before_action :find_tree_tree, only: [:edit]
+  before_action :find_tree_tree, only: [:edit, :update]
 
   def new
     errors = []
@@ -154,7 +154,7 @@ class TreeTreesController < ApplicationController
            @tree_tree.save!
            @reciprocal_tree_tree.save!
            @explanation_translation.save!
-         rescue ActiveRecord::StatementInvalid
+         rescue ActiveRecord::StatementInvalid => e
            errors << e
          end
       end
@@ -171,6 +171,89 @@ class TreeTreesController < ApplicationController
     end
   end
 
+  def update
+    puts "+++++++++++++STARTED UPDATE"
+    puts "params: #{params}"
+    errors = []
+    notices = []
+    reciprocal_tree_tree_matches = TreeTree.where(
+      :tree_referencee_id => @tree_tree[:tree_referencer_id], 
+      :tree_referencer_id => @tree_tree[:tree_referencee_id])
+    explanation_translation_matches = Translation.where(
+        :locale => @locale_code, 
+        :key => @tree_tree[:explanation_key])
+    explanation_key = @tree_tree[:explanation_key] if @tree_tree[:explanation_key]
+    explanation_key = @treeTypeRec.code + "." + @versionRec.code 
+      + "." + @tree_tree.tree_referencer.subject.code + "." 
+      + @tree_tree.tree_referencer.code + ".tree." 
+      + @tree_tree.tree_referencee.id.to_s if !@tree_tree[:explanation_key]
+
+  ###################################
+  # Set Values to Update in @tree_tree,
+  # @reciprocal_tree_tree, and 
+  # @explanation_translation
+  ###################################
+    
+    @tree_tree[:relationship] = tree_tree_params[:relationship] if tree_tree_params[:relationship]
+
+    #find and edit reciprocal TreeTree, if found, 
+    #or create and edit if not found.
+    #Expect reciprocal TreeTree to exist, and flash a notificaiton if 
+    #it does not.
+    if reciprocal_tree_tree_matches.length > 0
+      @reciprocal_tree_tree = reciprocal_tree_tree_matches.first
+      @reciprocal_tree_tree.relationship = TreeTree.reciprocal_relationship(:"#{tree_tree_params[:relationship]}") if tree_tree_params[:relationship]
+    else
+      @reciprocal_tree_tree = TreeTree.new(
+        :tree_referencer_id => @tree_tree[:tree_referencee_id], 
+        :tree_referencee_id => @tree_tree[:tree_referencer_id],
+        :relationship => TreeTree.reciprocal_relationship(:"#{tree_tree_params[:relationship]}"),
+        :explanation_key => explanation_key
+      )
+      notices >> "Reciprocal connection did not exist. Created one during update."
+    end
+
+    #Find and set explanation translations in the controller,
+    #or create and set a new explanation translation if one is 
+    #not found.
+    #Expect explanation translations not to exist for some 
+    #existing TreeTree connections: 
+    #e.g., if the locale for this update does not match 
+    #the locale in which the TreeTree was originally created.
+    if explanation_translation_matches.length > 0 
+      @explanation_translation = explanation_translation_matches.first
+      @explanation_translation.value = tree_tree_params[:explanation] if tree_tree_params[:explanation]
+    else
+      @explanation_translation = Translation.new(
+          :key => explanation_key,
+          :locale => @locale_code,
+          :value => tree_tree_params[:explanation])
+      notices >> "Explanation translation for this locale did not exist. Created one during update."
+    end
+
+    ActiveRecord::Base.transaction do
+      begin
+        @tree_tree.save!
+        @reciprocal_tree_tree.save!
+        @explanation_translation.save!
+      rescue ActiveRecord::StatementInvalid => e
+        errors << e
+      end
+    end
+    
+    if errors.length > 0
+      flash[:alert] = "Errors prevented the connection from being updated: #{errors.to_s}"
+    else
+      notices << "Updated relationship: \
+      #{@tree_tree.tree_referencer.subject.code}.#{@tree_tree.tree_referencer.code} \
+      #{translate('trees.labels.relation_types.' + tree_tree_params[:relationship]) } \
+      #{@tree_tree.tree_referencee.subject.code}.#{@tree_tree.tree_referencee.code}."
+      flash[:notice] = notices.to_s
+    end
+    respond_to do |format|
+        format.json {render json: { status: 'done'}}
+    end
+  end
 
   private
 

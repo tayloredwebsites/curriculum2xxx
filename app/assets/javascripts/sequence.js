@@ -53,15 +53,44 @@ $(function() {
   }
 });
 
-add_edit_form = function(res) {
+patch_from_tree_tree_form = function (tree_tree_id) {
+  token = $("meta[name='csrf-token']").attr('content');
+  explanation = $('form#tree_tree_add_edit [name="tree_tree[explanation]"]').val();
+  relationship = $('form#tree_tree_add_edit #relationship').children("option:selected").val();
+  $.ajax({
+        "type": 'patch', 
+        "url": '/tree_trees/' + tree_tree_id, 
+        "headers": { 'X-CSRF-Token': token },
+        "data": {
+          "source_controller": "tree_trees",
+          "source_action": "update",
+          "tree_tree[explanation]" : explanation,
+          "tree_tree[relationship]" : relationship
+        },
+        "dataType": "json",
+        "async": false
+      })
+      .then(function () { location.reload() })
+      .catch(function (err) { console.log("ERROR:", err) })
+}
+
+add_edit_form = function (res) {
   edit_mode = res.tree_tree.id != null
+  if (edit_mode) {
+    submit_button = '<button type="button" \
+        onclick="patch_from_tree_tree_form('
+        + res.tree_tree.id
+        +')">SAVE</button>'
+  }
+  else {
+    submit_button = '<button type="submit">SAVE</button>'
+  }
   return '<div class="modal-header"> \
           <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
           </div> \
           <div class="modal-body"> \
-          <form action="/tree_trees" method="'
-          + (edit_mode ? 'PATCH' : 'POST') + '"> \
-          <div> \
+          <form id="tree_tree_add_edit" action="/tree_trees"' + (edit_mode ? '>' : 'method="POST">') 
+          + '<div> \
           <input type="hidden" name="authenticity_token" value="' + $('[name="csrf-token"]').attr('content') + '"> \
           <input type="hidden" name="tree_tree[tree_referencer_id]" value=' + res.tree_tree.tree_referencer_id +'> \
           <input type="hidden" name="tree_tree[tree_referencee_id]" value=' + res.tree_tree.tree_referencee_id + '> \
@@ -90,9 +119,9 @@ add_edit_form = function(res) {
             <textarea type="text" name="tree_tree[explanation]">'
             + (res.translations.explanation != undefined ? res.translations.explanation : '')
             +'</textarea> \
-          </fieldset> \
-          <button type="submit" >SAVE</button>\
-          <button type="button" type="button" data-dismiss="modal" \
+          </fieldset>'
+          + submit_button 
+          + '<button type="button" type="button" data-dismiss="modal" \
           aria-hidden="true">CANCEL</button> \
           </div> \
           </form>' 
@@ -169,48 +198,6 @@ initializeSortAndDrag = function () {
         })
         .then(function (res) { 
           console.log("RESPONSE:", res.tree_tree.id) 
-          html = '';
-          if (res.errors)
-           html = '<div class="modal-header"><h3>ERROR:</h3></div> \
-                  <div class="modal-body">' + res.errors +
-                  '<br><button type="button" type="button" data-dismiss="modal" \
-                  aria-hidden="true">CLOSE</button></div>'
-          else
-            html = '<div class="modal-header"> \
-                  <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
-                  </div> \
-                  <div class="modal-body"> \
-                    <form action="/tree_trees" method="POST"> \
-                    <div> \
-                      <input type="hidden" name="authenticity_token" value="' + $('[name="csrf-token"]').attr('content') + '"> \
-                      <input type="hidden" name="tree_tree[tree_referencer_id]" value=' + res.tree_tree.tree_referencer_id +'> \
-                      <input type="hidden" name="tree_tree[tree_referencee_id]" value=' + res.tree_tree.tree_referencee_id + '> \
-                    </div> \
-                    <fieldset> \
-                    <label for="relationship">' + res.translations.relationship + '</label><br>'
-                    + res.referencer_code + '<br> \
-                    <select id="relationship" name="tree_tree[relationship]"> \
-                    <option value="' + res.relation_values.applies + '">'
-                    + res.translations.applies 
-                    + '</option> \
-                    <option value="' + res.relation_values.depends + '">'
-                    + res.translations.depends 
-                    + '</option> \
-                    <option value="' + res.relation_values.akin + '">'
-                    + res.translations.akin 
-                    + '</option> \
-                    </select> \
-                    <div>' + res.referencee_code + '</div><br> \
-                    </fieldset> \
-                    <fieldset> \
-                      <label for="explanation">' + res.translations.explanation + '<br> \
-                      <textarea type="text" name="tree_tree[explanation]"></textarea> \
-                    </fieldset> \
-                    <button type="submit" >SAVE</button>\
-                    <button type="button" type="button" data-dismiss="modal" \
-                    aria-hidden="true">CANCEL</button> \
-                    </div> \
-                    </form>' 
           $("#modal-container").html(add_edit_form(res))
         })
         .catch(function (err) { console.log("ERROR:", err) })
