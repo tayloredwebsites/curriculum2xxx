@@ -178,6 +178,20 @@ add_edit_form = function (res) {
           </form>' 
 }
 
+edit_tree_tree = function (tree_tree_id) {
+  $("#modal_popup").modal('show');
+        $.ajax({
+          "type": 'get', 
+          "url": '/tree_trees/'+ tree_tree_id + '/edit/',
+          "async": false
+        })
+        .then(function (res) { 
+          console.log("RESPONSE:", res.tree_tree.id) 
+          $("#modal-container").html(add_edit_form(res))
+        })
+        .catch(function (err) { console.log("ERROR:", err) })
+}
+
 initializeSortAndDrag = function () {
    $('.list-group').sortable({
     placeholder: 'drop-placeholder',

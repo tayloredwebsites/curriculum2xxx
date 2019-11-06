@@ -27,12 +27,20 @@
               <div><strong class='hide-unless-condition'><%= translate('trees.labels.outcome_connections') %></strong>
               </div>
                 <% k[:connections].each do |c| %>
-                  <div class="hide-unless-condition"><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
-                  ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code]
-                  %>
-                  <a href="<%= tree_path(c.tree_referencee_id)%>" 
-                    title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
-                  </div>
+                  <% if c.active %>
+                    <div class="hide-unless-condition">
+                      <a class="icon-link lo-handle" onclick="patch_tree_tree_activation(<%= c.id %>, 'false')">
+                        <i class="fa fa-close"></i>
+                      </a>
+                      <a class="icon-link lo-handle" onclick="edit_tree_tree(<%= c.id %>, 'false')">
+                        <i class="fa fa-pencil"></i>
+                      </a>
+                      <strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> 
+                      <% ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code] %>
+                      <a href="<%= tree_path(c.tree_referencee_id)%>" 
+                      title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
               <div class="pull-right">

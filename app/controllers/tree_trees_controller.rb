@@ -175,8 +175,13 @@ class TreeTreesController < ApplicationController
     puts "params: #{params}"
     errors = []
     notices = []
-    if @tree_tree.active != tree_tree_params[:active]
-      notices << (tree_tree_params[:active] == 'true' ? "Activated" : "Deactivated")
+    if @tree_tree.active.to_s != tree_tree_params[:active] 
+      n = (tree_tree_params[:active] == 'true' ? "Activated" : "Deactivated") 
+      n += " " + @tree_tree.tree_referencer.subject.code + "." + 
+      @tree_tree.tree_referencer.code + " to " + 
+      @tree_tree.tree_referencee.subject.code + "." + 
+      @tree_tree.tree_referencee.code + " connection."
+      notices << n
     end  
     #TreeTree records should be created with an explanation_key, but since this 
     #column is not currently reqired, if @tree_tree is lacking an explanation_key for 
@@ -253,7 +258,7 @@ class TreeTreesController < ApplicationController
       notices << "Updated relationship: \
       #{@tree_tree.tree_referencer.subject.code}.#{@tree_tree.tree_referencer.code} \
       #{translate('trees.labels.relation_types.' + tree_tree_params[:relationship]) } \
-      #{@tree_tree.tree_referencee.subject.code}.#{@tree_tree.tree_referencee.code}."
+      #{@tree_tree.tree_referencee.subject.code}.#{@tree_tree.tree_referencee.code}." if tree_tree_params[:relationship]
       flash[:notice] = notices.to_s
     end
     respond_to do |format|
