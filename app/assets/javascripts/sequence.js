@@ -53,27 +53,75 @@ $(function() {
   }
 });
 
+/**
+ * Update an LO connection, and it's reciprocal connection 
+ * in one ajax call (also updates the translation of the 
+ * explanation for the current locale).
+ * @param  {int} tree_tree_id The database ID of the 
+ *                            TreeTree/LO connection 
+ *                            being updated.
+ */
 patch_from_tree_tree_form = function (tree_tree_id) {
-  token = $("meta[name='csrf-token']").attr('content');
   explanation = $('form#tree_tree_add_edit [name="tree_tree[explanation]"]').val();
   relationship = $('form#tree_tree_add_edit #relationship').children("option:selected").val();
-  $.ajax({
-        "type": 'patch', 
-        "url": '/tree_trees/' + tree_tree_id, 
-        "headers": { 'X-CSRF-Token': token },
-        "data": {
+  active = $('form#tree_tree_add_edit [name="tree_tree[active]"]').prop("checked");
+  console.log("ACTIVE", active);
+
+  data = {
           "source_controller": "tree_trees",
           "source_action": "update",
           "tree_tree[explanation]" : explanation,
-          "tree_tree[relationship]" : relationship
-        },
-        "dataType": "json",
-        "async": false
-      })
-      .then(function () { location.reload() })
-      .catch(function (err) { console.log("ERROR:", err) })
+          "tree_tree[relationship]" : relationship,
+          "tree_tree[active]" : active
+        };
+  ajax_update_tree_tree(tree_tree_id, data);
 }
 
+/**
+ * Send a PATCH request to /tree_trees/:id with ajax
+ * to activate or deactivate an LO connection, and 
+ * it's reciprocal (e.g., one request to deactivate 
+ * "bio.9.1.1.1 applies to che.9.1.3.3" 
+ * will also deactivate "che.9.1.3.3 depends on 
+ * bio.9.1.1.1.")
+ * @param  {int} tree_tree_id The database ID of the 
+ *                            TreeTree/LO connection 
+ *                            being updated.
+ * @param  {boolean} active   Should the TreeTree be
+ *                            set to active with this 
+ *                            update?
+ */
+patch_tree_tree_activation = function (tree_tree_id, active) {
+  data = {
+          "source_controller": "tree_trees",
+          "source_action": "update",
+          "tree_tree[active]" : active
+        };  
+  ajax_update_tree_tree(tree_tree_id, data)
+}
+
+ajax_update_tree_tree = function (tree_tree_id, data) {
+  token = $("meta[name='csrf-token']").attr('content');
+  $.ajax({
+      "type": 'patch', 
+      "url": '/tree_trees/' + tree_tree_id, 
+      "headers": { 'X-CSRF-Token': token },
+      "data": data,
+      "dataType": "json",
+      "async": false
+    })
+    .then(function () { location.reload() })
+    .catch(function (err) { console.log("ERROR:", err) })
+}
+
+/**
+ * Build the add-edit form html for TreeTrees/LO connections,
+ * to be embedded in a modal popup. 
+ * @param {object} res Ajax response object with translations 
+ *                     and data on the TreeTree being edited 
+ *                     or created. 
+ * @returns {string} html form for the add-edit popup.
+ */
 add_edit_form = function (res) {
   edit_mode = res.tree_tree.id != null
   if (edit_mode) {
@@ -119,7 +167,10 @@ add_edit_form = function (res) {
             <textarea type="text" name="tree_tree[explanation]">'
             + (res.translations.explanation != undefined ? res.translations.explanation : '')
             +'</textarea> \
-          </fieldset>'
+          </fieldset> \
+          <fieldset><label for="tree_tree[active]">Active?</label>\
+          <input name="tree_tree[active]" type="checkbox"'
+          + (res.tree_tree.active ? ' checked' : '') + '></input></fieldset>'
           + submit_button 
           + '<button type="button" type="button" data-dismiss="modal" \
           aria-hidden="true">CANCEL</button> \

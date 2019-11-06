@@ -1,7 +1,9 @@
 class TreeTreesController < ApplicationController
   # Controller for the LO connections
   before_action :authenticate_user!
-  before_action :find_tree_tree, only: [:edit, :update]
+  before_action :find_tree_tree, only: [:edit, :update, :deactivate]
+  before_action :set_reciprocal_tree_tree, only: [:edit, :update, :deactivate]
+  before_action :set_explanation_translation, only: [:edit, :update]
 
   def new
     errors = []
@@ -71,10 +73,7 @@ class TreeTreesController < ApplicationController
       :key => @referencee.subject[:base_key] + '.name',
       :locale => @locale_code
       ).first.value
-    explanation_translation = Translation.where(
-        :key => @tree_tree[:explanation_key],
-        :locale => @locale_code
-      ).first.value
+    explanation = @explanation_translation.value if @explanation_translation
     respond_to do |format|
         format.json {render json: { 
         :tree_tree => @tree_tree,
@@ -83,7 +82,7 @@ class TreeTreesController < ApplicationController
         :translations => {
           :modal_title => translate('trees.labels.outcome_connections'),            
           :explanation_label => translate('tree_trees.labels.explanation'),
-          :explanation => explanation_translation,
+          :explanation => explanation || '',
           :relationship => I18n.translate('trees.labels.relation'),
           :akin => I18n.translate('trees.labels.relation_types.akin'),
           :applies => I18n.translate('trees.labels.relation_types.applies'),
@@ -176,17 +175,19 @@ class TreeTreesController < ApplicationController
     puts "params: #{params}"
     errors = []
     notices = []
-    reciprocal_tree_tree_matches = TreeTree.where(
-      :tree_referencee_id => @tree_tree[:tree_referencer_id], 
-      :tree_referencer_id => @tree_tree[:tree_referencee_id])
-    explanation_translation_matches = Translation.where(
-        :locale => @locale_code, 
-        :key => @tree_tree[:explanation_key])
-    explanation_key = @tree_tree[:explanation_key] if @tree_tree[:explanation_key]
+    if @tree_tree.active != tree_tree_params[:active]
+      notices << (tree_tree_params[:active] == 'true' ? "Activated" : "Deactivated")
+    end  
+    #TreeTree records should be created with an explanation_key, but since this 
+    #column is not currently reqired, if @tree_tree is lacking an explanation_key for 
+    #some reason, build it:
     explanation_key = @treeTypeRec.code + "." + @versionRec.code 
       + "." + @tree_tree.tree_referencer.subject.code + "." 
       + @tree_tree.tree_referencer.code + ".tree." 
       + @tree_tree.tree_referencee.id.to_s if !@tree_tree[:explanation_key]
+    #Otherwise use the explanation_key saved in @tree_tree.
+    #note: @tree_tree and @reciprocal_tree_tree should share an explanation_key
+    explanation_key = @tree_tree[:explanation_key] if @tree_tree[:explanation_key]
 
   ###################################
   # Set Values to Update in @tree_tree,
@@ -194,14 +195,17 @@ class TreeTreesController < ApplicationController
   # @explanation_translation
   ###################################
     
-    @tree_tree[:relationship] = tree_tree_params[:relationship] if tree_tree_params[:relationship]
+    @tree_tree.relationship = tree_tree_params[:relationship] if tree_tree_params[:relationship]
 
+    #active status must be set to @reciprocal_tree_tree as well, 
+    #once it's existence is ensured
+    @tree_tree.active = tree_tree_params[:active] if (tree_tree_params[:active] != nil) 
+    puts "+++++++++Should update active" if (tree_tree_params[:active] != nil) 
     #find and edit reciprocal TreeTree, if found, 
     #or create and edit if not found.
     #Expect reciprocal TreeTree to exist, and flash a notificaiton if 
     #it does not.
-    if reciprocal_tree_tree_matches.length > 0
-      @reciprocal_tree_tree = reciprocal_tree_tree_matches.first
+    if @reciprocal_tree_tree
       @reciprocal_tree_tree.relationship = TreeTree.reciprocal_relationship(:"#{tree_tree_params[:relationship]}") if tree_tree_params[:relationship]
     else
       @reciprocal_tree_tree = TreeTree.new(
@@ -213,6 +217,9 @@ class TreeTreesController < ApplicationController
       notices >> "Reciprocal connection did not exist. Created one during update."
     end
 
+    #active status (true or false) is set for @tree_tree earlier on in the update process
+    @reciprocal_tree_tree.active = tree_tree_params[:active] if (tree_tree_params[:active] != nil)
+
     #Find and set explanation translations in the controller,
     #or create and set a new explanation translation if one is 
     #not found.
@@ -220,8 +227,7 @@ class TreeTreesController < ApplicationController
     #existing TreeTree connections: 
     #e.g., if the locale for this update does not match 
     #the locale in which the TreeTree was originally created.
-    if explanation_translation_matches.length > 0 
-      @explanation_translation = explanation_translation_matches.first
+    if @explanation_translation
       @explanation_translation.value = tree_tree_params[:explanation] if tree_tree_params[:explanation]
     else
       @explanation_translation = Translation.new(
@@ -253,16 +259,18 @@ class TreeTreesController < ApplicationController
     respond_to do |format|
         format.json {render json: { status: 'done'}}
     end
-  end
+  end #end of UPDATE def
 
   private
 
   def tree_tree_params
-    params.require(:tree_tree).permit(:id,
+    params.require(:tree_tree).permit(
+      :id,
       :tree_referencer_id,
       :tree_referencee_id,
       :relationship,
-      :explanation
+      :explanation,
+      :active
     )
   end
 
@@ -270,6 +278,26 @@ class TreeTreesController < ApplicationController
     @tree_tree = TreeTree.find(params[:id])
   end
 
+  # Sets @reciprocal_tree_tree to a TreeTree or nil
+  def set_reciprocal_tree_tree
+    if @tree_tree
+      @reciprocal_tree_tree = TreeTree.where(
+        :tree_referencer_id => @tree_tree[:tree_referencee_id],
+        :tree_referencee_id => @tree_tree[:tree_referencer_id]).first 
+    else
+      @reciprocal_tree_tree = nil
+    end
+  end
 
+  # Sets @explanation_translation to a string or nil
+  def set_explanation_translation 
+    if @tree_tree
+      @explanation_translation = Translation.where(
+        :locale => @locale_code,
+        :key => @tree_tree[:explanation_key]).first
+    else
+      @explanation_translation = nil
+    end
+  end
 
 end
