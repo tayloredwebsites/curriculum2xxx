@@ -45,6 +45,10 @@
 
   .sequence-page {
 
+    .negative-margin-left {
+      margin-left: -.9em;
+    }
+
     .drop-placeholder {
       background-color: lightgray;
       height: 3.5em;
@@ -116,14 +120,9 @@
       border-bottom: 1px solid black;
       a {
         width: 100%;
-        padding: 0 5px;
       }
       .icon-link {
         color: black;
-        i { 
-
-          margin: 0 5px;  
-        }
       }
       .icon-link:hover {
         color: blue;
