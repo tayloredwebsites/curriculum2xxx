@@ -28,7 +28,7 @@
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
             <% if @indicator_hash[k[:code]].length > 0 %>
               <div class="indicators-container hidden hide-if-collapsed"><strong>
-                <%= translate('app.labels.indicator') %>
+                <%= translate('app.labels.indicators') %>:
               </strong>
               <% @indicator_hash[k[:code]].each do |indicator| %>
               <div>

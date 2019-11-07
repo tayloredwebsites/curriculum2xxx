@@ -31,6 +31,7 @@ c) Real life problems are included.
 10.2. (NUMBERS AND ALGEBRA) Functions
 10.2.1. Concept of Functions and Representation
 Terms and Concepts: function, definition set, value set, image set, function chart, fixed function, function inside, overlay function, one to one function, equal function, unit function, linear function, single function, double function, vertical (vertical) correct test
+10.2.1.1. Concept of Functions and Representation
 a) The concept of function is explained.
 b) Only functions defined on real numbers are considered.
 c) Into function, covering function, one-to-one function, equal function, unit (identity) function, fixed function, linear function, single function, dual function and segmented function is described.
