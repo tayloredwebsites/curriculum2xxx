@@ -44,7 +44,9 @@
   }
 
   .sequence-page {
-
+    .block {
+      display: block;
+    }
     .negative-margin-left {
       margin-left: -.9em;
     }
@@ -151,10 +153,16 @@
       max-width: 72%;
       white-space: nowrap;
     }
-
+    .relationship-color-key {
+      width: 1em;
+      height: 1em;
+      margin: 0 2px;
+      display: inline-block;
+      border: 1px solid black;
+    }
     .spotlight {
-      border-color: blue;
-      outline: 3px solid blue;
+      border-color: black;
+      outline: 3px solid black;
       z-index: 100;
     }
     .spotlight-akin {
