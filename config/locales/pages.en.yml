@@ -81,6 +81,12 @@ en:
     sectors:
       name: "Future Sectors"
       hover: "Displays the Curriculum by Future Sectors"
+    big_ideas:
+      name: "Big Ideas"
+      hover: ""
+    misconceptions:
+      name: "Misconceptions"
+      hover: "Displays Misconceptions"
     documents:
       name: "Documents"
       hover: "Documents Management for Administrators"
