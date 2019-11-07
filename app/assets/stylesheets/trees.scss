@@ -127,11 +127,11 @@
       .icon-link:hover {
         color: blue;
       }
-      .highlight .icon-link {
-        color: brown;
+      .spotlight .connections-icon {
+        color: blue;
       }
-      .highlight .icon-link:hover {
-        color: yellow;
+      .spotlight .connections-icon:hover {
+        color: brown;
       }
       .lo-handle {
         cursor: pointer;
@@ -152,8 +152,28 @@
       white-space: nowrap;
     }
 
-    .highlight {
-      background: lightblue;
+    .spotlight {
+      border-color: blue;
+      outline: 3px solid blue;
+      z-index: 100;
+    }
+    .spotlight-akin {
+      background: #eeeefe;
+    }
+    .spotlight-applies {
+      background: lightyellow;
+    }
+    .spotlight-depends {
+      background: orange;
+      a {
+        color: purple;
+        i {
+          color: black;
+        }
+        i:hover {
+          color: blue;
+        }
+      }
     }
 
     .ui-draggable-helper {

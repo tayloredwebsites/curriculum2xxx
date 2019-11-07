@@ -24,30 +24,32 @@ $(function() {
   /**
    * Expand and highlight related LOs 
    */
-
-  related_LO_display = function (rel) {
-    if ($("#lo_" + rel[rel.length - 1]).hasClass('highlight')) {
+  related_LO_display = function (rel, selected_LO) {
+    if ($("#lo_" + selected_LO).hasClass('spotlight')) {
 	  	$('.sequence-item--collapsable')
-	  	  .removeClass('collapsed highlight show-connections-condition');
+	  	  .removeClass('collapsed spotlight spotlight-depends spotlight-akin spotlight-applies show-connections-condition');
 	  	for (var r in rel) {
-	  		$('li[data-lo-id='+rel[r]+']')
+	  		$('li[data-lo-id='+rel[r][1]+']')
 	  		 .find('.connections-icon')
-	  		 .attr('title', 'highlight related LOs');
+	  		 .attr('title', 'show related LOs');
 	  	}
     }
     else {
       $('.sequence-item--collapsable')
   	  .addClass('collapsed')
-  	  .removeClass('highlight show-connections-condition');
+  	  .removeClass('spotlight spotlight-depends spotlight-akin spotlight-applies show-connections-condition');
 	  	for (var r in rel) {
-	  	  console.log('highlight ', rel[r])
-	  	  $("#lo_" + rel[r])
+	  	  console.log('spotlight ', rel[r][1])
+	  	  $("#lo_" + rel[r][1])
 	  		.removeClass('collapsed')
-	  		.addClass('highlight show-connections-condition');
-	       $("#lo_" + rel[r])
-	  		 .find('.connections-icon')
-	  		 .attr('title', 'exit highlight mode');
+	  		.addClass('spotlight-' + rel[r][0] + ' show-connections-condition');
 	  	}
+      $("#lo_" + selected_LO)
+        .removeClass('collapsed')
+        .addClass('spotlight show-connections-condition');
+      $("#lo_" + selected_LO)
+         .find('.connections-icon')
+         .attr('title', 'exit related LOs mode');
     }
  
   }

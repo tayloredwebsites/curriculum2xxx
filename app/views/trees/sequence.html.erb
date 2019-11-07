@@ -4,6 +4,10 @@
 <br>
 <div class='text-center sequence-page'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
+  <div> 
+    <button id="show-indicators" class="btn-info" onclick="showIndicators(true);">Show Indicators</button>
+    <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Show Indicators</button>
+  </div> 
   <% @s_o_hash.keys.each do |i| %>
     <div class='subj-checkbox'>
       <label for="check-<%= i %>">      
@@ -46,7 +50,7 @@
                 <% end %>
               </div>
               <div class="pull-right">
-               <a class="icon-link hide-if-collapsed lo-handle" onclick="related_LO_display(<%= k[:connections].pluck(:tree_referencee_id) << k[:id] %> );"><i class="fa fa-plug connections-icon pull-right" title="highlight connected LOs"></i></a>
+               <a class="icon-link hide-if-collapsed lo-handle" onclick="related_LO_display(<%= k[:connections].map { | lo | [ lo[:relationship], lo[:tree_referencee_id]] } %>, <%= k[:id] %> );"><i class="fa fa-plug connections-icon pull-right" title="highlight connected LOs"></i></a>
             <% else %>
             <div class="pull-right">
             <% end %>
