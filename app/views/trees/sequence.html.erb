@@ -6,7 +6,7 @@
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
   <div> 
     <button id="show-indicators" class="btn-info" onclick="showIndicators(true);">Show Indicators</button>
-    <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Show Indicators</button>
+    <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Hide Indicators</button>
   </div> 
   <% @s_o_hash.keys.each do |i| %>
     <div class='subj-checkbox'>
@@ -26,6 +26,18 @@
         <% j.each do |k| %>
           <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item" data-lo-id="<%= k[:id] %>"> 
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
+            <% if @indicator_hash[k[:code]].length > 0 %>
+              <div class="indicators-container hidden hide-if-collapsed"><strong>
+                <%= translate('app.labels.indicator') %>
+              </strong>
+              <% @indicator_hash[k[:code]].each do |indicator| %>
+              <div>
+                <strong><%= indicator[:label] %></strong>
+                <%= indicator[:text] %>
+              </div>
+              <% end %>
+              </div>
+            <% end %>
             <% if k[:connections].length > 0 %>
               <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
               <div><strong class='hide-unless-condition'><%= translate('trees.labels.outcome_connections') %></strong>

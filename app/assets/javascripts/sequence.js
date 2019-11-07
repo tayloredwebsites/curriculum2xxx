@@ -53,6 +53,20 @@ $(function() {
     }
  
   }
+
+  showIndicators = function (show) {
+    if (show) {
+      $(".indicators-container").removeClass("hidden")
+      $("#show-indicators").attr("hidden", true)
+      $("#hide-indicators").attr("hidden", false)
+    }
+    else {
+      $(".indicators-container").addClass("hidden")
+      $("#show-indicators").attr("hidden", false)
+      $("#hide-indicators").attr("hidden", true)
+    }
+  }
+
 });
 
 /**
