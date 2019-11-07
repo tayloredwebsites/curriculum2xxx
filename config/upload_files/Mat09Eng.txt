@@ -84,6 +84,7 @@ ç) In deep-rooted expressions, transactions with nested roots leading to infin
 9.3.5. Applications of Equations and Inequalities
 Terms and Concepts: ratio, proportion, direct proportion, inverse proportion, percentage
 Symbols and representations: %, a/b, a:b, a/b = c/d, a:b = c:d
+9.3.5.1 Applications of Equations and Inequalities
 a) Ratio, proportionality, direct proportion, inverse proportional concepts and the properties of proportion and proportion are reminded.
 b) Golden ratio is introduced and real life examples are given but calculation methods are not included.
 9.3.5.2. Solves problems related to equations and inequalities.
@@ -165,6 +166,7 @@ d) With the help of information and communication technologies, it is observed h
 9.5. (DATA, COUNTING AND PROBABILITY) Data
 9.5.1. Measures of Central Tendency and Propagation
 Terms and Concepts: data, discrete data, continuous data, arithmetic mean, median (median), peak value (mode), aperture, maximum value, minimum value, standard deviation
+9.5.1.1. Measures of Central Tendency and Propagation
 a) Data concept, discrete and continuous data types are given.
 b) Arithmetic mean, median, peak value, maximum value, minimum value and openness are given.
 c) The lower quarter, upper quarters and quarters are not included.

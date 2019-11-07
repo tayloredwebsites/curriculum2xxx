@@ -69,6 +69,7 @@ b) The historical development of the limit and the contributions of Salih Zeki t
 c) Continuity applications are made with the help of information and communication technologies.
 12.5.2. Instantaneous Change Rate and Derivative
 Terms and Concepts: instantaneous change rate, slope of the tangent, derivative, derivative from right, derivative from left
+12.5.2.1 Instantaneous Change Rate and Derivative
 a) The instantaneous change rate is explained by using physics and geometry models.
 b) The relation between the derivative value of a given function at a point and the inclination of the tangent at that point is emphasized.
 c) The relationship between the left-hand derivative and the right-hand derivative of a function at a point and the derivative.
