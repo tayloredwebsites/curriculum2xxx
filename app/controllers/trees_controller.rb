@@ -265,7 +265,7 @@ class TreesController < ApplicationController
     newHash = {}
 
     @relations = Hash.new { |h, k| h[k] = [] }
-    relations = TreeTree.all
+    relations = TreeTree.active
     relations.each do |rel|
       @relations[rel.tree_referencer_id] << rel
     end
