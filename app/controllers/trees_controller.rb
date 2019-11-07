@@ -240,6 +240,7 @@ class TreesController < ApplicationController
     index_prep
 
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
+    @indicator_hash = Hash.new { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
     subjects = Subject.all
@@ -265,7 +266,7 @@ class TreesController < ApplicationController
     newHash = {}
 
     @relations = Hash.new { |h, k| h[k] = [] }
-    relations = TreeTree.all
+    relations = TreeTree.active
     relations.each do |rel|
       @relations[rel.tree_referencer_id] << rel
     end
@@ -319,11 +320,12 @@ class TreesController < ApplicationController
       #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
       when 4
+        tcode = tree.subject.code + tree.code.split('.').join('')
         newHash = {
+          code: tcode,
           text: "#{tree.code}: #{translation}", 
           id: "#{tree.id}",
-          connections: @relations[tree.id], 
-          nodes: {}
+          connections: @relations[tree.id]
         }
         # if treeHash[tree.codeArrayAt(0)].blank?
         #   raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -335,13 +337,17 @@ class TreesController < ApplicationController
         @s_o_hash[tree.subject.code] << newHash
         #addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
 
-      # when 5
+      when 5
       #   # # to do - look into refactoring this
       #   # # check to make sure parent in hash exists.
       #   # Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
       #   # Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
       #   # Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
-      #   newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {label: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}:", text: "#{translation}", id: "#{tree.id}"}
+        parent_code = tree.code.split('.')
+        parent_code.pop()
+        parent_code = parent_code.join('')
+        @indicator_hash["#{tree.subject.code}#{parent_code}"] << newHash
       #   # Rails.logger.debug("indicator newhash: #{newHash.inspect}")
       #   if treeHash[tree.codeArrayAt(0)].blank?
       #     raise I18n.t('trees.errors.missing_grade_in_tree')

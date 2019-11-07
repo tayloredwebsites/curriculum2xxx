@@ -6,12 +6,14 @@ class TreeTree < BaseRec
   APPLIES_KEY = 'applies'
   DEPENDS_KEY = 'depends'
 
-  def reciprocal_relationship(relation)
+  scope :active, -> { where(:active => true) }
+
+  def self.reciprocal_relationship(relation)
   	lookup = {
-      :akin => 'akin',
-      :applies => 'depends',
-      :depends => 'applies'
+      :"#{AKIN_KEY}" => AKIN_KEY,
+      :"#{APPLIES_KEY}" => DEPENDS_KEY,
+      :"#{DEPENDS_KEY}" => APPLIES_KEY
     }
-    lookup[relation]
+    lookup[relation] || lookup[:"#{relation}"]
   end
 end

@@ -4,6 +4,10 @@
 <br>
 <div class='text-center sequence-page'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
+  <div> 
+    <button id="show-indicators" class="btn-info" onclick="showIndicators(true);">Show Indicators</button>
+    <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Hide Indicators</button>
+  </div> 
   <% @s_o_hash.keys.each do |i| %>
     <div class='subj-checkbox'>
       <label for="check-<%= i %>">      
@@ -22,21 +26,44 @@
         <% j.each do |k| %>
           <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item" data-lo-id="<%= k[:id] %>"> 
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
+            <% if @indicator_hash[k[:code]].length > 0 %>
+              <div class="indicators-container hidden hide-if-collapsed"><strong>
+                <%= translate('app.labels.indicator') %>
+              </strong>
+              <% @indicator_hash[k[:code]].each do |indicator| %>
+              <div>
+                <strong><%= indicator[:label] %></strong>
+                <%= indicator[:text] %>
+              </div>
+              <% end %>
+              </div>
+            <% end %>
             <% if k[:connections].length > 0 %>
               <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
               <div><strong class='hide-unless-condition'><%= translate('trees.labels.outcome_connections') %></strong>
               </div>
                 <% k[:connections].each do |c| %>
-                  <div class="hide-unless-condition"><strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> <% 
-                  ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code]
-                  %>
-                  <a href="<%= tree_path(c.tree_referencee_id)%>" 
-                    title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
-                  </div>
+                  <% if c.active %>
+                    <div class="hide-unless-condition block">
+                      <% if current_user.present? && current_user.is_admin? %>
+                      <a class="icon-link lo-handle negative-margin-left" title="<%= translate('app.labels.deactivate') %>" onclick="patch_tree_tree_activation(<%= c.id %>, 'false')">
+                        <i class="fa fa-close"></i>
+                      </a>
+                      <a class="icon-link lo-handle" title="<%= translate('app.labels.edit') %>" onclick="edit_tree_tree(<%= c.id %>, 'false')">
+                        <i class="fa fa-pencil"></i>
+                      </a>
+                      <% end %>
+                      <div class="relationship-color-key spotlight-<%= c.relationship %>"></div>
+                      <strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> 
+                      <% ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code] %>
+                      <a href="<%= tree_path(c.tree_referencee_id)%>" 
+                      title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
               <div class="pull-right">
-               <a class="icon-link hide-if-collapsed lo-handle" onclick="related_LO_display(<%= k[:connections].pluck(:tree_referencee_id) << k[:id] %> );"><i class="fa fa-plug connections-icon pull-right" title="highlight connected LOs"></i></a>
+               <a class="icon-link hide-if-collapsed lo-handle" onclick="related_LO_display(<%= k[:connections].map { | lo | [ lo[:relationship], lo[:tree_referencee_id]] } %>, <%= k[:id] %> );"><i class="fa fa-plug connections-icon pull-right" title="highlight connected LOs"></i></a>
             <% else %>
             <div class="pull-right">
             <% end %>

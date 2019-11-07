@@ -44,6 +44,12 @@
   }
 
   .sequence-page {
+    .block {
+      display: block;
+    }
+    .negative-margin-left {
+      margin-left: -.9em;
+    }
 
     .drop-placeholder {
       background-color: lightgray;
@@ -116,23 +122,18 @@
       border-bottom: 1px solid black;
       a {
         width: 100%;
-        padding: 0 5px;
       }
       .icon-link {
         color: black;
-        i { 
-
-          margin: 0 5px;  
-        }
       }
       .icon-link:hover {
         color: blue;
       }
-      .highlight .icon-link {
-        color: brown;
+      .spotlight .connections-icon {
+        color: blue;
       }
-      .highlight .icon-link:hover {
-        color: yellow;
+      .spotlight .connections-icon:hover {
+        color: brown;
       }
       .lo-handle {
         cursor: pointer;
@@ -152,9 +153,35 @@
       max-width: 72%;
       white-space: nowrap;
     }
-
-    .highlight {
-      background: lightblue;
+    .relationship-color-key {
+      width: 1em;
+      height: 1em;
+      margin: 0 2px;
+      display: inline-block;
+      border: 1px solid black;
+    }
+    .spotlight {
+      border-color: black;
+      outline: 3px solid black;
+      z-index: 100;
+    }
+    .spotlight-akin {
+      background: #eeeefe;
+    }
+    .spotlight-applies {
+      background: lightyellow;
+    }
+    .spotlight-depends {
+      background: orange;
+      a {
+        color: darkblue;
+        i {
+          color: black;
+        }
+        i:hover {
+          color: blue;
+        }
+      }
     }
 
     .ui-draggable-helper {

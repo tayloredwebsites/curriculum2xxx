@@ -48,7 +48,7 @@
       </li>
     <%
     end
-    if controller.controller_name == 'trees' %>
+    if controller.controller_name == 'trees' && action_name != 'sequence' %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
       </li>
@@ -67,8 +67,30 @@
         <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= translate('nav_bar.sectors.name') %></a>
       </li>
     <%
+    end    
+    if action_name == 'big_ideas' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href="#">
+          <%= translate('nav_bar.big_ideas.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.big_ideas.name') %></a>
+      </li>
+    <%
     end
-    if controller.controller_name == 'trees' %>
+    if action_name == 'misconceptions' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href="#">
+          <%= translate('nav_bar.misconceptions.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.misconceptions.name') %></a>
+      </li>
+    <%
+    end
+    if controller.controller_name == 'trees' && action_name == 'sequence' %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
       </li>

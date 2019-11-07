@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191030192923) do
+ActiveRecord::Schema.define(version: 20191105160129) do
 
   create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sort_order", default: 0
+    t.boolean "active", default: true
     t.index ["tree_type_id"], name: "index_grade_bands_on_tree_type_id"
   end
 
@@ -34,6 +35,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.string "explanation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true
     t.index ["sector_id"], name: "index_sector_trees_on_sector_id"
     t.index ["tree_id"], name: "index_sector_trees_on_tree_id"
   end
@@ -44,6 +46,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "base_key"
+    t.boolean "active", default: true
     t.index ["code"], name: "index_sectors_on_code"
   end
 
@@ -53,6 +56,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "base_key"
+    t.boolean "active", default: true
     t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
   end
 
@@ -75,6 +79,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.string "explanation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true
     t.index ["tree_referencee_id"], name: "index_tree_trees_on_tree_referencee_id"
     t.index ["tree_referencer_id"], name: "index_tree_trees_on_tree_referencer_id"
   end
@@ -83,6 +88,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true
   end
 
   create_table "trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -99,6 +105,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.integer "depth", default: 0
     t.integer "sort_order", default: 0
     t.integer "sequence_order", default: 0
+    t.boolean "active", default: true
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["name_key"], name: "index_trees_on_name_key"
     t.index ["subject_id"], name: "index_trees_on_subject_id"
@@ -167,6 +174,7 @@ ActiveRecord::Schema.define(version: 20191030192923) do
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true
   end
 
 end

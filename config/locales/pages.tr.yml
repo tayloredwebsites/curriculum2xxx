@@ -8,6 +8,7 @@ tr:
       cancel: "Cancel"
       submit: "Submit"
       edit: "Edit"
+      deactivate: "devre dışı bırakmak"
       create: "Create"
       subject: "Konusu"
       grade_band: "seviyesi"
@@ -37,6 +38,12 @@ tr:
     sectors:
       name: "Gelecek Sektörler"
       hover: "Gelecekteki Sektörlere Göre Müfredatı görüntüler"
+    big_ideas:
+      name: "Büyük Fikirler"
+      hover: ""
+    misconceptions:
+      name: "Yanılgılar"
+      hover: ""
     documents:
       name: "Belge"
       hover: "Yöneticiler İçin Belge Yönetimi"
