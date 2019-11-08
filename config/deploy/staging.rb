@@ -1,7 +1,7 @@
 set :stage, :staging
-server 'curriculum.parloproject.org', user: 'deploy', roles: %w{web app db}
+server 'turkeycurriculum.parloproject.org', user: 'deploy', roles: %w{web app db}
 set :rvm_ruby_version, '2.3.3p222'
-set :deploy_to, '/web/parlo-tracker/curriculum'
+set :deploy_to, '/web/turkeycurriculum'
 set :rails_env, 'staging'
 # set :bundle_dir, "/usr/local/rvm/gems/ruby-1.9.3-p550"
 # set :bundle_dir, "~/.rvm/bin/gems/ruby-1.9.3-p550"
