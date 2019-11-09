@@ -71,6 +71,10 @@ tr:
       title: "Türkiye STEM Müfredatı"
     sequencing:
       title: "Dizileme"
+    misconc:
+      title: "Yanlış"
+    bigidea:
+      title: "Büyük Fikirler"
     show:
       name: "Müfredat Ayrıntı Sayfası"
     labels:

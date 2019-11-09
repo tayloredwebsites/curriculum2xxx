@@ -10,7 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191105160129) do
+ActiveRecord::Schema.define(version: 20191108181256) do
+
+  create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "dimension_id", null: false
+    t.bigint "tree_id", null: false
+    t.string "dim_explanation_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dimension_id"], name: "index_dimension_trees_on_dimension_id"
+    t.index ["tree_id"], name: "index_dimension_trees_on_tree_id"
+  end
+
+  create_table "dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "subject_id"
+    t.string "dim_type"
+    t.string "dim_code"
+    t.string "dim_name_key"
+    t.string "dim_desc_key"
+    t.integer "dim_order", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dim_code"], name: "index_dimensions_on_dim_code"
+    t.index ["dim_type", "dim_code"], name: "index_dimensions_on_dim_type_and_dim_code"
+    t.index ["subject_id"], name: "index_dimensions_on_subject_id"
+  end
 
   create_table "grade_bands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tree_type_id", null: false
@@ -69,7 +93,8 @@ ActiveRecord::Schema.define(version: 20191105160129) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_translations_on_key"
-    t.index ["value"], name: "index_translations_on_value", length: { value: 255 }
+    t.index ["locale", "key"], name: "index_translations_on_keys"
+    t.index ["value"], name: "index_translations_on_value", length: { value: 256 }
   end
 
   create_table "tree_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -4,13 +4,13 @@
 <br>
 <div class='text-center sequence-page'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
-  <div> 
+  <div>
     <button id="show-indicators" class="btn-info" onclick="showIndicators(true);">Show Indicators</button>
     <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Hide Indicators</button>
-  </div> 
+  </div>
   <% @s_o_hash.keys.each do |i| %>
     <div class='subj-checkbox'>
-      <label for="check-<%= i %>">      
+      <label for="check-<%= i %>">
         <%= @translations["subject.#{i}.name"] %>
       </label>
       <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
@@ -24,7 +24,7 @@
       <ul class="list-group">
         <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
         <% j.each do |k| %>
-          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item" data-lo-id="<%= k[:id] %>"> 
+          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item" data-lo-id="<%= k[:id] %>">
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
             <% if @indicator_hash[k[:code]].length > 0 %>
               <div class="indicators-container hidden hide-if-collapsed"><strong>
@@ -54,9 +54,9 @@
                       </a>
                       <% end %>
                       <div class="relationship-color-key spotlight-<%= c.relationship %>"></div>
-                      <strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong> 
+                      <strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong>
                       <% ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code] %>
-                      <a href="<%= tree_path(c.tree_referencee_id)%>" 
+                      <a href="<%= tree_path(c.tree_referencee_id)%>"
                       title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
                     </div>
                   <% end %>
@@ -80,7 +80,7 @@
   </div>
 </div>
 <div class="hidden">
-  
+
 </div>
 
 

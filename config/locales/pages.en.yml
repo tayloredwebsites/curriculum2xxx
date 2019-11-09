@@ -138,6 +138,10 @@ en:
       title: "Turkey STEM Curriculum"
     sequencing:
       title: "Sequencing"
+    miscon:
+      title: "Misconceptions"
+    bigidea:
+      title: "Big Ideas"
     show:
       name: "Curriculum Detail Page"
     labels:
