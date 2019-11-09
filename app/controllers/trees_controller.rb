@@ -2,7 +2,7 @@ class TreesController < ApplicationController
 
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
   before_action :authenticate_user!, only: [:reorder]
-  
+
   def index
     index_listing
   end
@@ -323,7 +323,7 @@ class TreesController < ApplicationController
         tcode = tree.subject.code + tree.code.split('.').join('')
         newHash = {
           code: tcode,
-          text: "#{tree.code}: #{translation}", 
+          text: "#{tree.code}: #{translation}",
           id: "#{tree.id}",
           connections: @relations[tree.id]
         }
@@ -366,38 +366,74 @@ class TreesController < ApplicationController
         # raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
       end
     end
-    # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
-    # puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
-    otcArrHash = []
-    treeHash.each do |key1, area|
-      a2 = {text: area[:text], href: "javascript:void(0);"}
-      if area[:nodes]
-        area[:nodes].each do |key2, comp|
-          a3 = {text: comp[:text], href: "javascript:void(0);"}
-          comp[:nodes].each do |key3, outc|
-            a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
-            outc[:nodes].each do |key4, indic|
-              a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
-              a4[:nodes] = [] if a4[:nodes].blank?
-              a4[:nodes] << a5
-            end
-            a3[:nodes] = [] if a3[:nodes].blank?
-            a3[:nodes] << a4
-          end
-          a2[:nodes] = [] if a2[:nodes].blank?
-          a2[:nodes] << a3
-        end
-      end
-      # done with area, append it to otcArrHash
-      otcArrHash << a2
-    end
-    # puts ("+++ otcArrHash: #{JSON.pretty_generate(otcArrHash)}")
-
-    # convert array of areas into json to put into bootstrap treeview
-    @otcJson = otcArrHash.to_json
 
     respond_to do |format|
       format.html { render 'sequence'}
+    end
+  end
+
+  def dimensions
+    # index_prep
+
+    # array of all translation keys, to be used to load up @translations instance variable with the tranlation values
+    transl_keys = []
+
+    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
+    @indicator_hash = Hash.new { |h, k| h[k] = [] }
+    @subjects = {}
+    subjIds = {}
+    subjects = Subject.all
+    subjects.each do |s|
+      @subjects[s.code] = s
+      subjIds[s.id.to_s] = s
+      @s_o_hash[s.code] = []
+      transl_keys << s.base_key+'.name'
+    end
+
+    Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
+    Rails.logger.debug("*** subjIds: #{subjIds.inspect}")
+
+    @dim_type = (Dimension::VAL_DIM_TYPES.include?(params['dim_type'])) ? params['dim_type'] : ''
+
+    if @dim_type.present?
+      dimRecs = Dimension.where(
+        dim_type: @dim_type
+      )
+      Rails.logger.debug("*** dimRecs: #{dimRecs.inspect}")
+
+      @page_title = I18n.translate(Dimension::DIM_TYPE_KEYS[@dim_type])
+
+      dimRecs.each do |r|
+        subj_code = subjIds[r.subject_id.to_s].code
+        newHash = {
+          id: r.id,
+          subject_id: r.subject_id,
+          code: r.dim_code,
+          dim_name_key: r.dim_name_key,
+          dim_desc_key: r.dim_desc_key
+        }
+        transl_keys << r.dim_name_key
+        transl_keys << r.dim_desc_key
+        Rails.logger.debug("*** newHash: #{newHash.inspect}")
+        @s_o_hash[subj_code] << newHash
+      end
+      Rails.logger.debug("*** @s_o_hash: #{@s_o_hash.inspect}")
+
+      @translations = Hash.new
+      translations = Translation.where(locale: @locale_code, key: transl_keys)
+      translations.each do |t|
+        # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
+        @translations[t.key] = t.value
+      end
+      Rails.logger.debug("*** @translations: #{@translations.inspect}")
+
+      respond_to do |format|
+        format.html { render 'dimensions'}
+      end
+    else
+      respond_to do |format|
+        format.html
+      end
     end
   end
 

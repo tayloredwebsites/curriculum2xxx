@@ -1,0 +1,34 @@
+<% content_for(:title_code, 'trees.index.name') %>
+<% content_for(:page_class, 'trees') %>
+
+<br>
+<div class='text-center dimension-page'>
+  <h2 id="dimension-header"><%= @page_title %></h2>
+  <% @s_o_hash.keys.each do |i| %>
+    <div class='subj-checkbox'>
+      <label for="check-<%= i %>">
+        <%= @translations["subject.#{i}.name"] %>
+      </label>
+      <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+    </div>
+  <% end %>
+</div>
+<div id="trees" class="dimension-page">
+  <div class="dimension-grid cols-<%= @s_o_hash.keys.count %>">
+	<% @s_o_hash.each do |i, j| %>
+    <div id="<%=i%>-column" class="dimension-item subject-column">
+      <ul class="list-group">
+        <li class="dimension-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
+        <% j.each do |k| %>
+          <li id="lo_<%= k[:id] %>" class="dimension-item list-group-item" data-lo-id="<%= k[:id] %>">
+            <span><%= @translations[k[:dim_name_key]] %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+
+
