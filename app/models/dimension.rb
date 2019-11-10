@@ -8,8 +8,8 @@ class Dimension < BaseRec
 
   validate :valid_dim_type
 
-  has_many :dimension_trees
-  has_many :trees, through: :dimension_trees
+  has_many :dim_trees
+  has_many :trees, through: :dim_trees
 
   private
 

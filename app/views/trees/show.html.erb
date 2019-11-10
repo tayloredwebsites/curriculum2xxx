@@ -53,6 +53,56 @@
         <% end %>
       </div>
 
+      <!-- Related Big Ideas Table -->
+      <div class='related-items-table'>
+        <div class='row center-label-bold top-label'>
+          <div class='col col-lg-12'>
+            <%= I18n.t('trees.bigidea.title') %>
+          </div>
+        </div>
+        <% tree.dim_trees.each do |dt|
+          d = dt.dimension
+          if d.dim_type == Dimension::BIG_IDEA
+        %>
+          <div class='row'>
+            <div class='col col-lg-6 rel-sectors'>
+              <%= @translations[d.dim_name_key] %>
+            </div>
+            <div class='col col-lg-6 ind-col last-col'>
+              <%= @translations[dt.dim_explanation_key] %>
+            </div>
+          </div>
+        <%
+          end
+        end
+        %>
+      </div>
+
+      <!-- Related Misconceptions Table -->
+      <div class='related-items-table'>
+        <div class='row center-label-bold top-label'>
+          <div class='col col-lg-12'>
+            <%= I18n.t('trees.miscon.title') %>
+          </div>
+        </div>
+        <% tree.dim_trees.each do |dt|
+          d = dt.dimension
+          if d.dim_type == Dimension::MISCONCEPTION
+        %>
+          <div class='row'>
+            <div class='col col-lg-6 rel-sectors'>
+              <%= @translations[d.dim_name_key] %>
+            </div>
+            <div class='col col-lg-6 ind-col last-col'>
+              <%= @translations[dt.dim_explanation_key] %>
+            </div>
+          </div>
+        <%
+          end
+        end
+        %>
+      </div>
+
       <!-- Future Sectors Table -->
       <div class='related-items-table'>
         <div class='row center-label-bold top-label'>

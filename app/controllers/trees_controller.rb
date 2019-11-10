@@ -446,7 +446,8 @@ class TreesController < ApplicationController
       # get the Tree Item for this Learning Outcome
       # only detail page currently is at LO level
       # Indicators are listed in the LO Detail page
-      @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
+      # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
+      @trees = [@tree]
       process_tree = true
     else
       # not a detail page, go back to index page
@@ -479,34 +480,29 @@ class TreesController < ApplicationController
         @tree.getAllChildren.each do |c|
           treeKeys << c.name_key
         end
+
       end
       Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
       @trees.each do |t|
-        Rails.logger.debug("*** tree: #{t.base_key}")
-        # get translation key for this indicator
+        # get translation key for this item
         treeKeys << t.name_key
-        Rails.logger.debug("*** add tree name_key: #{t.name_key}")
-        # get translation key for each sector for this indicator
+        # get translation key for each sector, big idea and misconception for this item
         if treeKeys
           t.sector_trees.each do |st|
-            Rails.logger.debug("*** add sector name_key: #{st.sector.name_key}")
             treeKeys << st.sector.name_key
-            Rails.logger.debug("*** add sector explanation_key: #{st.explanation_key}")
             treeKeys << st.explanation_key
           end
+          t.dim_trees.each do |dt|
+            treeKeys << dt.dimension.dim_name_key
+            treeKeys << dt.dim_explanation_key
+          end
         end
-        # get translation key for each related indicators for this indicator
-        Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
+        # get translation key for each related item for this item
         t.tree_referencers.each do |r|
-          Rails.logger.debug("*** related: #{r.inspect}")
-          Rails.logger.debug("*** related tree: #{r.tree_referencee.inspect}")
           rTree = r.tree_referencee
           treeKeys << rTree.name_key
-          Rails.logger.debug("*** add related name_key: #{rTree.name_key}")
           treeKeys << r.explanation_key
-          Rails.logger.debug("*** add related explanation_key: #{r.explanation_key}")
           subCode = @subjById[rTree.subject_id]
-          Rails.logger.debug("*** before: @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
           @relatedBySubj[subCode] << {
             code: rTree.code,
             relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
@@ -514,23 +510,11 @@ class TreesController < ApplicationController
             explanation: r.explanation_key,
             tid: (rTree.depth < 2) ? 0 : rTree.id
           } if !@relatedBySubj[subCode].include?(rTree.code)
-          Rails.logger.debug("*** after: @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
         end
-        # get the translation key for the indicators in the group of matched
-        JSON.load(t.matching_codes).each do |j|
-          Rails.logger.debug("*** add indicator name_key: #{j.name_key}")
-          treeKeys << "#{t.buildRootKey}.#{j}.name"
-        end
-        Rails.logger.debug("*** add explain name_key: #{t.base_key}.explain")
         treeKeys << "#{t.base_key}.explain"
         @tree_items_to_display << t
       end
-      Rails.logger.debug("&&& @tree_items_to_display: #{@tree_items_to_display.inspect}")
-      Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
       @translations = Translation.translationsByKeys(@locale_code, treeKeys)
-      @translations.each do |k, v|
-        Rails.logger.debug("*** @translation1: #{k.inspect}: #{v.inspect}")
-      end
     end
   end
 

@@ -14,129 +14,174 @@ namespace :dummy_data do
     sector6 = Sector.where(name_key: "sector.6.name").first
     sector8 = Sector.where(name_key: "sector.8.name").first
 
-    puts "sector 3 relation"
-    SectorTree.create!(
-      sector_id: sector3.id,
+    # puts "sector 3 relation"
+    # SectorTree.create!(
+    #   sector_id: sector3.id,
+    #   tree_id: bio9111.id,
+    #   explanation_key: "TFV.v01.bio.9.1.1.1.sector.3.expl"
+    # )
+    # Translation.create!(
+    #   locale:'en',
+    #   key: "TFV.v01.bio.9.1.1.1.sector.3.expl",
+    #   value: "Ne dolor utroque admodum eum."
+    # )
+
+    # puts "sector 4 relation"
+    # SectorTree.create!(
+    #   sector_id: sector4.id,
+    #   tree_id: bio9111.id,
+    #   explanation_key: "TFV.v01.bio.9.1.1.1.sector.4.expl"
+    # )
+    # # if errors.count > 0
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "TFV.v01.bio.9.1.1.1.sector.4.expl",
+    #   value: "Lorem ipsum dolor sit amet, ipsum inermis eam id, vim nonumy adolescens eu."
+    # )
+
+    # puts "sector 6 relation"
+    # SectorTree.create!(
+    #   sector_id: sector6.id,
+    #   tree_id: bio9111.id,
+    #   explanation_key: "TFV.v01.bio.9.1.1.1.sector.6.expl"
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "TFV.v01.bio.9.1.1.1.sector.6.expl",
+    #   value: "Modus sonet equidem ne has, usu at habeo cetero tritani, nec id dolor putent admodum."
+    # )
+
+    # puts "sector 8 relation"
+    # SectorTree.create!(
+    #   sector_id: sector8.id,
+    #   tree_id: bio9111.id,
+    #   explanation_key: "TFV.v01.bio.9.1.1.1.sector.8.expl"
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "TFV.v01.bio.9.1.1.1.sector.8.expl",
+    #   value: "Pri ut ferri labore eleifend, dicit detracto vix an."
+    # )
+
+    # puts "misconception 1"
+    # Dimension.create!(
+    #   subject_id: phy.id,
+    #   dim_type: Dimension::MISCONCEPTION,
+    #   dim_name_key: 'dim_miscon_fall_faster',
+    #   dim_desc_key: 'dim_miscon_fall_faster_desc'
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_miscon_fall_faster",
+    #   value: "A heavier ball will fall faster than a lighter one."
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_miscon_fall_faster_desc",
+    #   value: "A heavier ball will fall faster than a lighter one."
+    # )
+
+    # puts "misconception 2"
+    # Dimension.create!(
+    #   subject_id: phy.id,
+    #   dim_type: Dimension::MISCONCEPTION,
+    #   dim_name_key: 'dim_miscon_warm_summer',
+    #   dim_desc_key: 'dim_miscon_warm_summer_desc'
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_miscon_warm_summer",
+    #   value: "Summer is warmer because the Earth is closer to the Sun at that time."
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_miscon_warm_summer_desc",
+    #   value: "Summer is warmer because the Earth is closer to the Sun at that time."
+    # )
+
+    # puts "Big Idea 1"
+    # Dimension.create!(
+    #   subject_id: bio.id,
+    #   dim_type: Dimension::BIG_IDEA,
+    #   dim_name_key: 'dim_bigidea_cells_fundamental',
+    #   dim_desc_key: 'dim_bigidea_cells_fundamental_desc'
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_bigidea_cells_fundamental",
+    #   value: "Cells are the basic unit of structure and function in organisms."
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_bigidea_cells_fundamental_desc",
+    #   value: "Cells are the basic unit of structure and function in organisms."
+    # )
+
+    # puts "Big Idea 2"
+    # Dimension.create!(
+    #   subject_id: che.id,
+    #   dim_type: Dimension::BIG_IDEA,
+    #   dim_name_key: 'dim_bigidea_matter_fundamental',
+    #   dim_desc_key: 'dim_bigidea_matter_fundamental_desc'
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_bigidea_matter_fundamental",
+    #   value: "The material of which the universe is composed exists in different states which have uniqe properties."
+    # )
+    # Translation.create!(
+    #   locale: 'en',
+    #   key: "dim_bigidea_matter_fundamental_desc",
+    #   value: "The material of which the universe is composed exists in different states which have uniqe properties."
+    # )
+
+    puts "misconception 3"
+    Dimension.create!(
+      subject_id: bio.id,
+      dim_type: Dimension::MISCONCEPTION,
+      dim_name_key: 'dim_miscon_blue_blood',
+      dim_desc_key: 'dim_miscon_blue_blood_desc'
+    )
+    Translation.create!(
+      locale: 'en',
+      key: "dim_miscon_blue_blood",
+      value: "Blood in arteries is red because it is oxygenated and the blood in veins is blue because it is not oxygenated."
+    )
+    Translation.create!(
+      locale: 'en',
+      key: "dim_miscon_blue_blood_desc",
+      value: "Blood in arteries is red because it is oxygenated and the blood in veins is blue because it is not oxygenated."
+    )
+
+    miscon3 = Dimension.where(dim_name_key: "dim_miscon_blue_blood").first
+    puts "miscon3.id: #{miscon3.id}"
+
+    puts "misconception 3 relation"
+    DimTree.create!(
+      dimension_id: miscon3.id,
       tree_id: bio9111.id,
-      explanation_key: "TFV.v01.bio.9.1.1.1.sector.3.expl"
+      dim_explanation_key: "TFV.v01.bio.9.1.1.1.miscon.3.expl"
     )
     Translation.create!(
       locale:'en',
-      key: "TFV.v01.bio.9.1.1.1.sector.3.expl",
-      value: "Ne dolor utroque admodum eum."
-    )
-
-    puts "sector 4 relation"
-    SectorTree.create!(
-      sector_id: sector4.id,
-      tree_id: bio9111.id,
-      explanation_key: "TFV.v01.bio.9.1.1.1.sector.4.expl"
-    )
-    # if errors.count > 0
-    Translation.create!(
-      locale: 'en',
-      key: "TFV.v01.bio.9.1.1.1.sector.4.expl",
-      value: "Lorem ipsum dolor sit amet, ipsum inermis eam id, vim nonumy adolescens eu."
-    )
-
-    puts "sector 6 relation"
-    SectorTree.create!(
-      sector_id: sector6.id,
-      tree_id: bio9111.id,
-      explanation_key: "TFV.v01.bio.9.1.1.1.sector.6.expl"
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "TFV.v01.bio.9.1.1.1.sector.6.expl",
-      value: "Modus sonet equidem ne has, usu at habeo cetero tritani, nec id dolor putent admodum."
-    )
-
-    puts "sector 8 relation"
-    SectorTree.create!(
-      sector_id: sector8.id,
-      tree_id: bio9111.id,
-      explanation_key: "TFV.v01.bio.9.1.1.1.sector.8.expl"
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "TFV.v01.bio.9.1.1.1.sector.8.expl",
+      key: "TFV.v01.bio.9.1.1.1.miscon.3.expl",
       value: "Pri ut ferri labore eleifend, dicit detracto vix an."
     )
 
-    puts "misconception 1"
-    Dimension.create!(
-      subject_id: phy.id,
-      dim_type: Dimension::MISCONCEPTION,
-      dim_name_key: 'dim_miscon_fall_faster',
-      dim_desc_key: 'dim_miscon_fall_faster_desc'
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_miscon_fall_faster",
-      value: "A heavier ball will fall faster than a lighter one."
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_miscon_fall_faster_desc",
-      value: "A heavier ball will fall faster than a lighter one."
-    )
+    bigidea1 = Dimension.where(dim_name_key: "dim_bigidea_cells_fundamental").first
+    puts "bigidea1.id: #{bigidea1.id}"
 
-    puts "misconception 2"
-    Dimension.create!(
-      subject_id: phy.id,
-      dim_type: Dimension::MISCONCEPTION,
-      dim_name_key: 'dim_miscon_warm_summer',
-      dim_desc_key: 'dim_miscon_warm_summer_desc'
+    puts "bigidea 1 relation"
+    DimTree.create!(
+      dimension_id: bigidea1.id,
+      tree_id: bio9111.id,
+      dim_explanation_key: "TFV.v01.bio.9.1.1.1.bigidea.1.expl"
     )
     Translation.create!(
-      locale: 'en',
-      key: "dim_miscon_warm_summer",
-      value: "Summer is warmer because the Earth is closer to the Sun at that time."
+      locale:'en',
+      key: "TFV.v01.bio.9.1.1.1.bigidea.1.expl",
+      value: "Impedit persequeris eos ea.."
     )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_miscon_warm_summer_desc",
-      value: "Summer is warmer because the Earth is closer to the Sun at that time."
-    )
-
-    puts "Big Idea 1"
-    Dimension.create!(
-      subject_id: bio.id,
-      dim_type: Dimension::BIG_IDEA,
-      dim_name_key: 'dim_bigidea_cells_fundamental',
-      dim_desc_key: 'dim_bigidea_cells_fundamental_desc'
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_bigidea_cells_fundamental",
-      value: "Cells are the basic unit of structure and function in organisms."
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_bigidea_cells_fundamental_desc",
-      value: "Cells are the basic unit of structure and function in organisms."
-    )
-
-    puts "Big Idea 2"
-    Dimension.create!(
-      subject_id: che.id,
-      dim_type: Dimension::BIG_IDEA,
-      dim_name_key: 'dim_bigidea_matter_fundamental',
-      dim_desc_key: 'dim_bigidea_matter_fundamental_desc'
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_bigidea_matter_fundamental",
-      value: "The material of which the universe is composed exists in different states which have uniqe properties."
-    )
-    Translation.create!(
-      locale: 'en',
-      key: "dim_bigidea_matter_fundamental_desc",
-      value: "The material of which the universe is composed exists in different states which have uniqe properties."
-    )
-
-    # "Pri ut ferri labore eleifend, dicit detracto vix an."
-    # "Impedit persequeris eos ea."
   end
 
 end
