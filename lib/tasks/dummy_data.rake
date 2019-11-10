@@ -7,8 +7,8 @@ namespace :dummy_data do
     bio = Subject.where(code: 'bio').first
     che = Subject.where(code: 'che').first
     phy = Subject.where(code: 'phy').first
-    bio9111 = Tree.where(name_key: "TFV.v01.bio.9.1.1.1.name").first
-    che9111 = Tree.where(name_key: "TFV.v01.che.9.1.1.1.name").first
+    bio9111 = Tree.where(base_key: "TFV.v01.bio.9.1.1.1").first
+    che9111 = Tree.where(base_key: "TFV.v01.che.9.1.1.1").first
     sector3 = Sector.where(name_key: "sector.3.name").first
     sector4 = Sector.where(name_key: "sector.4.name").first
     sector6 = Sector.where(name_key: "sector.6.name").first
