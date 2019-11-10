@@ -443,11 +443,9 @@ class TreesController < ApplicationController
     case @tree.depth
       # process this tree item, is at proper depth to show detail
     when 4
-      # process this single indicator
-      @trees = [@tree]
-      process_tree = true
-    when 3
-      # get all indicators for this outcome and single grade band
+      # get the Tree Item for this Learning Outcome
+      # only detail page currently is at LO level
+      # Indicators are listed in the LO Detail page
       @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
       process_tree = true
     else
@@ -460,12 +458,13 @@ class TreesController < ApplicationController
     if process_tree
       editMe = params['editme']
       @editMe = false
-      if editMe && editMe == @tree.id.to_s
-        @editMe = true
-      end
-      Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
+      # turn off detail editing page for now
+      # if editMe && editMe == @tree.id.to_s
+      #   @editMe = true
+      # end
+      # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
       # prepare to output detail page
-      @indicators = []
+      @tree_items_to_display = []
       @subjects = Subject.all.order(:code)
       subjById = @subjects.map{ |rec| [rec.id, rec.code]}
       @subjById = Hash[subjById]
@@ -517,15 +516,16 @@ class TreesController < ApplicationController
           } if !@relatedBySubj[subCode].include?(rTree.code)
           Rails.logger.debug("*** after: @relatedBySubj[#{subCode}]: #{@relatedBySubj[subCode].inspect}")
         end
-        # get the translation key for the indicators in the group of matched (indicators)
+        # get the translation key for the indicators in the group of matched
         JSON.load(t.matching_codes).each do |j|
           Rails.logger.debug("*** add indicator name_key: #{j.name_key}")
           treeKeys << "#{t.buildRootKey}.#{j}.name"
         end
         Rails.logger.debug("*** add explain name_key: #{t.base_key}.explain")
         treeKeys << "#{t.base_key}.explain"
-        @indicators << t
+        @tree_items_to_display << t
       end
+      Rails.logger.debug("&&& @tree_items_to_display: #{@tree_items_to_display.inspect}")
       Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
       @translations = Translation.translationsByKeys(@locale_code, treeKeys)
       @translations.each do |k, v|

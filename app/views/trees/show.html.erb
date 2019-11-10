@@ -8,9 +8,11 @@
   area = component.present? ? component.getParentRec : nil
 %>
 <div class='container'>
-  <!--  loop through all indicators for this outcome -->
-  <% @indicators.each do |tree| %>
+  <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
+  <% @tree_items_to_display.each do |tree| %>
     <div class='detail-page'>
+
+      <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
       <div class='row subject-grade-row'><div class='col col-lg-12 text-left'><%= I18n.translate('app.labels.grade_band') %>: <%= tree.grade_band.code %></div></div>
       <div class='row area-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div></div>
       <div class='row component-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div></div>
@@ -25,6 +27,7 @@
         </div>
       </div>
 
+      <!-- Related Indicators Table -->
       <div class='related-indicators'>
         <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
@@ -49,6 +52,8 @@
           <p><%= "#{I18n.translate('app.labels.indicator')} #{ia}: #{@translations[code]}" %></p>
         <% end %>
       </div>
+
+      <!-- Future Sectors Table -->
       <div class='related-items-table'>
         <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
@@ -100,6 +105,8 @@
           </div>
         <% end %>
       </div>
+
+      <!-- Connections to Other Outcomes Table -->
       <div class='related-items-table'>
         <div class='row subject-relations center-label-bold top-label'>
           <div class='col col-lg-12'>
@@ -173,6 +180,8 @@
           <% end %>
         </div>
       </div>
+
+      <!-- Supporting Resources Table -->
       <div class='row teacher-label top-label'>
         <div class='col col-lg-12'>
           <%= I18n.t('trees.labels.teacher_header') %>
