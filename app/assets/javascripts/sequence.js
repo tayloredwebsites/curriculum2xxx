@@ -208,8 +208,20 @@ edit_tree_tree = function (tree_tree_id) {
         .catch(function (err) { console.log("ERROR:", err) })
 }
 
+/**
+ *
+ * 1) Initializes jqueryui sort behavior for LOs
+ *    within a given subject, and across gradebands.
+ * 2) Initializes jqueryui drag (and snap back into place)
+ *    behavior for LOs within and across subjects and
+ *    gradebands.
+ */
 initializeSortAndDrag = function () {
    $('.sequence-page .list-group').sortable({
+    //specify only .list-group-items
+    //should be sortable (to
+    //exclude subject headers)
+    items: '.list-group-item',
     placeholder: 'drop-placeholder',
     handle: '.sort-handle',
     stop: function (e, ui) {
