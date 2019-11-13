@@ -5,7 +5,7 @@
 
 $(function() {
   /**
-   * Hide or show a subject column when the corresponding 
+   * Hide or show a subject column when the corresponding
    * checkbox is checked or unchecked.
    * @param  {String} subj_abbr Abbreviation for a subject.
    *                            E.g. 'bio', 'phy', etc.
@@ -17,12 +17,12 @@ $(function() {
   	else {
   	   $('#'+subj_abbr+'-column').addClass('hidden')
   	}
-  	$('.sequence-grid').removeClass('cols-0 cols-1 cols-2 cols-3 cols-4 cols-5')
+  	$('.sequence-grid').removeClass('cols-0 cols-1 cols-2 cols-3 cols-4 cols-5 cols-6')
   	$('.sequence-page .sequence-grid').addClass('cols-' + $('.subj-checkbox input:checked').length )
   }
 
   /**
-   * Expand and highlight related LOs 
+   * Expand and highlight related LOs
    */
   related_LO_display = function (rel, selected_LO) {
     if ($("#lo_" + selected_LO).hasClass('spotlight')) {
@@ -51,7 +51,7 @@ $(function() {
          .find('.connections-icon')
          .attr('title', 'exit related LOs mode');
     }
- 
+
   }
 
   showIndicators = function (show) {
@@ -70,11 +70,11 @@ $(function() {
 });
 
 /**
- * Update an LO connection, and it's reciprocal connection 
- * in one ajax call (also updates the translation of the 
+ * Update an LO connection, and it's reciprocal connection
+ * in one ajax call (also updates the translation of the
  * explanation for the current locale).
- * @param  {int} tree_tree_id The database ID of the 
- *                            TreeTree/LO connection 
+ * @param  {int} tree_tree_id The database ID of the
+ *                            TreeTree/LO connection
  *                            being updated.
  */
 patch_from_tree_tree_form = function (tree_tree_id) {
@@ -95,16 +95,16 @@ patch_from_tree_tree_form = function (tree_tree_id) {
 
 /**
  * Send a PATCH request to /tree_trees/:id with ajax
- * to activate or deactivate an LO connection, and 
- * it's reciprocal (e.g., one request to deactivate 
- * "bio.9.1.1.1 applies to che.9.1.3.3" 
- * will also deactivate "che.9.1.3.3 depends on 
+ * to activate or deactivate an LO connection, and
+ * it's reciprocal (e.g., one request to deactivate
+ * "bio.9.1.1.1 applies to che.9.1.3.3"
+ * will also deactivate "che.9.1.3.3 depends on
  * bio.9.1.1.1.")
- * @param  {int} tree_tree_id The database ID of the 
- *                            TreeTree/LO connection 
+ * @param  {int} tree_tree_id The database ID of the
+ *                            TreeTree/LO connection
  *                            being updated.
  * @param  {boolean} active   Should the TreeTree be
- *                            set to active with this 
+ *                            set to active with this
  *                            update?
  */
 patch_tree_tree_activation = function (tree_tree_id, active) {
@@ -112,15 +112,15 @@ patch_tree_tree_activation = function (tree_tree_id, active) {
           "source_controller": "tree_trees",
           "source_action": "update",
           "tree_tree[active]" : active
-        };  
+        };
   ajax_update_tree_tree(tree_tree_id, data)
 }
 
 ajax_update_tree_tree = function (tree_tree_id, data) {
   token = $("meta[name='csrf-token']").attr('content');
   $.ajax({
-      "type": 'patch', 
-      "url": '/tree_trees/' + tree_tree_id, 
+      "type": 'patch',
+      "url": '/tree_trees/' + tree_tree_id,
       "headers": { 'X-CSRF-Token': token },
       "data": data,
       "dataType": "json",
@@ -132,10 +132,10 @@ ajax_update_tree_tree = function (tree_tree_id, data) {
 
 /**
  * Build the add-edit form html for TreeTrees/LO connections,
- * to be embedded in a modal popup. 
- * @param {object} res Ajax response object with translations 
- *                     and data on the TreeTree being edited 
- *                     or created. 
+ * to be embedded in a modal popup.
+ * @param {object} res Ajax response object with translations
+ *                     and data on the TreeTree being edited
+ *                     or created.
  * @returns {string} html form for the add-edit popup.
  */
 add_edit_form = function (res) {
@@ -153,7 +153,7 @@ add_edit_form = function (res) {
           <h3 id="myModalLabel"> LO '+  res.translations.relationship +'</h3> \
           </div> \
           <div class="modal-body"> \
-          <form id="tree_tree_add_edit" action="/tree_trees"' + (edit_mode ? '>' : 'method="POST">') 
+          <form id="tree_tree_add_edit" action="/tree_trees"' + (edit_mode ? '>' : 'method="POST">')
           + '<div> \
           <input type="hidden" name="authenticity_token" value="' + $('[name="csrf-token"]').attr('content') + '"> \
           <input type="hidden" name="tree_tree[tree_referencer_id]" value=' + res.tree_tree.tree_referencer_id +'> \
@@ -163,17 +163,17 @@ add_edit_form = function (res) {
           <label for="relationship">' + res.translations.relationship + '</label><br>'
           + res.referencer_code + '<br> \
           <select id="relationship" name="tree_tree[relationship]"> \
-          <option value="' + res.relation_values.applies 
+          <option value="' + res.relation_values.applies
           + (res.tree_tree.relationship == 'applies' ? '" selected>': '">')
-          + res.translations.applies 
+          + res.translations.applies
           + '</option> \
-          <option value="' + res.relation_values.depends 
+          <option value="' + res.relation_values.depends
           + (res.tree_tree.relationship == 'depends' ? '" selected>': '">')
-          + res.translations.depends 
+          + res.translations.depends
           + '</option> \
-          <option value="' + res.relation_values.akin 
+          <option value="' + res.relation_values.akin
           + (res.tree_tree.relationship == 'akin' ? '" selected>': '">')
-          + res.translations.akin 
+          + res.translations.akin
           + '</option> \
           </select> \
           <div>' + res.referencee_code + '</div><br> \
@@ -187,22 +187,22 @@ add_edit_form = function (res) {
           <fieldset><label for="tree_tree[active]">Active?</label>\
           <input name="tree_tree[active]" type="checkbox"'
           + (res.tree_tree.active ? ' checked' : '') + '></input></fieldset>'
-          + submit_button 
+          + submit_button
           + '<button type="button" type="button" data-dismiss="modal" \
           aria-hidden="true">CANCEL</button> \
           </div> \
-          </form>' 
+          </form>'
 }
 
 edit_tree_tree = function (tree_tree_id) {
   $("#modal_popup").modal('show');
         $.ajax({
-          "type": 'get', 
+          "type": 'get',
           "url": '/tree_trees/'+ tree_tree_id + '/edit/',
           "async": false
         })
-        .then(function (res) { 
-          console.log("RESPONSE:", res.tree_tree.id) 
+        .then(function (res) {
+          console.log("RESPONSE:", res.tree_tree.id)
           $("#modal-container").html(add_edit_form(res))
         })
         .catch(function (err) { console.log("ERROR:", err) })
@@ -211,7 +211,7 @@ edit_tree_tree = function (tree_tree_id) {
 initializeSortAndDrag = function () {
    $('.list-group').sortable({
     placeholder: 'drop-placeholder',
-    handle: '.sort-handle', 
+    handle: '.sort-handle',
     stop: function (e, ui) {
       console.log('e:', e)
       console.log('ui:', ui)
@@ -222,8 +222,8 @@ initializeSortAndDrag = function () {
       token = $("meta[name='csrf-token']").attr('content');
 
       $.ajax({
-        "type": 'post', 
-        "url": '/trees/reorder', 
+        "type": 'post',
+        "url": '/trees/reorder',
         "headers": { 'X-CSRF-Token': token },
         "data": {
           "source_controller": 'trees',
@@ -243,7 +243,7 @@ initializeSortAndDrag = function () {
      cursorAt: {
             top: 60,
             left: 60
-          }, 
+          },
      helper: 'clone',
      handle: '.connect-handle',
      start: function (e, ui) {
@@ -266,8 +266,8 @@ initializeSortAndDrag = function () {
         console.log('under mouse', lo_to_connect, 'original obj',  lo_being_dragged);
         $("#modal_popup").modal('show');
         $.ajax({
-          "type": 'get', 
-          "url": '/tree_trees/new', 
+          "type": 'get',
+          "url": '/tree_trees/new',
           "data": {
             "source_controller": 'tree_trees',
             "source_action": 'new',
@@ -277,8 +277,8 @@ initializeSortAndDrag = function () {
           "dataType": 'json',
           "async": false
         })
-        .then(function (res) { 
-          console.log("RESPONSE:", res.tree_tree.id) 
+        .then(function (res) {
+          console.log("RESPONSE:", res.tree_tree.id)
           $("#modal-container").html(add_edit_form(res))
         })
         .catch(function (err) { console.log("ERROR:", err) })

@@ -74,6 +74,10 @@
       border-top: 1px solid black;
     }
 
+    .sequence-grid.cols-6, .dimension-grid.cols-6 {
+       grid-template-columns: 16.5% 16.5% 16.5% 16.5% 16.5% 16.5%;
+    }
+
     .sequence-grid.cols-5, .dimension-grid.cols-5 {
        grid-template-columns: 20% 20% 20% 20% 20%;
     }

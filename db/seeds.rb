@@ -104,7 +104,7 @@ grades = GradeBand.all
 @gb_mid = [@gb_5, @gb_6, @gb_7, @gb_8]
 puts "grades: #{grades.pluck(:id)}"
 
-if Subject.count < 5
+if Subject.count < 6
   Subject.create(
     tree_type_id: @tfv.id,
     code: 'bio',
@@ -130,15 +130,21 @@ if Subject.count < 5
     code: 'sci',
     base_key: 'subject.sci'
   )
+  Subject.create(
+    tree_type_id: @tfv.id,
+    code: 'ear',
+    base_key: 'subject.ear'
+  )
 end
-throw "Invalid Subject Count" if Subject.count != 5
+throw "Invalid Subject Count" if Subject.count != 6
 @bio = Subject.first
 @che = Subject.second
 @mat = Subject.third
 @phy = Subject.fourth
 @sci = Subject.fifth
+@ear = Subject.find 6
 @subjects = Subject.all
-@subj_hs = [@bio, @che, @mat, @phy]
+@subj_hs = [@bio, @che, @mat, @phy, @ear]
 @subj_mid = [@sci]
 
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.bio.name', 'Biology')
@@ -181,11 +187,20 @@ rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.sci.abbr', 'Bil')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.ear.name', 'Earth, Space, & Environmental Science')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.ear.abbr', 'Ear')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.ear.name', '
+Dünya, Uzay ve Çevre Bilimi')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.ear.abbr', 'Dün')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
 
 # high school subjects:
 
-if Upload.count != 40
+if Upload.count != 48
   @gb_hs.each do |g|
     @subj_hs.each do |s|
       Upload.create(
@@ -227,7 +242,7 @@ end
 #   32 high school (4 grades * 4 subjects * 2 languages)
 #   + 8 middle school (4 grades * 1 subject * 2 languages)
 #   = 40 valid uploads
-throw "Invalid Upload Count" if Upload.count != 40
+throw "Invalid Upload Count" if Upload.count != 48
 
 
 ################################
