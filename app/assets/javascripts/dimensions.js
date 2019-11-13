@@ -72,21 +72,21 @@ $(function() {
  *                            TreeTree/LO connection
  *                            being updated.
  */
-patch_from_tree_tree_form = function (tree_tree_id) {
-  explanation = $('form#tree_tree_add_edit [name="tree_tree[explanation]"]').val();
-  relationship = $('form#tree_tree_add_edit #relationship').children("option:selected").val();
-  active = $('form#tree_tree_add_edit [name="tree_tree[active]"]').prop("checked");
-  console.log("ACTIVE", active);
+// patch_from_tree_tree_form = function (tree_tree_id) {
+//   explanation = $('form#tree_tree_add_edit [name="tree_tree[explanation]"]').val();
+//   relationship = $('form#tree_tree_add_edit #relationship').children("option:selected").val();
+//   active = $('form#tree_tree_add_edit [name="tree_tree[active]"]').prop("checked");
+//   console.log("ACTIVE", active);
 
-  data = {
-          "source_controller": "tree_trees",
-          "source_action": "update",
-          "tree_tree[explanation]" : explanation,
-          "tree_tree[relationship]" : relationship,
-          "tree_tree[active]" : active
-        };
-  ajax_update_tree_tree(tree_tree_id, data);
-}
+//   data = {
+//           "source_controller": "tree_trees",
+//           "source_action": "update",
+//           "tree_tree[explanation]" : explanation,
+//           "tree_tree[relationship]" : relationship,
+//           "tree_tree[active]" : active
+//         };
+//   ajax_update_tree_tree(tree_tree_id, data);
+// }
 
 /**
  * Send a PATCH request to /tree_trees/:id with ajax
@@ -102,28 +102,28 @@ patch_from_tree_tree_form = function (tree_tree_id) {
  *                            set to active with this
  *                            update?
  */
-patch_tree_tree_activation = function (tree_tree_id, active) {
-  data = {
-          "source_controller": "tree_trees",
-          "source_action": "update",
-          "tree_tree[active]" : active
-        };
-  ajax_update_tree_tree(tree_tree_id, data)
-}
+// patch_tree_tree_activation = function (tree_tree_id, active) {
+//   data = {
+//           "source_controller": "tree_trees",
+//           "source_action": "update",
+//           "tree_tree[active]" : active
+//         };
+//   ajax_update_tree_tree(tree_tree_id, data)
+// }
 
-ajax_update_tree_tree = function (tree_tree_id, data) {
-  token = $("meta[name='csrf-token']").attr('content');
-  $.ajax({
-      "type": 'patch',
-      "url": '/tree_trees/' + tree_tree_id,
-      "headers": { 'X-CSRF-Token': token },
-      "data": data,
-      "dataType": "json",
-      "async": false
-    })
-    .then(function () { location.reload() })
-    .catch(function (err) { console.log("ERROR:", err) })
-}
+// ajax_update_tree_tree = function (tree_tree_id, data) {
+//   token = $("meta[name='csrf-token']").attr('content');
+//   $.ajax({
+//       "type": 'patch',
+//       "url": '/tree_trees/' + tree_tree_id,
+//       "headers": { 'X-CSRF-Token': token },
+//       "data": data,
+//       "dataType": "json",
+//       "async": false
+//     })
+//     .then(function () { location.reload() })
+//     .catch(function (err) { console.log("ERROR:", err) })
+// }
 
 /**
  * Build the add-edit form html for TreeTrees/LO connections,
