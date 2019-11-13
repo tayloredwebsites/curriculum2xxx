@@ -136,14 +136,17 @@ ajax_update_tree_tree = function (tree_tree_id, data) {
 add_edit_dimtree_form = function (res) {
   edit_mode = res.dimension_tree.id != null
   if (edit_mode) {
-    submit_button = '<button type="button" \
-        onclick="patch_from_dimension_tree_form('
-        + res.dimension_tree.id
-        +')">SAVE</button>'
+    // submit_button = '<button type="button" \
+    //     onclick="patch_from_dimension_tree_form('
+    //     + res.dimension_tree.id
+    //     +')">SAVE</button>'
   }
   else {
-    submit_button = '<button type="submit">SAVE</button>'
+    // submit_button = '<button type="submit">SAVE</button>'
   }
+  submit_button = '<button type="button" data-dismiss="modal" \
+          aria-hidden="true">SAVE</button>'
+
   return '<div class="modal-header"> \
           <h3 id="myModalLabel">Connect LO with '+ res.dim_type +'</h3> \
           </div> \
