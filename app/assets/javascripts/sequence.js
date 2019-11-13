@@ -209,7 +209,7 @@ edit_tree_tree = function (tree_tree_id) {
 }
 
 initializeSortAndDrag = function () {
-   $('.list-group').sortable({
+   $('.sequence-page .list-group').sortable({
     placeholder: 'drop-placeholder',
     handle: '.sort-handle',
     stop: function (e, ui) {
@@ -237,7 +237,7 @@ initializeSortAndDrag = function () {
     }
     })
 
-   $('.list-group-item').draggable({
+   $('.sequence-page .list-group-item').draggable({
      revert: true,
      zIndex: 100,
      cursorAt: {
