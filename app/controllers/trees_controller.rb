@@ -378,7 +378,22 @@ class TreesController < ApplicationController
     # array of all translation keys, to be used to load up @translations instance variable with the tranlation values
     transl_keys = []
 
-    @s_o_hash = Hash.new  { |h, k| h[k] = [] }
+    listing = Tree.where(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+    @trees = listing.joins(:grade_band).order("trees.sequence_order, code").all
+
+    transl_keys = @trees.map { |t| "#{t.base_key}.name" }
+
+    @relations = Hash.new { |h, k| h[k] = [] }
+    relations = DimensionTree.active
+    relations.each do |rel|
+      @relations["tree_id #{rel.tree_id}"] << rel
+      @relations["dim_id #{rel.dimension_id}"] << rel
+    end
+
+    @s_o_hash = Hash.new  { |h, k| h[k] = Hash.new }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
@@ -386,7 +401,10 @@ class TreesController < ApplicationController
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
-      @s_o_hash[s.code] = []
+      @s_o_hash[s.code] = {
+        :dimensions => [],
+        :los => []
+      }
       transl_keys << s.base_key+'.name'
     end
 
@@ -405,7 +423,7 @@ class TreesController < ApplicationController
 
       dimRecs.each do |r|
         subj_code = subjIds[r.subject_id.to_s].code
-        newHash = {
+        dimHash = {
           id: r.id,
           subject_id: r.subject_id,
           code: r.dim_code,
@@ -414,8 +432,8 @@ class TreesController < ApplicationController
         }
         transl_keys << r.dim_name_key
         transl_keys << r.dim_desc_key
-        Rails.logger.debug("*** newHash: #{newHash.inspect}")
-        @s_o_hash[subj_code] << newHash
+        Rails.logger.debug("*** newHash: #{dimHash.inspect}")
+        @s_o_hash[subj_code][:dimensions] << dimHash
       end
       Rails.logger.debug("*** @s_o_hash: #{@s_o_hash.inspect}")
 
@@ -427,6 +445,23 @@ class TreesController < ApplicationController
       end
       Rails.logger.debug("*** @translations: #{@translations.inspect}")
 
+       # create ruby hash from tree records, to easily build tree from record codes
+      @trees.each do |tree|
+        translation = @translations[tree.name_key]
+        depth = tree.depth
+        case depth
+        when 4
+          tcode = tree.subject.code + tree.code.split('.').join('')
+          newHash = {
+            code: tcode,
+            text: "#{tree.code}: #{translation}",
+            id: "#{tree.id}",
+            connections: @relations[tree.id]
+          }
+          @s_o_hash[tree.subject.code][:los] << newHash
+        end
+      end
+
       respond_to do |format|
         format.html { render 'dimensions'}
       end
@@ -436,6 +471,62 @@ class TreesController < ApplicationController
       end
     end
   end
+
+
+  def dimension_data
+    errors = []
+
+    #Check whether a tree_tree for this relationship already exists.
+    dim_tree_matches = DimensionTree.where(
+      :tree_id => tree_params[:tree_id],
+      :dimension_id => tree_params[:dimension_id])
+
+    if errors.length == 0
+      @dim_tree = DimensionTree.new(tree_params)
+      @tree = Tree.find(tree_params[:tree_id])
+      @dim = Dimension.find(tree_params[:dimension_id])
+      @explanation = ''
+      tree_subject_translation = Translation.where(
+        :key => @tree.subject[:base_key] + '.name',
+        :locale => @locale_code
+        ).first.value
+      dimension_translation = Translation.where(
+        :key => @dim[:dim_name_key],
+        :locale => @locale_code
+        ).first.value
+
+        data = {
+          :tree_code => tree_subject_translation + " " + @tree.code,
+          :dimension_name => dimension_translation,
+          :dim_type => @dim[:dim_type],
+          :translations => {
+            :modal_title => translate("trees.labels.#{@dim[:dim_type]}_connections"),
+            :explanation_label => translate('tree_trees.labels.explanation')
+          }
+        }
+
+    end
+    if errors.length == 0 && dim_tree_matches.length == 0
+      data[:dimension_tree] = @dim_tree
+      respond_to do |format|
+        format.html { render :dimensions }
+        format.json {render json: data}
+      end
+    #If a tree_tree for this relationship already exists,
+    #redirect to the edit path for that record.
+    elsif dim_tree_matches.length > 0
+      #redirect_to edit_tree_tree_path(tree_tree_matches.first)
+      data[:dimension_tree] = dim_tree_matches.first
+        respond_to do |format|
+          format.json {render json: data}
+        end
+    else
+      respond_to do |format|
+        format.json {render json: { errors: errors}}
+      end
+    end
+  end
+
 
   def show
     process_tree = false
@@ -563,7 +654,9 @@ class TreesController < ApplicationController
       :version_id,
       :subject_id,
       :grade_band_id,
-      :code
+      :code,
+      :tree_id,
+      :dimension_id
     )
   end
 

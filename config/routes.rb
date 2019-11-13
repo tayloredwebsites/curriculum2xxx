@@ -34,6 +34,7 @@ scope "(:locale)", locale: /tr|en/ do
       post 'index_listing'
       get 'sequence'
       get 'dimensions'
+      get 'dimension_data'
       post 'reorder'
     end
   end

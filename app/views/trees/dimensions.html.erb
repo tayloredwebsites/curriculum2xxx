@@ -6,22 +6,42 @@
   <h2 id="dimension-header"><%= @page_title %></h2>
   <% @s_o_hash.keys.each do |i| %>
     <div class='subj-checkbox'>
-      <label for="check-<%= i %>">
+      <label for="radio-<%= i %>">
         <%= @translations["subject.#{i}.name"] %>
       </label>
-      <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+      <input id="radio-<%= i %>" type="radio" name='subject-visible' onclick='show_subject_dimensions("<%= i %>");'
+      <% if (i == 'bio') %>
+        checked="true"
+      <%end%>
+      ></input>
     </div>
   <% end %>
 </div>
 <div id="trees" class="dimension-page">
-  <div class="dimension-grid cols-<%= @s_o_hash.keys.count %>">
+  <div class="dimension-grid cols-2">
 	<% @s_o_hash.each do |i, j| %>
-    <div id="<%=i%>-column" class="dimension-item subject-column">
+    <div id="<%=i%>-dim-column" class="dimension-item subject-column <%= 'hidden' if i != 'bio' %>">
       <ul class="list-group">
-        <li class="dimension-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
-        <% j.each do |k| %>
-          <li id="lo_<%= k[:id] %>" class="dimension-item list-group-item" data-lo-id="<%= k[:id] %>">
+        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - Big Ideas</li>
+        <% j[:dimensions].each do |k| %>
+          <li id="dim_<%= k[:id] %>" class="dimension-item list-group-item" data-dimid="<%= k[:id] %>">
             <span><%= @translations[k[:dim_name_key]] %></span>
+            <% if current_user.present? && current_user.is_admin? %>
+                <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection between <%= @page_title.downcase %> and LOs"></i></a>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div id="<%=i%>-lo-column" class="dimension-item subject-column <%= 'hidden' if i != 'bio' %>">
+      <ul class="list-group">
+        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - Learning Outcomes</li>
+        <% j[:los].each do |k| %>
+          <li id="lo_<%= k[:id] %>" class="dimension-item list-group-item" data-loid="<%= k[:id] %>">
+            <span><%= k[:text] %></span>
+            <% if current_user.present? && current_user.is_admin? %>
+                <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection between LOs and <%= @page_title.downcase %>"></i></a>
+            <% end %>
           </li>
         <% end %>
       </ul>
