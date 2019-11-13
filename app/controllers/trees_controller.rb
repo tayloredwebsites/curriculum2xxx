@@ -387,7 +387,7 @@ class TreesController < ApplicationController
     transl_keys = @trees.map { |t| "#{t.base_key}.name" }
 
     @relations = Hash.new { |h, k| h[k] = [] }
-    relations = DimensionTree.active
+    relations = DimTree.active
     relations.each do |rel|
       @relations["tree_id #{rel.tree_id}"] << rel
       @relations["dim_id #{rel.dimension_id}"] << rel
@@ -477,12 +477,12 @@ class TreesController < ApplicationController
     errors = []
 
     #Check whether a tree_tree for this relationship already exists.
-    dim_tree_matches = DimensionTree.where(
+    dim_tree_matches = DimTree.where(
       :tree_id => tree_params[:tree_id],
       :dimension_id => tree_params[:dimension_id])
 
     if errors.length == 0
-      @dim_tree = DimensionTree.new(tree_params)
+      @dim_tree = DimTree.new(tree_params)
       @tree = Tree.find(tree_params[:tree_id])
       @dim = Dimension.find(tree_params[:dimension_id])
       @explanation = ''
