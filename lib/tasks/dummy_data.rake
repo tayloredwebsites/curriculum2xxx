@@ -8,6 +8,8 @@ namespace :dummy_data do
     che = Subject.where(code: 'che').first
     phy = Subject.where(code: 'phy').first
     ear = Subject.where(code: 'ear').first
+    sci = Subject.where(code: 'sci').first
+    mat = Subject.where(code: 'mat').first
     bio9111 = Tree.where(base_key: "TFV.v01.bio.9.1.1.1").first
     che9111 = Tree.where(base_key: "TFV.v01.che.9.1.1.1").first
     sector3 = Sector.where(name_key: "sector.3.name").first
@@ -295,6 +297,161 @@ namespace :dummy_data do
         :dim_desc_key => "dim_bigidea_biosurvival_desc",
         :text => "Why do some living things survive and reproduce, while others do not?",
         :desc => "Why do some living things survive and reproduce, while others do not?",
+        :trees => [
+        ]
+      },
+      #ear
+      {
+        :subject => ear,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_earearth_theuniverse",
+        :dim_desc_key => "dim_bigidea_earearth_theuniverse_desc",
+        :text => "What is the universe and what is the Earth’s place in it?",
+        :desc => "This big idea is an attempt to answer the questions, ‘Where are we, what is the planet on which we live part of, how long has it existed and how do we know?‘",
+        :trees => [
+        ]
+      },
+      {
+        :subject => ear,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_earchanging_earth",
+        :dim_desc_key => "dim_bigidea_earchanging_earth_desc",
+        :text => "How and why is the earth constantly changing?",
+        :desc => "What does the Earth consist of? What is the evidence that the Earth has changed over time? What has happened and is still happening that is changing the Earth? How do we know the continents have moved? What patterns are there to weather and climate? What is the difference between weather and climate? What are the causes of climate change?",
+        :trees => [
+        ]
+      },
+      {
+        :subject => ear,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_ear",
+        :dim_desc_key => "dim_bigidea_ear_desc",
+        :text => "How do Earth’s surface processes and human activities affect each other?",
+        :desc => "What are the common materials that humans use? How do humans depend on Earth’s resources? How do living things change the planet?",
+        :trees => [
+        ]
+      },
+      #che
+      {
+        :subject => che,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_chematter_interactions",
+        :dim_desc_key => "dim_bigidea_chematter_interactions_desc",
+        :text => "How can one explain the structure, properties, and interactions of matter?",
+        :desc => "The enormous variety of matter that we see is explained by the fact that these substances can combine in myriad ways. Therefore, if we want students to understand matter, they have to explore the question, ‘How do particles combine to make new substances?‘ The answer to this question is the central project of chemistry.",
+        :trees => [
+        ]
+      },
+      #phy
+      {
+        :subject => phy,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_phyobjects_motion",
+        :dim_desc_key => "dim_bigidea_phyobjects_motion_desc",
+        :text => "How can one explain and predict interactions between objects and within systems of objects?",
+        :desc => "The world is full of objects in motion – we move, trains boats and aeroplanes move, the planets move and so on. The central question here is, ‘How do we describe and measure the way they move and what changes their movement?‘  Understanding movement is then central to any scientific knowledge of the world we inhabit.",
+        :trees => [
+        ]
+      },
+      {
+        :subject => phy,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_phyenergy_transfer",
+        :dim_desc_key => "dim_bigidea_phyenergy_transfer_desc",
+        :text => "What is energy and how is energy transferred and conserved?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      {
+        :subject => phy,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_phywaves",
+        :dim_desc_key => "dim_bigidea_phywaves_desc",
+        :text => "How are waves used to transfer energy and information?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      #mat
+      {
+        :subject => mat,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_matnums_quanities",
+        :dim_desc_key => "dim_bigidea_matnums_quanities_desc",
+        :text => "How do we represent the world with numbers and quantities?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      {
+        :subject => mat,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_matshapes_obj_loc",
+        :dim_desc_key => "dim_bigidea_matshapes_obj_loc_desc",
+        :text => "How do we describe shapes, objects and locations?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      {
+        :subject => mat,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_matcompare",
+        :dim_desc_key => "dim_bigidea_matcompare_desc",
+        :text => "How do we compare, measure and quantify?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      {
+        :subject => mat,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_matpatterns",
+        :dim_desc_key => "dim_bigidea_matpatterns_desc",
+        :text => "How do we describe and explain patterns in data?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      {
+        :subject => mat,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_matchance",
+        :dim_desc_key => "dim_bigidea_matchance_desc",
+        :text => "How do we interpret and quantify chance events?",
+        :desc => "Qualification of chance events informs decision making across multiple domains. The language of chance is developed through experiments and experiences, with differences between expectation and observation being key, as are inferences from samples. As a related concept, it includes understanding the nature of randomness and random samples.",
+        :trees => [
+        ]
+      },
+      #sci
+      {
+        :subject => sci,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_scipatterns",
+        :dim_desc_key => "dim_bigidea_scipatterns_desc",
+        :text => "How do patterns help us understand the natural and designed world?",
+        :desc => "High school students ask, ‘How do I know if something is really a pattern?’ To learn that empirical evidence is needed to identify patterns. Students at this level also ask, ‘How do patterns help us in science, technology, engineering, and mathematics?’ To learn that patterns can provide evidence about cause and effect relationships, and that patterns of performance of designed systems can be analysed and interpreted to re-engineer and improve the system.",
+        :trees => [
+        ]
+      },
+      {
+        :subject => sci,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_scicausality",
+        :dim_desc_key => "dim_bigidea_scicausality_desc",
+        :text => "How can we know what causes what?",
+        :desc => "",
+        :trees => [
+        ]
+      },
+      {
+        :subject => sci,
+        :dim_type => Dimension::BIG_IDEA,
+        :dim_name_key => "dim_bigidea_scisystems",
+        :dim_desc_key => "dim_bigidea_scisystems_desc",
+        :text => "How can systems thinking help us understand and improve the world?",
+        :desc => "",
         :trees => [
         ]
       }
