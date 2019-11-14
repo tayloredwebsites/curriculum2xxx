@@ -90,7 +90,12 @@ initializeDrag = function () {
       var el_under_mouse = document.elementFromPoint(e.clientX, e.clientY);
       //closest() returns null if no parent found with selector
       var item_to_connect = el_under_mouse.closest('.list-group-item')
-      if (item_to_connect != null) {
+
+      //find out if the item being dragged is of the same type as the
+      //item it was dropped on.
+      var types = [item_to_connect.dataset['loid'] == undefined, ui.helper[0].dataset['loid'] == undefined]
+      //if an item is dropped on an item that is not of the same type
+      if (item_to_connect != null && types[0] != types[1]) {
         var tree_id, dimension_id
         if (ui.helper[0].dataset['loid']) {
         	tree_id = ui.helper[0].dataset['loid']
