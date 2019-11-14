@@ -20,7 +20,7 @@
         </li>
       <% else %>
         <li class='locale-opt'>
-          <a href='/users/lang/tr'>Türk</a>
+          <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türk</a>
         </li>
       <% end %>
       <% if @locale_code == 'en' %>
@@ -29,7 +29,7 @@
         </li>
       <% else %>
         <li class='locale-opt'>
-          <a href='/users/lang/en'>English</a>
+          <a href='/users/lang/en<%= "?dim_type=#{@dim_type}" if @dim_type %>'>English</a>
         </li>
       <% end %>
     </ul>

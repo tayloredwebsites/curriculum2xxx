@@ -36,6 +36,7 @@ class UsersController < ApplicationController
     Rails.logger.debug("original back_hash: #{back_hash.inspect}")
     # change the locale code in the current page url hash
     back_hash[:locale] = @locale_code
+    back_hash[:dim_type] = params[:dim_type] if params[:dim_type]
     Rails.logger.debug("redirect to: #{back_hash.inspect}")
     # see current page in new locale!
     redirect_to back_hash
