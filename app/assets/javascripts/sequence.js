@@ -251,7 +251,7 @@ initializeSortAndDrag = function () {
 
    $('.sequence-page .list-group-item').draggable({
      revert: true,
-     zIndex: 100,
+     zIndex: 101,
      cursorAt: {
             top: 60,
             left: 60
