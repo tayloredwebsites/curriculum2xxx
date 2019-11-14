@@ -22,10 +22,22 @@
 	<% @s_o_hash.each do |i, j| %>
     <div id="<%=i%>-dim-column" class="dimension-item subject-column <%= 'hidden' if i != 'bio' %>">
       <ul class="list-group">
-        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - Big Ideas</li>
+        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= @page_title %></li>
         <% j[:dimensions].each do |k| %>
-          <li id="dim_<%= k[:id] %>" class="dimension-item list-group-item" data-dimid="<%= k[:id] %>">
-            <span><%= @translations[k[:dim_name_key]] %></span>
+          <li id="dim_<%= k[:id] %>" class="dim-item dim-item--collapsable list-group-item" data-dimid="<%= k[:id] %>">
+            <span class="truncate-if-collapsed"><%= @translations[k[:dim_name_key]] %></span>
+            <% if k[:rel].length > 0 %>
+              <div><span class="hide-unless-condition"><strong><%= translate('trees.bigidea.relates_to').upcase %>:</strong></span></div>
+              <% k[:rel].each do |dtree| %>
+                <div>
+                  <a class="hide-unless-condition" href='<%= dtree[:tree_id] %>'
+                    title='<%= @translations[dtree[:dim_explanation_key]] %>'>
+                    <%= "#{@translations[dtree.tree.subject.base_key + ".abbr"].downcase}.#{dtree.tree[:code]}" %>
+                  </a>
+                </div>
+              <% end #iterate through this dimension's connections to LOs %>
+              <a class="icon-link hide-if-collapsed lo-handle" onclick="connections_display(<%= k[:rel].map { | dt | "#lo_#{dt[:tree_id]}" } %>, '<%= "#dim_#{k[:id]}" %>' );"><i class="fa fa-plug connections-icon pull-right" title="spotlight connections"></i></a>
+            <% end #if this dimension has connections to learning outcomes %>
             <% if current_user.present? && current_user.is_admin? %>
                 <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection between <%= @page_title.downcase %> and LOs"></i></a>
             <% end %>
@@ -37,8 +49,13 @@
       <ul class="list-group">
         <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - Learning Outcomes</li>
         <% j[:los].each do |k| %>
-          <li id="lo_<%= k[:id] %>" class="dimension-item list-group-item" data-loid="<%= k[:id] %>">
-            <span><%= k[:text] %></span>
+          <li id="lo_<%= k[:id] %>" class="dim-item dim-item--collapsable list-group-item" data-loid="<%= k[:id] %>">
+            <span class="truncate-if-collapsed"><%= k[:text] %></span>
+            <% if k[:rel].length > 0 %>
+              <% rel_arr = k[:rel].map { | dt | "#dim_#{dt[:dimension_id]}" } %>
+              <% lo_id = "#lo_#{k[:id]}" %>
+              <a class="icon-link hide-if-collapsed lo-handle" onclick="connections_display(<%= rel_arr %>, '<%= lo_id %>' )"><i class="fa fa-plug connections-icon pull-right" title="spotlight connections"></i></a>
+            <% end #if this LO has connections to  dimensions %>
             <% if current_user.present? && current_user.is_admin? %>
                 <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection between LOs and <%= @page_title.downcase %>"></i></a>
             <% end %>

@@ -390,8 +390,11 @@ class TreesController < ApplicationController
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = DimTree.active
     relations.each do |rel|
-      @relations["tree_id #{rel.tree_id}"] << rel
-      @relations["dim_id #{rel.dimension_id}"] << rel
+      if (rel.dimension[:dim_type] == params[:dim_type])
+        @relations["tree_id_#{rel.tree_id}"] << rel
+        @relations["dim_id_#{rel.dimension_id}"] << rel
+        transl_keys << rel[:dim_explanation_key]
+      end
     end
 
     @s_o_hash = Hash.new  { |h, k| h[k] = Hash.new }
@@ -407,6 +410,7 @@ class TreesController < ApplicationController
         :los => []
       }
       transl_keys << s.base_key+'.name'
+      transl_keys << s.base_key+'.abbr'
     end
 
     Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
@@ -429,7 +433,8 @@ class TreesController < ApplicationController
           subject_id: r.subject_id,
           code: r.dim_code,
           dim_name_key: r.dim_name_key,
-          dim_desc_key: r.dim_desc_key
+          dim_desc_key: r.dim_desc_key,
+          rel: @relations["dim_id_#{r.id}"]
         }
         transl_keys << r.dim_name_key
         transl_keys << r.dim_desc_key
@@ -457,7 +462,7 @@ class TreesController < ApplicationController
             code: tcode,
             text: "#{tree.code}: #{translation}",
             id: "#{tree.id}",
-            connections: @relations[tree.id]
+            rel: @relations["tree_id_#{tree.id}"]
           }
           @s_o_hash[tree.subject.code][:los] << newHash
         end
@@ -517,25 +522,6 @@ class TreesController < ApplicationController
       format.html
       format.js
     end
-    # if errors.length == 0 && dim_tree_matches.length == 0
-    #   data[:dimension_tree] = @dim_tree
-    #   respond_to do |format|
-    #     format.html { render :dimensions }
-    #     format.json {render json: data}
-    #   end
-    # #If a tree_tree for this relationship already exists,
-    # #redirect to the edit path for that record.
-    # elsif dim_tree_matches.length > 0
-    #   #redirect_to edit_tree_tree_path(tree_tree_matches.first)
-    #   data[:dimension_tree] = dim_tree_matches.first
-    #     respond_to do |format|
-    #       format.json {render json: data}
-    #     end
-    # else
-    #   respond_to do |format|
-    #     format.json {render json: { errors: errors}}
-    #   end
-    # end
   end
 
   def create_dim_tree
@@ -559,7 +545,7 @@ class TreesController < ApplicationController
         errors << e
       end
     end #end transaction
-    render :js => "location.reload();"
+    redirect_to controller: 'trees', action: 'dimensions', dim_type: dim_tree_params[:dim_type]
   end
 
   def update_dim_tree

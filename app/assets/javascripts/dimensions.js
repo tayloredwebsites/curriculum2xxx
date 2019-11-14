@@ -16,38 +16,37 @@ $(function() {
     $('#'+subj_abbr+'-lo-column').removeClass('hidden')
     }
 
-  // /**
-  //  * Expand and highlight related LOs
-  //  */
-  // related_LO_display = function (rel, selected_LO) {
-  //   if ($("#lo_" + selected_LO).hasClass('spotlight')) {
-	 //  	$('.sequence-item--collapsable')
-	 //  	  .removeClass('collapsed spotlight spotlight-depends spotlight-akin spotlight-applies show-connections-condition');
-	 //  	for (var r in rel) {
-	 //  		$('li[data-lo-id='+rel[r][1]+']')
-	 //  		 .find('.connections-icon')
-	 //  		 .attr('title', 'show related LOs');
-	 //  	}
-  //   }
-  //   else {
-  //     $('.sequence-item--collapsable')
-  // 	  .addClass('collapsed')
-  // 	  .removeClass('spotlight spotlight-depends spotlight-akin spotlight-applies show-connections-condition');
-	 //  	for (var r in rel) {
-	 //  	  console.log('spotlight ', rel[r][1])
-	 //  	  $("#lo_" + rel[r][1])
-	 //  		.removeClass('collapsed')
-	 //  		.addClass('spotlight-' + rel[r][0] + ' show-connections-condition');
-	 //  	}
-  //     $("#lo_" + selected_LO)
-  //       .removeClass('collapsed')
-  //       .addClass('spotlight show-connections-condition');
-  //     $("#lo_" + selected_LO)
-  //        .find('.connections-icon')
-  //        .attr('title', 'exit related LOs mode');
-  //   }
+  /**
+   * Expand and highlight LO and dimension connections.
+   */
+  connections_display = function (rel, selected) {
+    console.log(rel, selected)
+    if ($(selected).hasClass('spotlight')) {
+	  	$('.dim-item--collapsable')
+	  	  .removeClass('collapsed spotlight spotlight-akin show-connections-condition');
+	    $('.dim-item--collapsable')
+	  		.find('.connections-icon')
+	  		.attr('title', 'show connections');
+    }
+    else {
+      $('.dim-item--collapsable')
+  	   .addClass('collapsed')
+  	   .removeClass('spotlight spotlight-akin show-connections-condition')
+       .find('.connections-icon')
+       .attr('title', 'show connections');
+	  	  for (var r in rel) {
+	  	    $(rel[r]).removeClass('collapsed')
+	  		   .addClass('spotlight-akin show-connections-condition');
+	  	  }
+      $(selected)
+        .removeClass('collapsed')
+        .addClass('spotlight show-connections-condition');
+      $(selected)
+         .find('.connections-icon')
+         .attr('title', 'exit spotlight mode');
+    }
 
-  // }
+  }
 
   // showIndicators = function (show) {
   //   if (show) {
