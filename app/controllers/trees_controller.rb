@@ -440,6 +440,7 @@ class TreesController < ApplicationController
         transl_keys << r.dim_desc_key
         Rails.logger.debug("*** newHash: #{dimHash.inspect}")
         @s_o_hash[subj_code][:dimensions] << dimHash
+        @s_o_hash['sci'][:dimensions] << dimHash
       end
       Rails.logger.debug("*** @s_o_hash: #{@s_o_hash.inspect}")
 

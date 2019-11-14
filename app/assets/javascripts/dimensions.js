@@ -10,18 +10,20 @@ $(function() {
    * @param  {String} subj_abbr Abbreviation for a subject.
    *                            E.g. 'bio', 'phy', etc.
    */
-    show_subject_dimensions = function (subj_abbr) {
-    $('.subject-column').addClass('hidden')
-  	$('#'+subj_abbr+'-dim-column').removeClass('hidden')
-    $('#'+subj_abbr+'-lo-column').removeClass('hidden')
+    show_subject_dimensions = function (subj_abbr, page_title) {
+      $('.subject-column').addClass('hidden')
+    	$('#'+subj_abbr+'-dim-column').removeClass('hidden')
+      $('#'+subj_abbr+'-lo-column').removeClass('hidden')
+      connections_display(true)
+      document.cookie = page_title + "_subject_visible=" + subj_abbr;
     }
 
   /**
    * Expand and highlight LO and dimension connections.
    */
-  connections_display = function (rel, selected) {
+  connections_display = function (showall, rel, selected) {
     console.log(rel, selected)
-    if ($(selected).hasClass('spotlight')) {
+    if ($(selected).hasClass('spotlight') || showall) {
 	  	$('.dim-item--collapsable')
 	  	  .removeClass('collapsed spotlight spotlight-akin show-connections-condition');
 	    $('.dim-item--collapsable')
@@ -216,10 +218,10 @@ initializeDrag = function () {
         var tree_id, dimension_id
         if (ui.helper[0].dataset['loid']) {
         	tree_id = ui.helper[0].dataset['loid']
-          dimension_id = item_to_connect.id.split('_')[1]
+          dimension_id = item_to_connect.id.split('_')[2]
         }
         else {
-          tree_id = item_to_connect.id.split('_')[1]
+          tree_id = item_to_connect.id.split('_')[2]
           dimension_id = ui.helper[0].dataset['dimid']
         }
         console.log('treeeID', tree_id, "dimension_id", dimension_id)
