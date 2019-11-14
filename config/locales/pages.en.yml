@@ -140,8 +140,11 @@ en:
       title: "Sequencing"
     miscon:
       title: "Misconceptions"
+      singular: "Misconception"
     bigidea:
       title: "Big Ideas"
+      singular: "Big Idea"
+      relates_to: "relates to"
     show:
       name: "Curriculum Detail Page"
     labels:

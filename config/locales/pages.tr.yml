@@ -75,6 +75,7 @@ tr:
       title: "Yanlış"
     bigidea:
       title: "Büyük Fikirler"
+      relates_to: "alakalı"
     show:
       name: "Müfredat Ayrıntı Sayfası"
     labels:

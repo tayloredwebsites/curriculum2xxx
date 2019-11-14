@@ -224,22 +224,22 @@ initializeDrag = function () {
           dimension_id = ui.helper[0].dataset['dimid']
         }
         console.log('treeeID', tree_id, "dimension_id", dimension_id)
-        $("#modal_popup").modal('show');
+       // $("#modal_popup").modal('show');
         $.ajax({
           "type": 'get',
-          "url": '/trees/dimension_data',
+          "url": '/trees/edit_dimensions',
           "data": {
             "source_controller": 'trees',
-            "source_action": 'new',
+            "source_action": 'edit_dimensions',
             "tree[tree_id]": tree_id,
             "tree[dimension_id]": dimension_id
           },
-          "dataType": 'json',
+          "dataType": 'script',
           "async": false
         })
         .then(function (res) {
           console.log("RESPONSE:", res)
-          $("#modal-container").html(add_edit_dimtree_form(res))
+          //$("#modal-container").html(add_edit_dimtree_form(res))
         })
         .catch(function (err) { console.log("ERROR:", err) })
 
