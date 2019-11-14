@@ -34,11 +34,13 @@ scope "(:locale)", locale: /tr|en/ do
       post 'index_listing'
       get 'sequence'
       get 'dimensions'
-      get 'dimension_data'
+      get 'edit_dimensions'
       post 'reorder'
+      post 'create_dim_tree'
+      patch 'update_dim_tree'
     end
   end
-
+  match '/dim_tree', :to => "trees#dim_tree_add_edit", :as => :dim_tree_path, :via => [:post, :patch, :put]
   resources :tree_trees,
     only: [:index, :new, :create, :show, :edit, :update] do
     collection do

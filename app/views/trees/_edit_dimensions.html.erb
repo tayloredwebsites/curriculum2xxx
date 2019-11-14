@@ -1,0 +1,36 @@
+<div class="modal-header">
+   <h3 id="myModalLabel"><%= translate('trees.' + @dim.dim_type + '.title') %> Connection</h3>
+ </div>
+ <div class="modal-body">
+
+<%= form_for(@dim_tree, :url => @form_path, html: { data: { modal: true } })  do |f| %>
+  <div>
+  	<input type="hidden" name="dim_tree[tree_id]" value='<%= @dim_tree.tree_id %>'>
+  	<input type="hidden" name="dim_tree[dimension_id]" value='<%= @dim_tree.dimension_id %>'>
+    <input type="hidden" name="dim_tree[dim_explanation_key]" value='<%= @dim_tree.dim_explanation_key %>'>
+    <input type="hidden" name="dim_tree[dim_type]" value='<%= @dim.dim_type %>'>
+    <% if @dim_tree.id %>
+      <input type="hidden" name="dim_tree[id]" value='<%= @dim_tree.id %>'>
+    <% end %>
+  </div>
+
+  <fieldset>
+    <div>
+    <div><strong><%= translate('app.labels.outcome') + ": " %></strong><%= @tree_subject_translation + " " + @tree.code %></div>
+    <div><strong> - <%= translate('trees.bigidea.relates_to') %> - </strong></div>
+    <div><strong><%= translate('trees.' + @dim.dim_type + '.singular') + ": " %></strong><%= @dimension_translation %></div>
+    </div>
+  </fieldset>
+  <br>
+  <fieldset>
+
+    <div>
+    <div><label for='explanation'><%= translate('tree_trees.label.explanation') %></label></div>
+    <%= f.text_area :explanation, name: 'dim_tree[explanation]', id: 'explanation', value: @explanation %>
+    </div>
+  </fieldset>
+ <div class="modal-footer">
+   <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+   <button type="submit" class="btn btn-primary">Save changes</button>
+ </div>
+<% end %>

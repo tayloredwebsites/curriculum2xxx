@@ -373,6 +373,7 @@ class TreesController < ApplicationController
   end
 
   def dimensions
+    puts "params #{params}"
     # index_prep
 
     # array of all translation keys, to be used to load up @translations instance variable with the tranlation values
@@ -389,8 +390,11 @@ class TreesController < ApplicationController
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = DimTree.active
     relations.each do |rel|
-      @relations["tree_id #{rel.tree_id}"] << rel
-      @relations["dim_id #{rel.dimension_id}"] << rel
+      if (rel.dimension[:dim_type] == params[:dim_type])
+        @relations["tree_id_#{rel.tree_id}"] << rel
+        @relations["dim_id_#{rel.dimension_id}"] << rel
+        transl_keys << rel[:dim_explanation_key]
+      end
     end
 
     @s_o_hash = Hash.new  { |h, k| h[k] = Hash.new }
@@ -406,6 +410,7 @@ class TreesController < ApplicationController
         :los => []
       }
       transl_keys << s.base_key+'.name'
+      transl_keys << s.base_key+'.abbr'
     end
 
     Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
@@ -428,12 +433,14 @@ class TreesController < ApplicationController
           subject_id: r.subject_id,
           code: r.dim_code,
           dim_name_key: r.dim_name_key,
-          dim_desc_key: r.dim_desc_key
+          dim_desc_key: r.dim_desc_key,
+          rel: @relations["dim_id_#{r.id}"]
         }
         transl_keys << r.dim_name_key
         transl_keys << r.dim_desc_key
         Rails.logger.debug("*** newHash: #{dimHash.inspect}")
         @s_o_hash[subj_code][:dimensions] << dimHash
+        @s_o_hash['sci'][:dimensions] << dimHash
       end
       Rails.logger.debug("*** @s_o_hash: #{@s_o_hash.inspect}")
 
@@ -456,7 +463,7 @@ class TreesController < ApplicationController
             code: tcode,
             text: "#{tree.code}: #{translation}",
             id: "#{tree.id}",
-            connections: @relations[tree.id]
+            rel: @relations["tree_id_#{tree.id}"]
           }
           @s_o_hash[tree.subject.code][:los] << newHash
         end
@@ -473,60 +480,102 @@ class TreesController < ApplicationController
   end
 
 
-  def dimension_data
+  def edit_dimensions
     errors = []
-
+    @explanation = ''
+    @tree = Tree.find(tree_params[:tree_id])
+    @dim = Dimension.find(tree_params[:dimension_id])
     #Check whether a tree_tree for this relationship already exists.
     dim_tree_matches = DimTree.where(
       :tree_id => tree_params[:tree_id],
       :dimension_id => tree_params[:dimension_id])
-
-    if errors.length == 0
-      @dim_tree = DimTree.new(tree_params)
-      @tree = Tree.find(tree_params[:tree_id])
-      @dim = Dimension.find(tree_params[:dimension_id])
-      @explanation = ''
-      tree_subject_translation = Translation.where(
+    subj_translation_matches = Translation.where(
         :key => @tree.subject[:base_key] + '.name',
         :locale => @locale_code
-        ).first.value
-      dimension_translation = Translation.where(
+        )
+    dimension_translation_matches = Translation.where(
         :key => @dim[:dim_name_key],
         :locale => @locale_code
-        ).first.value
+        )
 
-        data = {
-          :tree_code => tree_subject_translation + " " + @tree.code,
-          :dimension_name => dimension_translation,
-          :dim_type => @dim[:dim_type],
-          :translations => {
-            :modal_title => translate("trees.labels.#{@dim[:dim_type]}_connections"),
-            :explanation_label => translate('tree_trees.labels.explanation')
-          }
-        }
-
-    end
-    if errors.length == 0 && dim_tree_matches.length == 0
-      data[:dimension_tree] = @dim_tree
-      respond_to do |format|
-        format.html { render :dimensions }
-        format.json {render json: data}
-      end
-    #If a tree_tree for this relationship already exists,
-    #redirect to the edit path for that record.
-    elsif dim_tree_matches.length > 0
-      #redirect_to edit_tree_tree_path(tree_tree_matches.first)
-      data[:dimension_tree] = dim_tree_matches.first
-        respond_to do |format|
-          format.json {render json: data}
-        end
+    #Might not exist for every locale! Will fail if subject doesn't have
+    #a translation.
+    @tree_subject_translation = subj_translation_matches.first.value
+    #Might not exist for every locale!
+    @dimension_translation = dimension_translation_matches.first.value
+    if dim_tree_matches.length == 0
+      @dim_tree = DimTree.new(tree_params)
+      @dim_tree.dim_explanation_key = "TFV.v01.#{@tree.subject.code}.#{@tree.code}.bigidea.#{@dim.id}.expl"
+      @method = :post
+      @form_path = :create_dim_tree_trees
     else
-      respond_to do |format|
-        format.json {render json: { errors: errors}}
-      end
+      @dim_tree = dim_tree_matches.first
+      @method = :patch
+      @form_path = :update_dim_tree_trees
+      explanation_translation_matches = Translation.where(
+          :key => @dim_tree[:dim_explanation_key],
+          :locale => @locale_code
+        )
+      @explanation = explanation_translation_matches.first.value if (explanation_translation_matches.length > 0)
+    end #no errors
+    puts "try to respond with modal popup"
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
+  def create_dim_tree
+    errors = []
+    puts "create!!! #{params}"
+    @dim_tree = DimTree.new(
+      :dimension_id => dim_tree_params[:dimension_id],
+      :tree_id => dim_tree_params[:tree_id],
+      :dim_explanation_key => dim_tree_params[:dim_explanation_key]
+    )
+    @translation = Translation.new(
+      :key => dim_tree_params[:dim_explanation_key],
+      :value => dim_tree_params[:explanation],
+      :locale => @locale_code
+    )
+    ActiveRecord::Base.transaction do
+      begin
+        @dim_tree.save!
+        @translation.save!
+      rescue ActiveRecord::StatementInvalid => e
+        errors << e
+      end
+    end #end transaction
+    redirect_to controller: 'trees', action: 'dimensions', dim_type: dim_tree_params[:dim_type]
+  end
+
+  def update_dim_tree
+    puts "update!!!"
+    @dim_tree = DimTree.find dim_tree_params[:id]
+    translation_matches = Translation.where(
+      :locale => @locale_code,
+      :key => dim_tree_params[:dim_explanation_key]
+    )
+    if translation_matches.length == 0
+      @translation = Translation.new(
+        :key => dim_tree_params[:dim_explanation_key],
+        :value => dim_tree_params[:explanation],
+        :locale => @locale_code
+      )
+    else
+      @translation = translation_matches.first
+      @translation.value = dim_tree_params[:explanation]
+    end
+    ActiveRecord::Base.transaction do
+      begin
+        @dim_tree.save!
+        @translation.save!
+      rescue ActiveRecord::StatementInvalid => e
+        errors << e
+      end
+    end #end transaction
+    redirect_to controller: 'trees', action: 'dimensions', dim_type: dim_tree_params[:dim_type]
+  end
 
   def show
     process_tree = false
@@ -657,6 +706,17 @@ class TreesController < ApplicationController
       :code,
       :tree_id,
       :dimension_id
+    )
+  end
+
+  def dim_tree_params
+    params.require(:dim_tree).permit(
+      :id,
+      :dim_explanation_key,
+      :explanation,
+      :tree_id,
+      :dimension_id,
+      :dim_type
     )
   end
 
