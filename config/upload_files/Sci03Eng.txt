@@ -1,39 +1,101 @@
-en,sci,03
-S.3.1. Chapter One
-S.3.1.1. Discovers the shape of the earth. 
-S.3.1.2. Prepares models about the shape of the earth. Opines the former ideas about the shape of the earth.
-S.3.1.3. Apprehends that there are lands and water areas on the surface of the earth. 
-S.3.1.4. Explains the atmosphere around the earth.
-S.3.1.5. Compares lands and water areas on the surface of the earth by modelling.
-S.3.1.6. Understands the importance of the chordotonal organs. No mention the structural details of the chordotonal organs. 
-S.3.1.7. Explains main jobs of the chordotonal organs. Explains the relations between the chordotonal organs.
-S.3.1.8. Explains the needs for the protections of the health of the chordotonal organs. No mention the illnesses of the chordotonal organs.
-S.3.1.9. Observe and act on moving beings. Movement properties of assets; Characterized as fast, slow, rotating, swinging and changing direction
-S.3.1.10. Observe the moving assets and express their movement characteristics.Characterized as fast, slow, rotating, swinging and changing direction.
-S.3.1.11. He discovers that by pushing and pulling is a force.
-S.3.1.12. Defines the force by observing the effects of pushing and pulling forces on moving and standing bodies.
-S.3.1.13. Investigates the hazards of moving objects in daily life. A student running in the school corridor, a student who is standing in the situation that may occur, drivers lost control of the vehicle as a result of loss of life and property, avalanche, flood, etc. are given.
-S.3.1.14. Investigates the dangers of moving objects in daily life.In the situations that a student is running in the school corridor crashes a student who is standing,drivers lost control of the vehicle as a result of loss of life and property, avalanche, flood, etc. Examples are given.
-S.3.1.15. Explains the basic properties that characterize the substance by using the five senses organs.a) What characterizes matter; hardness / softness, flexibility /brittleness, color, odor, taste and rough / smooth conditions are mentioned. B)It is ensured that  discovering a surface is roughened or smoothed. c)It is provided to notice that  by bringing various examples that will appeal to the five senses. 
-S.3.1.16. Argues that touching, looking, tasting and smelling some of the substances can harm the living body. A)Security measures that can be taken are determined with the students. B)Necessary safety measures are taken. 
-S.3.1.17. 1.Takes responsibility for taking necessary security measures while working individually or in groups. 
-S.3.1.18.  Classifies the substances in the environment according to their states. Gives examples of substances states from the daily life, not mentioning their structures such as fluidity, distances between patricles,etc.
-S.3.1.19.  1.Classifies the substances in the environment according to their states.  Gives examples of substances states from the daily life, not mentioning their structures such as fluidity, distances between patricles,etc.
-S.3.1.20. Concludes that there is a necessity of light in order to carry out a process.
-S.3.1.21. Classifies the surrounding light sources into natural and artificial.
-S.3.1.22. Classifies the surrounding light sources into natural and artificial.
-S.3.1.23. Concludes that every sound has its source and can be transmitted everywhere. Concludes that by means of hearing one can determine the location of sound, approaching or moving away from the sound source.
-S.3.1.24. Classifies sound sources as natural and artificial ones.
-S.3.1.25. Observes the importance of sound intensity for hearing and figures out that human can not hear every sound clearly. It is emphasized sound intensity is a feature that provides hearing sound.
-S.3.1.26. 1- Explains the connection between sound intensity and distance. It is not given mathematical connection between them.  2- Expresses that loud noise can cause hearing loss.
-S.3.1.27. Classifies living creatures as animate or inanimate by using the examples in the environment. A.It is just mentioned plants and animals between species. B.It is paid attention to misconception in literature.
-S.3.1.28. 1-Presents the results of observation of a plant's life cycle. 2-Monitoring of a plant during a certain period of development and the recording of observation results are expected.
-S.3.1.29. 1.Recognize the environment for in live.Takes an active part in environmental cleanup lived.
-S.3.1.30. 1.Explain the difference between natural and artificial environment.
-S.3.1.31. 1.Design an artificial environment.
-S.3.1.32. 1.Become aware of the importance of the natural environment for living. National parks and natural monuments referred to.2.Recommends doing research solutions for protecting the natural environment.
-S.3.1.33. Explains the importance of electricity in daily life by giving examples from the vicinity of electrical tools.
-S.3.1.34. Explains the importance of electricity in daily life by giving examples from the vicinity of electrical tools.
-
-
- 
+en,sci,3
+3.1 Getting to Know Our Planet / Earth and the Universe
+3.1.1. The Shape of the World
+3.1.1.1. The student realizes that the shape of the Earth resembles a sphere.
+a) Past views about the shape of the Earth are indicated.
+3.1.1.2. Prepares a model regarding the shape of the Earth.
+a) It is mentioned that the Earth consists of layers.
+3.1.2. The Structure of the World
+3.1.2.1. Understands that earth and water are on the surface of the earth.
+3.1.2.2. Explains that there is a layer of air around us that surrounds us.
+3.1.2.3. Compares the areas covered by land and water on the surface of the earth.
+3.2. Our Five Feelings / Creatures and Life
+keywords: The aim of this unit is to enable the students to understand the sensory organs and to understand the basic relationships with each other and to gain knowledge and skills to be done in order to protect the health of sensory organs.
+3.2.1. Sense organs and their missions Suggested Time: 6 hours
+Subject / Concepts: Eye, ear, tongue, nose, skin
+3.2.1.1. Realizes the importance of sensory organs
+a) The structural details of the sense organs are not entered.
+3.2.1.2. Explains the basic missions of sensory organs.
+a) Describes the relationship between the sense organs.
+3.2.1.3. Explains what must be done to protect the health of sensory organs.
+a) Sensory organs of the disease cannot be entered.
+3.3. Getting to know the force / Physical events
+Key concepts: It is aimed in this unit that students gain awareness of observing the mobile assets in their environment by describing their movement characteristics as acceleration, deceleration, rotation, swinging and direction change; stop moving objects to be dangerous.
+3.3.1. Movement Properties of Substances Suggested Time: 6 hours
+Subject / Concepts: Acceleration, deceleration, rotation, swing and direction change
+3.3.1.1. It observes moving beings and expresses their movement characteristics.
+a) It characterizes the movement characteristics of substances as fast, slow, rotating, swinging and changing directions.
+3.3.2. Moving and Stopping Objects Suggested Time: 9 hours
+Subject / Concepts: Force, pushing force, pulling force, dangerous situations caused by moving objects
+3.3.2.1. Discovers that by pushing and pulling is a force.
+3.3.2.2. Defines the force by observing the effects of pushing and pulling forces on moving and standing bodies.
+3.3.2.3. Discuss the dangers of moving objects in daily life.
+a) A student running in the school corridor will crash if he / she hits a standing student, loss of life and property as a result of the drivers losing control of the vehicle, avalanche, flood and other examples are given.
+3.4. Getting to know the substance / The substance and its nature
+key concepts: In this unit, the students qualify for the substances according to their hardness / softness, elasticity, brittleness, color, odor, taste and roughness / smoothness by means of sensory organs; it is aimed to touch the various substances, to grasp them and to classify the substance in three groups as solid, liquid and gas.
+3.4.1. Specifications that characterise the Substance
+Subject / Concepts: Hardness / softness, elasticity, brittleness, color, odor, taste, roughness and smoothness
+3.4.1.1. Explain the basic properties of matter by using five sense organs.
+a. What characterizes matter; hardness / softness, flexibility, brittleness, color, odor, taste and rough / smooth conditions are mentioned.
+b. It is ensured that they discover a surface roughening or smoothing.
+c. A variety of examples will be addressed to the course medium by addressing the five senses, so that they can be heard through trial.
+3.4.1.2. It is argued that touching, looking, tasting and smelling some of the substances can harm the living body.
+a. Security measures that can be taken are determined with the students.
+b. Necessary safety measures are taken.
+3.4.1.3. It takes responsibility for taking necessary security measures while working individually or in groups.
+3.4.2. States of the Substance Suggested Time: 11 hours
+Subject / Concepts: Solid, liquid, gas
+3.4.2.1. Classify the substances around them.
+a) Examples of daily life are given to the state of matter, but their structure (fluidity, distance between particles etc.) is not mentioned.
+3.5. Light and Sounds / Physical Events around Us
+key concepts: In this unit, it is aimed that students show the ability of light to see, recognize the role of sound in hearing, and discover that there are various light and sound sources in their environment, natural / artificial, and to classify them.
+3.5.1. The Role of Light in Vision Recommended Duration: 3 hours Subject / Concepts: Light and vision
+3.5.1.1. As a result of their observations, they conclude that light is necessary for the visual event to occur.
+3.5.2 Light Sources Recommended duration: 6 hours
+Subject / Concepts: Natural light sources, artificial light sources
+3.5.2.1. Classifies the surrounding light sources as natural and artificial light sources.
+3.5.3. Sounds Around Us Recommended duration: 6 hours
+Subject / Concepts: Sound sources, natural sounds, artificial sounds
+3.5.3.1. It concludes that every sound has a source and that the sound is spread in all directions.
+3.5.3.2. He / she makes inferences about the sound source by approaching the sound source and the location of the sound source.
+3.5.4. The Role of Sound in Hearing Recommended duration: 6 hours
+Subject / Concepts: The relationship between sound intensity and hearing, hearing loss
+3.5.4.1. He observes that sound intensity is important for hearing, and he realizes that not every sound can be heard by the human ear.
+a) It is emphasized that the volume is the feature that allows us to hear the sound.
+3.5.4.2. Explains the relationship between sound intensity and distance
+a) It is not given that the mathematical relation between sound intensity and distance.
+3.5.4.3. Expresses that severe sounds can cause hearing loss.
+3.6. Journey to the World of Creatures / Life
+keywords: In this unit, students distinguish between living and non-living things, recognize the environment they live in, keep them clean, protect and love; observing the natural and artificial environment with examples, explanations, use of resources, to gain awareness of savings, take individual responsibility and also aims to gain awareness of healthy living.
+3.6.1. Getting to know the creatures around us
+Subject / Concepts: Living and non-living beings, living (plant and animal), lifeless (air, water, soil)
+3.6.1.1. Categorizes the assets as living and non-living by using the surrounding examples.
+a. No systematic classification of living things is entered.
+b. Only species of plants and animals are mentioned.
+c. In the concepts of living and inanimate, misconceptions in the literature are considered.
+3.6.1.2. It presents the results of the observation of the life cycle of a plant.
+a) It is expected that a plant will be monitored for a certain period of time and its results will be recorded.
+3.6.2. Me and my environment
+Subject / Concepts: School and environment, environmental cleaning, nature, forest, park, garden, buildings, national parks, natural monuments and so on.
+3.6.2.1. Knows the environment in which he lives.
+3.6.2.2. Takes active role in the cleaning of the environment.
+3.6.2.3. Explain the differences between natural and artificial environment.
+3.6.2.4. Designs an artificial environment.
+3.6.2.5. Realizes the importance of natural environment for living things.
+Key concepts: National parks and natural monuments are mentioned.
+3.6.2.6. In order to protect the natural environment, researches offers solutions.
+3.7. Electric Vehicles / Physical Events
+key concepts: In this unit, students should be able to observe the electric vehicles in their environment and distinguish between the intended use of these tools and the electrical sources they use; know what to pay attention to when using the tools; By recognizing the batteries, it is aimed to discover how the batteries are used in the operation of various devices and to realize the negative effects of battery wastes on the environment.
+3.7.1. Electric Tools Recommended duration: 6 hours
+Subject / Concepts: Warm-up equipment, lighting equipment, household appliances
+3.7.1.1. Explains the importance of electricity in daily life by giving examples from the vicinity of electrical tools.
+3.7.2. Electricity Resources Recommended duration: 8 hours
+Subject / Concepts: City electricity, battery, battery, battery
+3.7.2.1. Classifies electrical equipment according to the electrical sources.
+a. Electricity sources such as city electricity, battery, battery, battery etc. focuses on.
+b. It is not gone into the concept of poles in the batteries.
+3.7.2.2. Discuss the environmental damage of battery waste and what needs to be done in this regard.
+a) The chemical structure of the battery and the chemical pollution caused by it are not mentioned.
+3.7.3. Safe Use of Electricity Recommended duration: 8 hours Subject / Concepts: Electric shock
+3.7.3.1. It takes care of the safe use of electricity.
+a) Electrical shock, breakdown, fire, etc., which may be caused by the introduction of electric vehicles, open cables, metal objects into sockets and contact of the transmission lines with water. focuses on hazards.

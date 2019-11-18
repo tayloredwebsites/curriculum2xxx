@@ -1,0 +1,38 @@
+en,sci,8
+8. SCIENCE TEACHING PROGRAM
+8.1. Seasons and Climate
+8.1.1. World and Universe / Earth and Universe
+8.1.1.1. Formation of Seasons
+8.1.1.2. Climate and Air Movements
+8.2. DNA and Genetic Code 
+8.2.1. Living
+8.2.1.1. DNA and Genetic Code
+8.2.1.2. Heredity
+8.2.1.3. Mutation and Modification
+8.2.1.4. Adaptation (Adaptation to the Environment)
+8.2.1.5. Biotechnology
+8.3. Pressure
+8.3.1. Physical Events
+8.3.1.1. Pressure
+8.4. Substance and Industry
+8.4.1. Substance and its Nature / Matter and Nature
+8.4.1.1. Periodic System
+8.4.1.2. Physical and Chemical Changes
+8.4.1.3. Chemical Reactions
+8.4.1.4. Acids and Bases
+8.4.1.5. Interaction of Matter with Heat
+8.4.1.6. Chemical Industry in Turkey
+8.5. Simple Machines
+8.5.1. Physical Events
+8.5.1.1. Simple Machines
+8.6. Energy Transformations and Environmental Science
+8.6.1. Living
+8.6.1.1. Food Chain and Energy Flow
+8.6.1.2. Energy Transformations
+8.6.1.3. Matter Cycles and Environmental Problems
+8.6.1.4. Sustainable Development
+8.7. Electric Charges and Electrical Energy / Electric Loads and Electrical Energy
+8.7.1. Physical Events
+8.7.1.1. Electric Charges and Electricity
+8.7.1.2. Electrical Installed Objects
+8.7.1.3. Transformation of Electrical Energy Systems

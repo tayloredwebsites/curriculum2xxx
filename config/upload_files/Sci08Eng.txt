@@ -1,38 +1,182 @@
 en,sci,8
-8. SCIENCE TEACHING PROGRAM
-8.1. Seasons and Climate
-8.1.1. World and Universe / Earth and Universe
-8.1.1.1. Formation of Seasons
-8.1.1.2. Climate and Air Movements
-8.2. DNA and Genetic Code 
-8.2.1. Living
-8.2.1.1. DNA and Genetic Code
-8.2.1.2. Heredity
-8.2.1.3. Mutation and Modification
-8.2.1.4. Adaptation (Adaptation to the Environment)
-8.2.1.5. Biotechnology
-8.3. Pressure
-8.3.1. Physical Events
-8.3.1.1. Pressure
-8.4. Substance and Industry
-8.4.1. Substance and its Nature / Matter and Nature
-8.4.1.1. Periodic System
-8.4.1.2. Physical and Chemical Changes
-8.4.1.3. Chemical Reactions
-8.4.1.4. Acids and Bases
-8.4.1.5. Interaction of Matter with Heat
-8.4.1.6. Chemical Industry in Turkey
-8.5. Simple Machines
-8.5.1. Physical Events
-8.5.1.1. Simple Machines
-8.6. Energy Transformations and Environmental Science
-8.6.1. Living
-8.6.1.1. Food Chain and Energy Flow
-8.6.1.2. Energy Transformations
-8.6.1.3. Matter Cycles and Environmental Problems
-8.6.1.4. Sustainable Development
-8.7. Electric Charges and Electrical Energy / Electric Loads and Electrical Energy
-8.7.1. Physical Events
-8.7.1.1. Electric Charges and Electricity
-8.7.1.2. Electrical Installed Objects
-8.7.1.3. Transformation of Electrical Energy Systems
+8.1 Seasons and Climate / World and Universe
+key concepts: In this unit, students will be able to comprehend the effects of the Earth's movements, position and light on the unit surface in the formation of seasons; learn about the formation of climates and weather events; have knowledge about climate science; to gain knowledge and skills about global climate change and its effects.
+8.1.1. Formation of seasons Recommended duration: 8 hours
+Subject / Concepts: Rotational axis of the Earth, the plane of entanglement, heat energy, seasons
+8.1.1.1. Make predictions about the formation of seasons.
+a. It is referred to as the axis of rotation of the Earth.
+b. The relationship between the rotation axis of the Earth and the plane of rotation around the Sun is mentioned.
+c. The effect of the amount of energy on the unit surface of the light on the seasons is mentioned.
+8.1.2. Climate and Air Movements Recommended duration: 6 hours
+Subject / Concepts: Climate, climate science, climate scientist, global climate changes 8.1.2.1. Explain the difference between climate and weather events.
+8.1.2.2. He states that climate science (climatology) is a branch of science and that experts working in this field are called climate scientist (climatologist).
+8.2. DNA and Genetics Code / Living and Living
+key concepts: In this unit it is aimed that students will describe the concepts related to DNA and genetic code and discover the relationships between them, inheritance, mutation, modification, adaptation, selection, variation, genetic engineering and biotechnology applications and to gain knowledge and skills to discuss their positive / negative effects.
+8.2.1. DNA and Genetic Code Recommended duration: 4 hours
+Subject / Concepts: Structure of DNA, DNA replication, nucleotide, gene, chromosome
+8.2.1.1. Explain the concepts of nucleotide, gene, DNA and chromosome and establish a relationship between these concepts.
+a) When the names of the bases are given, the distinction between purine and pyrimidine is not entered.
+8.2.1.2. Shows the structure of DNA on the model.
+a. Hydrogen, glycoside, ester, phosphodiester bonds are not entered.
+b. Whether the errors in the DNA have been repaired are indicated.
+c. The nucleotide calculations in the DNA are not given.
+8.2.1.3. Expresses how DNA matches itself.
+a. Replication is not used.
+b. The pairing experiments are not described.
+c. Computation questions related to pairing are not entered.
+8.2.2. Heredity
+Subject / Concepts: Gene, genotype, phenotype, pure progeny, hybrid progeny, dominant, recessive, crossover, gender, consanguineous marriages
+8.2.2.1. Defines concepts related to inheritance.
+a. Gene, phenotype, genotype, pure progeny and hybrid progeny are mentioned.
+b. The concepts of dominant and recessive genes are mentioned.
+8.2.2.2. Solve problems with single character crosses and comment on the results.
+a. In crosses, only pea characters are used.
+b. In other creatures, it is emphasized that the transfer of characters is similar.
+c. It is emphasized that the sex of the child is determined by sex chromosome from the father.
+8.2.2.3. Discuss the genetic consequences of consanguineous marriages.
+8.2.3. Mutation and Modification Recommended duration: 2 hours
+Subject / Concepts: Mutation, modification
+8.2.3.1. Explain the mutation from the examples.
+8.2.3.2. Explain the modification from the examples.
+8.2.3.3. Inferences about the differences between mutation and modification.
+8.2.4. Adaptation (Adaptation to the Environment) Recommended duration: 2 hours
+Subject / Concepts: Adaptation, natural selection, variation
+8.2.4.1. Explains the adaptation of living things to the environment they live.
+a) Adaptations are emphasized as hereditary.
+8.2.5. Biotechnology Recommended duration: 4 hours
+Subject / Concepts: Genetic engineering, artificial selection, biotechnological studies, environmental impact of biotechnology applications
+8.2.5.1. Relate genetic engineering and biotechnology.
+a) Breeding, vaccination, gene transfer, cloning, gene therapy examples are emphasized.
+8.2.5.2. Discuss the useful and harmful aspects of these practices for human beings with the dilemmas created within the scope of biotechnological applications.
+8.2.5.3. Estimates the future genetic engineering and biotechnology applications.
+8.3. Pressure / Physical Events
+key concepts: In this unit, it is aimed that the students gain knowledge and skills about solid, liquid and gas pressures and factors affecting these pressures, while also realizing the applications of pressure in daily life.
+8.3.1. Pressure
+Subject / Concepts: Concepts affecting pressure, solid pressure, variables affecting fluid pressure, applications of pressure in daily life and technology
+8.3.1.1. He / she discovers the variables affecting the solid pressure.
+a) Pascal is given as the pressure unit. No mathematical relations can be entered.
+8.3.1.2. Estimates the variables affecting fluid pressure and tests their estimates.
+a. It is also stated that gases also exert pressure similar to liquids. The open air pressure is exemplified.
+b. No mathematical relations can be entered.
+c. Variables that affect gas pressure are not entered.
+8.3.1.3. Gives examples of applications of pressure properties of solids, liquids and gases in daily life and technology.
+a. Examples of the application of Pascal's principle for fluid pressure are given.
+b. Emphasis is placed on the principles and principles as a kind of scientific knowledge.
+8.4. Substance and Industry / Substance and its Nature
+key concepts: In this unit it is aimed for students to know that the elements are classified as metal, nonmetal and noble gas, the changes in the matter are classified as physical and chemical change, to gain knowledge and skills about acid-base concepts and acid rain.
+8.4.1. Periodic System Recommended
+Subject / Concepts: Group, period, classification of periodic system
+8.4.1.1. Explains how groups and periods are formed in the periodic system.
+a) The need for the periodic system and the process of creating the periodic system are emphasized without going into detail.
+8.4.1.2. Classify the elements on the periodic table as metal, semiconductor and nonmetal.
+a. The properties of the elements are not entered.
+b. It focuses on the noble gases.
+8.4.2. Physical and Chemical Changes Recommended duration: 4 hours
+Subject / Concepts: Physical change, chemical change
+8.4.2.1. Explains the differences between physical and chemical change by observing various events.
+8.4.3. Chemical Reactions
+Subject / Concepts: Formation of chemical reactions, conservation of mass
+8.4.3.1. Knows that the compounds are formed as a result of chemical reaction.
+a) Chemical reaction equations are not entered using formulas.
+8.4.4. Acids and Bases Recommended duration: 8 hours
+Subject / Concepts: Solutions to acid, base, pH, acid rain, acid rain
+8.4.4.1. Express the general properties of acids and bases.
+8.4.4.2. It gives examples of daily life to acids and bases.
+8.4.4.3. Uses materials that can be reached in daily life as acid-base separator.
+8.4.4.4. It uses the pH values for the acidity and alkalinity of the substances.
+a) It is provided to make inferences by way of experiment about the subject.
+8.4.4.5. Observes the effects of acids and bases on various substances.
+8.4.4.6. It takes necessary measures for the hazards that may occur during the use of acids and bases as cleaning agents.
+8.4.4.7. Offers solutions for the prevention of acid rain.
+a) Causes and consequences of acid rains.
+8.4.5. Interaction of Matter with Heat Recommended duration: 5 hours Subject / Concepts. Heat and heat factors
+8.4.5.1. He / she discovers that the warming depends on the type, mass and / or temperature change of the substance.
+a. Q = M.Can. .T cannot be entered.
+b. Dependent, independent and controlled variables are explained by examples.
+8.4.5.2. He discovers that the heat necessary to change is related to the type and mass of matter.
+a. It is mentioned that the temperature of the pure substances remains constant during the change of state.
+b. No mathematical calculations.
+8.4.5.3. Interprets the state change and warming graph of substances.
+8.4.5.4. Relate heat exchange with state changes in daily life.
+8.4.6. Chemical Industry in Turkey Recommended duration: 4 hours
+Subject / Concepts: Imported chemical products, exported chemical products, official / private institutions that contribute to the development of the chemical industry in our country, chemistry-based occupations
+8.4.6.1. Past explores the development of the chemical industry in Turkey today.
+a. The studies of public / private institutions and civil society organizations contributing to the development of the chemical industry in our country are addressed.
+b. giving a few important examples of imported and exported chemical products referred to in the functioning of Turkey chemical industry.
+8.4.6.2. Researches the branches of the chemical industry and offers suggestions about new occupations in the future.
+8.5. Simple Machines / Physical Events
+key concepts: In this unit, students will gain knowledge and skills about simple machine types that they encounter frequently in daily life, and to design simple simple machine mechanisms that will provide ease of work in daily life by revealing the knowledge and skills they gain; thus, they are intended to gain creative and innovative thinking skills.
+8.5.1. Simple Machines Recommended duration: 10 hours
+Subject / Concepts: Fixed roller, movable roller, pulley, lever, inclined plane, spinning wheel, application areas of simple machines
+8.5.1.1. Explains the advantages of simple machines through examples.
+a. From simple machines, the fixed spool, movable pulley, pulley, lever, inclined plane and spinning wheel are stopped.
+b. Gear wheels, screws and pulleys are also simple images and are not detailed.
+c. Simple machines emphasize that there is no gain from work.
+d. No mathematical relations can be entered.
+8.5.1.2. Designs a device that will provide ease of work in daily life by using simple machines.
+a) First of all, he is asked to express his design with drawings. You may be asked to convert the three-dimensional model if appropriate.
+8.6. Energy Transformations and Environmental Science / Living Creatures and Life
+key concepts: In this unit students explain the photosynthesis, respiration, energy transformations, explain the food chain and the elements that make up this chain, discover the relationship between the elements, realize the material cycles in the life of environmental science, know the environmental problems and offer solutions to the environmental problems and gain knowledge and skills related to them.
+8.6.1. Food Chain and Energy Flow
+Subject / Concepts: Food chain, food network, producer, consumer, separator, ecology pyramid, bioaccumulation
+8.6.1.1. Gives examples to producers, consumers, separators in food chain.
+a. Parasitic food chains are not mentioned.
+b. Energy transfer in ecology pyramids, body size, number of individuals and biological accumulation are highlighted.
+8.6.2. Energy Transformations Recommended duration: 8 hours
+Subject / Concepts: Photosynthesis, factors affecting the rate of photosynthesis, respiration, oxygen-free respiration, oxygen respiration
+8.6.2.1. Recognize the importance of photosynthesis in food production in plants.
+a. In photosynthesis, carbon dioxide and water are used, nutrients and oxygen are emphasized. No chemical equivalents are entered.
+b. It is emphasized that photosynthesis can also occur in artificial light.
+c. It is stated that photosensitizing organisms are producers.
+8.6.2.2. Make inferences about the factors affecting the rate of photosynthesis.
+a) Light color, amount of carbon dioxide, amount of water, light intensity and temperature are highlighted.
+8.6.2.3. Indicates the importance of respiration in living organisms.
+a. The chemical equation of respiration is not entered.
+b. It is mentioned that the plants are breathing night and day.
+c. Oxygen and oxygen-free breathing stages are given without entering, but the amount of energy released is not specified numerically.
+d. The name of the ATP is entered without entering the structure.
+8.6.3. Matter Cycles and Environmental Problems
+Subject / Concepts: Water cycle, oxygen cycle, nitrogen cycle, carbon cycle, ozone layer, global warming
+8.6.3.1. Explain matter cycles by showing them on the diagram.
+8.6.3.2. Question the importance of substance cycles in terms of life.
+8.6.3.3. Discuss the causes and possible consequences of global climate change.
+a. Greenhouse effect is explained.
+b. In the context of global climate change, the effects of environmental problems on the future of the world and human life are questioned.
+c. They are asked to articulate the predictions about how environmental problems can have an impact on the future of the world.
+ç. Students' ecological footprint calculation (extension edu, org and miles can be benefited from secure sites) is provided.
+d. Measures taken by the world countries to prevent global climate change (eg Kyoto Protocol) are addressed.
+8.6.4. Sustainable Development
+Subject / Concepts: Sustainable life, resource-saving use, recycling 8.6.4.1. It takes care to be efficient in the use of resources.
+8.6.4.2. Design projects for the efficient use of resources.
+8.6.4.3. Explain the importance of separation of solid wastes for recycling.
+8.6.4.4. Provides solutions by using research data on the contribution of recycling to the national economy.
+8.6.4.5. In case of non-use of resources, the company offers solutions for future problems.
+8.7. Electric Charges and Electrical Energy / Physical Events
+key concepts: Students, in this unit, recognize the electric charge, the charge and pulling forces between the electric charge to realize; understand the fact that the objects can be in three different conditions in terms of the electrical charge they have and that they can understand the different events; electroscope, observation of the electric charge of the objects by trying to observe the experiment, electric energy to heat, light and motion energies, motion energy can also be converted into electrical energy by observing, power plants in the production of electrical energy and how they can produce harmful or useful situations to predict, electric energy conscious and gaining knowledge and skills to use them economically.
+8.7.1. Electric Charges and Electricity Recommended duration: 6 hours
+Subject / Concepts: Electric loads, pushing and pulling forces between electric charges, types of electricity
+8.7.1.1. Explain electrification with some natural events and application examples in technology.
+8.7.1.2. Explain the effect of electric loads on the same and different kind of electric loads.
+8.7.1.3. He / she realizes types of electrification by doing experiments.
+8.7.2. Electrical Installed Objects Recommended duration: 8 hours
+Subject / Concepts: Positive charged object, negatively charged object, electroscope, grounding
+8.7.2.1. Classify the objects in terms of their electrical loads.
+a) In particular, the neutral object does not mean an unloaded object; It is emphasized that the amount of positive and negative charge is equal in neutral bodies. It is stated that the electroscope is used in the load measurement.
+8.7.2.2. Explains grounding.
+a) The importance of grounding in daily life and technology is emphasized in terms of life and property safety.
+8.7.3. Transformation of Electrical Energy Recommended duration: 10 lessons
+Subject / Concepts: Conversion of electric energy to heat and light energy, transformation of electric energy to motion energy and movement energy to electric energy, power plants, conscious and efficient use of electric energy
+8.7.3.1. Gives examples of applications where electric energy is transformed into heat, light and motion energy.
+a. The importance of electrical fuse is emphasized in terms of safety.
+b. It is emphasized that the robots are developed based on the transformation of electrical energy into the energy of movement.
+8.7.3.2. Designs a model based on the transformation of electric energy into heat, light or motion energy.
+a) First of all, they are asked to express their designs. You may be asked to convert the three-dimensional model if appropriate.
+8.7.3.3. Explains how electrical energy is produced in power plants.
+a) Power plants, hydroelectric, thermal, wind, geothermal and nuclear power plants are mentioned.
+8.7.3.4. Produces ideas about the advantages and disadvantages of power plants.
+a) They are asked to produce ideas and to defend their ideas for the evaluation of power plants in terms of benefit- loss and risks.
+8.7.3.5. Discuss the importance of conscious and economical use of electricity in terms of family and country economy.
+a. Studies on energy efficiency by official institutions and non-governmental organizations in our country and what should be done in terms of electricity energy usage are indicated.
+b. The impact of illegal use of electricity on the country's economy is highlighted.
+8.7.3.6. It takes care to use electricity in homes efficiently.
+a) Students are asked to conduct long-term studies to reduce the electricity bill and the process is monitored.

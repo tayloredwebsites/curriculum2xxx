@@ -1,35 +1,188 @@
 en,sci,7
-7. CLASSROOM SCIENCE TEACHING PROGRAM
-7.1. Solar System and Beyond
-7.1.1 World and Universe / Earth and Universe
-7.1.1.1 Space researches
-7.1.1.2. Beyond the Solar System: Sky Bodies
-7.2. Cells and Divisions
-7.2.1 Living
-7.2.1.1. Cell
-7.2.1.2. Mitosis
-7.2.1.3. Meiosis
-7.3. Force and Energy
-7.3.1. Physical Events
-7.3.1.1. Mass and Weight Relationship
-7.3.1.2. Relationship Between Force, Work and Energy
-7.3.1.3. Energy Transformations
-7.4. Pure Substances and Mixtures / Pure Materials and Mixtures
-7.4.1. Substance and Its Nature / Matter and Nature
-7.4.1.1. Particulate Structure of Matter
-7.4.1.2. Pure Ingredients
-7.4.1.3. Mixtures
-7.4.1.4. Separation of Mixtures
-7.4.1.5. Domestic Waste and Recycling
-7.5. Interaction of Light with Matter
-7.5.1 Physical Events
-7.5.1.1. Absorption of Light
-7.5.1.2. Mirrors
-7.5.1.3. Light Breaks and Lenses
-7.6. Reproduction, Growth and Development / Reproduction, Growth and Development of Living Things
-7.6.1 Living / Living in Living Things
-7.6.1.1. Reproduction, Growth and Development in Human
-7.6.1.2. Reproduction, Growth and Development in Plants and Animals
-7.7. Electrical Circuits
-7.7.1. Physical Events
-7.7.1.1. Attachments of Light Bulbs
+7.1 Solar System and Beyond / World and Universe
+key concepts: Students in this unit recognize the solar system and the celestial bodies in the solar system, and the relationships with each other and the importance of the telescope to be an important observation tool in terms of understanding the importance of the science and technology by taking into account the contribution of space research on the knowledge and skills to gain; discuss the causes of space pollution; To understand the contributions of Turkish- Islamic scholars to space research; stars, star varieties, constellations, galaxies are intended to recognize.
+7.1.1. Space researches Recommended duration: 8 hours
+Subject: Satellite, space pollution, sky observation tools
+7.1.1.1. Explain space technologies.
+a. Artificial satellites are mentioned.
+b. Turkey is referred to as the launch of the satellites and the mission.
+7.1.1.2. Expresses the causes of space pollution and predicts the possible consequences of this pollution.
+7.1.1.3. Explain the relationship between technology and space exploration.
+7.1.1.4. Explain the structure of the telescope and what works.
+a. Telescope types are mentioned.
+b. Light pollution is mentioned.
+7.1.1.5. He makes inferences about the importance of telescope in the development of celestial science.
+a. The selection of the observatory sites and the conditions of these places are mentioned.
+b. The contributions of Western astronomers and Turkish Islamic astronomers.
+7.1.1.6. It offers a simple telescope model.
+7.1.2. Beyond the Solar System: Sky Bodies Recommended duration: 8 hours
+Subject / Concepts: Star, constellation, galaxy, black hole
+7.1.2.1. Recognize the process of star formation.
+a. The concept of nebula is mentioned.
+b. Examples of nebulae are given.
+c. The concept of black hole is mentioned.
+7.1.2.2. Explain the concept of stars.
+a. Star varieties are mentioned.
+b. The constellations, which are the names of the star groups seen from the Earth, are referred to.
+c. It is mentioned that the distance between the celestial bodies is expressed in light years.
+7.1.2.3. Explain the structure of galaxies.
+a. Galactic varieties are mentioned.
+b. Examples of galaxies are the Milky Way and Andromeda galaxies.
+7.1.2.4. Explain the concept of universe.
+7.2. Cells and Divisions / Living and Living
+key concepts: In this unit, it is aimed that students will be able to distinguish between animal and plant cells and to understand the relationship between cell-tissue-organ-system and organism. In addition, students identify the stages of mitosis and meiosis, the formation of reproductive cells, mitosis and meiosis to gain knowledge and skills to understand the differences between the aims.
+7.2.1. Cell
+Topic / Concepts: The similarities and differences between cell, plant and animal cell, tissues, cell-tissue-organ- system-organism relation, DNA, gene, chromosome
+7.2.1.1. Compare animal and plant cells in terms of basic parts and tasks.
+a. Only the cell membrane, cytoplasm and nucleus are given for the basic parts of the cell.
+b. Only the names and tasks of cell organelles are given.
+c. The relationship between DNA, gene and chromosome concepts is mentioned.
+7.2.1.2. It discusses the views of the structure of the cell from the past to the present by associating it with technological developments.
+key concepts: It is emphasized that scientific information is not definite and may change and develop.
+7.2.1.3. Explain the relationship between cell-tissue-organ-system-organism.
+a) The definitions of cell-tissue-organ-system-organism concepts and their relations are mentioned.
+7.2.2. Mitosis
+Subject / Concepts: Cell division, stages of mitosis, importance of chromosomes in mitosis, importance of mitosis for living beings
+7.2.2.1. Explain the importance of mitosis for living things.
+7.2.2.2. Explain that mitosis consists of different stages.
+a) The names of mitosis phases are not given.
+7.2.3. Meiosis
+Subject / Concepts: Formation of meiosis of meiosis cells, the importance of meiosis for living things, meiosis separating mitosis characteristics
+7.2.3.1. Explains the importance of meiosis for living things.
+a) Meiosis stages are given only as meiosis I and meiosis II.
+7.2.3.2. It shows how the meiosis occurs in the main cells of the reproduction.
+a) Cell names are not mentioned during gamete formation. Only sperm and eggs are given.
+7.2.3.3. Compares the differences between meiosis and mitosis.
+a) Differences between meiosis and mitosis are not given.
+7.3. Force and Energy / Physical Events
+key concepts: In this unit, the students will learn the concepts of mass and weight, understand the relationships and differences between them, be aware of the existence of gravity between the celestial bodies by gravity, define the work done physically, express the factors affecting the work and the unit of work, the relationship between the force-work and energy. They will notice, classify their energy types, observe the effect of friction force on energy, make designs for the effects of air and water resistance, gain knowledge and skills.
+7.3.1. Mass and Weight Relationship Recommended duration: 6 hours
+Subject / Concepts: Mass, gravity, gravity, gravity
+7.3.1.1. Refers to the gravitational force acting on the mass.
+a. It is emphasized that weight is a force.
+b. Weight measurement is made by using dynamometer.
+7.3.1.2. Compares the concepts of mass and weight.
+7.3.1.3. Explains gravity based on celestial bodies as gravity.
+a) No mathematical relations can be entered.
+7.3.2. Relationship Between Force, Work and Energy
+Subject / Concepts: Physical work, kinetic energy, potential energy of attraction, potential energy of flexibility
+7.3.2.1. Explains that the work done in the physical sense is related to the applied force and the way taken.
+a. The unit is given as a joule.
+b. No mathematical relations can be entered.
+7.3.2.2. Categorize energy as kinetic and potential energy by associating it with business concept.
+a. Potential energy is classified as the potential energy of attraction, potential energy and flexibility.
+b. It is stated that potential energy depends on mass and height, kinetic energy depends on mass and velocity. No mathematical relations can be entered.
+7.3.3. Energy Transformations Recommended duration: 8 hours
+Subject / Concepts: Conservation of energy, kinetic energy loss by friction, air and water resistance
+7.3.3.1. It is concluded that the energy is protected by the transformation of kinetic and potential energy types.
+7.3.3.2. Explain the effect of friction force on kinetic energy with examples.
+a. Friction surfaces, air resistance and water resistance are taken into account when sampling the effect of friction force on kinetic energy.
+b. It is emphasized that the friction surfaces warm up and show the loss of kinetic energy to heat energy by showing them with a simple experiment.
+7.3.3.3. Designs a tool to reduce the impact of air or water resistance.
+a. The effect of air or water resistance on the design of different vehicles is mentioned.
+b. The designs are illustrated by drawing and not transformed into a three-dimensional product.
+7.4. Pure substances and mixtures / Substance and its nature
+key concepts: In this unit, students should know the structure of the atom consists of proton, neutron and electron; It is aimed to classify elements, compounds and mixtures based on pure and impure substances. In addition, it is aimed to learn some separation techniques used in the separation of mixtures, the symbols of the elements and the formulas of the compounds, to explain the dissolution process, the relationship between solvent and soluble molecules, to understand the importance of recycling, recycling and reuse of domestic solid and liquid wastes.
+7.4.1. Particulate Structure of Matter Recommended duration: 6 hours
+Subject / Concepts: Atom (core, layer, proton, neutron, electron), feature of scientific knowledge, molecule
+7.4.1.1. Tells the structure of the atom and the basic particles in its structure.
+7.4.1.2. Question how the thoughts about atomic concept has changed from past to present.
+a. Atomic theories are not detailed.
+b. It is emphasized that scientific knowledge may change over time.
+c. General information about the theory of scientific knowledge types are given.
+7.4.1.3. It means that the same or different atoms will come together to form a molecule.
+7.4.1.4. Presents various molecular models.
+7.4.2. Pure Ingredients Recommended duration: 6 hours
+Subject / Concepts: Elements, symbols of elements, compound, compound formulas
+7.4.2.1. It gives examples by classifying pure substances as elements and compounds.
+7.4.2.2. Expresses the names, symbols and some areas of use of the first 18 elements and common elements in the periodic system (gold, silver, copper, zinc, lead, mercury, platinum, iron and iodine).
+7.4.2.3. Describes the formulas, names and some areas of use of common compounds.
+7.4.3. Mixtures
+Subject / Concepts: Homogeneous mixture, solution (solute, solvent), heterogeneous mixture, dissolution, factors affecting the rate of dissolution
+7.4.3.1. Gives examples by classifying the mixtures as homogeneous and heterogeneous.
+a) It is emphasized that homogeneous mixtures can also be expressed as solutions.
+7.4.3.2. Prepares the solution using solvents and solutes in daily life.
+7.4.3.3. Determines the factors affecting the dissolution rate by experiment.
+a. The contact surface, mixing and temperature factors are referred to.
+b. Dependent, independent and controlled variable concept groups are emphasized.
+7.4.4. Separation of Mixtures Recommended duration: 4 hours
+Subject / Concepts: Evaporation, density difference, distillation
+7.4.4.1. Applies one of the methods that can be used to separate the mixtures by selecting the appropriate one.
+a) Evaporation, density difference and distillation are emphasized.
+7.4.5. Domestic Waste and Recycling Recommended duration: 6 hours
+Subject / Concepts: Domestic solid waste, domestic liquid waste, recycling, reuse.
+7.4.5.1. Distinguishes recyclable and non-convertible materials in domestic waste.
+7.4.5.2. Design project for recycling of domestic solid and liquid wastes.
+7.4.5.3. Questions recycling in terms of effective use of resources.
+a) The contribution of recycling facilities to the economy is emphasized.
+7.4.5.4. It takes care of waste control in its vicinity.
+a. The works of public and non-governmental organizations on waste control are addressed.
+b. Please note that medical waste should not come into contact.
+7.4.5.5. Develops a project for conveying reusable goods to those in need.
+7.5. Interaction of Light with Matter / Physical Events
+key concepts: In this unit it is aimed that students know mirror and lens types and areas of use; gain knowledge and skills about the absorption of light, the appearance of colored objects and ways of benefiting from solar energy; to design future solar energy utilization systems, thus gaining creative and innovative thinking skills.
+7.5.1. Absorption of Light Recommended duration: 10 hours
+Subject / Concepts: Absorption of light, black, white and colored objects, solar energy
+7.5.1.1. He discovers that the light can be absorbed by the substance as a result of its interaction with the substance.
+7.5.1.2. It is concluded that white light is a combination of all light colors.
+7.5.1.3. He associates the reason for the black, white and colored appearance of objects as a result of their observations with the reflection and absorption of light.
+a) Color filters are not entered.
+7.5.1.4. Gives examples of innovative applications of solar energy in daily life and technology.
+a) The importance of solar energy is emphasized in terms of effective use of resources.
+7.5.1.5. Discuss the ideas that solar energy produces in the future.
+7.5.2. Mirrors
+Subject / Concepts: Flat mirror, hollow mirror, mound mirror
+7.5.2.1. Observe mirror types and give examples of usage areas.
+7.5.2.2. Compares images composed of flat, pit and hump mirrors.
+a. It is not entered into the image drawing with special rays.
+b. No mathematical relations can be entered.
+c. It is stated in the dim mirror that the properties of the image of the object (large / small, reverse / flat) may vary depending on the distance of the object from the mirror.
+7.5.3. Light Breaks and Lenses Recommended duration: 10 hours
+Subject / Concepts: Breaking of light, lenses (thin-edged lenses, thick-edged lenses), focal point
+7.5.3.1. Observes the path of light changing the environment and associates the cause of the breaking with the change of environment.
+a. False reflection and prisms are not broken.
+b. The Snell Act is not entered.
+7.5.3.2. It observes the breaking of light by experiment using thin and thick-edged lenses.
+7.5.3.3. Determines the focal points of thin and thick-edged lenses.
+a. It is mentioned that the glass wastes left in the forest areas can create a fire risk.
+b. It is not entered into the image drawing with special rays.
+c. No mathematical relations can be entered.
+ç. The focal points of the thin and thick-edged lenses are shown in the drawing.
+7.5.3.4. Give examples of lenses' usage in daily life and technology.
+7.5.3.5. Design a display tool using mirrors or lenses.
+a) First of all, he is asked to express his design with drawings. If appropriate, they may be asked to convert them into a three-dimensional model.
+7.6. Reproduction, Growth and Development / Living and Living in Living Things
+key concepts: In this unit, it is aimed that the students will be able to explain the reproductive, growth and development processes of human and gain the knowledge and skills related to the measures to be taken for adolescent health, to compare the reproduction, growth and development processes in plants and animals, to discover the factors that affect the growth and development and to gain the knowledge and skills related to the maintenance of a plant or animal and to take responsibility.
+7.6.1. Reproduction, Growth and Development in Human Recommended duration: 6 hours
+Subject / Concepts: Relationship between human reproduction, structure and organs that provide reproduction in humans, sperm, egg, zygote, embryo, fetus and baby
+7.6.1.1. Explains the structure and organs that provide reproduction in humans by showing them on the diagram.
+a. Structures of reproductive cells are not given.
+b. It is emphasized that reproductive cells are formed for the continuation of the generation.
+c. The importance of hygiene in reproductive system health is emphasized.
+7.6.1.2. Explain the relationship between sperm, egg, zygote, embryo, fetus and baby.
+a) The developmental stages of the embryo are not entered.
+7.6.1.3. Discusses the precautions to be taken in order to develop healthy embryos based on research data.
+7.6.2. Reproduction, Growth and Development in Plants and Animals
+Subject / Concepts: Asexual reproduction (vegetative reproduction, division, budding and regeneration), sexual reproduction, growth and development
+7.6.2.1. Compares the reproduction types in plants and animals.
+a. Sexual reproduction types cannot be entered but are given as examples of asexual breeding.
+b. Metagenesis is not mentioned.
+c. Internal and external insemination in animals and internal and external development is not mentioned. Metamorphosis, breeding and egg proliferation are briefly mentioned.
+7.6.2.2. Explains the growth and development processes in plants and animals by giving examples.
+a. An experiment involving dependent, independent and controlled variables is provided in relation to the factors affecting the germination of the seed.
+b. An example of a flowering plant is emphasized.
+7.6.2.3. Explain the main factors affecting growth and development in plants and animals.
+7.6.2.4. It takes care of a plant or animal and reports its development process.
+7.7. Electrical Circuits / Physical Events
+key concepts: It is aimed in this unit that students taking into account the types of serial and parallel linking and to install and, accordingly, notice that the brightness of the lamp in the circuit may change, taking into account the technological applications of electric energy to heat, light and energy to gain knowledge and skills about the transformation of energy; to design future specific lighting systems so that they can gain creative and innovative thinking skills.
+7.7.1. Attachments of Light Bulbs Recommended duration: 8 hours
+Subject / Concepts: Binding, parallel connection, electric current, voltage
+7.7.1.1. Draws a circuit diagram consisting of bulbs connected in series and parallel.
+7.7.1.2. Observes the brightness of the bulbs in series and parallel connections and observes on the circuit.
+7.7.1.3. Defines the electric current.
+7.7.1.4. Explain that electrical energy is transmitted to the circuits via current.
+7.7.1.5. Relates the current passing through the voltage between the ends of a circuit element.
+a. The voltage concept is explained through batteries.
+b. The relationship between voltage, current and resistance in a conductor is explained through Ohm's Law. No mathematical calculations.
+7.7.1.6. Designs an original lighting tool.
+a) First of all, he is asked to express his design with drawings. You may be asked to convert the three- dimensional model if appropriate.
