@@ -1,0 +1,172 @@
+en,mat,8
+8.1. NUMBERS AND OPERATIONS
+8.1.1. Multipliers and Multiples
+Terms or concepts: the largest common divisor (EBOB), the smallest common fold (ECHO)
+8.1.1.1. Find the positive integer multipliers of the given positive integers, writes the positive integer multipliers of the positive whole numbers as the multiplication of exponential expressions.
+a) Studies to find the prime factors of a positive integer are also included.
+8.1.1.2. Calculates the largest common divisor of the two natural numbers (EBOB) and the smallest common storey (EKOK) and solves the related problems.
+a) Problems that require area and volume calculation are not entered.
+8.1.1.3. Determines whether the two given natural numbers are prime.
+8.1.2. Exponential Expressions
+Terms or concepts: very large and very small numbers, scientific notation
+8.1.2.1. Calculates the integer forces of integers.
+8.1.2.2. Understands the basic rules related to the expressions, create equivalent expressions. a 0 k, m, n with integers.
+m
+a0=1, a1n = a-n, a n = a1-n , a n. a m= a n+m, aan = a m-n
+(a n) m = a n.m, (a.b) k = a k .b k , a
+( )k = a^kk	(b 0) b	b
+8.1.2.3. Resolves the decimal representation of numbers using the integer forces of 10.
+a) For example, 82,53 = 8 .10 = + 2. 10 + 5. 10 3 + 3. 10 ⁻²
+8.1.2.4. Express a given number using the different integer forces of 10.
+a) For example, the number 51.2 × 10 5 can be expressed as 512 × 10 4 or 5,12 × 10 6.
+8.1.2.5. Express and compare very large and very small numbers with scientific representation.
+a) | A | A x10 n is a big scientific notation ’, greater than 1 or 1, a real number less than 10 and an integer n. is limited to cases where a is positive.
+8.1.3. Rooted Expressions
+Terms or concepts: full square positive whole numbers, square root, real number, irrational number Symbols:, Semb
+8.1.3.1. The exact square determines the relationship between positive integers and the square roots of these numbers.
+a) Using the square models, the relationship between the area and the edge can be used to examine the relationship between a number and its square root.
+8.1.3.2. Determines which of the two natural numbers is a non-square rooted square.
+a) For example, studies are carried out to determine that the number 31 is between 5 and 6 and it is closer to 6.
+8.1.3.3. Roots a square root in the form of a b and a b in the expression in the root contains the coefficient.
+8.1.3.4. Do multiplication and division operations in square root expressions.
+It is not allowed to enter transactions with expressions with multiple terms such as a ± c or a ± b.
+8.1.3.5. Makes addition and subtraction operations in square root expressions.
+a) It is not allowed to enter transactions with expressions with multiple terms such as a ± c or a ± b.
+8.1.3.6. When multiplied by a square root, it gives an example of a natural number multiplier.
+a) For example, 2, 5, 2, and 18 numbers are given as examples.
+8.1.3.7. Determine the square roots of the decimal expression.
+a) When it is expressed as a fraction, studies are carried out to find the square roots of the decimal and the decimal denominations.
+8.1.3.8. Recognize the real numbers and relate them to rational and irrational numbers.
+a) It is noted that the square roots of non-squared numbers cannot be specified as a rational number (which cannot be written as a proportion of two integers). The number π is introduced as an irrational number. In spite of being irrational number, it is 3; 3.14 or 22/7 is also highlighted.
+8.2. ALGEBRA
+8.2.1. Algebraic Expressions and Identities Terms or concepts: identity, factoring
+8.2.1.1. Understands simple algebraic expressions and writes in different formats.
+a) The term, coefficient and the meaning of the variable are emphasized. It is emphasized that the fixed term is also a coefficient.
+b) basic algebraic expressions such as x + 5, 3x, x², -6y², a².b, 2a + 2b are emphasized.
+8.2.1.2. Makes the product of algebraic expressions.
+a) Processes such as y (3y-2), (2x + 3) (5x-1) are emphasized.
+b) The coefficients in algebraic expressions are selected from the integers.
+c) Works on making multiplication by algebraic expressions are included.
+8.2.1.3. Explain identities with models.
+a) (a ± b) ² = a² ± 2ab + b² and a² - b² = (a-b) (a + b).
+b) The coefficients in the identities are selected from whole numbers.
+8.2.1.4. It divides algebraic expressions into multipliers.
+a) Two square differences with common multiplier parenthesis and the factoring of full square expressions in the form a² ± 2ab + b² are considered.
+b) The coefficients and their roots in algebraic expressions are chosen to be in whole numbers.
+c) The method of grouping the multiplier is not entered.
+ç) Factors for non-square-quadratic expressions are not entered.
+8.2.2. Linear Equations
+Terms or concepts: dependent variable, argument, linear equation, slope
+8.2.2.1. Solves equations of a first order unknown.
+a) This class-level coefficients are included in the rational number of equations.
+8.2.2.2. Recognizes the coordinate system with its properties and show the sequential pairs.
+a) Efforts to relate real life situations to the location of the coordinate system are included.
+8.2.2.3. Expresses how one of the two variables, which have a linear relationship between them, has changed according to the other by table and equation.
+a) Expressions in the form of sequential duo are also included in the screenings.
+b) How the value of one of the two variables changes according to the value of the other variable and in which case which one is dependent on which one is dependent is examined.
+8.2.2.4. Graphs linear equations.
+a) The points in which the line cuts the axes, the parallelism to the axes, whether it passes from the origin are considered.
+8.2.2.5. Composes and interprets equations, tables and graphs of real life situations involving linear relationships.
+a) When interpreting the graph of the line, the relation between the x and y coordinates of the points on the line, the points in which the axes are cut, whether they pass from the origin, and their parallelism with the axes are considered.
+8.2.2.6. Explains the slope of the line with the models, correlates linear equations and graphs with slope.
+a) The meaning of the sign and magnitude of the slope is emphasized.
+b) In daily life-related models, the sign shall not be considered by taking into account that the vertical length of the slope is the ratio of the vertical length to the horizontal length.
+c) Use appropriate information and communication technologies when necessary.
+8.2.3. inequalities
+Terms or concepts: large or equal, small or equal, inequality Symbols: ≥, Semb
+8.2.3.1. Writes mathematical sentences appropriate to daily life situations involving inequality of a first degree unknown.
+a) For example, when the age of the children is represented by x in the expression belirt Children who are at least 3 years of age in kindergarten,, inequality can be defined as x ≥ 3.
+8.2.3.2. It shows the number of inequalities in first order.
+a) x ≥ -1, -3 gibi t <7, a <1 are examined.
+8.2.3.3. Solves inequalities of a first degree unknown.
+a) Inequalities requiring maximum two actions are selected.
+b) If both sides of the inequality are multiplied by a negative number or divided, studies are carried out to recognize that inequality will change direction.
+8.3. GEOMETRY VE MEASURING
+8.3.1. Triangles
+Terms or concepts: squared, bisector, elevation, triangle inequality, steep edges, hypotenuse, Pythagorean correlation
+8.3.1.1. Constructs the equilibrium, the bisector and the height in the triangle.
+a) Work on forming the elements of the triangle by folding, cutting or drawing on the paper.
+b) Special triangles such as equilibrium, isosceles and right triangles are also included in the studies to determine the properties of the equilibrium, bisector and elevation.
+8.3.1.2. Associates the length or sum of the two sides of the triangle with the length of its third edge.
+a) Activities to be done using concrete models can be given.
+b) Studies on understanding the inequality of triangles with appropriate computer software can be included.
+8.3.1.3. Relate the length of the triangle and the dimensions of the angles opposite these edges.
+8.3.1.4. The dimensions of a sufficient number of elements draw a given triangle.
+a) (1) The length of the three sides, (2) the length of one side and the length of the two angles, (3) the length of the two sides and the angles between these edges are plotted using appropriate means.
+b) Works with dynamic geometry software can be included.
+8.3.1.5. Pythagoras creates the relationship, solves related problems.
+a) Studies on real life applications of the Pythagorean relationship are included.
+b) Finding the distance between the two points given on the coordinate plane by using the Pythagorean correlation. The distance between two points is not given.
+c) To determine whether a given triangle is a right triangle or not, it is done by using the Pythagorean relation.
+8.3.2. Transformation Geometry
+Terms or concepts: reflection, translation, image, symmetry
+8.3.2.1. Draws the images of the point, the correct part, and the translation of the other shapes.
+a) Work on the squared or dot paper, coordinate system.
+b) Works with dynamic geometry software can also be included.
+c) In the translation, it is realized that each point on the figure moves in the same direction and that the figure and the image are identical.
+8.3.2.2. The point forms the image of the correct piece and the result of the reflection of the other shapes.
+a) Work on the squared or dot paper, coordinate system.
+b) Works with dynamic geometry software can also be included.
+c) In the reflection, it is noticed that the points corresponding to each other on the figure and shape are perpendicular to the line of symmetry and the distances between them are equal so that the shape and the image are equal.
+ç) Studies are carried out with figures over the symmetry lines.
+8.3.2.3. It creates the appearance of polygons as a result of translation and reflections.
+a) No more than two consecutive cycles or reflections are included.
+b) Studies on determining translational or reflection transformations in patterns, motifs and similar images are included.
+c) Examples from our traditional arts (tiles, ceramics, weaving, etc.) are also taken into consideration.
+8.3.3. Accompaniment and Similarity Terms or concepts: similarity ratio
+Symbols: symbol of “= ~” for parity, “~“ for similarity
+8.3.3.1. Associates the parity and similarity, determines the edge and angle relationships of spouses and similar shapes.
+a) Comparing planar shapes and activities to determine whether they are spouses are included.
+b) In equal polygons, it is emphasized that the opposite edge lengths and angle measurements are equal, while the corresponding angle dimensions are equal but the edge lengths are proportional. It is emphasized that peer polygons are similar, but similar polygons need not be identical. Accompaniment and similarity rules in triangles such as NCC, AKA are not given specifically.
+c) Works with solid models, folding paper or folding paper are included.
+8.3.3.2. It determines the similarity ratio of similar polygons, and forms polygons similar to a polygon.
+a) Works with solid models, folding paper or folding paper are included.
+b) If necessary, appropriate information and communication technologies are used.
+c) There are no similarity problems in polygons.
+8.3.4. Geometrical Objects
+Terms or concepts: base, height, surface area, pyramid, cylinder, prism
+8.3.4.1. Recognize vertical prisms, determine the basic elements, builds and draws the opening.
+a) Works with concrete models are included.
+b) Information and communication technologies can be used.
+8.3.4.2. Identifies, constructs and draws the basic elements of the perpendicular circular cylinder.
+a) Works with concrete models are included.
+b) Information and communication technologies can be used.
+8.3.4.3. Solves the problems related to the surface area of the vertical circular cylinder.
+a) Works with concrete models are included.
+b) Information and communication technologies can be used.
+8.3.4.4. Generates the volume relation of the perpendicular circular cylinder; solve the problems.
+a) Works with concrete models are included.
+b) Information and communication technologies can be used.
+c) Studies to estimate the volume of the vertical circular cylinder are included.
+d) Studies on associating the volume equation of the vertical circular cylinder with the volume relation of the vertical prism are included.
+8.3.4.5. Recognize the upright pyramid, determine the basic elements, construct and draw the angle.
+a) Works with concrete models are included.
+b) Information and communication technologies can be used.
+c) Space and volume problems are not entered.
+8.3.4.6. Recognize the vertical cone, determine the basic elements, builds and draws.
+a) Works with concrete models are included.
+b) Information and communication technologies can be used.
+c) Space and volume problems are not entered.
+8.4. DATA PROCESSING
+8.4.1. Data Analysis
+8.4.1.1. Interprets the line and column charts of up to three data groups.
+8.4.1.2. Shows the data with a column, circle, or line chart and makes the appropriate conversions between these impressions.
+a) Different representations are emphasized on their superior and weaknesses.
+8.5. PROBABILITY
+8.5.1. Probability of Simple Events
+Terms or concepts: probability, output, event, peer probability, impossible event, exact event
+8.5.1.1. Identifies possible situations of an event.
+a) For example, it is stated that the number of possible situations related to the withdrawal of a ball from a bag with 3 red and 5 blue colored balls is 8. The possible situations of multiple events are not addressed.
+8.5.1.2. Distinguishes “more”, “equal ”,“ less “probability” events and gives examples.
+a) It considers intuitive situations that do not require calculating probability. For example, the probability of a male student being randomly selected from a class with 15 male and 15 female students is more likely to belong to a student whose name is randomly drawn from a list with the names of all teachers and students in a school. studies are done indicating that it is equal.
+8.5.1.3. Explains that the probability value of each output is equal and this value is 1 / n in the cases with equal chance.
+a) n in the gain statement represents the number of possible states.
+b) Studies aiming to distinguish between the events with and without equal chance are included.
+c) It is emphasized that probability is a measure of the probability (likelihood) of an event.
+8.5.1.4. Understands that the probability value is between 0 and 1 (including 0 and 1).
+a) The probability values of an improbable event and a definite event are highlighted.
+b) It is realized that the sum of the probability of an event and the probability of not being 1 is 1.
+8.5.1.5. Calculates the likelihood of a simple event.
+a) When the dice are discarded, samples are given as an odd number.
+b) The probability of discrete and independent, dependent and independent events shall not be entered.
+c) The possibility of more than one event is not considered.

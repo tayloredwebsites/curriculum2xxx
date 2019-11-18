@@ -1,0 +1,159 @@
+en,mat,6
+6.1 NUMBERS AND OPERATIONS
+6.1.1. Operations with Natural numbers
+Terms or concepts: natural numbers, force (exponent), base, exponential expression Symbols: multiplication sign: Semb. "
+6.1.1.1. Calculates the value of a natural number itself with its exponential multiplication and calculates its value.
+6.1.1.2. It takes four operations with natural numbers taking into account the priority of the transaction.
+6.1.1.3. Performs operations to apply the common multiplier parenthesis and dispersion feature in natural numbers.
+a) Models are used for meaningful learning of equality.
+b) For example, when calculating the area of the following rectangle, 5 (2 + 8) = 5.2 + 5.8 and 5.2 + 5.8 = 5 (2 + 8) can be examined separately.
+6.1.1.4. Solves and builds problems that require four operations with natural numbers.
+a) Process properties are used when processing.
+6.1.2. Multipliers and Multiples
+Terms or concepts: multiplier, fold, dividing, prime number, common divisor, common floor
+6.1.2.1. Determines the multipliers and multiples of natural numbers.
+6.1.2.2. 2, 3, 4, 5, 6, 9 and 10ebila can explain the rules of divergence.
+a) It is taken into account that the divisiveness rule with 6 cannot be improved by using the divisional rule 2 and 3.
+b) There are no letter expressions in the use of the rules.
+6.1.2.3. Determines the number of prime numbers.
+a) Eratosthenes (Eratosten) with the help of the numbers up to 100 prime numbers are found.
+6.1.2.4. Determines prime factors of natural numbers.
+6.1.2.5. Identifies the common divisions of two natural numbers and solves the related problems.
+a) Problems in finding the largest common divisor (EBOB) of the two natural numbers and the smallest common storey (EKOK) are not entered at this class level.
+6.1.3. clusters
+Terms or concepts: set, element, element number, blank set, combination, intersection Symbols: {},, (A),,,
+6.1.3.1. Understands the basic concepts of clusters.
+a) Different representations of sets (list, common feature and venn diagram method) are included.
+b) Cluster, element, number of elements, empty set, combination, intersection concepts are given. They remain conceptual in studies.
+6.1.4. Integers
+Terms or concepts: integer, positive integer, negative integer, absolute value + - Symbols: │, ℤ, ℤ, ℤaoller
+6.1.4.1. Recognizes the exact numbers and shows the number in the line.
+a) Studies on recognizing the need for integers are included.
+b) It is emphasized that the positive and negative integers are used to express the opposite directions and values. For example, specifying floors in the elevator, air temperatures, etc.
+6.1.4.2. Compares and sorts the exact numbers.
+a) When comparing, it is emphasized that the larger number is to the right of the number line compared to the small number.
+b) Works involving real life situations related to the comparison and ranking of full numbers shall be included.
+6.1.4.3. Determines and expresses the absolute value of an integer.
+a) It focuses on what the absolute value means in number line and in real life (elevator, thermometer, etc.).
+6.1.5. Operations with Fractions
+6.1.5.1. Compares the fractions, sorts and shows the number on the line.
+a) In determining the strategies to be used to sort fractions, students are allowed to form their own strategies first. Strategies that can be used: the closeness of the fractions to the whole, greater than or equal to half, their closeness to the half, comparison of unit fractions, equalization of the fraction (taking into account the equivalent fractions).
+6.1.5.2. Makes addition and subtraction with fractions.
+a) Real life situations and appropriate fractional models are included.
+6.1.5.3. Be able to multiply and interpret a fraction with a natural number.
+a) For example 6. 2 means the sum of 6 2 and 2. 6 of 6 3 3 3 3
+and that these operations give the same result.
+b) Real life situations and appropriate fractional models are included.
+c) When a natural number is multiplied by a fraction greater than 1, studies to understand that the result is greater than this number and multiplied by a fraction less than 1 is considered to be a small number.
+6.1.5.4. Makes the multiplication of two fractions and makes sense.
+a) For example 1. 2 of 1 is 1 (ie half) and 2. 1 means 2 of 1 2 5 5 5 5 It highlighted.
+b) Real life situations and appropriate fractional models are included.
+6.1.5.5. It divides a natural number into a natural number and a fraction.
+a) First, operations are performed with unit fractions. For example, in 6 of 6 ÷ 1, how many 1 is 1, 1 ÷ 2 to divide 1 by 2 (ie 2 2 2 2). 1 is the half of which is noticed by the models. 2nd: Then we deal with other fractions.  For example, 3 ÷ 3 is 3 in 3, 3 ÷ 3 in 3 (4 4 4 4) models.
+b) When a natural number is divided into a cut greater than 1, studies are carried out to understand that the result is a number smaller than this number, and when it is divided into a cut less than 1, it is a number larger than this number.
+6.1.5.6. Makes the division of the two sections and makes sense.
+a) When the division is interpreted, simple operations are emphasized in which the large fraction is divided into a small fraction and the result is an integer. For example, 1 ÷ 1 means how many quarters are in the half 2 4 models are handled.
+6.1.5.7. Estimate the outcome of the transactions with fractions.
+a) Quarter is limited to estimates of daily life, where one-third and half-fractions can be used.
+6.1.5.8. Solves problems that require processing with fractions.
+6.1.6. Decimal Notation
+Terms or concepts: analysis
+6.1.6.1. Relates the concept of division with fractional process.
+a) It is also emphasized that the fractional representation also refers to the division process. For example, the fraction also means dividing 9 by 2. Within the scope of this acquisition, there are also studies to divide the natural numbers into non-divisional numbers. The division process focuses on the use of commas. It is limited to a maximum of three digits after a comma.
+b) Rotational decimal representations are introduced, but no conversion of cyclic decimal notifications to cuts
+6.1.6.2. Decimal representations analyze the given numbers. For example 253,47 = 2.100 + 5 .10 + 3 .1 + 4. 1 + 7.10, 253,47 = 2.100 + 5 .10 + 3 .1 + 4. 0.1 + 7. 0.01
+6.1.6.3. Decimal representations roll the given numbers up to a specific digit. The convenience of rounding up the numbers is emphasized.
+6.1.6.4. Decimals the decimal representation of the given numbers.
+a) Studies on the meaning of the multiplication process are included.
+b) When a natural number is multiplied by a decimal expression of less than 1, studies are carried out to recognize that the result is less than that number.
+6.1.6.5. Decimals with decimal numbers.
+a) Studies on the meaning of division process are included.
+6.1.6.6. Decimal representations with numbers given; 10, 100 and 1000 with a short way to do multiplication and division.
+6.1.6.7. Estimate the result of the operations performed with the decimal representations of the numbers. 0.1; 0.25; Decimals such as 0.5 are limited to daily life estimates.
+6.1.6.8. Solves problems that require four operations with decimal expressions.
+6.1.7. Rate
+Terms or concepts: ratio, unit rate, unitless rate
+Symbols: a: b; a; a / b b
+6.1.7.1. It uses odds in comparing multiplicities and shows the ratio in different formats. 5: 6,, 6 to 6, different impressions are used.
+6.1.7.2. In cases where a whole is divided into two parts, it determines the ratio of the two parts to each other or each part to the whole, and when one of the ratios is given in the case of problems, it finds the other.
+a) Case studies: What is the ratio of the number of girls to the number of girls in a class when the number of girls is 2/3 in the number of girls?
+What is the ratio of the number of girls to the number of girls if the ratio of the number of girls in a classroom is 2/5?
+6.1.7.3. It determines the ratio of two multiplicities in the same or different units.
+a) For example, the distance of a vehicle traveling 150 km in 3 hours to the passing time = 50 km / h. as 3 h. this ratio is unit. The ratio of the number of plastic caps collected by the class 6A to the number of plastic caps collected by the 6B class is written as 180 units = 3 and this is unitless.120 pieces 2
+b) km / h, which is the unit of velocity from unit ratios. with m / sec. conversions are performed.
+6.2. Algebra
+6.2.1. Algebraic Expressions
+Terms and Concepts: algebraic, variable, coefficient, term, constant term, similar term
+6.2.1.1. Writes a verbal case suitable for a given verbal algebraic expression and a given algebraic expression.
+a) It is stated that the letters used in algebraic expressions represent numbers and are called an variables a.
+b) Expressions that include at least one variable and transaction are highlighted as eb algebraic expressions b.
+c) The term, fixed term, similar terms and coefficients are discussed.
+6.2.1.2. Calculates the value of the algebraic expression for different natural number values that the variable will take.
+6.2.1.3. Explain the meaning of simple algebraic expressions.
+a) At this level, 4a, a, 2 ± a is given in the form of studies to understand algebraic expressions. 5 of 5. For example, a + a + a + a = 4a, 2b = b + b,
+3 + c = 3 + c, d = 1. applications such as d as well as exemplary applications as described below. 5 5 5 5 5.
+work with models.
+6.3. GEOMETRY AND MEASURING
+6.3.1. Angles
+Terms and Concepts: adjacent angle, explementary angle, supplement angle, adjacent explementary angle, adjacent supplement angle, reverse angle
+6.3.1.1. knows that the two rays are the same with the starting points and symbolizes the angle.
+6.3.1.2. Draws an angle equal to an angle.
+a) Worked on a square paper. However, protractors and similar tools can be used.
+6.3.1.3. discovers the characteristics of neighbors, cohorts, and opposite angles; solve the problems.
+6.3.2. Area Measurement
+Terms or concepts: ar, adar, hectare
+Semboller: km², hm², dam², m², dm², cm², mm²
+6.3.2.1. Solves the problems of the triangle.
+a) Dotted or squared paper triangles are included in the drawing. The heights in the wide-angle triangles are also considered.
+b) The area relation of the triangle can be used to create the field relation of the rectangle.
+6.3.2.2. Composes the field relation of the parallelogram and solve the related problems.
+a) Dotted or squared paper shall include works for drawing the height of an edge of the parallelogram.
+b) The area relation of the parallelogram can be used to create the field relation of the rectangle.
+c) It is emphasized that the square and rectangle are special conditions of the parallelogram.
+6.3.2.3. Recognizes the field measurement units and converts the units – km², m² – cm² – mm².
+6.3.2.4. Recognize the land surveying units and associate them with the standard field measurement units.
+6.3.2.5. Solves problems related to the field.
+a) Problems involving the areas of composite shapes (eg open envelopes) consisting of triangles, rectangles and parallellines are included.
+6.3.3. Circle
+Terms or concepts: diameter, radius, center, circle, circle Symbols: r, R, π
+6.3.3.1. Recognizes the center, radius and diameter by drawing a circle.
+a) Works for using compasses are included.
+b) The relationship between the circle and the circle is indicated.
+6.3.3.2. It determines the ratio of the length of a circle to its diameter by measuring it is a fixed value.
+a) This constant value is called π (pi). When π is given problems, use the approximate value problem π 3 at a time; Take 22/7; Take 3.14..6.3.3.3. Solves the problems that require calculating the length of a given circle with its diameter or radius.
+6.3.4. Geometrical Objects
+Terms or concepts: unit unit, volume, cubic meter, decimetric cubes, cubic centimeters, millimeters cubes
+Symbols: m³, dm³, cm³, mm³
+6.3.4.1. The rectangles realize that the number of cubes placed in the prism of the space is the volume of that object, and calculates the volume of the given object by counting the unit cubes.
+a) Students are given the opportunity to develop strategies to measure the volume. For example, when the units are counted, attention is drawn to the number of layers and the number of layers.
+b) Studies aiming to make sense of volume are included. It is emphasized that the volume is the space occupied by any object.
+6.3.4.2. The different rectangles with a given volume measure form the prisms with the unit cubes, and explain the reason that the volume is multiplied by the base area.
+a) The square prism and cube are considered to be a special form of the rectangular prism.
+b) Creation of the volume relation is done with the help of models.
+c) Studies on creating different structures without a prism with a given volume measure are also included.
+6.3.4.3. It recognizes standard volume measurement units and converts between cm³, dm³, m³ units.
+a) Volume measurement units are limited to m³, dm³, cm³ and mm³.
+6.3.4.4. Rectangles form the volume relation of prism, solves related problems.
+a) Information and communication technologies, for example, three-dimensional dynamic geometry software can be used. 6.3.4.5. Estimates the volume of rectangular prism.
+6.3.5. Liquid Measuring
+Terms or concepts: liters, deciliter, centiliters, milliliters Symbols: L, dL, cL, mL
+6.3.5.1. Recognizes and converts liquid measurement units.
+a) Transactions related to liquid measurement units are made only between L, cL and mL.
+b) Studies are carried out to realize that 1 liter is 1 dm³.
+6.3.5.2. Relates the liquid measurement units to the units of volume measurement.
+a) Liquid metering units are associated with volume metering units, emphasizing that the liquid metrics are basically a special volume measure.
+6.3.5.3. Solves problems related to liquid measurement units.
+6.4. DATA PROCESSING
+6.4.1. Data Collecting and Evaluation
+Terms or concepts: binary column graph, binary frequency graph, axes
+6.4.1.1. Creates research questions that require comparing two groups of data and obtains appropriate data.
+a) For example, what are the favorite colors of boys and girls in our class?
+b) How many hospitals are serving in five major cities in 1990 and 2010?
+c) Limited to discontinuous data groups. The concept of continuous and discontinuous data is not entered.
+6.4.1.2. It shows the data of two groups with binary frequency table and column chart.
+6.4.2. Data analysis
+Terms or concepts: minimum value, maximum value, aperture, arithmetic mean
+6.4.2.1. Calculates and interprets the openness of a data group.
+6.4.2.2. Calculates and interprets the arithmetic mean of a data group.
+6.4.2.3. Uses the arithmetic mean and aperture in comparing and interpreting the data of the two groups.
+a) Arithmetic mean and openness are interpreted in real life situations.
