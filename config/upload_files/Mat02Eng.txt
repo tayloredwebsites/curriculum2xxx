@@ -49,9 +49,8 @@ a) It is emphasized that the equal sign does not always mean the result of the p
 a) No more than two process problems are included.
 b) Studies on problem building are also included.
 2.1.4. Multiplication with Natural Numbers
-Terms or concepts: multiplication, multiplication table, multiplier, multiplication
-Symbols: x
-M.2.1.4.1. Explains that multiplication means repeated collection.
+Terms or concepts: multiplication, multiplication table, multiplier, multiplication Symbols: x
+2.1.4.1. Explains that multiplication means repeated collection.
 a) Works with real objects are included.
 2.1.4.2. Multiplication by natural numbers.
 a) The meaning of the symbol (x) of the multiplication is emphasized.

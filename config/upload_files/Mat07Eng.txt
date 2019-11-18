@@ -15,9 +15,7 @@ c) The impact of 0, 1, and -1 is examined in multiplication and division.
 7.1.1.4. Expresses the exact multiplications of integers with exponential multiplicity. If the force is a single or double natural number is examined.
 7.1.1.5. Solves problems that require doing operations with integers.
 7.1.2. Rational numbers
-Terms or concepts: rational numbers, rotational decimal notation
-+ -
-Symbols: ℚ, ℚ, Semb
+Terms or concepts: rational numbers, rotational decimal notation, + -, Symbols: ℚ, ℚ, Semb
 7.1.2.1. Recognizes the rational numbers and indicate the number in the line.
 It is highlighted that each integer is a rational number with a denominator of 1. Also related to rational numbers - A = -a = a is examined. b b-b
 7.1.2.2. Express rational numbers with decimal notation.

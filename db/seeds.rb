@@ -102,6 +102,7 @@ grades = GradeBand.all
 @grade_bands = GradeBand.all
 @gb_hs = [@gb_9, @gb_10, @gb_11, @gb_12]
 @gb_mid = [@gb_5, @gb_6, @gb_7, @gb_8]
+@gb_el = [@gb_1, @gb_2, @gb_3, @gb_4]
 puts "grades: #{grades.pluck(:id)}"
 
 if Subject.count < 6
@@ -145,7 +146,8 @@ throw "Invalid Subject Count" if Subject.count != 6
 @ear = Subject.find 6
 @subjects = Subject.all
 @subj_hs = [@bio, @che, @mat, @phy, @ear]
-@subj_mid = [@sci]
+@subj_mid = [@sci, @mat]
+@subj_el = [@sci, @mat]
 
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.bio.name', 'Biology')
 throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
@@ -200,7 +202,7 @@ throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_
 
 # high school subjects:
 
-if Upload.count != 48
+if Upload.count != 72
   @gb_hs.each do |g|
     @subj_hs.each do |s|
       Upload.create(
@@ -237,12 +239,30 @@ if Upload.count != 48
       )
     end
   end
+  @gb_el.each do |g|
+    @subj_el.each do |s|
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_en.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+      )
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_tr.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+      )
+    end
+  end
 end
 # valid count:
 #   32 high school (4 grades * 4 subjects * 2 languages)
 #   + 8 middle school (4 grades * 1 subject * 2 languages)
 #   = 40 valid uploads
-throw "Invalid Upload Count" if Upload.count != 48
+throw "Invalid Upload Count" if Upload.count != 72
 
 
 ################################

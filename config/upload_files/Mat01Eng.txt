@@ -88,8 +88,7 @@ d) Geometry board, rope, wire, geometry bars and so on. The geometric shapes are
 a) The objects to be used are selected from geometric objects.
 b) Geometric objects (prisms, spheres, etc.) without name, box, unitcube, pet bottle, camping tent, ping-pong balls, such as the properties of the classification of objects (round, square, rectangular, etc.) are listed.
 c) Different structures are created by using simple objects from daily life.
-ç) Investigating the faces of geometric object shaped objects from daily life by geometric
-shapes.
+ç) Investigating the faces of geometric object shaped objects from daily life by geometric shapes.
 d) Geometric objects are not entered.
 1.2.2. Spatial Relations
 Terms or concepts: peer objects

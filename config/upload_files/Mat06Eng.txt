@@ -90,9 +90,7 @@ b) Expressions that include at least one variable and transaction are highlighte
 c) The term, fixed term, similar terms and coefficients are discussed.
 6.2.1.2. Calculates the value of the algebraic expression for different natural number values that the variable will take.
 6.2.1.3. Explain the meaning of simple algebraic expressions.
-a) At this level, 4a, a, 2 ± a is given in the form of studies to understand algebraic expressions. 5 of 5. For example, a + a + a + a = 4a, 2b = b + b,
-3 + c = 3 + c, d = 1. applications such as d as well as exemplary applications as described below. 5 5 5 5 5.
-work with models.
+a) At this level, 4a, a, 2 ± a is given in the form of studies to understand algebraic expressions. 5 of 5. For example, a + a + a + a = 4a, 2b = b + b, 3 + c = 3 + c, d = 1. applications such as d as well as exemplary applications as described below. 5 5 5 5 5. work with models.
 6.3. GEOMETRY AND MEASURING
 6.3.1. Angles
 Terms and Concepts: adjacent angle, explementary angle, supplement angle, adjacent explementary angle, adjacent supplement angle, reverse angle
