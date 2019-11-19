@@ -12,6 +12,7 @@ tr:
       create: "Create"
       subject: "Konusu"
       grade_band: "seviyesi"
+      grade_band_show: "Notu Göster"
       grade_band_num: "seviyesi %{num}"
       action: "Aksiyon"
       actions: "Aksiyon"

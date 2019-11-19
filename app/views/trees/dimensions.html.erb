@@ -48,9 +48,14 @@
     </div>
     <div id="<%=i%>-lo-column" class="dimension-item subject-column <%= 'hidden' if i != subject_visible %>">
       <ul class="list-group">
-        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= translate('app.labels.outcome').camelcase.pluralize %> -
+        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= translate('app.labels.outcome').camelcase.pluralize %>
+          <% if @subj_gradebands[i].length > 0 %>
+          - <%= translate('app.labels.grade_band_show').pluralize if (@subj_gradebands[i].length > 1) %>
+            <%= translate('app.labels.grade_band_show') if (@subj_gradebands[i].length == 1)
+          %>:
           <% @subj_gradebands[i].each do |gb_code| %>
             <span id="show-hide-gradeband-<%= gb_code %>" class="show-hide-gradeband text-selected" onclick="toggle_visibility('.gb_code_<%= gb_code %>', '#show-hide-gradeband-<%= gb_code %>');"><%= "  #{gb_code} " %></span>
+          <% end %>
           <% end %>
         </li>
         <% j[:los].each do |k| %>
