@@ -202,9 +202,28 @@ throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_
 
 # high school subjects:
 
-if Upload.count != 72
-  @gb_hs.each do |g|
-    @subj_hs.each do |s|
+if Upload.count != 68
+
+  [@gb_1, @gb_2].each do |g|
+    [@mat].each do |s|
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_en.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+      )
+      Upload.create(
+        subject_id: s.id,
+        grade_band_id: g.id,
+        locale_id: @loc_tr.id,
+        status: 0,
+        filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+      )
+    end
+  end
+  [@gb_3, @gb_4].each do |g|
+    @subj_el.each do |s|
       Upload.create(
         subject_id: s.id,
         grade_band_id: g.id,
@@ -239,8 +258,8 @@ if Upload.count != 72
       )
     end
   end
-  @gb_el.each do |g|
-    @subj_el.each do |s|
+  @gb_hs.each do |g|
+    @subj_hs.each do |s|
       Upload.create(
         subject_id: s.id,
         grade_band_id: g.id,
@@ -257,12 +276,14 @@ if Upload.count != 72
       )
     end
   end
+
+
 end
 # valid count:
 #   32 high school (4 grades * 4 subjects * 2 languages)
 #   + 8 middle school (4 grades * 1 subject * 2 languages)
 #   = 40 valid uploads
-throw "Invalid Upload Count" if Upload.count != 72
+throw "Invalid Upload Count" if Upload.count != 68
 
 
 ################################
