@@ -11,15 +11,15 @@
     </div>
     <% @s_o_hash.keys.each do |i| %>
       <div class='subj-checkbox'>
+        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
         <label for="check-<%= i %>">
           <%= @translations["subject.#{i}.name"] %>
         </label>
-        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
         <% if @subj_gradebands[i].length > 0 %>
+          <i id="show-gb-controls-<%= i %>" class="rotate fa fa-angle-left" onclick="toggle_visibility('#<%= i %>-gradebands-list', '#show-gb-controls-<%= i %>');"></i>
           <ul id="<%= i %>-gradebands-list" class="gradebands-list">
             <% @subj_gradebands[i].each do |gb_code|%>
               <li>
-
               <input id="<%= i %>-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility("<%= i %>", "<%= gb_code %>");' checked></input>
               <label for="<%= i %>-gb-check-<%= gb_code %>">
                 <%= I18n.t('app.labels.grade_band_num', num: gb_code) %>

@@ -403,6 +403,7 @@ class TreesController < ApplicationController
 
     @s_o_hash = Hash.new  { |h, k| h[k] = Hash.new }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
+    @subj_gradebands = Hash.new { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
     subjects = Subject.all
@@ -413,6 +414,7 @@ class TreesController < ApplicationController
         :dimensions => [],
         :los => []
       }
+      @subj_gradebands[s.code] = listing.joins(:subject).where('subjects.code' => s.code).joins(:grade_band).pluck('grade_bands.code').uniq
       transl_keys << s.base_key+'.name'
       transl_keys << s.base_key+'.abbr'
     end
@@ -467,6 +469,7 @@ class TreesController < ApplicationController
             code: tcode,
             text: "#{tree.code}: #{translation}",
             id: "#{tree.id}",
+            gb_code: tree.grade_band.code,
             rel: @relations["tree_id_#{tree.id}"]
           }
           @s_o_hash[tree.subject.code][:los] << newHash

@@ -37,6 +37,19 @@ $(function() {
   }
 
   /**
+   * Generic toggle visibility method
+   * @param {String} selector CSS selector for the element or elements to hide
+   * @param {String} trigger CSS selector for the element triggering this function
+   */
+  toggle_visibility = function (selector, trigger) {
+    console.log('toggle')
+    if ($(trigger).hasClass('rotate')) {
+      $(trigger).toggleClass('down')
+    }
+    $(selector).toggleClass('hidden')
+  }
+
+  /**
    * Expand and highlight related LOs
    */
   related_LO_display = function (rel, selected_LO) {
