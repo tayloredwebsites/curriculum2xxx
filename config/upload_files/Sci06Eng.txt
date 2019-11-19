@@ -1,38 +1,179 @@
 en,sci,6
-6. CLASSROOM SCIENCE TEACHING PROGRAM
-6.1. Solar System and Eclipses
-6.1.1. World and Universe / Earth and Universe
-6.1.1.1. Solar System
-6.1.1.2. Solar and Lunar Eclipses
-6.2. Systems in Our Bodies
-6.2.1 Life / Living
-6.2.1.1. Support and Motion System
-6.2.1.2. Digestive System
-6.2.1.3. The circulatory System
-6.2.1.4. Respiratory System
-6.2.1.5. Excretory System
-6.3. Force and Motion
-6.3.1 Physical Events
-6.3.1.1. Concentration Force
-6.3.1.2. Fixed Speed Motion
-6.4. Substance and Heat / Matter and Heat
-6.4.1. Substance and its Nature / Matter and Nature
-6.4.1.1. Particulate Structure of Matter
-6.4.1.2. Density
-6.4.1.3. Matter and Heat
-6.4.1.4. Fuels
-6.5. Sound & Features
-6.5.1. Physical Events
-6.5.1.1. Spread of Sound
-6.5.1.2. Different Sounds in Different Media
-6.5.1.3. Speed of Sound
-6.5.1.4. Interaction of Sound with Matter
-6.6. Systems and Health in Our Bodies / Systems and Health in Our Body
-6.6.1. Living
-6.6.1.1. Controller and Regulatory Systems
-6.6.1.2. Sense Organs
-6.6.1.3. Health of Systems
-6.7. Transmission of Electricity 
-6.7.1. Physical Events
-6.7.1.1. Conductive and Insulating Agents
-6.7.1.2. Electrical Resistance and Factors
+6.1 Solar System and Eclipses / World and Universe
+key concepts: In this unit, students are expected to recognize the solar system and the relations of the celestial bodies in the solar system with each other and to gain the knowledge and skills related to the solar and lunar eclipses.
+6.1.1. Solar System Recommended duration: 6 hours
+Subject / Concepts: Solar system, planets, meteor, celestial stone, asteroid
+6.1.1.1. Compares the planets in the solar system with each other.
+a. The basic characteristics of the planets (terrestrial, gas, inner planet, outer planet) are mentioned.
+b. It is mentioned that planets are satellites.
+c. The dimensions of the planets are mentioned spatially. ç. The distance of the planets to the Sun is mentioned.
+d. Meteor, celestial stone, asteroid concepts are mentioned.
+6.1.1.2. It creates a model by ordering the planets in the solar system according to their proximity to the Sun.
+6.1.2. Solar and Lunar Eclipses Recommended duration: 8 hours Topic: Solar Eclipse, Moon Eclipse
+6.1.2.1. Estimates how solar retention occurs.
+a. During the solar eclipse, the stage of the Moon is mentioned.
+b. It is mentioned that there is no solar eclipse every month.
+6.1.2.2. Estimates how the lunar eclipse occurs.
+a. The lunar eclipse refers to the stage of the Moon.
+b. Each month, it is mentioned that there is no lunar eclipse.
+6.1.2.3. Creates a model representing Sun and Moon eclipse.
+6.2. Systems in our bodies / Living Creatures and Life
+key concepts: The aim of this unit is to enable students to gain knowledge and skills related to structure and organs of support and movement, digestive, circulatory, respiratory and excretory systems.
+6.2.1. Support and Motion System Recommended duration: 4 hours
+Subject / Concepts: Cartilage, bone and bone types, types of joints and joints, muscles and muscle types
+6.2.1.1. Explain the structures of support and movement systems with examples.
+a. Bone types without entering the bones are given as short, long and flat.
+b. Types of joints are given without details.
+c. It does not enter into the detailed structure by providing the working principles of muscle types (voluntary - involuntary) and fatigue conditions.
+6.2.2. Digestive system Recommended duration: 6 hours
+Topic / Concepts: Structure and organs of digestive system, physical (mechanical) and chemical digestion, enzymes, liver, pancreas, liver and pancreas digestive tasks
+6.2.2.1. Describe the functions of structures and organs that make up the digestive system by using models.
+6.2.2.2. In order to pass the nutrients into the blood (mechanical) and chemical digestion should be done.
+a. Only chemical (mechanical) and physical digestion are given without entering into chemical digestion equations.
+b. It is stated that enzymes are involved in chemical digestion but their structures, working mechanisms and names are not mentioned.
+6.2.2.3. Explains the functions of digestive organs.
+a) The functions of the liver and pancreas are explained in digestion without entering the structure and the secretions are poured into the small intestine.
+6.2.3. The circulatory system Recommended duration: 6 hours
+Topic / Concepts: Structure and organs of circulatory system, structure and function of heart, blood vessels, large and small blood circulation, blood groups, blood donation, circulatory system
+6.2.3.1. Explains the functions of structures and organs that make up circulatory system by using model.
+a. The four chambers of the heart are indicated without the structures and names of the heart.
+b. The names of the structures and valves that form the heart are not included.
+c. The operating mechanism of the heart is not mentioned. ç. Pulse and blood pressure are mentioned.
+d. The lymph circulation is not mentioned.
+6.2.3.2. Examine the large and small blood circulation on the schema and explain their duties.
+a) The arteries, veins and capillaries are specified in detail without entering the detailed structure.
+6.2.3.3. Defines the structure and functions of blood.
+a. The structure of the blood cells is explained only the tasks without.
+b. Hemoglobin gas exchange in red blood cells is not mentioned.
+6.2.3.4. Express blood exchange between blood groups.
+a. Molecular foundations cannot be entered in blood groups.
+b. General buyer esas and arasında public donor da statements are not used as blood exchange is based on the same groups of applications.
+c. The rh factor is briefly mentioned, but there is no blood incompatibility.
+6.2.3.5. Evaluates the importance of blood donation for society.
+a. Red Crescent is emphasized.
+b. Emphasis is placed on hygiene that needs attention during blood donation.
+6.2.4. Respiratory system Recommended duration: 4 hours
+Subject / Concepts: Structure and organs of the respiratory system, lungs
+6.2.4.1. Explains the functions of structures and organs that make up the respiratory system by using models.
+a) Gas transport mechanism and transport of respiratory gases in the blood is not described.
+6.2.5. Excretory system Recommended duration: 4 hours
+Subject / Concepts: Excretion, kidneys, skin, lung, large intestine
+6.2.5.1. Summarizes the tasks by showing the structure and organs forming the evacuation system on the model.
+a. The role and importance of kidneys in the excretory system is emphasized, but the detailed structure of the kidney (nephron, shell, pond, self, etc.) is not given.
+b. The large intestine, skin and lungs are summarized in the tasks without entering the structure.
+6.3. Force and Motion / Physical Events
+key concepts: In this unit, the students will be able to recognize the properties of force, to show the resultant force by experiment and drawing, to explore the balanced and unbalanced forces and their effects on the objects; The aim of this course is to comprehend the relation between road, time and speed for fixed speed motion, to show this relation on the graph and to interpret the graphics.
+6.3.1. Concentration Force Recommended duration: 8 hours
+Subject / Concept: Properties of force (direction, direction, magnitude), resultant force (net force), resultant force at the same direction and same directional forces, resultant force at the same direction and opposite forces, balanced and unbalanced forces
+6.3.1.1. Draws the direction, direction and magnitude of the force acting on an object.
+6.3.1.2. Observes more than one force acting on an object.
+a) The combination of forces in the same direction is emphasized. The directions are not entered into the combination of different forces.
+6.3.1.3. Compares balanced and unbalanced forces by observing the movement states of objects.
+6.3.2. Fixed Speed Motion Recommended duration: 6 hours
+Subject / Concepts: Road, time, speed and units, road-time and speed-time graphs of fixed-speed motion
+6.3.2.1. Expresses the velocity and refers to the unit.
+a. The speed units are taken into account in meters per second (m / s) and kilometers / h (km / h).
+b. The concepts of displacement and speed are not entered.
+c. No mathematical relations can be entered. ç. Unit conversion is not done.
+6.3.2.2. Shows the relationship between path, time and speed on the graph.
+6.4. Substance and Heat / Substance and its Nature
+key concepts: In this unit, the students stated that the materials were composed of moving particles; to calculate the density of the substance by using mass and volume, to comprehend the importance of density for living beings, to examine the heat conduction and insulation of heat, to contribute to the family and country economy, to understand the effects of the fuel types and the effects of the fuels used for heat on the environment.
+6.4.1. Particulate Structure of Matter Recommended duration: 6 hours
+Subject / Concepts: Particulate structure, hollow structure, moving structure
+6.4.1.1. the agent; granular, hollow and moving structure. The concepts of vibration, translation and rotation related to the moving structure are mentioned.
+6.4.1.2. The experiment compares the change in the space between the particles and the mobility of the particles depending on the state of change.
+6.4.2. Density
+Subject / Concepts: Density, density unit
+6.4.2.1. Defines the density.
+a. It is emphasized that density is a distinguishing feature for matter.
+b. The density unit uses g / cm3.
+6.4.2.2. As a result of the experiments he designs, he calculates the densities of various substances.
+6.4.2.3. Compares the density of insoluble liquids in each other by experiment.
+6.4.2.4. Discusses the importance of this situation for living beings by comparing the density of solid and liquid states of water.
+6.4.3. Matter and Heat Recommended duration: 8 hours
+Subject / Concepts: Thermal conductivity, thermal insulation, thermal insulation materials
+6.4.3.1. Classifies substances in terms of heat conduction.
+6.4.3.2. Determines the selection criteria of thermal insulation materials used in buildings.
+6.4.3.3. Develops alternative thermal insulation materials.
+6.4.3.4. Discusses the importance of thermal insulation in buildings in terms of family and country economy and effective use of resources.
+6.4.4. Fuels
+Subject / Concepts: Solid fuels, liquid fuels, gas fuels, renewable and non-renewable energy sources
+6.4.4.1. It categorizes fuels as solid, liquid and gas fuels and gives examples of commonly used fuels.
+a) It is stated that fossil fuels are limited and one of the non-renewable energy sources and the importance of renewable energy sources is emphasized by giving examples.
+6.4.4.2. Discuss the effects of heat use of different types of fuels on human and environment.
+6.4.4.3. He / she investigates and reports the measures to be taken regarding the stove and natural gas poisoning.
+6.5. Sound & Features / Physical Events
+key concepts: In this unit, students should be able to guess the environments where sound is emitted and to test these estimations and comprehend the observations, the concept of acoustics and the acoustic applications in architecture.
+6.5.1. Spread of Sound Recommended duration: 4 hours
+Subject / Concepts: Propagation of sound in solids, diffusion of sound in liquids, diffusion of sound in gases
+6.5.1.1. Estimates and tests predictions of sound propagation environments.
+6.5.2. Different Sounds in Different Media Recommended duration: 6 hours
+Subject / Concepts: The difference of sounds produced in different objects, different sounds in the same sound
+6.5.2.1. He discovers the different sources of the sound by changing the sound source.
+6.5.2.2. He discovers a different voice by experimenting with the changing environment of sound.
+a) The concept of frequency is not entered.
+6.5.3. Speed of Sound Recommended duration: 4 lessons
+Subject / Concepts: Concepts of sound, sound energy
+6.5.3.1. Compares the speed of sound in different environments.
+a. Indicates why the sound does not spread in the space.
+b. Speed of light and sound; Lightning and thunder are compared over the events.
+c. It is mentioned that sound is an energy type.
+6.5.4. Interaction of Sound with Matter Recommended duration: 8 hours
+Subjecy / Concepts: Sound reflection, sound absorption, sound insulation, acoustic applications
+6.5.4.1. Gives examples of reflection and absorption of sound.
+6.5.4.2. Estimates and tests predictions of sound propagation.
+6.5.4.3. Explain the importance of sound insulation.
+a) Technological and architectural applications developed for sound insulation are mentioned.
+6.5.4.4. Give examples of acoustic applications.
+a) Emphasis is placed on modern and cultural architecture practices. For example, reference is made to the acoustic architecture of the Süleymaniye Mosque.
+6.5.4.5. Makes an example of sound insulation or acoustic applications.
+6.6. Systems and Health in our bodies / Living and Living
+key concepts: The aim of this unit is to enable the students to gain knowledge and skills about supervisory and regulatory systems, sensory organs, related structures and organs, to acquire knowledge and skills related to them, to provide solutions for the health and system health of the systems.
+6.6.1. Controller and Regulatory Systems Recommended duration: 11 hours
+Subject / Concepts: Nervous system, parts of the nervous system, central and peripheral nervous system, reflex, inner glands, functions of the glands, transition from childhood to adolescence, adolescent health
+6.6.1.1. Explains the nervous system, central and peripheral nervous system functions on the model.
+a. Central nervous system is divided into brain and spinal cord. The parts of the brain are not mentioned. Only the functions of the spinal cord, cerebellum and spinal cord are given.
+b. The detailed structure of the specified nervous system parts is not entered.
+c. Reflexes are touched before entering details.
+6.6.1.2. Recognize the importance of the internal glands for the body.
+a. Do not enter the structure of the inner glands.
+b. Growth, thyroxine, adrenaline, glucagon and insulin hormone are mentioned.
+c. The relationship between hormonal changes and adolescence is mentioned.
+6.6.1.3. Explains the physical and spiritual changes in the transition from childhood to adolescence.
+a) Other developmental periods and features are not given.
+6.6.1.4. Discusses what can be done in order to pass adolescence period according to research data.
+6.6.1.5. Discuss the effects of supervisory and regulatory systems on the regular and coordinated work of other systems in our body.
+6.6.2. Sense organs Recommended duration: 4 hours
+Subject / Concepts: Sense organs, structures of sensory organs, the health of sensory organs, the relationship between sensory organs, technology
+6.6.2.1. Explains the structures of the sense organs by showing on the model.
+a) The detailed structures of the sense organs are not entered.
+6.6.2.2. Demonstrates the relationship between the senses of smell and taste, in an experiment designed by him.
+6.6.2.3. It gives examples of defects in sensory organs and the technologies used to remove these defects.
+a. The treatment modalities are explained shortly before the reasons of myopia, hyperopia, astigmatism and strabismus.
+b. Technologies that facilitate the lives of visually impaired individuals are highlighted.
+6.6.2.4. Discuss the measures to be taken to protect the health of sensory organs.
+6.6.3. Health of Systems Recommended duration: 3 lessons
+Subject / Concepts: Dwarfism, gonorrhea, diabetes, goiter, diseases of the sense organ, bone fractures, rheumatism, diarrhea, ulcers, cancer, jaundice, anemia, pneumonia, influenza, kidney stone, kidney failure, dialysis, alcohol, smoking, organ donation, first aid
+6.6.3.1. Discusses what needs to be done for the health of the systems based on research data.
+a. The system is referred to the most common diseases of the disease in Turkey.
+b. The harms of unconscious drug use are highlighted.
+c. The effects of harmful habits such as alcohol and cigarettes on human health are mentioned. An emphasis is placed on the Green in combating alcohol and smoking.
+ç. Basic information about first aid is given.
+6.6.3.2. Understands the importance of organ donation for social solidarity.
+6.7. Transmission of Electricity / Physical Events
+key concepts: In this unit, it is aimed that the students will gain knowledge and skills about the factors which the electrical resistance is related to, the materials to be transmitted by the electrical energy, the properties of the conductors, the effects of the change in the circuit, and the purposes for which the conductors and insulators are used in daily life.
+6.7.1. Conductive and Insulating Agents Recommended duration: 4 hours
+Subject / Concepts: Conductive substances, insulating materials, the use of conductive and insulating materials
+6.7.1.1. Categorizes substances according to their electrical conductivity by using the electrical circuit they designed.
+6.7.1.2. Explains how the electrical conductivity and insulating properties of materials are used in daily life.
+6.7.2. Electrical Resistance and Factors Recommended duration: 8 hours
+Subject / Concepts: Electrical resistance, factors of electrical resistance (cross-sectional area, length, type of conductor)
+6.7.2.1. Estimates the variables in which the brightness of the bulb in an electric circuit is connected and tests and tests their estimates.
+a. When changing the brightness of the bulb, the length of the conductor in the circuit, the vertical cross-sectional area and the type of the conductor are emphasized.
+b. There is no mathematical relation with electrical resistance and related factors.
+6.7.2.2. Define the electrical resistance.
+a. No Ohm's Law.
+b. Electrical resistance is defined as ”the difficulty of substances against the transmission of electrical energy Elektrik.
+c. The current concept is not entered.
+ç. Measure the size of the resistance and do not enter the unit.
+6.7.2.3. He realizes that the wire inside the bulb has a resistance.

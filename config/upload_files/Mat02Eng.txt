@@ -1,0 +1,164 @@
+en,mat,2
+2.1 NUMBERS AND OPERATIONS
+2.1.1. Natural Numbers
+Terms and Concepts: digits, digit value, number pattern, decks, dozen
+2.1.1.1. It determines the number of objects in a community with up to 100 objects (including 100) and writes that number in numbers.
+a) A plurality corresponding to a number of up to 100 is determined.
+2.1.1.2. The number of objects is less than 100, using a multiplicity model decimal and unity groups, expresses by number.
+a) Progressively done in 20 before the work is done.
+b) Explain by decks and dozens of examples.
+2.1.1.3. Estimates the number of objects in a given plurality, counts the estimate.
+2.1.1.4. Names the digits of natural numbers smaller than 100 on the models, indicates the digits value of the numbers in digits.
+2.1.1.5. 100 in two, five and ten; 30 in three; It counts four forward and backward within 40.
+a) In rhythmic counting studies, it is started with counting studies in forward and backward within 100. The numbers are incrementally incremented.
+2.1.1.6. The difference between them recognizes the constant number patterns, finds the rule of the pattern and completes the pattern by determining the missing element.
+a) Before the rule of the given number patterns is found, the difference between the elements of the pattern is noticed.
+b) Number patterns with no more than two elements are used.
+c) At least three items should be given from the beginning in order to find the rule in the patterns. For example, 5, 10, 15, _, 25, _, 35
+2.1.1.7. Makes comparison and ranking between natural numbers smaller than 100.
+a) A maximum of four natural numbers between the comparison and sorting work is done.
+b) In order to express the verbs in terms of "before", "after" and "between" and "verbal" and "written", they are included.
+2.1.1.8. Determines which of the natural numbers smaller than 100 is closer to the decimal.
+2.1.2. Collecting Process with Natural Numbers Terms or concepts: obtaining, gathering
+2.1.2.1. With the natural numbers of up to 100 (including 100), it performs unadjusted and manual collection.
+a) Sum of the sum of 100 and not exceeding the number of two and three numbers are made.
+b) In the collection process, the meaning of the hand is explained by models and real objects.
+2.1.2.2. Finds the sum that is not given in the sum of the two numbers.
+a) Counting, counting strategy, or subtraction is used for the non-given summaries.
+b) The class shall remain within the number limitations.
+2.1.2.3. Estimate the sum of the two natural numbers and compare their estimation with the process result.
+a) Transactions with a maximum of 100 numbers are made.
+2.1.2.4. Collects from the mind.
+a) 10 and 10 of the total number of solid natural numbers are collected from the mind.
+b) Then, the sum of the two natural numbers whose sum does not exceed 50 is included. Students are encouraged to develop different strategies.
+2.1.2.5. Solve the problems that require collection with natural numbers.
+a) When solving the problem, two-process problems are studied.
+b) Studies on problem building are also included.
+2.1.3. Extraction with Natural Numbers
+2.1.3.1. With natural numbers up to 100 decimals that require ten decimals and do not require subtraction.
+a) Decimals are performed using real objects.
+2.1.3.2. The difference between the two natural numbers in the 10 to 100 is the difference in mind.
+2.1.3.3. Estimate the outcome of the subtraction with natural numbers and compare the estimation with the result of the process.
+a) Transactions with numbers up to 100 are performed.
+2.1.3.4. Recognize the relationship between addition and subtraction.
+a) The relationship between the aggregates and total and the difference, the difference and the difference is highlighted.
+b) This relationship is described verbally before operationally. For example. Ali has 3 items. If the father takes 4 more pens, how many pens does Ali have? In the ifade problem, the relationship between 3, 4 and 7 is expressed orally as follows; • Number of first pens + Number of added pens = Total number of pens  • Number of first items = Total number of items - Number of added items  • Number of items added = Total number of items - Number of first items
+2.1.3.5. Realizes the equality between the mathematical expressions of the equal sign.
+a) It is emphasized that the equal sign does not always mean the result of the process, and that the mathematical expressions on both sides of the equation indicate the equilibrium (equality). For example, 5 + 6 = 10 + 1; 15-3 = 18-6; 8 + 7 = 20-5; 18 = 16 + 2
+2.1.3.6. Solve problems that require addition and subtraction with natural numbers.
+a) No more than two process problems are included.
+b) Studies on problem building are also included.
+2.1.4. Multiplication with Natural Numbers
+Terms or concepts: multiplication, multiplication table, multiplier, multiplication Symbols: x
+2.1.4.1. Explains that multiplication means repeated collection.
+a) Works with real objects are included.
+2.1.4.2. Multiplication by natural numbers.
+a) The meaning of the symbol (x) of the multiplication is emphasized.
+b) Multiplies the numbers up to 10 by 1, 2, 3, 4 and 5.
+c) It is realized that the multiplication of multipliers will not change the product of multiplication.
+ç) Using multipurpose tables and spreadsheets, a multiplication table of up to 5 (including 5) is created.
+d) The effect of 1 and 0 is explained in the multiplication process.
+2.1.4.3. Solves problems that require multiplication with natural numbers.
+a) Problems that require a single operation are studied.
+2.1.5. Division with Natural Numbers
+Terms or concepts: divide, divide, divide, divide
+Symbols:
+2.1.5.1. Uses the meaning of grouping and sharing in the division process.
+a) Use of real objects is included.
+b) The process is carried out without any number of natural numbers.
+c) Before proceeding to the symbolic representation of the division process, it shall model the division process as consecutive subtraction.
+2.1.5.2. Performs the division, uses the sign (÷) of the division operation.
+a) Students are provided to select the appropriate process for the problem given during the division process.
+b) Divide, divide, divide and divide the division of the concepts are emphasized.
+2.1.6. fractions
+Terms or concepts: quarters
+2.1.6.1. It shows the whole, half and quadrant with suitable models; explain the relationship between whole, half and quarter.
+a) Length, shape or objects are divided into four identical parts, a quarter is specified.
+b) Fraction display is not entered.
+2.2. GEOMETRY
+2.2.1. Geometric objects and shapes
+Terms or concepts: circle, cube, square prism, rectangular prism, triangular prism, sphere, cylinder
+2.2.1.1. Classifies geometric shapes according to number of edges and corners.
+a) Triangle, square, rectangle, circle and circle of similar or different sides are explained.
+b) Studies on whether a given geometric shape resembles other geometric shapes.
+2.2.1.2. Creates structures using shape models, draws structures.
+a) Students first work with one type of shape models, then using different shape models are provided to work.
+b) Drawing on dotted paper can be done with the shapes obtained by using the surfaces of the objects.
+c) Students will be able to recognize the decorations of art works of different civilizations.
+2.2.1.3. Recognizes and distinguishes the cube, square prism, rectangular prism, triangular prism, cylinder and sphere on models.
+a) Objects are introduced formally without touching their geometric properties.
+b) Objects that can be encountered in daily life (pinpon ball, milk box, bottle, etc.) are used.
+2.2.1.4. When the direction, position or size of geometric objects and shapes change, studens realize that their formal properties do not change.
+a) Shapes, objects and their features are introduced at the class level.
+b) Interactive studies with appropriate information and communication technologies can be included.
+c) Three-dimensional dynamic geometry software can be used.
+2.2.2. Spatial Relations
+Terms or concepts: symmetrical shape
+2.2.2.1. Uses mathematical language to indicate location, direction and movement.
+a) Mathematical language is used to define position, direction and movement along a straight line.
+b) Interactive studies with appropriate information and communication technologies can be included.
+2.2.2.2. Realizes the symmetrical shapes around.
+a) The mathematical definition of symmetry is not entered.
+b) Square, triangular, rectangular and circle are divided into two identical parts, once folded in a suitable manner, and it is noticed that there are shapes that cannot be separated into two identical parts.
+2.2.3. Geometric Patterns
+2.2.3.1. It completes missing elements in a repeating geometric pattern.
+a) Working on up to four items.
+b) Patterns containing different positioned shapes are also included.
+2.2.3.2. Using the relationship in a geometric pattern creates new patterns with the same relationship with different materials.
+2.3. MEASUREMENT
+2.3.1. Length Measuring
+Terms or concepts: meter (m), centimeter (cm), number line
+2.3.1.1. It uses a combination of non-standard different length measurement units to measure a length and perform repeated measurements with two and four divided parts of the non-standard unit.
+a) It is desirable to repeat the measurement with a strip of paper with half and one fourth of the same strip.
+b) It is realized that a length can be expressed with smaller parts of the same unit.
+c) No comparison is made between the units by using the fold expressions.
+2.3.1.2. Recognizes the standard length measurement units and explains their usage places.
+a) It is limited to meters and centimeters.
+b) Standard measurement tools are used.
+2.3.1.3. Measures lengths in meters or centimeters using standard tools.
+a) Measured different lengths are performed.
+b) The abbreviation of the meter and centimeter shall be mentioned.
+2.3.1.4. Estimates the lengths in units of meters or centimeters and checks the estimation by comparing with the measurement result.
+2.3.1.5. Creates length models with standard or non-standard length measurement units.
+a) Models can be created, for example, by using colored strips.
+b) Number line is introduced with basic features and used in activities and associated with the ruler.
+2.3.1.6. Length measurement unit solves the problems used.
+a) Use of single length measurement unit.
+b) In the solution, problems that need to be done between units are not included.
+2.3.2. Our money
+2.3.2.1. Recognizes the relationship between the penny and pounds.
+a) For example, ten 10 cents, four 25 cents, two 50 cents of 1 pound is emphasized.
+b) Decimal representation is not entered.
+c) 100 and 200 TL are introduced.
+2.3.2.2. Compares different amounts of coins so as not to exceed 100 liras.
+a) When comparing, single unit (penny or TL) is used.
+2.3.2.3. Solves problems with our money.
+a) Grade number limits remain.
+b) Problems requiring conversion are not entered.
+c) Studies on problem building are also included.
+2.3.3. Measuring Time
+2.3.3.1. Full, half and quarter hours are read and showen.
+a) Examples of time use over 24 hours are given.
+b) Full time, noon, afternoon, afternoon, morning, noon, evening and midnight words are used.
+c) Analog and digital clock are used together. ç) Adjustments are made on the clock.
+2.3.3.2. Explains the relationship between time measurement units.
+Minutes-hour, day-day, day-week, day-week-month, month-season, season-year relations are limited.
+2.3.3.3. Solves problems related to time measurement units.
+a) Class numbers remain within the limits.
+2.3.4. Weighing
+Terms or concepts: kilograms (kg)
+2.3.4.1. Weighs and compares objects in kilograms using standard tools.
+2.3.4.2. Solves problems related to mass measurement unit.
+a) Class numbers remain within the limits.
+2.3.5. Liquid Measuring
+2.3.5.1. Measures and compares the amount of liquids using non-standard fluid measurement units.
+2.3.5.2. Solves problems related to non-standard fluid measurement units.
+a) Class numbers remain within the limits.
+2.4. DATA PROCEEDING
+2.4.1. DATA COLLECTING AND EVALUATION
+Terms or Concepts: scoreboard table, frequency table, object graph, shape chart, tree diagram
+2.4.1.1. It collects, classifies, arranges data in the form of a tree chart, scoreboard or frequency table by asking questions or problems; creates object and shape chart.
+a) While collecting data “Asking the students of a class which their favorite season, which color is the same, etc. lark are included.
+b) When creating graphs, it should be ensured that the data can be organized in up to four categories and that one object is used for each data, objects are next to each other or overlapping.
+c) In the object and figure graph, horizontal and vertical representations should be exemplified.
+ç) When creating the object graph, attention should be paid to the use of real objects.

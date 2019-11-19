@@ -4,18 +4,33 @@
 <br>
 <div class='text-center sequence-page'>
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
-  <div>
-    <button id="show-indicators" class="btn-info" onclick="showIndicators(true);">Show Indicators</button>
-    <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Hide Indicators</button>
-  </div>
-  <% @s_o_hash.keys.each do |i| %>
-    <div class='subj-checkbox'>
-      <label for="check-<%= i %>">
-        <%= @translations["subject.#{i}.name"] %>
-      </label>
-      <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+  <div id="controls">
+    <div>
+      <button id="show-indicators" class="btn-info" onclick="showIndicators(true);">Show Indicators</button>
+      <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden>Hide Indicators</button>
     </div>
-  <% end %>
+    <% @s_o_hash.keys.each do |i| %>
+      <div class='subj-checkbox'>
+        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+        <label for="check-<%= i %>">
+          <%= @translations["subject.#{i}.name"] %>
+        </label>
+        <% if @subj_gradebands[i].length > 0 %>
+          <i id="show-gb-controls-<%= i %>" class="rotate fa fa-angle-left down" onclick="toggle_visibility('#<%= i %>-gradebands-list', '#show-gb-controls-<%= i %>');"></i>
+          <ul id="<%= i %>-gradebands-list" class="gradebands-list hidden">
+            <% @subj_gradebands[i].each do |gb_code|%>
+              <li>
+              <input id="<%= i %>-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility("<%= i %>", "<%= gb_code %>");' checked></input>
+              <label for="<%= i %>-gb-check-<%= gb_code %>">
+                <%= I18n.t('app.labels.grade_band_num', num: gb_code) %>
+              </label>
+              </li>
+            <% end #@subj_gradebands[i].each do |gb_code| %>
+          </ul>
+        <% end #if @subj_gradebands[i].length > 0 %>
+      </div>
+    <% end %>
+  </div>
 </div>
 <div id="trees" class="sequence-page">
   <div class="sequence-grid cols-<%= @s_o_hash.keys.count %>">
@@ -24,7 +39,7 @@
       <ul class="list-group">
         <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
         <% j.each do |k| %>
-          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item" data-lo-id="<%= k[:id] %>">
+          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item lo_gb_code_<%= k[:gb_code] %>" data-lo-id="<%= k[:id] %>">
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
             <% if @indicator_hash[k[:code]].length > 0 %>
               <div class="indicators-container hidden hide-if-collapsed"><strong>

@@ -17,6 +17,7 @@ en:
       create: "Create"
       subject: "Subject"
       grade_band: "Grade"
+      grade_band_show: "Show Grade"
       grade_band_num: "Grade %{num}"
       action: "Action"
       actions: "Actions"

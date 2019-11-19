@@ -96,9 +96,31 @@
 
     .hidden { display: none; }
 
+    .rotate {
+      -moz-transition: all .2s linear;
+      -webkit-transition: all .2s linear;
+      transition: all .2s linear;
+      cursor: pointer;
+    }
+    .rotate.down {
+        -moz-transform:rotate(-90deg);
+        -webkit-transform:rotate(-90deg);
+        transform:rotate(-90deg);
+    }
+
     .subj-checkbox {
-      display: inline;
+      display: inline-block;
+      vertical-align: top;
       margin: 10px;
+      text-align: left;
+      .gradebands-list {
+        border: none;
+        text-align: left;
+        font-size: 95%;
+        li {
+          clear: both;
+        }
+      }
     }
 
     ul {
@@ -139,7 +161,7 @@
       .spotlight .connections-icon:hover {
         color: brown;
       }
-      .lo-handle {
+      .lo-handle, .show-hide-gradeband {
         cursor: pointer;
       }
 

@@ -1,0 +1,183 @@
+en,mat,3
+3.1 NUMBERS AND OPERATIONS
+3.1.1. Natural Numbers
+Terms or Concepts: digit, digit value, percentage, odd number, even number
+Symbols: >, <
+3.1.1.1. Reads and writes three-digit natural numbers.
+a) Firstly, three-digit numbers are used by using models.
+3.1.1.2. Starting from any number within 1000, it counts rhythmically, forward and floating forward.
+3.1.1.3. Specifies the step names of the three-digit natural numbers and the digit values of the digits in the digits.
+3.1.1.4. It rounds up the three-digit natural numbers to the nearest decimal or to the face.
+3.1.1.5. Compares up to five natural numbers less than 1000 and sorts them using symbols.
+3.1.1.6. In 100, six, seven, eight and nine counts rhythmic.
+3.1.1.7. The difference between them expands and creates the constant number pattern.
+a) The pattern is expanded by a maximum of four steps.
+b) Modeling studies are carried out according to the pattern.
+3.1.1.8. Comprehend single and double natural numbers.
+a) Real objects are used when working with single and double natural numbers.
+3.1.1.9. Examines the sum of single and double natural numbers on the model and indicates whether the totals are single or double.
+3.1.1.10. Reads and writes Roman numerals up to 20.
+a) In addition to Roman numerals, the number symbols used by ancient civilizations are introduced with examples from the history of mathematics in order to ensure that students are attracted to mathematics.
+3.1.2. Collecting Process with Natural Numbers
+3.1.2.1. Performs unattended and manual collection with up to three digit numbers.
+3.1.2.2. It shows that changing the order of the numbers with each other does not change the result in the collection operation with three natural numbers.
+a) Samples with parentheses should also be included in the operations.
+3.1.2.3. Estimates the sum of the two numbers and compares the estimation with the process result.
+a) Develop estimation strategies using rounding, number pairs and step values.
+3.1.2.4. Collects from the mind.
+a) Two two-digit numbers whose sums do not exceed 100; a three-digit number is a one-digit number, a two-digit number which is a multiple of 10, and a three-digit number, which is a multiple of 100, is gathered.
+b) Appropriate strategies are used such as rounding, number pairs, step values, insertion on top, shredding numbers.
+3.1.2.5. Finds a collection that is not given in a collection operation.
+a) In the collection process containing more than two terms, it is done to find the collection which is not given.
+b) The maximum number of untreated process samples should be used in the collection process with natural numbers.
+3.1.2.6. Solve the problems that require collection with natural numbers.
+a) When solving the problem, problems that require a maximum of three operations are included.
+b) Problem-creating studies that require a maximum of two operations are also included.
+3.1.3. Extraction with Natural Numbers
+3.1.3.1. Ten decimals and require no subtraction.
+a) Class numbers remain within the limits.
+3.1.3.2. The two-digit numbers, two-digit numbers, which are 10-fold, subtract from the two-digit natural numbers, which are more than 10 times the number of natural numbers, which are the three-digit 100-fold.
+Mind-processing strategies such as inserting, shredding numbers are used.
+3.1.3.3. Estimates the result of the extraction with natural numbers, compares its estimation with the process result.
+a) Class numbers remain within the limits.
+3.1.3.4. Solves problems that require addition and subtraction with natural numbers.
+a) When solving the problem, it is limited to three processes.
+b) Problem-creating studies that require a maximum of two operations are also included.
+3.1.4. Multiplication with Natural Numbers
+3.1.4.1. Explains the meaning of multiplication.
+a) The relation of the meaning of multiplication with the meaning of repetitive collection is emphasized.
+3.1.4.2. Creates the multiplication table.
+a) By using the table in the form of a list of 100 and form a multiplication table is provided to create.
+3.1.4.3. With a two-digit natural number, a natural number multiplies a two-digit natural number, a natural number with a three-digit natural number.
+a) Including the multiplication operations.
+b) Products with numbers less than 1000 are traded.
+3.1.4.4. 10 and 100 with a short-way multiplication.
+a) Class numbers remain within the limits.
+3.1.4.5. Using the numbers in the multiplication table up to 5 (including 5), you notice how the result of the multiplication has changed when one of the multiplications is multiplied or reduced.
+a) It is noticed that by multiplying one of the multipliers by one of the multipliers by using one of the multiplier, the multiplier decreases by another multiplier by one of the multiplier.
+3.1.4.6. Solves problems that require two operations, one of which is multiplication. Studies on problem building are also included.
+3.1.5. Division with Natural Numbers
+Terms or concepts: remaining
+3.1.5.1. Divides natural numbers into two-digit natural numbers.
+a) It is emphasized that the process should start from the largest step, unlike other operations in the division process.
+b) Specifies that the process will not continue if the remaining part of the division operation is smaller than the region.
+c) In addition to modeling with concrete objects, number line etc. The models are also used.
+3.1.5.2. The first digit divides a two-digit natural number, which is zero, by a shorter path than 10.
+3.1.5.3. Understands the relationship between division, division, division and remainder in division process.
+a) In the division process, the division is represented by modeling and operations where the division and division product are equal to the remaining and the sum.
+3.1.5.4. Solve problems that require two operations, one of which is a partition.
+a) Studies on problem building are also included.
+3.1.6. Fraction
+Terms and Concepts: fraction, numerator, denominator, fractional line, unit fraction
+3.1.6.1. Uses fractional representations of all, half and quarter models.
+a) In the reading of fractional representations, expressions that emphasize the part-whole relationship are used. For example, the 1/4 fraction is read in the form of as a quarter and is described as a whole divided by 4 and a part taken.
+b) Shares are explained on the denominator using the denominator and fractional line.
+3.1.6.2. Specifies that each of the peer parts is a unit fraction by dividing a whole into peer parts.
+a) It is emphasized that the whole is ”1a”
+b) It is explained that one of the peer parts of the given whole is a unit fraction.
+3.1.6.3. Explains the relationship between share and denominator.
+a) The part-whole relationship between share and denominator is highlighted.
+3.1.6.4. Denotes unit fractions of fractions 10 and 100.
+a) The denominations 10 are denoted on the number line as well as the other models (length, area, etc.).
+3.1.6.5. Specifies a multiplicity, as much as the specified unit fraction.
+a) The problem is solved by using the model. Then the operation is done.
+3.1.6.6. Shares obtains small fractions from the denominator.
+a) Paper, fraction blocks, pattern blocks and number lines should be used with various fractions using fractional fraction.
+3.2. GEOMETRY
+3.2.1. Geometric objects and shapes
+Terms and Concepts: rectangle, pentagon, hexagon, octagon, diagonal, rectangle, face, cone
+3.2.1.1. Cube, square prism, rectangular prism, triangular prism, cylinder, cone and sphere models, faces, corners, specifies the edges.
+3.2.1.1. Cube, square prism and rectangular prism explain the similar and different aspects of each other.
+a) A comparison is made in terms of corner, face and edge properties.
+b) It is not mentioned that the cube and square prism and the rectangular prism have special status.
+3.2.1.3. Draws the square, rectangle and triangle using the ruler; determine the diagonal of the square and rectangle.
+a) Dotted, isometric or square paper is used for drawing.
+b) It is realized that the triangle has no diagonal.
+3.2.1.4. They realize that the figures are named according to the number of edges.
+a) Quadrangle, pentagon, hexagon and octagon are introduced.
+b) Examples from daily life to the figures (honeycomb, opened envelope, traffic signs, etc.) are given.
+c) Figures; dot paper, geometry board, etc. shown on vehicles.
+3.2.2. Spatial Relations
+Terms or concepts: symmetry
+3.2.2.1. It determines whether the shapes have more than one symmetry line.
+a) It is limited to square, rectangle and circle.
+b) It is realized that the rectangle is not a symmetry line in the rectangle.
+3.2.2.2. One part completes the given symmetrical shape according to the vertical or horizontal symmetry line.
+a) It is ensured that the parts of the symmetrical shape are examined, associated and the properties of the peer parts are recognized.
+3.2.3. Geometric Patterns
+3.2.3.1. She makes coating using shape models, draws the coating pattern she makes on dotted or checkered paper.
+a) The unit is used in triangle, square, rectangular shape models.
+3.2.4. Basic Concepts in Geometry
+Terms or concepts: point, line, line, line, angle
+3.2.4.1. Recognizes the point, shows the symbol and name it.
+3.2.4.2. Recognize the truth, beam and angle.
+a) Describes the truth and the beam and gives examples from its surroundings.
+3.2.4.3. Creates the correct piece with line models; horizontal, vertical and inclined position to give examples of accurate part models.
+3.3. MEASURING
+3.3.1. Length Measuring
+Terms or concepts: kilometers (km)
+3.3.1.1. Defines non-standard measuring tools for one meter, half meter, 10 cm and 5 cm and measures using them.
+a) The students are asked to define physical measurement tools such as strokes, pitches, chunks and non-bodily measuring tools such as rope, wire, pencil and different measurement activities by using them.
+3.3.1.2. Explain the relationship between meter and centimeter and write in terms of each other.
+a) Numbers that do not require decimal notation are used in conversions.
+b) Transformations are carried out with concrete applications.
+3.3.1.3. Using the ruler draws a given part of the length of the given length.
+3.3.1.4. Recognizes the kilometer, indicates the usage areas and notices the relationship between kilometers and meters.
+a) Inter-unit conversions are not included.
+3.3.1.5. Solves the problems using meter and centimeter units.
+a) When solving the problem, there are two problems with most processes.
+3.3.2. Environmental Measurement Terms or concepts: environment
+3.3.2.1. Determines the environment of objects.
+3.3.2.2. Measures the circumference of the shapes using non-standard and standard units.
+a) First, non-standard units are measured.
+b) It is emphasized that a shape should not measure the same edges repeatedly when measuring the circumference and should not have any unmetered edges.
+3.3.2.3. Calculates the perimeter of the shapes.
+a) Geometry, dotted or square paper given in the square, rectangle, or created from a combination of the length of the environment are calculated.
+b) The circumference of the circle is not calculated.
+3.3.2.4. Solves problems related to the circumference of the shapes.
+3.3.3. Area Measurement
+Terms or concepts: field
+3.3.3.1. Measures and measures the area of the figures with non-standard materials.
+a) Colored paper, plastic, etc., of equal size as coating material. Material can be used. Particular attention is paid to the surface of the surface to be coated.
+b) The number of units and the importance of unit repetition in area measurement are highlighted.
+c) The students are given the works to tell the number of units.
+ç) Studies are carried out to measure and compare the areas of two different shapes with non-standard units of the same type.
+3.3.3.2. Estimates an area with non-standard field measurement units and controls the estimate by counting units.
+3.3.4. Our money
+3.3.4.1. Shows the relationship between pound and penny.
+a) For example 325 cents, 3 pounds is expressed as 25 cents.
+b) Decimal representation is not included.
+3.3.4.2. Solves problems with our money.
+a) Emphasis on the importance of savings in problems.
+b) Studies on problem building are also included.
+3.3.5. Measuring Time
+Terms or concepts: in seconds
+3.3.5.1. Tells, reads and writes time in minutes and hours.
+3.3.5.2. Explain the relationship between time measurement units.
+a) Explains the relationship between year-week, year-day, minute-second.
+b) Conversion operations are not entered.
+3.3.5.3. Compares the occurrence time of events.
+a) Measurement and comparison of the duration of tasks between the beginning of a particular job or action and its completion.
+b) Examples of the use of different time measurement tools such as hourglass are also included.
+3.3.5.4. Solves problems using time measurement units.
+3.3.6. Weighing
+Terms or concepts: gram (g)
+3.3.6.1. Measures objects in grams and kilograms.
+3.3.6.2. Estimates the mass of an object and checks its accuracy by measuring.
+3.3.6.3. Solves problems related to kilograms and grams.
+a) Problems requiring conversion are not included.
+b) Studies on problem building are also included.
+3.3.7. Liquid Measuring
+Terms or concepts: liters (L)
+3.3.7.1. Explains the necessity of standard liquid measuring instruments and units and makes measurements with liter or half liter units.
+3.3.7.2. Estimates the amount of liquid in a container with liters and half liter units and checks the accuracy of the measurement by measuring.
+3.3.7.3. Solve problems related to liters.
+3.4. DATA PROCESSING
+3.4.1. Data Collecting and Evaluation
+3.4.1.1. Makes and interprets conversions from chart to scoreboard and frequency table by explaining the information shown in figure and object graph.
+a) They are asked to comment on the whole of the data by comparing different parts of the data. For example, when a graph showing the number of bread sold in a week in a grocery store is examined, it is noticed that the number of bread sold at the weekend is more than the number of bread sold on other days.
+3.4.1.2. Solve problems that require addition and subtraction by using the information given in the graphs or by creating graphs.
+a) Grade number limits remain.
+b) Problems that require comparison are included.
+c) Studies on problem building are also included.
+3.4.1.3. Reads, reviews and arranges the data obtained from the tables.

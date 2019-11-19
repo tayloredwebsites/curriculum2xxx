@@ -1,0 +1,143 @@
+en,mat,1
+1.1 NUMBERS AND OPERATIONS
+1.1.1. Natural Numbers
+Terms or concepts: number, number, decimal, unity, rhythmic counting
+1.1.1.1. Reads and writes numbers.
+a) Pay attentions for the direction of writing.
+1.1.1.2. Determines the number of objects in a community with up to 20 objects (including 20) and writes that number as figures.
+a) The difference between number and figure is highlighted.
+b) In counting studies, it is noticed that the last number expressed refers to the quantity of objects.
+c) It is provided that a plurality corresponding to a number of up to 20.
+ç) Using the terms "first", "after" and "between", the sequence relationship between numbers up to 20 is understood.
+1.1.1.3. Up to 100 (including 100) one, five and ten rhythmically counts forward.
+a) As the numbers are learned, a gradual counting of up to 100 counts is made.
+b) Counting can be started by starting from any given number.
+c) Five rhythmic counts are initiated from multiples of 5, and ten rhythmic counts are multiplied by 10. ç) Writing works with numbers greater than 20 are not included.
+1.1.1.4. Counts backwards one, two, two, up to 20 (including 20).
+a) Counting is done based on concrete objects.
+b) Examples are given in order to find the item which is not given in counting studies. For example, 14, 12, 10, _, 6, 4
+1.1.1.5. Compares objects in two groups with fewer than 20 objects and compares the number of objects of groups.
+When comparing, eleri equal”, “more” and “less” ”expressions are used.
+1.1.1.6. It compares the number given in numbers up to 20 (including 20) with the number 10 in terms of size and size.
+1.1.1.7. It shows a group of objects between 10 and 20 (including 10 and 20), divided into decimals and units.
+1.1.1.8. Uses numbers up to 20 (including 20) for ordering.
+1.1.2. Addition with Natural Numbers
+Terms or concepts: addition, total, added, equal, plus
+Symbols: +, =
+1.1.2.1. Understands the meaning of the collection process.
+a) Collecting objects of the same type of objects (collectable) to bring together, adding meanings are realized by modeling studies.
+b) Works related to daily life situations in which collection means are included.
+1.1.2.2. It does the collection with natural numbers up to 20 (including 20).
+a) The symbol (+) and equal sign (=) are introduced and their meaning is emphasized.
+b) Attention is given to problem situations in process instruction.
+c) The student writes the mathematical sentence of the process.
+ç) The meanings of the collected, total and collection terms are highlighted.
+d) Collecting side by side and underneath. It is emphasized that the process line has a similar meaning to the equal sign when it is given the sub-stacking operation.
+e) Explains the effect of zero in the collection process.
+f) Students are asked to explain the process by voice. For example, in the process 5 + 2 = 7 "Five plus two equals seven.", "Five more seven seven." or "If we collect the five and the two, seven." are asked to comment.
+g) Number of 10 or 20 numbers is studied.
+h) Writing studies are given in the form of the sum of two natural numbers with natural numbers up to 20.
+ı) The collection process is not included.
+1.1.2.3. When the locations of the collecting process are changed, they realize that the total is not changed.
+a) It is not stated that this is called the change property of the collection.
+1.1.2.4. Finds the sum that is not given in the collection process with numbers not exceeding 20.
+a) In the first stage, students are asked to find the total. In the second stage the first is collected and the total is given, they are asked to find the second collection. In the last stage, the second is collected and the total is given, they are asked to find the first collection.
+For example (with a result of 12 operations) before moving to the number of the number of the number of 12 visual models should be used. Different numbers can be used instead of 12. • I had 8 balls. Four brothers gave it to me. How many have you been? • I had 8 balls. I had a total of 12 balls with the balls my brother gave him. How many balls did my brother give me? • I had some balls. 4 brothers gave my brother. My total balls were 12. How many balls do I have before?
+b) Extraction operation is not made. The emphasis is placed on the operation is emphasized.
+c) While making these studies, the care is taken to use the model.
+1.1.2.5. Collects from the mind.
+a) Transactions with minds with numbers not exceeding 20 are performed.
+b) Students are given the opportunity to develop their strategies. For example, strategies such as number pairs, overlaying, and completion of 10 can be used at this class level.
+1.1.2.6. Solves problems that require collection with natural numbers.
+a) It is worked on problems that require a single operation.
+b) Studies on problem building are also included.
+1.1.3. Substraction with Natural Numbers
+Terms or concepts: subtraction, minus, missing, resulting, difference
+Symbols: –
+1.1.3.1. Understands the meaning of the substraction operation.
+A plurality from a plurality of up to 20 (including 20) is delineated by deducting the number of objects from a certain number of objects.
+1.1.3.2. Performs extraction with natural numbers up to 20 (including 20).
+a) The symbol (-) of the removal process is introduced.
+b) The student writes and explains the mathematical sentence of the process.
+c) Suitable problem situations are used.
+ç) The meaning of the terms of subtraction, subtraction, difference, difference and minus is highlighted.
+d) Side-by-side and bottom-down operation is performed.
+e) Students are asked to explain the process audibly. For example, 7 - 2 = 5 in the operation "Seven minus two equals five.", "Five out of five remained five." or "The difference between seven and two is five." are asked to comment.
+f) It is shown that the difference of two natural numbers equal to ir zero two.
+1.1.3.3. Natural numbers in the process of removing from the mind.
+a) Finds the difference between two natural numbers up to 20 (including 20).
+b) Ten decimals are not mentioned.
+1.1.3.4. Solves problems that require extraction with natural numbers.
+a) Work on problems that require a single operation.
+b) Studies on problem building are also included.
+1.1.4. fractions
+Terms or concepts: whole, half
+1.1.4.1. Shows the whole and the half with the appropriate models, explains the relationship between the whole and half.
+a) Processing with concrete objects.
+b) The appropriate shape or objects are divided into two identical parts, half is indicated, the relationship between whole and half is explained.
+1.2. GEOMETRY
+1.2.1. Geometric Objects ve Shapes
+Terms or Concepts: edge, corner, triangle, square, rectangle, circle
+1.2.1.1. Names geometric shapes by corner and edge numbers.
+a) Triangle, square and rectangle edges and corners are introduced.
+b) Before the classification of the shapes, triangle, square, rectangle and circle recognition and naming works are performed.
+c) Working on quadrilateral shapes and circles.
+ç) Square, rectangle, triangle and circle models are created.
+d) Geometry board, rope, wire, geometry bars and so on. The geometric shapes are modeled using materials.
+1.2.1.2. Classifies the simple objects used in daily life according to their properties and relates them to geometric shapes.
+a) The objects to be used are selected from geometric objects.
+b) Geometric objects (prisms, spheres, etc.) without name, box, unitcube, pet bottle, camping tent, ping-pong balls, such as the properties of the classification of objects (round, square, rectangular, etc.) are listed.
+c) Different structures are created by using simple objects from daily life.
+ç) Investigating the faces of geometric object shaped objects from daily life by geometric shapes.
+d) Geometric objects are not entered.
+1.2.2. Spatial Relations
+Terms or concepts: peer objects
+1.2.2.1. Expresses spatial (status, location, direction) relationships.
+a) To make use of the expressions that give the place and direction (under-the-top, around- left-right-on-the-front-behind, high-low, far-away, inside-outside) in daily life situations.
+b) When expressing the relations, attention shall be given to determining the reference point.
+c) Works on models as well as daily life examples can be made.
+1.2.2.2. Gives examples to peer objects.
+The concept of parity is differentiated by using different models, especially the appropriate materials in the classroom.
+1.2.3. Geometric  Patterns Terms or concepts: pattern
+1.2.3.1. He finds the rule in a pattern of objects, geometric objects or shapes and completes the pattern by identifying the missing elements in the pattern.
+Care is taken to ensure that the selected geometric object or shape matches the grade level.
+1.2.3.2. Creates a pattern with up to three elements with geometric objects or shapes.
+1.3. MEASURING
+1.3.1. Length Measuring
+1.3.1.1. Compares and sorts objects in terms of length.
+a) Objects are compared only without measurement.
+b) They are asked to make comparisons using expressions such as arı longer karşılaştırma and if shorter b.
+c) Make sure that the number of objects does not exceed five.
+d) The position of an object within the set of objects sorted by length.
+e) The length relations between at least three objects are interpreted and attention is paid to the development of the idea of transitivity. Selects and measures the appropriate non-standard measuring instrument to measure a length.
+When the units are used repeatedly, a starting point must be taken, and there should be no gap between the units so that the units do not overlap and all of them should be used in the same direction.
+1.3.1.3. Estimates the length of an object in terms of non-standard measurement units and checks the accuracy of its estimates.
+1.3.2. Our money
+Terms or concepts: Turkish Lira (TRY), kuruş (kr.)
+Symbols:
+1.3.2.1. Recorgnizes our money.
+a) 1, 5, 10, 25, 50 kr. and 1, 5, 10, 20, 50 TRY.
+b) With this money, which needs can be met.
+1.3.3. Measuring Time
+Terms or concepts: month, week, day, hour
+1.3.3.1. He reads full and half hours.
+a) Only analog clocks are used.
+b) Shows the hours of specific activities during the day. For example, breakfast, lunch, dinner, sleep time, school start and end time, etc.
+1.3.3.2. Specifies the day, week and month on the calendar.
+1.3.3.3. Makes rankings by reference to specific events and situations.
+Events; Before-After, first-end, today-yesterday-tomorrow, morning-noon-evening, day-night using the words in chronological order.
+1.3.4. Weighing
+1.3.4.1. Compares and sorts objects in terms of masses.
+a) Two objects are compared first. By using expressions such as “heavier” and “ lighter”, the comparison results are expressed.
+b) In the comparisons, balance studies are used by using non-standard units.
+c) According to the masses of at least three objects are made according to the relationship between them is interpreted. Expressions such as “heaviest” and “lightest“ are used.
+1.3.5. Liquid Measuring
+1.3.5.1. Measures liquids by using non-standard units in liquid measuring activities.
+1.3.5.2. Compares and sorts the amount of liquid in at least three identical containers.
+a) By using expressions such as “full-empty”, “less-more”, “half-full”, the results of the comparison are expressed.
+1.4. DATA PROCESSING
+1.4.1. Data collecting and Evaluation
+Terms and Concepts: table, data
+1.4.1.1. Reads simple tables with up to two data groups.
+a) The students are taught to see the tables they frequently encounter or use, such as the daily dietary table and calendar.
+b) The topics such as healthy eating and obesity are also mentioned.

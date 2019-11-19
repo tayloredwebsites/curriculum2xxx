@@ -1,0 +1,127 @@
+en,mat,7
+7.1. NUMBERS AND OPERATIONS
+7.1.1. Transactions with integers
+Terms or concepts: ineffective element, ingesting element, inverse element, dispersion
+7.1.1.1. Performs addition and subtraction with whole numbers, solves related problems.
+a) Understands that the subtraction means the sum of the opposite sign of the output.
+b) Tools such as elevators, thermometers that use integers are associated with models such as horizontal and vertical number lines and addition and subtraction operations are included.
+7.1.1.2. Uses the properties of the aggregation process as a strategy for fluent processing.
+a) For example 5 + 7 + (- 5) =? In the total, the change is done by using the combination, inverse element and ineffective element properties respectively: 5 + 7 + (- 5) = 5 + ((- 5) +7) = (5 + (- 5)) + 7 = 0 +7
+b) The process of addition, merger, inverse element and ineffective element properties of the collection process are discussed.
+7.1.1.3. Performs multiplication and division operations with integers.
+a) The studies to be done with the appropriate models for the meaning of multiplication and division with whole numbers are included.
+b) The effects of multiplication, change, merger, ineffective element, swallowing element properties, multiplication, addition and subtraction characteristics are investigated.
+c) The impact of 0, 1, and -1 is examined in multiplication and division.
+7.1.1.4. Expresses the exact multiplications of integers with exponential multiplicity. If the force is a single or double natural number is examined.
+7.1.1.5. Solves problems that require doing operations with integers.
+7.1.2. Rational numbers
+Terms or concepts: rational numbers, rotational decimal notation, + -, Symbols: ℚ, ℚ, Semb
+7.1.2.1. Recognizes the rational numbers and indicate the number in the line.
+It is highlighted that each integer is a rational number with a denominator of 1. Also related to rational numbers - A = -a = a is examined. b b-b
+7.1.2.2. Express rational numbers with decimal notation.
+a) It focuses on rotational and non-rotational representations.
+7.1.2.3. It refers to the rational number of rotational and non-cyclic decimal representations.
+7.1.2.4. Sorts and compares rational numbers.
+Strategies for fractions can be taken into account when comparing rational numbers.
+7.1.3. Transactions with Rational Numbers
+7.1.3.1. Performs addition and subtraction with rational numbers.
+a) The rational numbers of the addition, change, ineffective element and inverse element properties are examined.
+7.1.3.2. Perform multiplication and division operations with rational numbers.
+a) Rational numbers of multiplication, change, merger, swallowing and inverse element properties, multiplication, addition and subtraction operations on the scattering properties are examined.
+7.1.3.3. Perform multi-step operations with rational numbers.
+a) In multi-step operations, the process by which braces will be performed is specified.
+b) It is emphasized that the process priority is determined by the fractional line in the operations given by using the fraction line.
+7.1.3.4. Calculates the square and cubes of rational numbers.
+7.1.3.5. Solve the problems that require processing with rational numbers.
+7.1.4. Ratio and Proportion
+Terms or concepts: proportion, direct proportion, inverse proportion Symbols: a: b, a, a / b, a = c b b d
+7.1.4.1. If one of the multiples is 1, it determines the value of the other.
+For example, if you can buy 3 kg of detergent for 24 TL, you can buy 1 kg of detergent at 8 TL (24 = 24 ÷ 3 = 8), rice. 3 3 ÷ 3 1 cup of 3 cups of water falling into 1 cup of rice (3 = 3 ÷ 2 = 1.5). 2 2 ÷ 2 1
+7.1.4.2. When one of the two multiplicities given to each other is given, it finds the other.
+a) Examples of daily life situations are studied.
+7.1.4.3. By examining real life situations, it decides whether the two multiplicities are proportional.
+a) It is emphasized that two rate equations are called proportions.
+b) Correct proportional multiples are discussed.
+c) The correct proportional graphs are not entered.
+7.1.4.4. Correct proportionality refers to the relationship between two multiplicity.
+a) It is considered that there is a collision-based relationship between the proportional multiplicities. For example, if the ratio of the number of girls in a class to 3: 5 is 3: 5, the number of girls is 3 and the number of boys is 5 times the same number.
+7.1.4.5. Identifies and interprets the proportional constant of two multiplicities.
+a) Real life situations are given and studies are carried out to determine the proportional constant.
+7.1.4.6. By examining real-life situations, he decides whether the two plots are inversely proportional.
+a) Studies to discover that the product of inverse proportional multiplicity is constant.
+b) Inverse proportional graphics are not entered.
+7.1.4.7. Solves problems related to right and inverse ratio.
+a) Problems such as scale, mixture, discount and increase are included.
+7.1.5. Percentages
+7.1.5.1. Finds the amount that corresponds to a specified percentage of a plurality and the whole of a given percentage.
+a) Studies such as% 120,% 100 and% 0,5, such as% 1 and% 1 are used to understand the percentages.
+b) Studies to estimate a specified percentage of a multiplicity are included.
+7.1.5.2. Calculates a plurality as a percentage of another plurality. For example, 20 is 40% of 50.
+7.1.5.3. Make calculations to increase or decrease a multiplicity by a certain percentage.
+7.1.5.4. Solves problems related to percentage.
+7.2. ALGEBRA
+7.2.1. Algebraic Expressions
+7.2.1.1. Makes addition and subtraction with algebraic expressions.
+a) Appropriate models are used in the addition and subtraction with algebraic expressions.
+7.2.1.2. Multiplies an algebraic expression with a natural number.For example, 5 (x + 3) = 5x + 15
+7.2.1.3. The letter denotes the rule of number patterns, the rule finds the desired term of the pattern expressed in letters.
+a) The difference between the steps is limited to the pattern.
+b) The importance and necessity of the use of variable is emphasized.
+c) By examining number patterns, studies are carried out to write the rule of the pattern with a variable (eg n). For example, an arithmetic pattern with the first four terms 3, 9, 15 and 21 is referred to as rule 6n 9 3.
+ç) Studies in order to find the rule by converting the relations in daily life situations or shape patterns to a pattern are also included. Example of daily life situation: Emine, which started collecting with 7 butterflies in the first week, adds 5 butterflies to her collection every week. Specify the relationship between the number of butterflies and the number of weeks as algebraic expressions. Example of the shape of the pattern: What is the algebraic rule of the relationship between the number of hexagons and the total number of edges in the shape pattern formed by adding hexagons to have common edge with only one of the available hexagons in each step?
+7.2.2. Equation and Equation
+Terms or concepts: equality, degree, unknown, equation
+7.2.2.1. Understands the principle of equality conservation.
+a) 7 + 2 = +3 to make sure that the number of next to work in order to find the next issue is done.
+b) Balance or similar equilibrium models shall be included to indicate that equality is maintained in addition and removal situations.
+c) the same number shall be added to or taken out on both sides of the equation and the equality shall be preserved if the two sides are multiplied by the same number or divided.
+7.2.2.2. Recognizes a first order equation and establishes a first-order unknown equation according to real life situations.
+7.2.2.3. Solves equations of a first order unknown.
+a) The coefficients in the equations are selected from whole numbers.
+7.2.2.4. Solves the problems that require the establishment of a first order equation.
+7.3. GEOMETRY VE MEASURING
+7.3.1. Lines and Angles
+Terms or concepts: inverted angles, internal inverse angles, opposite angles, directional angles
+7.3.1.1. Defines an angle by separating an angle into two equal angles.
+a) Dynamic geometry software can be used.
+7.3.1.2. Examines its properties by determining the inverse, inverse, inner inverse, outer inverse angles formed by a parallel with two parallel lines; determine the angles of the angles formed; solve the problems.
+a) The positions of three lines with the same plane are discussed.
+b) Studies to decide whether the two lines are parallel are also included. In doing so, it is possible to benefit from the equality of the angles of the lines with the common cutter.
+7.3.2. Polygons
+Terms or concepts: internal angle, external angle
+7.3.2.1. Explain the edge and angle properties of smooth polygons.
+a) Only convex polygons are examined.
+7.3.2.2. Determine the diagonal, inner and outer angles of polygons; Calculates the sum of the dimensions of the interior angles and the external angles.
+a) Studies to explore the total of internal angles are included.
+7.3.2.3. Recognizes rectangular, parallelogram, trapezoid and rhombus; determines the angle properties.
+a) With the angles formed by the edges, the angles formed by diagonal rectangles, squares and rectangles are examined.
+b) The square is considered a special case of the rectangle and the rhombus. In addition, the rectangular and rhombus is considered the special form of the parallelogram. In addition, rectangular, rhombus and parallelogram are considered as special cases of the slope.
+7.3.2.4. Creates the relations of rhombus and grapevine, solves related problems.
+7.3.2.5. Solves problems related to the field.
+a) Problems that require finding areas of compound shapes consisting of triangles, rectangles, parallelogram, trapezoidal or rhombus.
+b) Studies on linking the area of the rectangle with the perimeter length are included. The area of the different rectangles with the same perimeter as the perimeter lengths of the different rectangles of the same area are examined.
+7.3.3. Circle and Circle
+Terms or concepts: circle, circle, center angle, bow, circle piece, circle slice
+7.3.3.1. Central angles in the circle, determines the relationship between the springs and angle measurements.
+7.3.3.2. Calculates the length of the circle and the circle part.
+a) While the length of the circle part is related to the length of the circle part, studies to benefit from the ratio are included.
+7.3.3.3. Calculates the area of the circle and the circle segment.
+a) While the area of the circle slice is related to the center angle, the studies to benefit from the ratio are included.
+7.3.4. Views from Different Aspects
+7.3.4.1. Draws two-dimensional views of three-dimensional objects from different directions.
+a) Structures formed from co-cubes and known geometric objects are used. The appropriate paper for drawing is used. It is desirable to associate the views of the structures from different directions (such as the front-back and right-left images are symmetrical).
+b) Interactive studies with appropriate information and communication technologies can be included.
+7.3.4.2. Drawings of different aspects of the structure of the structure.
+a) Structures formed from co-cubes and known geometric objects are used. Isometric paper can be used to draw the structures formed with cubes.
+b) Interactive studies with appropriate information and communication technologies can be included.
+7.4. DATA PROCESSING
+7.4.1. Data analysis
+Terms or concepts: line graph, circle graph, median, peak value (mode)
+7.4.1.1. Generates and interprets line graphs for data.
+a) Graphing studies of two data groups are also included.
+b) Line charts that lead to misinterpretations are also examined.
+7.4.1.2. Finds and interprets average, median and peak values of a data group.
+a) For a given data group, studies are carried out to see which of these values is more useful. In this respect, information and communication technologies are included.
+7.4.1.3. Creates and interprets the circle graph for a data group.
+Interactive information and communication technologies are used when creating a circle chart.
+7.4.1.4. Shows the data with a column, circle, or line chart and makes the appropriate conversions between these impressions.

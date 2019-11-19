@@ -1,35 +1,121 @@
 en,sci,5
-5. CLASSROOM SCIENCE TEACHING PROGRAM
-5.1. Sun, Earth and Moon 
-5.1.1. Earth and Universe
-5.1.1.1. Structure and Properties of the Sun
-5.1.1.2. Structure and Features of the Moon
-5.1.1.3. Moon's Movements and Phases
-5.1.1.4. Sun, Earth and Moon
-5.2. World of Living 
-5.2.1 Life and Life / Living
-5.2.1.1. Let's Know Living Things
-5.3. Measurement of Force and Friction / Force Measurement and Friction
-5.3.1 Physical Events
-5.3.1.1. Measuring Force
-5.3.1.2. Frictional force
-5.4. Substance and Change / Substance and Exchange
-5.4.1 Substance and its Nature / Matter and Nature
-5.4.1.1. Change of Matter
-5.4.1.2. Distinctive Properties of Matter
-5.4.1.3. Heat and temperature
-5.4.1.4. Effects of Heat Materials
-5.5. Spread of Light / Propagation of Light
-5.5.1. Physical Events
-5.5.1.1. Propagation of Light
-5.5.1.2. Reflection of Light
-5.5.1.3. The Encounter of Light With Matter
-5.5.1.4. Umbra
-5.6. Human and Environment
-5.6.1. Living
-5.6.1.1. Biodiversity
-5.6.1.2. Human and Environmental Relations
-5.6.1.3. Destructive Nature Events
-5.7. Electrical Circuit Elements
-5.7.1. Physical Events
-5.7.1.1. Display of Circuit Components with Symbols and Circuit Diagrams
+5.1 Sun, Earth, and Moon / Earth and Universe
+5.1.1. Structure and Properties of the Sun Recommended duration: 6 hours
+Subject / Concepts: Structure of the sun and rotation
+5.1.1.1. Explain the properties of the sun.
+a. The geometric shape of the sun is mentioned.
+b. It is mentioned that the sun is made up of layers like the Earth, but the structure of the layers is not mentioned.
+c. It is stated that the sun is making the rotational movement.
+5.1.1.2. Prepare the model to compare the size of the Sun with the size of the Earth.
+5.1.2. Structure and Characteristics of the Month Recommended duration: 4 hours
+Subject / Concepts: Structure of the Moon
+5.1.2.1. Explain the properties of the moon.
+a. The month's size is specified.
+b. The geometric shape of the moon is referred to.
+c. Information is given about the surface structure of the moon.
+d. The atmosphere of the moon is mentioned.
+5.1.2.2. Discuss the ideas produced by living beings in the moon.
+5.1.3. Moon's Movements and Phases Recommended duration: 8 hours
+Subject / Concepts: Rotation movements and their results, moon phases
+5.1.3.1. Explains the rotation and entanglement movements of the moon.
+a. It is indicated that the moon is rotating.
+b. It is indicated that the moon is moving.
+c. The term of the month is referred to as the time zone.
+5.1.3.2. Explains the relationship between the Moon's phases and the Moon's movement around the Earth.
+a. The difference between the main and intermediate phases of the moon is indicated.
+b. The names of the phases are specified depending on the order of occurrence.
+c. It is stated that the period between the two main phases of the moon is one week.
+5.1.4. Sun, Earth and Moon Recommended duration: 6 hours
+Subject / Concepts: Sun, Earth and Moon movements
+5.1.4.1. The sun, the Earth and the moon is a model representing the movement of each other.
+a. The direction of the Moon around the Earth is indicated.
+b. The direction of the Earth around the Sun is indicated.
+c. When the Earth is viewed, it is stated that the moon always has the same face.
+5.2. World of Living Creatures / Living Creatures and Life
+key concepts: In this unit, it is aimed that the students classify living things according to their similarities and differences, and gain knowledge and skills to recognize microscopy, microscopic organisms, fungi, plants, animals.
+5.2.1. Getting to Know Living Things Recommended duration: 12 hours
+Subject / Concepts: Concepts and similarities of living things, microscopic organisms, fungi, plants, animals, microscope, hygiene, security measures
+5.2.1.1. Categorizes living things according to their similarities and differences.
+a. Living things are classified as plants, animals, fungi and microscopic organisms.
+b. In the classification of living things, the use of systematic terms (alem, genus, species etc.) is avoided.
+c. Examples of microscopic organisms (bacteria, amoeba, euthanasia and paramesium) and corked mushrooms are given, but not structural details.
+d. Observes the presence of microscopic organisms with the help of a microscope. Warning that poisonous mushrooms are not eaten.
+5.3. Measurement of Force and Friction / Physical Events
+key concepts: In this unit, students will be able to identify the various forces that exist in nature and discover how the magnitude of the force is measured with the dynamometer; observing the effect of the friction force on the movement in different surfaces / environments and being aware of the place and importance of friction force in our daily life; In addition, it is aimed to provide the students with the ability to propose their own ideas and to gain the ability to think creatively and innovatively.
+5.3.1. Measuring Force Recommended duration: 6 hours
+Subject / Concepts: Measurement of force size, force unit
+5.3.1.1. Measures the magnitude of the force with a dynamometer.
+a) Newton (N) is used as the force unit.
+5.3.1.2. Designs a dynamometer model using simple tools.
+5.3.2. Frictional force Recommended duration: 6 hours
+Subject / Concepts: Applications of friction force on slippery and rough surfaces, applications of friction force in daily life
+5.3.2.1. It gives examples of daily life from friction force.
+5.3.2.2. Explores the effect of friction on motion in various environments.
+a) Experiments are carried out on the effect of frictional force on movement on rough and slippery surfaces.
+5.3.2.3. Produces new ideas to increase or decrease friction in everyday life.
+5.4. Substance and Change / Substance and its Nature
+key concepts: The aim of this unit is to enable students to distinguish pure substances from melting, freezing, boiling, melting, boiling, condensation, evaporation, sublimation and flushing. In addition, the students will be able to comprehend the main differences between the concepts of heat and temperature and to explain the expansion and contraction events occurring during heating and cooling.
+5.4.1. Change of Matter Recommended duration: 6 hours
+Subject / Concepts: Melting, freezing, boiling, condensation, evaporation, sublimation, flocculation
+5.4.1.1. He makes inferences based on the data obtained from his experiments that the materials can change the state by the effect of heat.
+a) The main difference between evaporation and boiling is explained by indicating that liquids evaporate at each temperature but boil at a certain temperature.
+5.4.2. Distinctive Properties of Matter Recommended duration: 6 hours
+Subject / Concepts: Melting and freezing point, boiling point
+5.4.2.1. As a result of his experiments, he determines the melting, freezing and boiling points of pure substances.
+a) Melting, freezing and boiling points are highlighted.
+5.4.3. Heat and temperature Recommended duration: 7 hours
+Subject / Concepts: Heat, temperature, heat exchange
+5.4.3.1. Explain the main differences between heat and temperature.
+5.4.3.2. Experiments are carried out to test the results of heat exchange as a result of mixing of liquids with different temperature.
+5.4.4. Effects of Heat Materials Recommended duration: 7 hours Subject / Concepts: Expansion, shrinkage
+5.4.4.1. Discusses the results of experiments by experimenting with the effect of heat to expand and shrink the substances.
+5.4.4.2. Relate samples from daily life to expansion and shrinkage events.
+5.5. Spread of Light / Physical Events
+key concepts: In this unit, students will be able to discover how light diffuses in different environments, to understand that light is propagated by a linear path and to show this with simple ray drawings, to understand light reflection patterns, to classify the materials according to light transmission, to predict how full shadow is formed, and to determine the full shadow length of objects it is aimed to discover the factors affecting.
+5.5.1. Propagation of Light Recommended duration: 4 lessons Subject / Concepts: Propagation of light
+5.5.1.1. It shows the light coming out of a source by observing that it follows a linear path in all directions.
+5.5.2. Reflection of Light Recommended duration: 6 hours
+Subject / Concepts: Uniform reflection, diffuse reflection, incoming beam, reflected beam, surface normal
+5.5.2.1. Illustrates the reflections of light on smooth and rough surfaces.
+5.5.2.2. In the reflection of light, the incident beam describes the relationship between the reflected beam and the normal surface.
+5.5.3. The encounter of light with matter Recommended duration: 4 lessons
+Subject / Concepts: Transparencies, translucent substances, non-transparent substances
+5.5.3.1. Categorizes substances according to light transfer conditions.
+5.5.4. Umbra
+Subject / Concepts: Full-shadow, variables affecting full shadow
+5.5.4.1. Observes how the full shadow is formed by simple ray drawings.
+a) You cannot enter the subject of semi-shade.
+5.5.4.2. He discovers what variables affect the full shadow.
+a) In full shadow formation, only the relationship between the positions of the object and the light source and the magnitude of the shadow is emphasized.
+5.6. Human and Environment / Living and Living
+key concepts: In this unit, students will be able to question the causes and consequences of environmental problems, biodiversity, endangered and extinct endangered organisms, and the necessities to protect these species, to be sensitive to environmental problems as a result of human activities and to gain knowledge and skills to solve these problems.
+5.6.1. Biodiversity
+Topic / Concepts: Biodiversity, natural life, endangered species, habitat, ecosystem
+5.6.1.1. Question the importance of biodiversity for natural life.
+a) In our country and in the world, we give examples of plants and animals that are endangered or are in danger of extinction.
+5.6.1.2. Discuss the factors that threaten biodiversity based on research data.
+5.6.2. Human and Environmental Relations Recommended duration: 10 hours
+Subject / Concepts: Environmental pollution, environmental protection and beautification, human-environment interaction (human impact on the environment), local and global environmental problems
+5.6.2.1. Express the importance of interaction between human and environment.
+a) Negative effects of environmental pollution on human health are mentioned.
+5.6.2.2. Provides suggestions for resolving an environmental problem in its immediate surroundings or in our country.
+5.6.2.3. Inferences about future environmental problems as a result of human activities.
+5.6.2.4. Discusses examples of benefits and harm situations in human-environment interaction.
+5.6.3. Destructive Nature Events Recommended duration: 4 hours
+Subject / Concepts: Destructive natural events and ways of protection
+5.6.3.1. Explains the destructive natural events caused by natural processes.
+a) Earthquakes, volcanic eruptions, floods, landslides, hoses and hurricanes can be mentioned in detail.
+5.6.3.2. Express the means of protection from destructive natural events.
+5.7. Electrical Circuit Elements / Physical Events
+a) In this unit, it is aimed that the students discover the effects of this change on the circuit by changing the number of batteries and lamps in different electrical circuits.
+5.7.1. Display of Circuit Components with Symbols and Circuit Diagrams
+Subject / Concepts: Concepts of circuit elements, circuit diagrams
+5.7.1.1. Shows the elements in an electrical circuit with symbols.
+a) The importance of circuit symbols in terms of common scientific language is indicated.
+5.7.1.2. He draws the electrical circuit diagram.
+5.7.2. Variables Affecting Lamp Brightness in a Simple Electric Circuit
+Subject / Concepts: Number of batteries, number of lamps
+5.7.2.1. Tests predictions by estimating the variables affecting the bulb brightness in an electrical circuit.
+a. Dependent, independent and controlled variable concept groups are explained with examples.
+b. The number of batteries and number of bulbs are taken into account as independent variables.
+c. Parallel connection is not entered

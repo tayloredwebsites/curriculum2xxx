@@ -1,0 +1,161 @@
+en,mat,5
+5.1 NUMBERS AND OPERATIONS
+5.1.1. Natural Numbers
+5.1.1.1. Reads and writes natural numbers up to nine digits.
+5.1.1.2. Specifies the divisions, digits, and digit values of digits of up to nine digits.
+a) Studies on comparing and interpreting these numbers with real life are included.
+5.1.1.3. The rule sets the desired steps of the given number and shape patterns.
+a) It is limited to only the patterns that have a difference between the steps. For example, find the 6th step of the number pattern formed by adding three by starting from 7. Büşra, which started with 7 balls in a week, will add 3 balls each week and how many balls will be in his collection after 5 weeks?
+For example, the following figure shows the number of squares and triangles as a number pattern or how many squares or triangles will be found in the desired step.
+b) Examples of historical and cultural artefacts (architectural structures, carpet decorations, kilims, etc.) are given to figure patterns.
+5.1.2. Operations with Natural Numbers
+5.1.2.1. Performs addition and subtraction with up to five digits of natural numbers.
+5.1.2.2. Identifies and uses the strategy in the addition and subtraction processes with two-digit natural numbers.
+a) Possible strategies: Addition of the decimals and unions (45 + 22 = 45 + 20 + 2); counting on (38 + 23 = 38 + 10 + 10 + 3); fragmentation by reference to 10 (16 + 8 = 16 + 4 + 4 = 20 + 4); starting from the numbers easily collected (13 + 28 + 27 = 13 + 27 + 28 = 40  + 28); subtracting the decimals and unions (45-22 = 45-20-2); repair and repair (38-23 = 38-10-10-3).
+5.1.2.3. Estimate the results of addition and subtraction with natural numbers.
+Estimates are compared with the results of the forecasting process.
+5.1.2.4. It makes multiplication of two natural numbers with up to three digits.
+5.1.2.5. It divides a natural number of up to four digits into a natural number with a maximum of two digits.
+a) Decimal representations are not entered in the remaining divisions.
+5.1.2.6. Estimates the results of multiplication and division with natural numbers.
+a) Emphasizing the importance of estimation, the comparison of the results with the results is made for the development of the estimation skills.
+5.1.2.7. Identifies and uses the appropriate strategy in the multiplication and division operations with natural numbers.
+a) Possible strategies: Adding or subtracting 0 at the end of the number when multiplying and dividing by 10, 100, 1000 and multiples; Getting doubled twice to multiply by 8; Multiply by 10 to multiply by 9 and subtract one time from the result; multiply half of one of the numbers and double the other; Add 0 to the end to multiply by 5 and get half of it; to divide a number by 5, take twice and divide by 10, and so on.
+5.1.2.8. Interpret the rest in case of problem related to the division process.
+a) The remainder of the problem is either ignored or specified as a fraction. For example, the number of apples left to find out how many apples will fall to 1 person is divided by the fraction.
+5.1.2.9. Understands the relationship between multiplication and division and finds the elements (multiplier, section or division) that are not given in the transactions.
+a) In the case of a multiplication or division, studies are carried out to find the item that is not given. For example 4 ×? = 36 can be shown that 36 must be divided to 4 to find out which number to multiply by 4.
+b) Studies on using the relationship between multiplication and division in problem situations are included. The same problem condition may require multiplication or division depending on what is unknown. For example, Ahmet, who pays 5 TL a week for each week, has saved his money for 7 weeks. In the meantime, he bought a flute with all the money he had accumulated. How many pounds Ahmet took flute? Another question about the same situation, which requires splitting this time, is as follows: Ahmet, who receives a 5 TL allowance from his mother every week, collects his money to buy a flute with a price of 35 TL. How many weeks later Ahmet gets the flute?
+5.1.2.10. It shows the square and square of a natural number as an exponential expression and calculates its value.
+5.1.2.11. Finds the result of parentheses with up to two transaction types.
+a) For example, operations such as 5² x (12 - 6) or 16 ÷ (4x2) are used to understand the role of parentheses and to use parentheses.
+5.1.2.12. Solves problems involving four processes.
+a) The maximum number of problems with natural numbers is considered.
+b) Studies on problem building are also included.
+5.1.3. Fractions
+5.1.3.1. Displays and sorts the unit fractions in the number line.
+a) The size of the unit fractions represents the appropriate model. For example, the fraction represents 1 / 3th of a whole, while the fraction represents a sixth part of the same whole, ie a smaller amount. Therefore, the fraction 1/6 is smaller than 1/3 fraction.
+5.1.3.2. The integer fraction understands that a natural number is the sum of a simple fraction, and the integer fraction converts the compound fraction into an integer cut of the compound fraction.
+Appropriate fraction models are used.
+5.1.3.3. Compares a compound fraction with a natural number.
+a) It is emphasized that each natural number can be expressed as a fraction with a denominator of 1.
+5.1.3.4. It understands that simplification and expansion do not change the value of the fraction and form fractions that correspond to a cut.
+a) Before moving on to operational applications, fractional models and conceptual studies are included.
+5.1.3.5. Shares or denotes equal fractions of shares.
+a) Samples for sorting fractions that are the denominator of one's denominator are also included.
+5.1.3.6. It calculates the desired simple fraction of a plurality and a simple plurality of the plurality, taking into account the unit fractions.
+a) While finding the unit fraction of multiples, conceptual studies with appropriate models are included. The natural number and the product of the fraction are not entered.
+5.1.4. Operations with Fractions
+5.1.4.1. Equal to one or the denominator of the denominator of the other denomination of the two segments of the addition and subtraction process makes and makes sense.
+a) These processes are interpreted in real life situations. How much pizza did the child eat the same pizza, for example, eating a pizza?
+b) The process of collecting a fraction with a natural number and a fractional extraction from a natural number are also considered.
+5.1.4.2. Solves and builds problems that require equal or equal denominator and denominator of the denominator.
+5.1.5. Decimal Notation
+Terms or concepts: decimal notation, full part, decimal part
+5.1.5.1. When a whole is divided into 10, 100, or 1000 peer pieces, it determines that the units of the resulting chunk can be represented by decimal notation.
+a) It is realized that the decimal representation is a different form of expression.
+b) Using the models to establish a relationship between the decimal representation and decimal.
+c) Activities are performed with fraction numbers of 10, 100 or 1000.
+ç) The decoding of the decimal notation is emphasized. For example, the number 5.2 is read as "five full ten to two".
+d) Working with numbers with a decimal point and a maximum of three digits.
+5.1.5.2. Represents a fraction with a decimal representation of 10, 100, or 1000.
+a) Writing with simple fractions or fractions is done.
+5.1.5.3. Understands the relationship between the value of the decimal places and the decimal places.
+a) The decimal portion is limited to three decimal places.
+5.1.5.4. Writes and reads the decimal notation of fractions that can be expanded or simplified to a maximum of 10, 100 or 1000.
+a) To expand the fractions to 10, 100 or 1000 denominations, the studies to use models are also included.
+b) Associates decimal impressions to integer fractions. For example, to understand equations such as 3.5 = 3 studies are carried out.
+5.1.5.5. Decimal representations represent and sort the given numbers in the number line.
+a) When ordering, equal, large or small symbols are used as appropriate.
+b) Suitable fractional models are also used.
+c) The decimal portion is limited to three decimal places.
+5.1.5.6. Decimal representations do addition and subtraction with given numbers.
+a) The reason why the commas should be placed at the bottom of the collection and subtraction is considered.
+b) Conditions such as the relationship of addition and subtraction with fractions are examined.
+c) Decimal representation expressing the relationship between our coins and lira-kuruş is also included.
+5.1.6. percentages
+5.1.6.1. Indicates the fraction with 100 percent symbol (%).
+a) Studies to make sense of the percentage symbol (%) are included. It is limited to percentages that are smaller than 100%.
+5.1.6.2. Associates a percentage expression with a fraction and a decimal representation representing the same magnitude, and converts these representations to each other.
+a) The studies to be done with the models facilitating the understanding of the mentioned relations are included.
+5.1.6.3. Compares the multiplicities specified by fraction, decimal, and percentage representations.
+5.1.6.4. Finds the amount corresponding to a specified percentage of a plurality.
+a) It is limited to percentages that are smaller than 100%. Processes for finding a given percentage are not entered.
+5.2. GEOMETRY AND MEASURING
+5.2.1. Basic Geometric Concepts and Drawings
+Terms or concepts: Right angle, narrow angle, wide angle, parallelism, accurate, accurate part, beam, strut
+Symbols:, //, EU, [EU], | AB |, [EU, EU, EU, EU, m (Â)
+5.2.1.1. True, the correct part, explains the beam and shows it with the symbol.
+a) The status of the two lines in the same plane relative to each other (intersecting, parallel, overlapping) is shown by symbol.
+5.2.1.2. Expresses the position of a point relative to another point using direction and unit.
+a) Checked, dotted paper, etc. work is done. For example, point A, point B, 3 units to the right / left; 2 units below / above; 4 units of right / left as 2 units above / below
+b) Examples of real life situations are also included.
+5.2.1.3. Draws the correct pieces of equal length to an accurate piece.
+a) Checkered, dotted paper and so on. work on the correct parts horizontally, vertically or obliquely.
+5.2.1.3. It forms narrow, vertical and wide angles by taking a 90 ° angle; determines whether a formed angle is narrow, perpendicular, or wide-angle.
+a) Checked, dotted paper, etc. work is done.
+b) When determining or forming angles, it may be desirable to use a corner, squared, or protractor of a sheet of paper as a reference.
+c) Angles are expressed by name.
+5.2.1.5. Draws a line from a point on or outside.
+5.2.1.6. Constructs the correct pieces in parallel to a correct part, interpreting whether the drawn parts are parallel.
+a) Checked, dotted paper, etc. work is done.
+b) Works related to real life situations are also included.
+5.2.2. Triangles and Rectangles
+Terms or concepts: polygonal, right-angled triangle, narrow-angled triangle, wide- angle triangle, isosceles triangle, equilateral triangle, triangular triangles, parallelogram, rhombus, trapezoidal, diagonal
+Symbols: ABC
+5.2.2.1. Names polygons, creates and recognizes the basic elements.
+a) As the basic elements edge, corner, inner angle and diagonal is introduced.
+b) Only convex polygons are considered.
+c) The sum of the inner angles and the diagonal number are not mentioned.
+5.2.2.2. Creates triangles according to their angles and edges, classifies different triangles according to edge and angle properties.
+a) Checked, dotted, isometric paper and so on. work is done.
+b) When creating or interpreting triangles with respect to their angles, a 90 ° angle is used to determine a paper using a corner, miter, protractor, or similar tool.
+5.2.2.3. Determines and draws the basic elements of rectangular, parallelogram, rhombus and gravel.
+a) Angle, edge and diagonal features are emphasized.
+b) In-class studies on dynamic geometry software as well as dynamic geometry software and special quadrilaterals can be included.
+c) The square is treated as a special case of the rectangle.
+ç) It is emphasized that at least one of the pair of edges is parallel when introducing the trapezoid.
+d) Trapezoid types are not entered.
+5.2.2.4. Determines the sum of the dimensions of the inner angles of the triangles and rectangles and finds the angle not given.
+While the sum of the dimensions of the internal angles is found, paper folding or activities with appropriate models are included.
+5.2.3. Measuring Length and Time
+Terms or concepts: decimeter, decameters, hectometers,
+Symbols: DM, DAM, HM
+5.2.3.1. Recognize length measurement units; meters-kilometers, meters-decimeter- centimeter-millimeter units and converts each other related problems.
+The decimal portion is limited to the three-digit number.
+5.2.3.2. Calculates the perimeter of triangles and quadrilaterals and creates different shapes with a given circumference.
+Studies to estimate the length of the environment are included.
+5.2.3.3. Recognizes time measurement units, converts each other and solves related problems.
+a) Seconds, minutes, hours, days, weeks, months and years are covered.
+b) Problems related to time management are discussed.
+5.2.4. Area Measurement
+Terms or concepts: square square meters
+Symbols: cm², m²
+5.2.4.1. Calculates the area of the rectangle, uses square meters and square meters.
+a) The square is treated as a special case of the rectangle.
+b) In addition, studies to make sense of the concept of space are included.
+5.2.4.2. Estimates an area with square meters and square meters.
+a) Studies are carried out to measure and measure the estimates.
+5.2.4.3. Creates different rectangles with a given area.
+a) Edge lengths are limited to a natural number.
+b) Geometry, dot paper and similar tools are included.
+5.2.4.4. Solves the problems that require calculating the area of the rectangle.
+5.2.5. Geometrical Objects
+5.2.5.1. Recognize the prism of rectangles and determine the basic elements.
+The square prism and cube are treated as special cases of rectangular prism.
+5.2.5.2. He draws the surface projections of the rectangles prism and decides whether the different angles given belong to the rectangular prism.
+a) Cube and square prism are considered as special cases of rectangular prism.
+b) Works with concrete models are included.
+c) Interactive studies with appropriate information and communication technologies can be included. Three-dimensional dynamic geometry software can be used.
+5.2.5.3. Solves the problems that require calculating the surface area of the rectangular prism.
+a) The cube and square prism are treated as special cases of rectangular prism.
+5.3. DATA PROCESSING
+5.3.1. Data Collecting and Evaluation
+5.3.1.1. Creates research questions that require data collection.
+a) To be able to create a research question "What are the favorite fruits of students in a class is a research question, but the question of what a person likes the most is not the research question." examples are focused on.
+b) Environmental consciousness, stance, cooperation, avoidance of wastage etc. during the creation of research questions. issues are covered.
+5.3.1.2. Collects data related to research questions, shows with frequency table and column graph.
+a) It is limited to discontinuous data groups for single feature. Continuous and discontinuous concepts are not entered.
+b) Use appropriate information and communication technologies when necessary to organize and graph the data.
+5.3.1.3. Solve problems for interpreting data indicated by frequency table or column chart.
+a) Column charts that cause misinterpretations are also examined.
