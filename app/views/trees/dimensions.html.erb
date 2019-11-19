@@ -54,7 +54,7 @@
             <%= translate('app.labels.grade_band_show') if (@subj_gradebands[i].length == 1)
           %>:
           <% @subj_gradebands[i].each do |gb_code| %>
-            <span id="show-hide-gradeband-<%= gb_code %>" class="show-hide-gradeband text-selected" onclick="toggle_visibility('.gb_code_<%= gb_code %>', '#show-hide-gradeband-<%= gb_code %>');"><%= "  #{gb_code} " %></span>
+            <span id="show-hide-gradeband-<%= gb_code %>" class="show-hide-gradeband show-hide-gradeband-<%= gb_code %> text-selected" onclick="toggle_visibility('.gb_code_<%= gb_code %>', '.show-hide-gradeband-<%= gb_code %>');"><%= "  #{gb_code} " %></span>
           <% end %>
           <% end %>
         </li>
