@@ -43,9 +43,7 @@ $(function() {
    */
   toggle_visibility = function (selector, trigger) {
     console.log('toggle')
-    if ($(trigger).hasClass('rotate')) {
-      $(trigger).toggleClass('down')
-    }
+    $(trigger).toggleClass('down text-selected')
     $(selector).toggleClass('hidden')
   }
 
