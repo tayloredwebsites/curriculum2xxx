@@ -96,9 +96,20 @@
 
     .hidden { display: none; }
 
+
     .subj-checkbox {
-      display: inline;
+      display: inline-block;
+      vertical-align: top;
       margin: 10px;
+      text-align: left;
+      .gradebands-list {
+        border: none;
+        text-align: left;
+        font-size: 95%;
+        li {
+          clear: both;
+        }
+      }
     }
 
     ul {

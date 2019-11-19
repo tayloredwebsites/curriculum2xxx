@@ -241,15 +241,6 @@ class TreesController < ApplicationController
 
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
-    @subjects = {}
-    subjIds = {}
-    subjects = Subject.all
-    subjects.each do |s|
-      @subjects[s.code] = s
-      subjIds[s.id.to_s] = s
-      @s_o_hash[s.code] = []
-    end
-
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -264,6 +255,18 @@ class TreesController < ApplicationController
     areaHash = {}
     componentHash = {}
     newHash = {}
+    @subj_gradebands = Hash.new { |h, k| h[k] =  [] }
+
+    @subjects = {}
+    subjIds = {}
+    subjects = Subject.all
+    subjects.each do |s|
+      @subjects[s.code] = s
+      subjIds[s.id.to_s] = s
+      @s_o_hash[s.code] = []
+      @subj_gradebands[s.code] = listing.joins(:subject).where('subjects.code' => s.code).joins(:grade_band).pluck('grade_bands.code').uniq
+    end
+
 
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = TreeTree.active
@@ -325,6 +328,7 @@ class TreesController < ApplicationController
           code: tcode,
           text: "#{tree.code}: #{translation}",
           id: "#{tree.id}",
+          gb_code: tree.grade_band.code,
           connections: @relations[tree.id]
         }
         # if treeHash[tree.codeArrayAt(0)].blank?

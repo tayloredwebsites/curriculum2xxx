@@ -18,7 +18,22 @@ $(function() {
   	   $('#'+subj_abbr+'-column').addClass('hidden')
   	}
   	$('.sequence-grid').removeClass('cols-0 cols-1 cols-2 cols-3 cols-4 cols-5 cols-6')
-  	$('.sequence-page .sequence-grid').addClass('cols-' + $('.subj-checkbox input:checked').length )
+  	$('.sequence-page .sequence-grid').addClass('cols-' + $('.subj-checkbox>input:checked').length )
+  }
+
+  /**
+   * Hide or show LOs by subject and gradeband.
+   * @param {String} subj_abbr Abbreviation for a subject.
+   *                            E.g. 'bio', 'phy', etc.
+   * @param {String} gb_code The code for the affected gradeband.
+   */
+  gradeband_visibility = function (subj_abbr, gb_code) {
+    if ($('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked')) {
+       $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).removeClass('hidden')
+    }
+    else {
+       $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).addClass('hidden')
+    }
   }
 
   /**
