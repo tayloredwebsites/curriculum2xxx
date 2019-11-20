@@ -23,17 +23,22 @@ $(function() {
 
   /**
    * Hide or show LOs by subject and gradeband.
-   * @param {String} subj_abbr Abbreviation for a subject.
+   * @param {String} subj_arr Array of abbreviations for a subject.
    *                            E.g. 'bio', 'phy', etc.
    * @param {String} gb_code The code for the affected gradeband.
    */
-  gradeband_visibility = function (subj_abbr, gb_code) {
-    if ($('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked')) {
+  gradeband_visibility = function (subj_arr, gb_code, all) {
+    var subj_abbr = subj_arr.pop();
+    if (($('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked') && !all) ||
+      ($('#all-gb-check-' + gb_code).prop('checked') && all)) {
+       $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', true)
        $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).removeClass('hidden')
     }
     else {
+       $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', false)
        $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).addClass('hidden')
     }
+    if (subj_arr.length > 0) gradeband_visibility(subj_arr, gb_code, all);
   }
 
   /**
