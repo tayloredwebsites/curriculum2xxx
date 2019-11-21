@@ -256,7 +256,7 @@ class TreesController < ApplicationController
     componentHash = {}
     newHash = {}
     @subj_gradebands = Hash.new { |h, k| h[k] =  [] }
-    @gradebands = listing.joins(:grade_band).pluck('grade_bands.code').uniq
+    @gradebands = ["All", *listing.joins(:grade_band).pluck('grade_bands.code').uniq]
     @subjects = {}
     subjIds = {}
     subjects = Subject.all
@@ -415,6 +415,7 @@ class TreesController < ApplicationController
         :los => []
       }
       @subj_gradebands[s.code] = listing.joins(:subject).where('subjects.code' => s.code).joins(:grade_band).pluck('grade_bands.code').uniq
+      @subj_gradebands[s.code] << "All" if @subj_gradebands[s.code].length > 1
       transl_keys << s.base_key+'.name'
       transl_keys << s.base_key+'.abbr'
     end

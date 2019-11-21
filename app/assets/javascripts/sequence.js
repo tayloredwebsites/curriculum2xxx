@@ -26,30 +26,64 @@ $(function() {
    * @param {String} subj_arr Array of abbreviations for a subject.
    *                            E.g. 'bio', 'phy', etc.
    * @param {String} gb_code The code for the affected gradeband.
+   * @param {Boolean} multi True if multiple subjects are being
+   *                        affected. This is needed because the
+   *                        show/hide gradeband checkboxes for
+   *                        "all subjects" should update the
+   *                        single-subject checkboxes.
    */
-  gradeband_visibility = function (subj_arr, gb_code, all) {
+  gradeband_visibility = function (subj_arr, gb_arr, multi) {
     var subj_abbr = subj_arr.pop();
-    if (($('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked') && !all) ||
-      ($('#all-gb-check-' + gb_code).prop('checked') && all)) {
-       $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', true)
-       $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).removeClass('hidden')
+    for (var gb in gb_arr) {
+      var gb_code = gb_arr[gb]
+      if (gb_arr.length > 1) {
+        if ($('#all-gb-check-All').prop('checked')) {
+          $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', true)
+          $('#all-gb-check-' + gb_code).prop('checked', true)
+          $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).removeClass('hidden')
+        }
+        else {
+           $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', false)
+           $('#all-gb-check-' + gb_code).prop('checked', false)
+           $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).addClass('hidden')
+         }
+      }
+      else {
+        if (($('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked') && !multi) ||
+          ($('#all-gb-check-' + gb_code).prop('checked') && multi)) {
+           $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', true)
+           $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).removeClass('hidden')
+        }
+        else {
+           $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', false)
+           $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).addClass('hidden')
+        }
+      }
     }
-    else {
-       $('#' + subj_abbr + '-gb-check-' + gb_code).prop('checked', false)
-       $('#'+subj_abbr+'-column .lo_gb_code_' + gb_code).addClass('hidden')
-    }
-    if (subj_arr.length > 0) gradeband_visibility(subj_arr, gb_code, all);
+    if (subj_arr.length > 0) gradeband_visibility(subj_arr, gb_arr, multi);
   }
 
   /**
    * Generic toggle visibility method
    * @param {String} selector CSS selector for the element or elements to hide
    * @param {String} trigger CSS selector for the element triggering this function
+   * @param {String} matchTrigger Selectors for elements or elements that should
+   *                              be updated to match the trigger element's
+   *                              settings with regard to the classes "down"
+   *                              and "text-selected".
    */
-  toggle_visibility = function (selector, trigger) {
-    console.log('toggle')
-    $(trigger).toggleClass('down text-selected')
-    $(selector).toggleClass('hidden')
+  toggle_visibility = function (selector, trigger, matchTrigger) {
+    $(trigger).toggleClass('down text-selected');
+    var down = $(trigger).hasClass("down");
+    var sel = $(trigger).hasClass("text-selected");
+    if (down && !sel)
+      $(selector).addClass('hidden');
+    else
+      $(selector).removeClass('hidden');
+    if (matchTrigger != undefined && matchTrigger != '') {
+        $(matchTrigger).addClass((down ? "down " : "") + (sel ? "text-selected" : ""))
+        $(matchTrigger).removeClass((!down ? "down " : "") + (!sel ? "text-selected" : ""))
+    }
   }
 
   /**

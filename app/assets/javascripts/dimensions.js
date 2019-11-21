@@ -16,6 +16,7 @@ $(function() {
       $('#'+subj_abbr+'-lo-column').removeClass('hidden')
       connections_display(true)
       $('.show-hide-gradeband').addClass('text-selected');
+      $('.show-hide-gradeband').removeClass('down');
       $('.dim-item').removeClass('hidden');
       document.cookie = page_title + "_subject_visible=" + subj_abbr;
     }

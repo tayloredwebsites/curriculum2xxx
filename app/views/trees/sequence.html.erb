@@ -16,13 +16,15 @@
     <div id='all-gradebands-list' class='filter-grid cols-4 hidden'>
       <% filter_rows = (@gradebands.length / 4.0).ceil %>
       <% @gradebands.each_with_index do |gb_code, i| %>
+        <% gb_arr = (gb_code == "All" ? @gradebands : [gb_code]) %>
         <% if i%filter_rows == 0 %>
           <ul>
         <% end %>
           <li>
-            <input id="all-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility(<%= @s_o_hash.keys %>, "<%= gb_code %>", true);' checked></input>
+            <input id="all-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility(<%= @s_o_hash.keys %>, <%= gb_arr %>, true);' checked></input>
             <label for="all-gb-check-<%= gb_code %>">
-              <%= I18n.t('app.labels.grade_band_num', num: gb_code) %>
+              <%= I18n.t('app.labels.grade_band_num', num: gb_code) if gb_code != "All" %>
+              <%= I18n.t('app.labels.all') if gb_code == "All" %>
             </label>
           </li>
 
@@ -42,7 +44,7 @@
           <ul id="<%= i %>-gradebands-list" class="gradebands-list hidden">
             <% @subj_gradebands[i].each do |gb_code|%>
               <li>
-              <input id="<%= i %>-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility(["<%= i %>"], "<%= gb_code %>");' checked></input>
+              <input id="<%= i %>-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility(["<%= i %>"], ["<%= gb_code %>"]);' checked></input>
               <label for="<%= i %>-gb-check-<%= gb_code %>">
                 <%= I18n.t('app.labels.grade_band_num', num: gb_code) %>
               </label>
