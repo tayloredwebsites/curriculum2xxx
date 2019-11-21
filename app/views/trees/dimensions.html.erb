@@ -56,7 +56,7 @@
           <% @subj_gradebands[i].each do |gb_code| %>
             <% selector = (gb_code == "All" ? ".dim-item" : ".gb_code_#{gb_code}") %>
             <% matchTrigger = (gb_code == "All" ? '.show-hide-gradeband' : nil) %>
-            <span id="show-hide-gradeband-<%= gb_code %>" class="show-hide-gradeband show-hide-gradeband-<%= gb_code %> text-selected" onclick="toggle_visibility('<%= selector %>', '.show-hide-gradeband-<%= gb_code %>', '<%= matchTrigger %>');"><%= gb_code == "All" ? I18n.t('app.labels.all') : "  #{gb_code} " %></span>
+            <span id="show-hide-gradeband-<%= gb_code %>" class="show-hide-gradeband show-hide-gradeband-<%= gb_code %> option-selected" onclick="toggle_visibility('<%= selector %>', '.show-hide-gradeband-<%= gb_code %>', '<%= matchTrigger %>');"><%= gb_code == "All" ? I18n.t('app.labels.all') : "  #{gb_code} " %></span>
           <% end #iterate through subject's grade bands %>
           <% end #if subject has gradebands %>
         </li>

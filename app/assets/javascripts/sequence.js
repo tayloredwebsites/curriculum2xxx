@@ -73,16 +73,15 @@ $(function() {
    *                              and "text-selected".
    */
   toggle_visibility = function (selector, trigger, matchTrigger) {
-    $(trigger).toggleClass('down text-selected');
-    var down = $(trigger).hasClass("down");
-    var sel = $(trigger).hasClass("text-selected");
-    if (down && !sel)
-      $(selector).addClass('hidden');
-    else
+    $(trigger).toggleClass('option-selected');
+    var sel = $(trigger).hasClass("option-selected");
+    if (sel)
       $(selector).removeClass('hidden');
+    else
+      $(selector).addClass('hidden');
     if (matchTrigger != undefined && matchTrigger != '') {
-        $(matchTrigger).addClass((down ? "down " : "") + (sel ? "text-selected" : ""))
-        $(matchTrigger).removeClass((!down ? "down " : "") + (!sel ? "text-selected" : ""))
+        $(matchTrigger).addClass((sel ? "option-selected" : ""))
+        $(matchTrigger).removeClass((!sel ? "option-selected" : ""))
     }
   }
 
