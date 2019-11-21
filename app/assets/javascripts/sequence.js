@@ -23,7 +23,7 @@ $(function() {
 
   /**
    * Hide or show LOs by subject and gradeband.
-   * @param {String} subj_arr Array of abbreviations for a subject.
+   * @param {Array<String>} subj_arr Array of abbreviations for a subject.
    *                            E.g. 'bio', 'phy', etc.
    * @param {String} gb_code The code for the affected gradeband.
    * @param {Boolean} multi True if multiple subjects are being
@@ -69,8 +69,8 @@ $(function() {
    * @param {String} trigger CSS selector for the element triggering this function
    * @param {String} matchTrigger Selectors for elements or elements that should
    *                              be updated to match the trigger element's
-   *                              settings with regard to the classes "down"
-   *                              and "text-selected".
+   *                              settings with regard to the ".option-selected"
+   *                              class.
    */
   toggle_visibility = function (selector, trigger, matchTrigger) {
     $(trigger).toggleClass('option-selected');
