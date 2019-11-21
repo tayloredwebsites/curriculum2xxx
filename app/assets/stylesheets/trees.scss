@@ -74,6 +74,18 @@
       border-top: 1px solid black;
     }
 
+    .filter-grid {
+      display: grid;
+      border: 1px solid grey;
+      margin: 1vh auto;
+      max-width: 550px;
+      font-size: 90%;
+      text-align: left;
+      ul {
+        border: none;
+      }
+    }
+
     .sequence-grid.cols-6, .dimension-grid.cols-6 {
        grid-template-columns: 16.5% 16.5% 16.5% 16.5% 16.5% 16.5%;
     }
@@ -82,7 +94,7 @@
        grid-template-columns: 20% 20% 20% 20% 20%;
     }
 
-    .sequence-grid.cols-4, .dimension-grid.cols-4 {
+    .sequence-grid.cols-4, .dimension-grid.cols-4, .filter-grid.cols-4 {
        grid-template-columns: 25% 25% 25% 25%;
     }
 
@@ -95,18 +107,6 @@
     }
 
     .hidden { display: none; }
-
-    .rotate {
-      -moz-transition: all .2s linear;
-      -webkit-transition: all .2s linear;
-      transition: all .2s linear;
-      cursor: pointer;
-    }
-    .rotate.down {
-        -moz-transform:rotate(-90deg);
-        -webkit-transform:rotate(-90deg);
-        transform:rotate(-90deg);
-    }
 
     .subj-checkbox {
       display: inline-block;
