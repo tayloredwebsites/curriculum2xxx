@@ -54,14 +54,14 @@
             <%= translate('app.labels.grade_band_show') if (@subj_gradebands[i].length == 1)
           %>:
           <% @subj_gradebands[i].each do |gb_code| %>
-            <% selector = (gb_code == "All" ? ".dim-item" : ".gb_code_#{gb_code}") %>
+            <% selector = (gb_code == "All" ? ".dim-item--lo" : ".gb_code_#{gb_code}") %>
             <% matchTrigger = (gb_code == "All" ? '.show-hide-gradeband' : nil) %>
             <span id="show-hide-gradeband-<%= gb_code %>" class="show-hide-gradeband show-hide-gradeband-<%= gb_code %> option-selected" onclick="toggle_visibility('<%= selector %>', '.show-hide-gradeband-<%= gb_code %>', '<%= matchTrigger %>');"><%= gb_code == "All" ? I18n.t('app.labels.all') : "  #{gb_code} " %></span>
           <% end #iterate through subject's grade bands %>
           <% end #if subject has gradebands %>
         </li>
         <% j[:los].each do |k| %>
-          <li id="<%= i %>_lo_<%= k[:id] %>" class="dim-item dim-item--collapsable list-group-item gb_code_<%= k[:gb_code] %>" data-loid="<%= k[:id] %>">
+          <li id="<%= i %>_lo_<%= k[:id] %>" class="dim-item dim-item--collapsable dim-item--lo list-group-item gb_code_<%= k[:gb_code] %>" data-loid="<%= k[:id] %>">
             <a href="<%= k[:id] %>" class="truncate-if-collapsed"><%= k[:text] %></a>
             <% if k[:rel].length > 0 %>
               <% rel_arr = k[:rel].map { | dt | "##{i}_dim_#{dt[:dimension_id]}" } %>
