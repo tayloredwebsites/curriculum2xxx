@@ -94,6 +94,12 @@ tr:
         applies: 'İçin geçerlidir:'
         depends: 'Bağlıdır:'
         akin: 'Yakın:'
+      bio: "Biyoloji"
+      che: "Kimya"
+      mat: "Matematik"
+      phy: "Fizik"
+      sci: "Bilim"
+      ear: 'Dünya, Uzay ve Çevre Bilimi'
       indicator_connections: 'Diğer Öğrenme Bağlantılar:'
       outcome_connections: 'Diğer Öğrenme Çıktıları:'
       relation: 'Ilişki'
