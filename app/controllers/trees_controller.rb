@@ -608,9 +608,9 @@ class TreesController < ApplicationController
       editMe = params['editme']
       @editMe = false
       # turn off detail editing page for now
-      # if editMe && editMe == @tree.id.to_s
-      #   @editMe = true
-      # end
+      if editMe && editMe == @tree.id.to_s
+        @editMe = true
+      end
       # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
       # prepare to output detail page
       @tree_items_to_display = []
@@ -667,6 +667,93 @@ class TreesController < ApplicationController
   end
 
   def edit
+    process_tree = false
+    case @tree.depth
+      # process this tree item, is at proper depth to show detail
+    when 4
+      # get the Tree Item for this Learning Outcome
+      # only detail page currently is at LO level
+      # Indicators are listed in the LO Detail page
+      # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
+      @trees = [@tree]
+      process_tree = true if tree_params[:edit_type]
+    else
+      # not a detail page, go back to index page
+      raise "Not an LO"
+
+    end
+
+    if process_tree
+      @edit_type = tree_params[:edit_type]
+      if @edit_type == "outcome"
+        name_key = @tree.buildNameKey
+        translation = Translation.translationsByKeys(
+          @locale_code,
+          name_key
+        )
+        @translation = translation[name_key]
+      elsif @edit_type == "indicator"
+        @indicator = Tree.find(tree_params[:indicator_id])
+        name_key = @indicator.buildNameKey
+        translation = Translation.translationsByKeys(
+          @locale_code,
+          name_key
+        )
+        @translation = translation[name_key]
+      end
+
+      #prepare to output the edit form
+      @tree_items_to_display = []
+      @subjects = Subject.all.order(:code)
+      subjById = @subjects.map{ |rec| [rec.id, rec.code]}
+      @subjById = Hash[subjById]
+      Rails.logger.debug("*** @subjById: #{@subjById.inspect}")
+      relatedBySubj = @subjects.map{ |rec| [rec.code, []]}
+      @relatedBySubj = Hash[relatedBySubj]
+      Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
+      # get all translation keys for this learning outcome
+      treeKeys = @tree.getAllTransNameKeys
+      if @tree.depth == 4
+        # when outcome level, get children (indicators), to in outcome page
+        @tree.getAllChildren.each do |c|
+          treeKeys << c.name_key
+        end
+
+      end
+      Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
+      @trees.each do |t|
+        # get translation key for this item
+        treeKeys << t.name_key
+        # get translation key for each sector, big idea and misconception for this item
+        if treeKeys
+          t.sector_trees.each do |st|
+            treeKeys << st.sector.name_key
+            treeKeys << st.explanation_key
+          end
+          t.dim_trees.each do |dt|
+            treeKeys << dt.dimension.dim_name_key
+            treeKeys << dt.dim_explanation_key
+          end
+        end
+        # get translation key for each related item for this item
+        t.tree_referencers.each do |r|
+          rTree = r.tree_referencee
+          treeKeys << rTree.name_key
+          treeKeys << r.explanation_key
+          subCode = @subjById[rTree.subject_id]
+          @relatedBySubj[subCode] << {
+            code: rTree.code,
+            relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
+            tkey: rTree.name_key,
+            explanation: r.explanation_key,
+            tid: (rTree.depth < 2) ? 0 : rTree.id
+          } if !@relatedBySubj[subCode].include?(rTree.code)
+        end
+        treeKeys << "#{t.base_key}.explain"
+        @tree_items_to_display << t
+      end
+      @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+    end
     respond_to do |format|
       format.html
       format.js
@@ -674,13 +761,52 @@ class TreesController < ApplicationController
   end
 
   def update
-    if @tree.update(tree_params)
-      flash[:notice] = "Tree  updated."
-      # I18n.backend.reload!
-      redirect_to trees_path
+    puts "+++++UPDATE PARAMS: #{params.inspect}"
+    puts "+++++NIL PARAM??: #{tree_params[:indicator_id]}"
+    errors = []
+    # if @tree.update(tree_params)
+    #   flash[:notice] = "Tree  updated."
+    #   # I18n.backend.reload!
+    #   redirect_to trees_path
+    # else
+    #   render :edit
+    # end
+    update = tree_params[:edit_type]
+    if update
+
+      if update == 'outcome'
+        name_key = @tree.buildNameKey
+      elsif update == 'indicator'
+        @indicator = Tree.find(tree_params[:indicator_id])
+        name_key = @indicator.buildNameKey
+      end #if update type is 'outcome', 'indicator', etc
+
+      translation_matches = Translation.where(
+        :locale => @locale_code,
+        :key => name_key
+      )
+      if translation_matches.length > 0
+        @translation = translation_matches.first
+        @translation.value = tree_params[:name_translation]
+      else
+        @translation = Translation.new(
+          :locale => @locale_code,
+          :key => name_key,
+          :value => tree_params[:name_translation]
+        )
+      end #record translation in new or existing record
+        ActiveRecord::Base.transaction do
+         begin
+           @translation.save!
+         rescue ActiveRecord::StatementInvalid => e
+           errors << e
+         end
+      end
     else
-      render :edit
-    end
+      errors << "Did not attempt update"
+    end #if there is an update type
+    flash[:alert] = "Errors prevented the LO from being updated: #{errors}" if (errors.length > 0)
+    redirect_to tree_path(@tree.id)
   end
 
   def reorder
@@ -713,7 +839,10 @@ class TreesController < ApplicationController
       :grade_band_id,
       :code,
       :tree_id,
-      :dimension_id
+      :dimension_id,
+      :edit_type,
+      :indicator_id,
+      :name_translation
     )
   end
 

@@ -17,12 +17,15 @@
       <div class='row area-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div></div>
       <div class='row component-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div></div>
       <div class='row outcome-row'>
-        <div class='col col-lg-6 text-left'><%= "#{I18n.translate('app.labels.outcome')} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %></div>
+        <div class='col col-lg-6 text-left'><%= "#{I18n.translate('app.labels.outcome')} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %>
+          <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+        </div>
         <div class='col col-lg-6 text-right'>
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <!-- %= # link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) % -->
+            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) %>
+            <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
           <% end %>
         </div>
       </div>
@@ -41,6 +44,7 @@
           </div>
           <div class='col col-lg-10 ind-col last-col'>
             <%= @translations[c.buildNameKey] %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'indicator', indicator_id: c.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
           </div>
         </div>
         <% end %>
@@ -162,7 +166,7 @@
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-trash fa-lg"></i>
                 </span></a>
-                <!-- %= # link_to 'Edit LO', edit_tree_path(st.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}  % -->
+                <%= link_to 'Edit LO', edit_tree_path(st.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}  %>
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-edit fa-lg"></i>
                 </span></a>
