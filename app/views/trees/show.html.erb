@@ -60,6 +60,14 @@
             <%= I18n.t('trees.bigidea.title') %>
           </div>
         </div>
+      <div class='row'>
+        <div class='col col-lg-6 rel-sector-col center-label'>
+          <%= I18n.t('trees.bigidea.title') %>
+        </div>
+        <div class='col col-lg-6 rel-reason-col center-label'>
+          <%= I18n.t('app.labels.explanation') %>
+        </div>
+      </div>
         <% tree.dim_trees.each do |dt|
           d = dt.dimension
           if d.dim_type == Dimension::BIG_IDEA
@@ -83,6 +91,14 @@
         <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
             <%= I18n.t('trees.miscon.title') %>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col col-lg-6 rel-sector-col center-label'>
+            <%= I18n.t('trees.miscon.title') %>
+          </div>
+          <div class='col col-lg-6 rel-reason-col center-label'>
+            <%= I18n.t('app.labels.explanation') %>
           </div>
         </div>
         <% tree.dim_trees.each do |dt|

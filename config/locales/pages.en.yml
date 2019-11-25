@@ -42,6 +42,7 @@ en:
       future_vision: "Knowledge Based Education (KBE) Sectors"
       sector_related_explain: "Sectors Related Explanation"
       subject_related_explain: "Subjects Related Explanation"
+      explanation: "Explanation"
     roles:
       name: 'Roles'
       admin:

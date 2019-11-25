@@ -29,6 +29,7 @@ tr:
       message: "Message"
       gen_list: "Liste Oluştur"
       sector: "Gelecek Vizyonu"
+      explanation: "Açıklama"
   nav_bar:
     home:
       name: "Ev"
