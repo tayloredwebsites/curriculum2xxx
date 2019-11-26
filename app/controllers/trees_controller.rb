@@ -656,8 +656,9 @@ class TreesController < ApplicationController
             relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
             tkey: rTree.name_key,
             explanation: r.explanation_key,
-            tid: (rTree.depth < 2) ? 0 : rTree.id
-          } if !@relatedBySubj[subCode].include?(rTree.code)
+            tid: (rTree.depth < 2) ? 0 : rTree.id,
+            ttid: r.id
+          } if (!@relatedBySubj[subCode].include?(rTree.code) && r.active)
         end
         treeKeys << "#{t.base_key}.explain"
         @tree_items_to_display << t
@@ -693,13 +694,24 @@ class TreesController < ApplicationController
         )
         @translation = translation[name_key]
       elsif @edit_type == "indicator"
-        @indicator = Tree.find(tree_params[:indicator_id])
+        @indicator = Tree.find(tree_params[:attr_id])
         name_key = @indicator.buildNameKey
         translation = Translation.translationsByKeys(
           @locale_code,
           name_key
         )
         @translation = translation[name_key]
+      elsif @edit_type == "treetree"
+        @rel = TreeTree.find(tree_params[:attr_id])
+        expl_key = @rel.explanation_key
+        @tree_referencee = @rel.tree_referencee
+        @tree_referencee_code = I18n.t("trees.labels.#{@tree_referencee.subject.code}")
+        + ".#{@tree_referencee.code}"
+        translation = Translation.translationsByKeys(
+          @locale_code,
+          expl_key
+        )
+        @explanation = translation[expl_key]
       end
 
       #prepare to output the edit form
@@ -762,7 +774,7 @@ class TreesController < ApplicationController
 
   def update
     puts "+++++UPDATE PARAMS: #{params.inspect}"
-    puts "+++++NIL PARAM??: #{tree_params[:indicator_id]}"
+    puts "+++++NIL PARAM??: #{tree_params[:attr_id]}"
     errors = []
     # if @tree.update(tree_params)
     #   flash[:notice] = "Tree  updated."
@@ -777,8 +789,18 @@ class TreesController < ApplicationController
       if update == 'outcome'
         name_key = @tree.buildNameKey
       elsif update == 'indicator'
-        @indicator = Tree.find(tree_params[:indicator_id])
+        @indicator = Tree.find(tree_params[:attr_id])
         name_key = @indicator.buildNameKey
+      elsif update == 'treetree'
+        @tree_tree = TreeTree.find(tree_params[:attr_id])
+        @reciprocal_tree_tree = TreeTree.where(
+            :tree_referencee_id => @tree_tree.tree_referencer_id,
+            :tree_referencer_id => @tree_tree.tree_referencee_id
+          ).first
+        name_key = @tree_tree.explanation_key
+        @tree_tree.relationship = tree_tree_params[:relationship] if tree_tree_params[:relationship]
+        @tree_tree.active = tree_tree_params[:active]
+        @reciprocal_tree_tree.active = tree_tree_params[:active]
       end #if update type is 'outcome', 'indicator', etc
 
       translation_matches = Translation.where(
@@ -797,7 +819,9 @@ class TreesController < ApplicationController
       end #record translation in new or existing record
         ActiveRecord::Base.transaction do
          begin
-           @translation.save!
+           @translation.save! if (tree_tree_params[:active].to_s != 'false')
+           @tree_tree.save! if @tree_tree
+           @reciprocal_tree_tree.save!
          rescue ActiveRecord::StatementInvalid => e
            errors << e
          end
@@ -841,7 +865,7 @@ class TreesController < ApplicationController
       :tree_id,
       :dimension_id,
       :edit_type,
-      :indicator_id,
+      :attr_id,
       :name_translation
     )
   end
@@ -854,6 +878,17 @@ class TreesController < ApplicationController
       :tree_id,
       :dimension_id,
       :dim_type
+    )
+  end
+
+  def tree_tree_params
+    params.require(:tree_tree).permit(
+      :id,
+      :explanation_key,
+      :tree_referencer_id,
+      :tree_referencee_id,
+      :relationship,
+      :active
     )
   end
 

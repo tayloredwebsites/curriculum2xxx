@@ -44,7 +44,7 @@
           </div>
           <div class='col col-lg-10 ind-col last-col'>
             <%= @translations[c.buildNameKey] %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'indicator', indicator_id: c.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'indicator', attr_id: c.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
           </div>
         </div>
         <% end %>
@@ -164,7 +164,7 @@
               <%= @translations["#{st.explanation_key}"] %>
               <% if @editMe %>
                 <a href="#"><span class="pull-right">
-                  <i class="fa fa-trash fa-lg"></i>
+                  <i class="fa fa-times fa-lg"></i>
                 </span></a>
                 <%= link_to 'Edit LO', edit_tree_path(st.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}  %>
                 <a href="#"><span class="pull-right">
@@ -238,12 +238,8 @@
               <div class='connections-item'>
                 <%= @translations[r[:explanation]] %>
                 <% if @editMe %>
-                  <a href="#"><span class="pull-right">
-                    <i class="fa fa-trash fa-lg"></i>
-                  </span></a>
-                  <a href="#"><span class="pull-right">
-                    <i class="fa fa-edit fa-lg"></i>
-                  </span></a>
+                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}, tree_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
                 <% end %>
               </div>
             <% end %>
