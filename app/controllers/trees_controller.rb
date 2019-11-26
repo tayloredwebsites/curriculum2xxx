@@ -713,7 +713,7 @@ class TreesController < ApplicationController
           expl_key
         )
         @explanation = translation[expl_key]
-      elsif @edit_type == "sectortree"
+      elsif @edit_type == "sector"
         @rel = SectorTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
         expl_key = @rel.explanation_key
@@ -763,14 +763,14 @@ class TreesController < ApplicationController
           ).first
         name_key = @tree_tree.explanation_key
         @tree_tree.relationship = tree_tree_params[:relationship] if tree_tree_params[:relationship]
-        @tree_tree.active = tree_tree_params[:active]
-        @reciprocal_tree_tree.active = tree_tree_params[:active]
+        @tree_tree.active = tree_params[:active]
+        @reciprocal_tree_tree.active = tree_params[:active]
         save_translation = false if (tree_tree_params[:active].to_s == 'false')
-      elsif update == 'sectortree'
+      elsif update == 'sector'
         @rel = SectorTree.find(tree_params[:attr_id])
         name_key = @rel.explanation_key
-        @rel.active = sector_tree_params[:active]
-        save_translation = false if (sector_tree_params[:active].to_s == 'false')
+        @rel.active = tree_params[:active]
+        save_translation = false if (tree_params[:active].to_s == 'false')
       end #if update type is 'outcome', 'indicator', etc
 
       translation_matches = Translation.where(
@@ -792,7 +792,7 @@ class TreesController < ApplicationController
            @translation.save! if save_translation
            @tree_tree.save! if @tree_tree
            @reciprocal_tree_tree.save! if @reciprocal_tree_tree
-           @rel.save! if (@rel && !save_translation)
+           @rel.save! if @rel
          rescue ActiveRecord::StatementInvalid => e
            errors << e
          end
@@ -837,7 +837,8 @@ class TreesController < ApplicationController
       :dimension_id,
       :edit_type,
       :attr_id,
-      :name_translation
+      :name_translation,
+      :active
     )
   end
 
@@ -859,12 +860,6 @@ class TreesController < ApplicationController
       :tree_referencer_id,
       :tree_referencee_id,
       :relationship,
-      :active
-    )
-  end
-
-  def sector_tree_params
-    params.require(:sector_tree).permit(
       :active
     )
   end
