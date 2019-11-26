@@ -24,7 +24,7 @@
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) %>
+            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? %>
             <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
           <% end %>
         </div>
@@ -162,7 +162,7 @@
             </div>
             <div class='col col-lg-6 rel-reason-col val'>
               <%= @translations["#{st.explanation_key}"] %>
-              <% if @editMe %>
+              <% if @editMe && false %>
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-times fa-lg"></i>
                 </span></a>

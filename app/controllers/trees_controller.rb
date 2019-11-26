@@ -608,7 +608,7 @@ class TreesController < ApplicationController
       editMe = params['editme']
       @editMe = false
       # turn off detail editing page for now
-      if editMe && editMe == @tree.id.to_s
+      if editMe && editMe == @tree.id.to_s && current_user.present?
         @editMe = true
       end
       # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
@@ -705,8 +705,7 @@ class TreesController < ApplicationController
         @rel = TreeTree.find(tree_params[:attr_id])
         expl_key = @rel.explanation_key
         @tree_referencee = @rel.tree_referencee
-        @tree_referencee_code = I18n.t("trees.labels.#{@tree_referencee.subject.code}")
-        + ".#{@tree_referencee.code}"
+        @tree_referencee_code = I18n.t("trees.labels.#{@tree_referencee.subject.code}") + " #{@tree_referencee.code}"
         translation = Translation.translationsByKeys(
           @locale_code,
           expl_key

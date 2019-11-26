@@ -18,8 +18,8 @@
   <fieldset>
     <label for='relationship'><%= translate('trees.labels.relation') %></label>
     <div>
-    <%= I18n.t("trees.labels.#{@tree.subject.code}") + " " + @tree.code %>
-    <select id="relationship" name="tree_tree[relationship]">
+    <span class="stack"><%= I18n.t("trees.labels.#{@tree.subject.code}") + " " + @tree.code %></span>
+    <select id="relationship" name="tree_tree[relationship]" class="stack">
       <option value="<%= TreeTree::APPLIES_KEY %>"
         <%= ' selected' if @rel.relationship == TreeTree::APPLIES_KEY %>>
       	<%= I18n.translate('trees.labels.relation_types.applies') %>
@@ -33,7 +33,7 @@
       	<%= I18n.translate('trees.labels.relation_types.akin') %>
       </option>
     </select>
-    <%= @tree_referencee_code %>
+    <span class="stack"><%= @tree_referencee_code %></span>
     </div>
   </fieldset>
   <fieldset>
