@@ -24,6 +24,9 @@ body {
     clear: both;
     display: block;
   }
+  .dropdown-menu {
+    left: inherit;
+  }
   #modal_popup{
     textarea {
       width: 100%;

@@ -3,6 +3,10 @@ class Dimension < BaseRec
   # dim_type field valid options
   BIG_IDEA = 'bigidea'
   MISCONCEPTION = 'miscon'
+  QUESTION = 'question'
+  CONCEPT = 'concept'
+  COMPETENCY = 'comp'
+  STANDARD = 'standard'
   VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION]
   DIM_TYPE_KEYS = {BIG_IDEA => 'trees.bigidea.title', MISCONCEPTION => 'trees.miscon.title'}
 
