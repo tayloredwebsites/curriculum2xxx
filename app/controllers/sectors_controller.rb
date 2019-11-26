@@ -103,7 +103,7 @@ class SectorsController < ApplicationController
     rptRows << [sector.code, '', translations[sector.name_key], '-1', '']
     # filter out records when pulling from the join
     # To Do: put grade band and subject into sector_trees join record to efficiently filter out selected grade or subject
-    sector.sector_trees.each do |st|
+    sector.sector_trees.active.each do |st|
       if @grade_band_id.present? && st.tree.grade_band_id.to_s != @grade_band_id
       elsif @subject_id.present? && st.tree.subject_id.to_s != @subject_id
       else
