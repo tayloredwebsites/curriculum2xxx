@@ -785,7 +785,7 @@ class TreesController < ApplicationController
     # end
     update = tree_params[:edit_type]
     if update
-
+      save_translation = true
       if update == 'outcome'
         name_key = @tree.buildNameKey
       elsif update == 'indicator'
@@ -801,6 +801,7 @@ class TreesController < ApplicationController
         @tree_tree.relationship = tree_tree_params[:relationship] if tree_tree_params[:relationship]
         @tree_tree.active = tree_tree_params[:active]
         @reciprocal_tree_tree.active = tree_tree_params[:active]
+        save_translation = false if (tree_tree_params[:active].to_s == 'false')
       end #if update type is 'outcome', 'indicator', etc
 
       translation_matches = Translation.where(
@@ -819,9 +820,9 @@ class TreesController < ApplicationController
       end #record translation in new or existing record
         ActiveRecord::Base.transaction do
          begin
-           @translation.save! if (tree_tree_params[:active].to_s != 'false')
+           @translation.save! if save_translation
            @tree_tree.save! if @tree_tree
-           @reciprocal_tree_tree.save!
+           @reciprocal_tree_tree.save! if @reciprocal_tree_tree
          rescue ActiveRecord::StatementInvalid => e
            errors << e
          end
