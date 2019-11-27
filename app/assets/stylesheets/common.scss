@@ -20,8 +20,23 @@ body {
     cursor: pointer;
     // list-style-position: none;
   }
-  #modal_popup label {
-    font-weight: bold;
+  .stack {
+    clear: both;
+    display: block;
+  }
+  .dropdown-menu {
+    left: inherit;
+  }
+  #modal_popup{
+    textarea {
+      width: 100%;
+    }
+    fieldset {
+      margin-bottom: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
   }
 
   .show-hide-gradeband {

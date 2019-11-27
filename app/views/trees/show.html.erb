@@ -24,7 +24,7 @@
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) %>
+            <%= link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? %>
             <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
           <% end %>
         </div>
@@ -143,7 +143,7 @@
             <%= I18n.t('trees.labels.how_sectors_related') %>
           </div>
         </div>
-        <% tree.sector_trees.each do |st| %>
+        <% tree.sector_trees.active.each do |st| %>
           <div class='row'>
             <div class='col col-lg-6 rel-sectors'>
               <%= link_to(
@@ -163,13 +163,8 @@
             <div class='col col-lg-6 rel-reason-col val'>
               <%= @translations["#{st.explanation_key}"] %>
               <% if @editMe %>
-                <a href="#"><span class="pull-right">
-                  <i class="fa fa-times fa-lg"></i>
-                </span></a>
-                <%= link_to 'Edit LO', edit_tree_path(st.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}  %>
-                <a href="#"><span class="pull-right">
-                  <i class="fa fa-edit fa-lg"></i>
-                </span></a>
+                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
               <% end %>
             </div>
           </div>
@@ -238,7 +233,7 @@
               <div class='connections-item'>
                 <%= @translations[r[:explanation]] %>
                 <% if @editMe %>
-                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}, tree_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
                   <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
                 <% end %>
               </div>

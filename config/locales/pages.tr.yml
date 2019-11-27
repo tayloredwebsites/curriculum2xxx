@@ -30,6 +30,7 @@ tr:
       gen_list: "Liste Oluştur"
       sector: "Gelecek Vizyonu"
       explanation: "Açıklama"
+      sector_num: "Sektör %{num}"
   nav_bar:
     home:
       name: "Ev"
@@ -40,12 +41,27 @@ tr:
     sectors:
       name: "Gelecek Sektörler"
       hover: "Gelecekteki Sektörlere Göre Müfredatı görüntüler"
+    connections:
+      name: "Bağlantılar"
+      hover: "açılır"
     big_ideas:
       name: "Büyük Fikirler"
       hover: ""
     misconceptions:
       name: "Yanılgılar"
       hover: ""
+    questions:
+      name: "Temel sorular"
+      hover: "Temel Soruları görüntüler"
+    concepts:
+      name: "Kavramlar"
+      hover: "Kavramları görüntüler"
+    competencies:
+      name: "Yeterlilikleri"
+      hover: "Yetkinlikleri görüntüler"
+    standards:
+      name: "Standartlar"
+      hover: "Standartları görüntüler"
     documents:
       name: "Belge"
       hover: "Yöneticiler İçin Belge Yönetimi"

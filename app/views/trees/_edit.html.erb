@@ -6,34 +6,39 @@
 <%= form_for(@tree) do |f| %>
   <div class="hidden_fields">
     <%= f.hidden_field :code, name: 'tree[edit_type]', value: @edit_type %>
-    <%= f.hidden_field :code, name: 'tree[attr_id]', value: @indicator.id if (@edit_type == 'indicator') %>
-    <%= f.hidden_field :code, name: 'tree[attr_id]', value: @rel.id if (@edit_type == 'treetree') %>
+    <%= f.hidden_field :code, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
   </div>
+  <!--feilds for editing the Outcome and Indicator text-->
 	<% if @edit_type == 'outcome' || @edit_type == 'indicator' %>
 	<fieldset>
 	  <label for='name_translation' class="pull-left"><%= @edit_type == "outcome"  ? "#{I18n.translate('app.labels.outcome')}:" : "#{I18n.translate('app.labels.indicator')}:" %></label>
   	<%= f.text_area :name_translation, name: 'tree[name_translation]', id: 'name_translation', style: {className: "pull-left"}, value: @translation  %>
   </fieldset>
-  <% elsif @edit_type == 'treetree' %>
+  <!--build fields for editing treetree and sector relationships-->
+  <% elsif @edit_type == 'treetree' || @edit_type == 'sector' %>
   <fieldset>
     <label for='relationship'><%= translate('trees.labels.relation') %></label>
     <div>
-    <%= I18n.t("trees.labels.#{@tree.subject.code}") + " " + @tree.code %>
-    <select id="relationship" name="tree_tree[relationship]">
-      <option value="<%= TreeTree::APPLIES_KEY %>"
-        <%= ' selected' if @rel.relationship == TreeTree::APPLIES_KEY %>>
-      	<%= I18n.translate('trees.labels.relation_types.applies') %>
-      </option>
-      <option value="<%= TreeTree::DEPENDS_KEY %>"
-        <%= ' selected' if @rel.relationship == TreeTree::DEPENDS_KEY %>>
-      	<%= I18n.translate('trees.labels.relation_types.depends') %>
-      </option>
-      <option value="<%= TreeTree::AKIN_KEY %>"
-        <%= ' selected' if @rel.relationship == TreeTree::AKIN_KEY %>>
-      	<%= I18n.translate('trees.labels.relation_types.akin') %>
-      </option>
-    </select>
-    <%= @tree_referencee_code %>
+    <span class="stack"><%= I18n.t("trees.labels.#{@tree.subject.code}") + " " + @tree.code %></span>
+    <% if @edit_type == 'treetree' %>
+	    <select id="relationship" name="tree_tree[relationship]" class="stack">
+	      <option value="<%= TreeTree::APPLIES_KEY %>"
+	        <%= ' selected' if @rel.relationship == TreeTree::APPLIES_KEY %>>
+	      	<%= I18n.translate('trees.labels.relation_types.applies') %>
+	      </option>
+	      <option value="<%= TreeTree::DEPENDS_KEY %>"
+	        <%= ' selected' if @rel.relationship == TreeTree::DEPENDS_KEY %>>
+	      	<%= I18n.translate('trees.labels.relation_types.depends') %>
+	      </option>
+	      <option value="<%= TreeTree::AKIN_KEY %>"
+	        <%= ' selected' if @rel.relationship == TreeTree::AKIN_KEY %>>
+	      	<%= I18n.translate('trees.labels.relation_types.akin') %>
+	      </option>
+	    </select>
+    <% elsif @edit_type == 'sector' %>
+      <label class="stack"> - <%= I18n.t('trees.bigidea.relates_to') %> - </label>
+    <% end %>
+    <span class="stack"><%= @tree_referencee_code %></span>
     </div>
   </fieldset>
   <fieldset>
@@ -43,8 +48,8 @@
     </div>
   </fieldset>
   <fieldset>
-    <label for="tree_tree[active]">Active?</label>
-      <input name="tree_tree[active]" type="checkbox"
+    <label for="<%= @edit_type == 'treetree' ? 'tree' : 'sector' %>_tree[active]">Active?</label>
+      <input name="tree[active]" type="checkbox"
         <%= @rel.active ? ' checked' : '' %>></input>
   </fieldset>
 

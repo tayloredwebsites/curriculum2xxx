@@ -68,28 +68,6 @@
       </li>
     <%
     end
-    if action_name == 'big_ideas' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>>
-          <%= translate('nav_bar.big_ideas.name') %></a>
-      </li>
-    <% else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
-      </li>
-    <%
-    end
-    if action_name == 'misconceptions' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>>
-          <%= translate('nav_bar.misconceptions.name') %></a>
-      </li>
-    <% else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
-      </li>
-    <%
-    end
     if controller.controller_name == 'trees' && action_name == 'sequence' %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
@@ -98,8 +76,35 @@
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
       </li>
+    <% end %>
+    <li class="nav-item" role='menuitem'>
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" title=<%= translate('nav_bar.connections.hover') %>>
+        <%= translate('nav_bar.connections.name') %>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.questions.name') %></a>
+        </li>
+        <li class="nav-item active" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#">
+          <%= translate('nav_bar.concepts.name') %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.competencies.name') %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.standards.name') %></a>
+        </li>
+      </ul>
+    </li>
     <%
-    end
     if current_user.present? && current_user.is_admin?
       if controller.controller_name == 'uploads'
     %>

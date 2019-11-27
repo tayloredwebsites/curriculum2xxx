@@ -608,7 +608,7 @@ class TreesController < ApplicationController
       editMe = params['editme']
       @editMe = false
       # turn off detail editing page for now
-      if editMe && editMe == @tree.id.to_s
+      if editMe && editMe == @tree.id.to_s && current_user.present?
         @editMe = true
       end
       # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
@@ -695,6 +695,7 @@ class TreesController < ApplicationController
         @translation = translation[name_key]
       elsif @edit_type == "indicator"
         @indicator = Tree.find(tree_params[:attr_id])
+        @attr_id = @indicator.id
         name_key = @indicator.buildNameKey
         translation = Translation.translationsByKeys(
           @locale_code,
@@ -703,68 +704,31 @@ class TreesController < ApplicationController
         @translation = translation[name_key]
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
+        @attr_id = @rel.id
         expl_key = @rel.explanation_key
         @tree_referencee = @rel.tree_referencee
-        @tree_referencee_code = I18n.t("trees.labels.#{@tree_referencee.subject.code}")
-        + ".#{@tree_referencee.code}"
+        @tree_referencee_code = I18n.t("trees.labels.#{@tree_referencee.subject.code}") + " #{@tree_referencee.code}"
+        translation = Translation.translationsByKeys(
+          @locale_code,
+          expl_key
+        )
+        @explanation = translation[expl_key]
+      elsif @edit_type == "sector"
+        @rel = SectorTree.find(tree_params[:attr_id])
+        @attr_id = @rel.id
+        expl_key = @rel.explanation_key
+        name_matches = Translation.where(
+          :locale => @locale_code,
+          :key => @rel.sector.name_key
+          )
+        @sector_name = (name_matches.length > 0 ? ": #{name_matches.first.value}" : '')
+        @tree_referencee_code = "#{I18n.t('app.labels.sector_num', num: @rel.sector.code)}#{@sector_name}"
         translation = Translation.translationsByKeys(
           @locale_code,
           expl_key
         )
         @explanation = translation[expl_key]
       end
-
-      #prepare to output the edit form
-      @tree_items_to_display = []
-      @subjects = Subject.all.order(:code)
-      subjById = @subjects.map{ |rec| [rec.id, rec.code]}
-      @subjById = Hash[subjById]
-      Rails.logger.debug("*** @subjById: #{@subjById.inspect}")
-      relatedBySubj = @subjects.map{ |rec| [rec.code, []]}
-      @relatedBySubj = Hash[relatedBySubj]
-      Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
-      # get all translation keys for this learning outcome
-      treeKeys = @tree.getAllTransNameKeys
-      if @tree.depth == 4
-        # when outcome level, get children (indicators), to in outcome page
-        @tree.getAllChildren.each do |c|
-          treeKeys << c.name_key
-        end
-
-      end
-      Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
-      @trees.each do |t|
-        # get translation key for this item
-        treeKeys << t.name_key
-        # get translation key for each sector, big idea and misconception for this item
-        if treeKeys
-          t.sector_trees.each do |st|
-            treeKeys << st.sector.name_key
-            treeKeys << st.explanation_key
-          end
-          t.dim_trees.each do |dt|
-            treeKeys << dt.dimension.dim_name_key
-            treeKeys << dt.dim_explanation_key
-          end
-        end
-        # get translation key for each related item for this item
-        t.tree_referencers.each do |r|
-          rTree = r.tree_referencee
-          treeKeys << rTree.name_key
-          treeKeys << r.explanation_key
-          subCode = @subjById[rTree.subject_id]
-          @relatedBySubj[subCode] << {
-            code: rTree.code,
-            relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
-            tkey: rTree.name_key,
-            explanation: r.explanation_key,
-            tid: (rTree.depth < 2) ? 0 : rTree.id
-          } if !@relatedBySubj[subCode].include?(rTree.code)
-        end
-        treeKeys << "#{t.base_key}.explain"
-        @tree_items_to_display << t
-      end
-      @translations = Translation.translationsByKeys(@locale_code, treeKeys)
     end
     respond_to do |format|
       format.html
@@ -799,9 +763,14 @@ class TreesController < ApplicationController
           ).first
         name_key = @tree_tree.explanation_key
         @tree_tree.relationship = tree_tree_params[:relationship] if tree_tree_params[:relationship]
-        @tree_tree.active = tree_tree_params[:active]
-        @reciprocal_tree_tree.active = tree_tree_params[:active]
+        @tree_tree.active = tree_params[:active]
+        @reciprocal_tree_tree.active = tree_params[:active]
         save_translation = false if (tree_tree_params[:active].to_s == 'false')
+      elsif update == 'sector'
+        @rel = SectorTree.find(tree_params[:attr_id])
+        name_key = @rel.explanation_key
+        @rel.active = tree_params[:active]
+        save_translation = false if (tree_params[:active].to_s == 'false')
       end #if update type is 'outcome', 'indicator', etc
 
       translation_matches = Translation.where(
@@ -823,6 +792,7 @@ class TreesController < ApplicationController
            @translation.save! if save_translation
            @tree_tree.save! if @tree_tree
            @reciprocal_tree_tree.save! if @reciprocal_tree_tree
+           @rel.save! if @rel
          rescue ActiveRecord::StatementInvalid => e
            errors << e
          end
@@ -867,7 +837,8 @@ class TreesController < ApplicationController
       :dimension_id,
       :edit_type,
       :attr_id,
-      :name_translation
+      :name_translation,
+      :active
     )
   end
 

@@ -43,6 +43,7 @@ en:
       sector_related_explain: "Sectors Related Explanation"
       subject_related_explain: "Subjects Related Explanation"
       explanation: "Explanation"
+      sector_num: "Sector %{num}"
     roles:
       name: 'Roles'
       admin:
@@ -83,12 +84,27 @@ en:
     sectors:
       name: "Future Sectors"
       hover: "Displays the Curriculum by Future Sectors"
+    connections:
+      name: "Connections"
+      hover: "dropdown"
     big_ideas:
       name: "Big Ideas"
       hover: ""
     misconceptions:
       name: "Misconceptions"
       hover: "Displays Misconceptions"
+    questions:
+      name: "Essential Questions"
+      hover: "Displays Essential Questions"
+    concepts:
+      name: "Concepts"
+      hover: "Displays Concepts"
+    competencies:
+      name: "Competencies"
+      hover: "Displays Competencies"
+    standards:
+      name: "Standards"
+      hover: "Displays Standards"
     documents:
       name: "Documents"
       hover: "Documents Management for Administrators"
