@@ -82,6 +82,10 @@
             </div>
             <div class='col col-lg-6 ind-col last-col'>
               <%= @translations[dt.dim_explanation_key] %>
+              <% if @editMe %>
+                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+              <% end %>
             </div>
           </div>
         <%
@@ -115,6 +119,10 @@
             </div>
             <div class='col col-lg-6 ind-col last-col'>
               <%= @translations[dt.dim_explanation_key] %>
+              <% if @editMe %>
+                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+              <% end %>
             </div>
           </div>
         <%
@@ -164,7 +172,7 @@
               <%= @translations["#{st.explanation_key}"] %>
               <% if @editMe %>
                 <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
-                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
               <% end %>
             </div>
           </div>

@@ -15,7 +15,7 @@
   	<%= f.text_area :name_translation, name: 'tree[name_translation]', id: 'name_translation', style: {className: "pull-left"}, value: @translation  %>
   </fieldset>
   <!--build fields for editing treetree and sector relationships-->
-  <% elsif @edit_type == 'treetree' || @edit_type == 'sector' %>
+  <% elsif @edit_type == 'treetree' || @edit_type == 'sector' || @edit_type == 'dimtree' %>
   <fieldset>
     <label for='relationship'><%= translate('trees.labels.relation') %></label>
     <div>
@@ -35,7 +35,7 @@
 	      	<%= I18n.translate('trees.labels.relation_types.akin') %>
 	      </option>
 	    </select>
-    <% elsif @edit_type == 'sector' %>
+    <% elsif @edit_type == 'sector' || @edit_type == 'dimtree' %>
       <label class="stack"> - <%= I18n.t('trees.bigidea.relates_to') %> - </label>
     <% end %>
     <span class="stack"><%= @tree_referencee_code %></span>
@@ -47,11 +47,13 @@
     <%= f.text_area :explanation, name: 'tree[name_translation]', id: 'explanation', value: @explanation %>
     </div>
   </fieldset>
+  <% if @edit_type != "dimtree" %>
   <fieldset>
     <label for="<%= @edit_type == 'treetree' ? 'tree' : 'sector' %>_tree[active]">Active?</label>
       <input name="tree[active]" type="checkbox"
         <%= @rel.active ? ' checked' : '' %>></input>
   </fieldset>
+  <% end %>
 
 	<% end #build fieldsets by @edit_type %>
 
