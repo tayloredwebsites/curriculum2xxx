@@ -19,6 +19,8 @@ en:
       grade_band: "Grade"
       grade_band_show: "Show Grade"
       grade_band_num: "Grade %{num}"
+      show_indicators: "Show Explanations"
+      hide_indicators: "Hide Explanations"
       action: "Action"
       actions: "Actions"
       language: "Language"
@@ -26,9 +28,10 @@ en:
       row_num: "Row: %{num} - "
       area: "Unit"
       component: "Chapter"
-      outcome: "Outcome"
-      indicator: "Indicator"
-      indicators: "Indicators"
+      outcome: "Attainment"
+      outcomes: "Attainments"
+      indicator: "Explanation"
+      indicators: "Explanations"
       code: "Code"
       description: 'Description'
       message: "Message"
@@ -42,7 +45,7 @@ en:
       future_vision: "Knowledge Based Education (KBE) Sectors"
       sector_related_explain: "Sectors Related Explanation"
       subject_related_explain: "Subjects Related Explanation"
-      explanation: "Explanation"
+      explanation: "Reason for Relation"
       sector_num: "Sector %{num}"
     roles:
       name: 'Roles'
@@ -59,7 +62,7 @@ en:
       too_many_matched_key: "Too many matches for %{key}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
       invalid_code: "invalid code: %{code}"
-      invalid_indicator: "invalid indicator: %{indicator}"
+      invalid_indicator: "invalid explanation: %{indicator}"
       skipped_code: "Warning - skipped this indicator"
       unsaved_rec: "cannot update unsaved record"
       missing_base_key: "cannot update translation without base key"
@@ -168,17 +171,17 @@ en:
     labels:
       show_areas: "Show Units"
       show_components: "Show Chapters"
-      show_outcomes: "Show Outcomes"
-      show_indicators: "Show Indicators"
+      show_outcomes: "Show Attainments"
+      show_indicators: "Show Explanations"
       filter_by_subject_grade: "Filter by Subject & Grade"
       future_vision: "Future Vision"
       future_vision_hover: "Future Vision"
       related_sectors: 'Related Sectors'
-      how_sectors_related: 'How Sector is related.'
-      indicator_connections: 'Connections to Other Indicators:'
-      outcome_connections: 'Connections to Other Outcomes:'
+      how_sectors_related: 'How Sector is Related'
+      indicator_connections: 'Connections to Other Explanations:'
+      outcome_connections: 'Connections to Other Attainments:'
       relation: 'Relation'
-      how_outcome_related: 'How Outcome is Related:'
+      how_outcome_related: 'How Attainment is Related'
       relation_types:
         applies: 'Applies to:'
         depends: 'Depends on:'
@@ -201,13 +204,13 @@ en:
       missing_grade_in_tree: "error: missing grade in report tree."
       missing_area_in_tree: "error: missing area in report tree."
       missing_component_in_tree: "error: missing component in report tree."
-      missing_outcome_in_tree: "error: missing outcome in report tree."
+      missing_outcome_in_tree: "error: missing attainment in report tree."
       tree_too_deep_id: "error: treeview depth > 4 at id: %{id}"
       save_curriculum_code_error: "saving Curriculum code %{code} returned errors: "
       too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"
   tree_trees:
       labels:
-        explanation: "Explanation"
+        explanation: "Reason for Relation"
   sectors:
     index:
       name: "Turkey STEM Curriculum for Future Competencies"
