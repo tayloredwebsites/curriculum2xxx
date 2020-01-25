@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191108181256) do
+ActiveRecord::Schema.define(version: 20200125194105) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "dimension_id", null: false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20191108181256) do
     t.datetime "updated_at", null: false
     t.string "base_key"
     t.boolean "active", default: true
+    t.string "sector_set_code", default: "", null: false
     t.index ["code"], name: "index_sectors_on_code"
   end
 
@@ -114,6 +115,11 @@ ActiveRecord::Schema.define(version: 20191108181256) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
+    t.string "hierarchy_codes", default: "", null: false
+    t.string "valid_locales", default: "en", null: false
+    t.string "sector_set_code", default: "", null: false
+    t.string "sector_set_name_key", default: "", null: false
+    t.string "curriculum_title_key", default: "", null: false
   end
 
   create_table "trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -149,6 +155,7 @@ ActiveRecord::Schema.define(version: 20191108181256) do
     t.datetime "updated_at"
     t.string "filename"
     t.text "statusPhase2"
+    t.string "tree_type_code", default: "", null: false
     t.index ["grade_band_id"], name: "index_uploads_on_grade_band_id"
     t.index ["locale_id"], name: "index_uploads_on_locale_id"
     t.index ["subject_id", "grade_band_id", "locale_id"], name: "index_uploads_on_keys"
@@ -190,6 +197,8 @@ ActiveRecord::Schema.define(version: 20191108181256) do
     t.string "work_phone"
     t.string "work_address"
     t.boolean "terms_accepted"
+    t.integer "last_tree_type_id"
+    t.string "last_selected_subject_ids", default: "", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
