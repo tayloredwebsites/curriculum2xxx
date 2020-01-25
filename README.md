@@ -1,5 +1,19 @@
 # README
 
+## Setup Instructions
+
+### Reset Database
+    > bundle exec rake db:reset
+    
+### Load up Egypt STEM seed data
+note: can be rerun (to add new records)
+Note: to update existing records, see create_tree_type
+
+    > bundle exec rake seed_eg_stem:populate
+    
+### Load up Turkey STEM seed data
+    > bundle exec rake seed_turkey:populate
+    
 
 
 ## Manually Create a Sector Tree relation
