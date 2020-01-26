@@ -11,7 +11,7 @@ Note: to update existing records, see create_tree_type
 
     > bundle exec rake seed_eg_stem:populate
     
-### Load up Turkey STEM seed data
+	### Load up Turkey STEM seed data
     > bundle exec rake seed_turkey:populate
     
 

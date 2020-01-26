@@ -9,12 +9,14 @@ class TreesController < ApplicationController
 
   def index_listing
     # to do - refactor this
+    Rails.logger.debug("*** @treeTypeRec: #{@treeTypeRec.inspect}")
     @subjects = {}
     subjIds = {}
-    Subject.all.each do |s|
+    Subject.where(tree_type_id: @treeTypeRec.id).each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end
+    Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
     @gbs = GradeBand.all
     # @gbs_upper = GradeBand.where(code: ['9','13'])
 

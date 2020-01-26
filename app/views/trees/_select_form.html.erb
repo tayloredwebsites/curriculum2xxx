@@ -11,9 +11,9 @@
       </div>
       <div class='row'>
         <div class='col col-md-4 border-left border-bottom subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
-          <% Subject.all.each do |s| %>
+          <% @subjects.each do |k, s| %>
             <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
-            <%= Rails.logger.debug("index match output: #{selectedStr}") %>
+            <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
             <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
           <% end %>
         </select></div>

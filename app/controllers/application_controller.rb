@@ -130,13 +130,15 @@ class ApplicationController < ActionController::Base
     end
 
     def set_type_and_version
-      # assumes only one tree type record
+      # defaults to first tree type record
       @treeTypeRec = TreeType.first
-      if @treeTypeRec.blank?
-        raise I18n.translate('app.errors.missing_tree_type_record')
-      elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
-        raise I18n.translate('app.errors.missing_tree_type_code')
-      end
+      # Rails.logger.debug("*** application controller.set_type_and_version - @treeTypeRec: #{@treeTypeRec.inspect}")
+      # Rails.logger.debug("*** current_user: #{@current_user.inspect}")
+      # if @treeTypeRec.blank?
+      #   raise I18n.translate('app.errors.missing_tree_type_record')
+      # elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
+      #   raise I18n.translate('app.errors.missing_tree_type_code')
+      # end
       # assumes only one version record
       @versionRec = Version.first
       if @versionRec.blank?

@@ -16,6 +16,7 @@ class BaseRec < ActiveRecord::Base
   UPLOAD_TREE_UPLOADED = 2
   UPLOAD_DONE = 3
 
+  #To Do - check this
   # hard coded variables - must match record 1 in database tables - see db/seeds.rb
   # only used by factorybot. see test/factories/factories.rb
   TREE_TYPE_ID = 1
