@@ -9,14 +9,17 @@ class TreesController < ApplicationController
 
   def index_listing
     # to do - refactor this
+    Rails.logger.debug("*** @treeTypeRec: #{@treeTypeRec.inspect}")
     @subjects = {}
     subjIds = {}
-    Subject.all.each do |s|
+    Subject.where(tree_type_id: @treeTypeRec.id).each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end
-    @gbs = GradeBand.all
+    Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
+    @gbs = GradeBand.where(tree_type_id: @treeTypeRec.id)
     # @gbs_upper = GradeBand.where(code: ['9','13'])
+    Rails.logger.debug("*** @gbs: #{@gbs.inspect}")
 
     # get subject from tree param or from cookie (app controller getSubjectCode)
     if params[:tree].present? && tree_params[:subject_id].present?

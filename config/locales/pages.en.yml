@@ -6,7 +6,7 @@ en:
     Che: "Chemistry"
     Mat: "Mathematics"
   app:
-    title: "Turkey STEM Web App"
+    title: "Curriculum Website"
     labels:
       all: "All"
       save: "Save"
@@ -36,7 +36,7 @@ en:
       description: 'Description'
       message: "Message"
       gen_list: "Generate List"
-      sector: "Future Vision"
+      sector: "Sector"
       upload_summary: 'Uploads Summary Report'
       upload_file: "Upload File"
       upload_status_errors: "Upload Status / Errors"
@@ -75,24 +75,24 @@ en:
       missing_version_record: "error - missing Version Record"
       missing_version_code: "error - invalid Version Code"
   home:
-    name: "Turkey STEM Home Page"
-    title: "Turkey STEM Home Page"
+    name: "Curriculum Home Page"
+    title: "Curriculum Home Page"
   nav_bar:
     home:
       name: "Home"
       hover: "Turkey STEM Home Page"
     curriculum:
-      name: "Future Curriculum"
+      name: "Curriculum Tree"
       hover: "Displays the Curriculum Tree"
     sectors:
-      name: "Future Sectors"
-      hover: "Displays the Curriculum by Future Sectors"
+      name: "Sectors"
+      hover: "Displays the Curriculum by Sectors"
     connections:
-      name: "Connections"
-      hover: "dropdown"
+      name: "Other"
+      hover: "Other Connections"
     big_ideas:
       name: "Big Ideas"
-      hover: ""
+      hover: "Big Ideas"
     misconceptions:
       name: "Misconceptions"
       hover: "Displays Misconceptions"
@@ -158,7 +158,7 @@ en:
       name: "Turkey STEM Curriculum"
       title: "Turkey STEM Curriculum"
     sequencing:
-      title: "Sequencing"
+      title: "Relations"
     miscon:
       title: "Misconceptions"
       singular: "Misconception"

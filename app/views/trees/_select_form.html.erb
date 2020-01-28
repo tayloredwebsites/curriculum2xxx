@@ -11,9 +11,9 @@
       </div>
       <div class='row'>
         <div class='col col-md-4 border-left border-bottom subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
-          <% Subject.all.each do |s| %>
+          <% @subjects.each do |k, s| %>
             <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
-            <%= Rails.logger.debug("index match output: #{selectedStr}") %>
+            <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
             <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
           <% end %>
         </select></div>
@@ -22,9 +22,9 @@
           <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
           <select id='tree_grade_band_id' name='tree[grade_band_id]'>
             <option value='0'><%= I18n.t('app.labels.all') %></option>
-          <% @gbs.all.each do |gb| %>
+          <% @gbs.each do |gb| %>
             <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
-            <%= Rails.logger.debug("index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
+            <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
             <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
           <% end %>
         </select>

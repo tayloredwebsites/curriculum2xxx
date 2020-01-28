@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_action :initTypeCode
   before_action :getLocaleCode
   before_action :getSubjectCode
   before_action :getGradeBandCode
@@ -130,13 +131,6 @@ class ApplicationController < ActionController::Base
     end
 
     def set_type_and_version
-      # assumes only one tree type record
-      @treeTypeRec = TreeType.first
-      if @treeTypeRec.blank?
-        raise I18n.translate('app.errors.missing_tree_type_record')
-      elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
-        raise I18n.translate('app.errors.missing_tree_type_code')
-      end
       # assumes only one version record
       @versionRec = Version.first
       if @versionRec.blank?
@@ -144,6 +138,56 @@ class ApplicationController < ActionController::Base
       elsif @versionRec.code != BaseRec::VERSION_CODE
         raise I18n.translate('app.errors.missing_version_code')
       end
+    end
+
+    def initTypeCode
+      # defaults to first tree type record
+      @treeTypeRec = TreeType.first
+      if @treeTypeRec
+        Rails.logger.debug("*** @treeTypeRec.curriculum_title_key: #{@treeTypeRec.curriculum_title_key}")
+        @locale_codes = @treeTypeRec.valid_locales.split(',')
+        @locale_code = (@locale_codes.length >0) ? @locale_codes.first : BaseRec::LOCALE_EN
+        Rails.logger.debug("*** @locale_code: #{@locale_code}")
+        @locale = Locale.where(code: @locale_code)
+        Rails.logger.debug("*** @locale: #{@locale.inspect}")
+        # To Do - create new translate method to return value with a default value of some kind
+        @appTitle = Translation.find_translation_name(
+          @locale_code,
+          @treeTypeRec.curriculum_title_key,
+          Translation.where(key: 'app.title', locale: @locale_code)
+        )
+        @sectorName = Translation.find_translation_name(@locale_code, @treeTypeRec.sector_set_name_key, '')
+        @hierarchies = []
+        @treeTypeRec.hierarchy_codes.split(',').each do |c|
+          @hierarchies << Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')
+          Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')}")
+        end
+        Rails.logger.debug("*** @hierarchies: #{@hierarchies.inspect}")
+        # To Do - is this needed anywhere else?
+        @subjectByCode = {}
+        @subjectById = {}
+        subjects = Subject.where(tree_type_id: @treeTypeRec.id)
+        subjects.each do |subj|
+          h = {
+            rec: subj,
+            abbr: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.abbr", ''),
+            name: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.name", ''),
+          }
+          @subjectByCode[subj.code] = h
+          @subjectById[subj.id] = h
+        end
+      else
+        # To Do - fill in defaults here?
+        @appTitle = Translation.where(key: 'app.title', locale: @locale_code)
+      end
+
+      # Rails.logger.debug("*** application controller.set_type_and_version - @treeTypeRec: #{@treeTypeRec.inspect}")
+      # Rails.logger.debug("*** current_user: #{@current_user.inspect}")
+      # if @treeTypeRec.blank?
+      #   raise I18n.translate('app.errors.missing_tree_type_record')
+      # elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
+      #   raise I18n.translate('app.errors.missing_tree_type_code')
+      # end
     end
 
     def config_devise_params
