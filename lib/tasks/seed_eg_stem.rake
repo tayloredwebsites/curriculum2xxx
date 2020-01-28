@@ -27,12 +27,14 @@ namespace :seed_eg_stem do
     # Create translation(s) for hierarchy codes
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.sem', 'Semester')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.unit', 'Unit of Study')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.unit', 'Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.lo', 'Learning Outcome')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for sector_set_name_key
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.set.gr.chal.name', 'Grand Challenges')
+    throw "ERROR updating curriculum.egstemuniv.title translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for curriculum_title_key
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.title', 'Egypt STEM Teacher Prep Curriculum')

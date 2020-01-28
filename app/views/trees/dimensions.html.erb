@@ -8,7 +8,7 @@
   <% @s_o_hash.keys.each do |i| %>
     <div class='subj-checkbox'>
       <label for="radio-<%= i %>">
-        <%= @translations["subject.#{i}.name"] %>
+        <%= @subjectByCode[i][:abbr] %>
       </label>
       <input id="radio-<%= i %>" type="radio" name='subject-visible' onclick='show_subject_dimensions("<%= i %>", "<%= @page_title %>");'
       <% if (i == subject_visible) %>

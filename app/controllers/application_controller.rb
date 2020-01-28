@@ -150,9 +150,34 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug("*** @locale_code: #{@locale_code}")
         @locale = Locale.where(code: @locale_code)
         Rails.logger.debug("*** @locale: #{@locale.inspect}")
-        appTitleTransl = Translation.find_translation(@locale_code, @treeTypeRec.curriculum_title_key, true, true )
-        @appTitle = appTitleTransl[0].value if appTitleTransl
+        # To Do - create new translate method to return value with a default value of some kind
+        @appTitle = Translation.find_translation_name(
+          @locale_code,
+          @treeTypeRec.curriculum_title_key,
+          Translation.where(key: 'app.title', locale: @locale_code)
+        )
+        @sectorName = Translation.find_translation_name(@locale_code, @treeTypeRec.sector_set_name_key, '')
+        @hierarchies = []
+        @treeTypeRec.hierarchy_codes.split(',').each do |c|
+          @hierarchies << Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')
+          Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')}")
+        end
+        Rails.logger.debug("*** @hierarchies: #{@hierarchies.inspect}")
+        # To Do - is this needed anywhere else?
+        @subjectByCode = {}
+        @subjectById = {}
+        subjects = Subject.where(tree_type_id: @treeTypeRec.id)
+        subjects.each do |subj|
+          h = {
+            rec: subj,
+            abbr: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.abbr", ''),
+            name: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.name", ''),
+          }
+          @subjectByCode[subj.code] = h
+          @subjectById[subj.id] = h
+        end
       else
+        # To Do - fill in defaults here?
         @appTitle = Translation.where(key: 'app.title', locale: @locale_code)
       end
 

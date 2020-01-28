@@ -2,6 +2,25 @@ class Translation < BaseRec
 
   # to do - add associations
 
+  def self.find_translation_name(locale, code, default)
+    Rails.logger.debug("*** find_or_update_translation - locale: #{locale.inspect}, code: #{code.inspect}")
+    # errors = []
+    rec, status, message = self.find_translation(locale, code, false, true)
+    ret = default  # return value
+
+    if status == BaseRec::REC_ERROR
+      # leave return value to default
+      # errors << message
+    elsif rec.blank?
+      # no matching record, leave return value to default
+    else
+      # found existing record, set return value
+      ret = rec.value
+    end # rec.present
+    return ret
+  end
+
+
   # to do - lookup in config.i18n.fallbacks order if not found
   def self.find_translation(locale, code, checkDefault = true, allow_none = false)
     recs = Translation.where(locale: locale, key: code)
