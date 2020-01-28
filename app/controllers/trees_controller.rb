@@ -17,8 +17,9 @@ class TreesController < ApplicationController
       subjIds[s.id.to_s] = s
     end
     Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
-    @gbs = GradeBand.all
+    @gbs = GradeBand.where(tree_type_id: @treeTypeRec.id)
     # @gbs_upper = GradeBand.where(code: ['9','13'])
+    Rails.logger.debug("*** @gbs: #{@gbs.inspect}")
 
     # get subject from tree param or from cookie (app controller getSubjectCode)
     if params[:tree].present? && tree_params[:subject_id].present?

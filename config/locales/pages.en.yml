@@ -6,7 +6,7 @@ en:
     Che: "Chemistry"
     Mat: "Mathematics"
   app:
-    title: "Turkey STEM Web App"
+    title: "Curriculum Website"
     labels:
       all: "All"
       save: "Save"
@@ -82,11 +82,11 @@ en:
       name: "Home"
       hover: "Turkey STEM Home Page"
     curriculum:
-      name: "Future Curriculum"
+      name: "Curriculum Tree"
       hover: "Displays the Curriculum Tree"
     sectors:
-      name: "Future Sectors"
-      hover: "Displays the Curriculum by Future Sectors"
+      name: "Sectors"
+      hover: "Displays the Curriculum by Sectors"
     connections:
       name: "Connections"
       hover: "dropdown"

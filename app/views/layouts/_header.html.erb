@@ -3,7 +3,7 @@
     <div class='logoImage'></div>
   </a>
   <div id='pageHeaderTitle' class=''>
-    <h1 class='text-center'><%= content_for?(:title) ? yield(:title) : (content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') ) %></h1>
+    <h1 class='text-center'><%= @appTitle %></h1>
   </div>
   <div id='pageHeaderFontSize' class='font-size-select'>
     <span class='smallest-text'>A</span>
@@ -14,23 +14,29 @@
   </div>
   <div id='pageHeaderShowNav' class=''>
     <ul id='locale-select'>
-      <% if @locale_code == 'tr' %>
-        <li class='cur-locale'>
-          <span>Türk</span>
-        </li>
-      <% else %>
-        <li class='locale-opt'>
-          <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türk</a>
-        </li>
-      <% end %>
-      <% if @locale_code == 'en' %>
-        <li class='cur-locale'>
-          <span>English</span>
-        </li>
-      <% else %>
-        <li class='locale-opt'>
-          <a href='/users/lang/en<%= "?dim_type=#{@dim_type}" if @dim_type %>'>English</a>
-        </li>
+      <% @locale_codes.each do |lc| %>
+        <% if lc == 'tr'%>
+          <% if @locale_code == 'tr' %>
+            <li class='cur-locale'>
+              <span>Türk</span>
+            </li>
+          <% else %>
+            <li class='locale-opt'>
+              <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türk</a>
+            </li>
+          <% end %>
+        <% end %>
+        <% if lc == 'en'%>
+          <% if @locale_code == 'en' %>
+            <li class='cur-locale'>
+              <span>English</span>
+            </li>
+          <% else %>
+            <li class='locale-opt'>
+              <a href='/users/lang/en<%= "?dim_type=#{@dim_type}" if @dim_type %>'>English</a>
+            </li>
+          <% end %>
+        <% end %>
       <% end %>
     </ul>
   </div>
@@ -66,29 +72,32 @@
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= translate('nav_bar.sectors.name') %></a>
       </li>
-    <%
-    end
-    if controller.controller_name == 'trees' && action_name == 'sequence' %>
+    <% end
+    if controller.controller_name == 'sectors' %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
+      </li>
+    <% end
+    if controller.controller_name == 'sectors' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
+      </li>
+    <% else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
       </li>
     <% end %>
+
     <li class="nav-item" role='menuitem'>
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" title=<%= translate('nav_bar.connections.hover') %>>
         <%= translate('nav_bar.connections.name') %>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
-        </li>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
-        </li>
         <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.questions.name') %></a>
         </li>
@@ -106,12 +115,25 @@
     </li>
     <%
     if current_user.present? && current_user.is_admin?
+      if controller.controller_name == 'trees' && action_name == 'sequence' %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
+        </li>
+    <%
+      else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('trees.sequencing.title') %></a>
+        </li>
+    <%
+      end
       if controller.controller_name == 'uploads'
     %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
       </li>
-    <%  else %>
+    <%
+      else
+    %>
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
       </li>
@@ -122,7 +144,9 @@
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
       </li>
-    <% else %>
+    <%
+      else
+    %>
       <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
       </li>

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_action :initTypeCode
   before_action :getLocaleCode
   before_action :getSubjectCode
   before_action :getGradeBandCode
@@ -130,15 +131,6 @@ class ApplicationController < ActionController::Base
     end
 
     def set_type_and_version
-      # defaults to first tree type record
-      @treeTypeRec = TreeType.first
-      # Rails.logger.debug("*** application controller.set_type_and_version - @treeTypeRec: #{@treeTypeRec.inspect}")
-      # Rails.logger.debug("*** current_user: #{@current_user.inspect}")
-      # if @treeTypeRec.blank?
-      #   raise I18n.translate('app.errors.missing_tree_type_record')
-      # elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
-      #   raise I18n.translate('app.errors.missing_tree_type_code')
-      # end
       # assumes only one version record
       @versionRec = Version.first
       if @versionRec.blank?
@@ -146,6 +138,31 @@ class ApplicationController < ActionController::Base
       elsif @versionRec.code != BaseRec::VERSION_CODE
         raise I18n.translate('app.errors.missing_version_code')
       end
+    end
+
+    def initTypeCode
+      # defaults to first tree type record
+      @treeTypeRec = TreeType.first
+      if @treeTypeRec
+        Rails.logger.debug("*** @treeTypeRec.curriculum_title_key: #{@treeTypeRec.curriculum_title_key}")
+        @locale_codes = @treeTypeRec.valid_locales.split(',')
+        @locale_code = (@locale_codes.length >0) ? @locale_codes.first : BaseRec::LOCALE_EN
+        Rails.logger.debug("*** @locale_code: #{@locale_code}")
+        @locale = Locale.where(code: @locale_code)
+        Rails.logger.debug("*** @locale: #{@locale.inspect}")
+        appTitleTransl = Translation.find_translation(@locale_code, @treeTypeRec.curriculum_title_key, true, true )
+        @appTitle = appTitleTransl[0].value if appTitleTransl
+      else
+        @appTitle = Translation.where(key: 'app.title', locale: @locale_code)
+      end
+
+      # Rails.logger.debug("*** application controller.set_type_and_version - @treeTypeRec: #{@treeTypeRec.inspect}")
+      # Rails.logger.debug("*** current_user: #{@current_user.inspect}")
+      # if @treeTypeRec.blank?
+      #   raise I18n.translate('app.errors.missing_tree_type_record')
+      # elsif @treeTypeRec.code != BaseRec::TREE_TYPE_CODE
+      #   raise I18n.translate('app.errors.missing_tree_type_code')
+      # end
     end
 
     def config_devise_params
