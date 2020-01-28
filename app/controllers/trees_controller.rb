@@ -241,7 +241,7 @@ class TreesController < ApplicationController
 
   def sequence
     index_prep
-
+    @max_subjects = 6
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
     listing = Tree.where(

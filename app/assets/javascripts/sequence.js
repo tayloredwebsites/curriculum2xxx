@@ -10,9 +10,18 @@ $(function() {
    * @param  {String} subj_abbr Abbreviation for a subject.
    *                            E.g. 'bio', 'phy', etc.
    */
-  subject_visibility = function (subj_abbr) {
+  subject_visibility = function (subj_abbr, max_subjs, err_translation) {
+    err_translation = err_translation || "Maximum number of subjects that can be displayed: " + max_subjs
+    var num_checked = $('.subj-checkbox>input:checked').length
   	if ($('#check-' + subj_abbr).prop('checked')) {
-  	   $('#'+subj_abbr+'-column').removeClass('hidden')
+      if (num_checked <= max_subjs) {
+        $('#'+subj_abbr+'-column').removeClass('hidden')
+      }
+      else {
+        $('#check-' + subj_abbr).prop("checked", false)
+        if (err_translation) alert(err_translation);
+        return
+      }
   	}
   	else {
   	   $('#'+subj_abbr+'-column').addClass('hidden')
