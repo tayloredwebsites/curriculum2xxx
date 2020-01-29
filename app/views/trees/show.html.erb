@@ -13,18 +13,18 @@
     <div class='detail-page'>
 
       <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
-      <div class='row subject-grade-row'><div class='col col-lg-12 text-left'><%= I18n.translate('app.labels.grade_band') %>: <%= tree.grade_band.code %></div></div>
-      <div class='row area-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div></div>
-      <div class='row component-row'><div class='col col-lg-12 text-left'><%= "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div></div>
+      <div class='row subject-grade-row'><div class='col col-lg-12 text-left'><%= @hierarchies[0] if @hierarchies.length > 0 %>: <%= tree.grade_band.code %></div></div>
+      <div class='row area-row'><div class='col col-lg-12 text-left'><%= "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div></div>
+      <div class='row component-row'><div class='col col-lg-12 text-left'><%= "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div></div>
       <div class='row outcome-row'>
-        <div class='col col-lg-6 text-left'><%= "#{I18n.translate('app.labels.outcome')} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %>
+        <div class='col col-lg-6 text-left'><%= "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %>
           <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
         </div>
         <div class='col col-lg-6 text-right'>
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <%= link_to("Edit #{I18n.t('app.labels.outcome')}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? %>
+            <%= link_to("Edit #{@hierarchies[3] if @hierarchies.length > 3}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? %>
             <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
           <% end %>
         </div>
@@ -183,7 +183,7 @@
       <div class='related-items-table'>
         <div class='row subject-relations center-label-bold top-label'>
           <div class='col col-lg-12'>
-            <%= I18n.t('trees.labels.outcome_connections') %>
+            <%= I18n.t('trees.labels.outcome_connections', outcome: (@hierarchies[3].pluralize if @hierarchies.length > 3)) %>
               <% if @editMe && false %>
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-plus-square fa-lg"></i>

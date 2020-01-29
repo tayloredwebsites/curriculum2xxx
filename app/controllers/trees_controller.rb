@@ -103,12 +103,12 @@ class TreesController < ApplicationController
       case depth
 
       when 1
-        newHash = {text: "#{I18n.translate('app.labels.grade_band')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[0] if @hierarchies.length > 0} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         # add grade (band) if not there already
         treeHash[tree.codeArrayAt(0)] = newHash if !treeHash[tree.codeArrayAt(0)].present?
 
       when 2
-        newHash = {text: "#{I18n.translate('app.labels.area')} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", nodes: {}}
         puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -117,7 +117,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(treeHash[tree.codeArrayAt(0)], tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{I18n.translate('app.labels.component')} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
         puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -128,7 +128,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{I18n.translate('app.labels.outcome')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
         elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
@@ -241,7 +241,7 @@ class TreesController < ApplicationController
 
   def sequence
     index_prep
-
+    @max_subjects = 6
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
     listing = Tree.where(

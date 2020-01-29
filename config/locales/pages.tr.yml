@@ -34,6 +34,8 @@ tr:
       sector: "Gelecek Vizyonu"
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
+      errors:
+        max_subj_display_count: "Bir defada en fazla %{num} konu görüntülenebilir."
   nav_bar:
     home:
       name: "Ev"

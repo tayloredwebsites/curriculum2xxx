@@ -33,9 +33,12 @@
         <% end %>
       <% end #iterate through @gradebands %>
     </div>
+    <% subj_counter = 0 %>
+    <% subj_default_count = 3 %>
     <% @s_o_hash.keys.each do |i| %>
+      <% subj_counter += 1 %>
       <div class='subj-checkbox'>
-        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>");' checked></input>
+        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>", <%= @max_subjects %>, "<%= I18n.t('app.errors.max_subj_display_count', num: @max_subjects) %>");' <%= subj_counter <= subj_default_count ? "checked" : "" %>></input>
         <label for="check-<%= i %>">
           <%= @subjectByCode[i][:abbr] %>
         </label>
@@ -58,10 +61,12 @@
     <% end %>
   </div>
 </div>
+<% subj_counter = 0 %>
 <div id="trees" class="sequence-page">
-  <div class="sequence-grid cols-<%= @s_o_hash.keys.count %>">
+  <div class="sequence-grid cols-<%= subj_default_count %>">
 	<% @s_o_hash.each do |i, j| %>
-    <div id="<%=i%>-column" class="sequence-item subject-column">
+    <% subj_counter += 1 %>
+    <div id="<%=i%>-column" class="sequence-item subject-column<%= subj_counter > subj_default_count ? " hidden" : "" %>">
       <ul class="list-group">
         <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
         <% j.each do |k| %>
@@ -81,7 +86,7 @@
             <% end %>
             <% if k[:connections].length > 0 %>
               <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
-              <div><strong class='hide-unless-condition'><%= translate('trees.labels.outcome_connections') %></strong>
+              <div><strong class='hide-unless-condition'><%= I18n.t('trees.labels.outcome_connections', outcome: (@hierarchies[3].pluralize if @hierarchies.length > 3)) %></strong>
               </div>
                 <% k[:connections].each do |c| %>
                   <% if c.active %>

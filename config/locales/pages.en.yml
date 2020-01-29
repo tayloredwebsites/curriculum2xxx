@@ -74,6 +74,7 @@ en:
       missing_tree_type_code: "error - invalid Tree Type Code"
       missing_version_record: "error - missing Version Record"
       missing_version_code: "error - invalid Version Code"
+      max_subj_display_count: "A maximum of %{num} subjects can be displayed at once."
   home:
     name: "Curriculum Home Page"
     title: "Curriculum Home Page"
@@ -179,7 +180,7 @@ en:
       related_sectors: 'Related Sectors'
       how_sectors_related: 'How Sector is Related'
       indicator_connections: 'Connections to Other Explanations:'
-      outcome_connections: 'Connections to Other Attainments:'
+      outcome_connections: 'Connections to Other %{outcome}:'
       relation: 'Relation'
       how_outcome_related: 'How Attainment is Related'
       relation_types:

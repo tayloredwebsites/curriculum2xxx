@@ -10,7 +10,7 @@ namespace :seed_eg_stem do
     myTreeType = TreeType.where(code: 'EGSTEMUNIV')
     myTreeTypeValues = {
       code: 'EGSTEMUNIV',
-      hierarchy_codes: 'sem,unit,lo',
+      hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN,
       sector_set_code: 'gr.chall',
       sector_set_name_key: 'sector.set.gr.chal.name',
@@ -25,6 +25,8 @@ namespace :seed_eg_stem do
     @egstem = TreeType.where(code: 'EGSTEMUNIV').first
 
     # Create translation(s) for hierarchy codes
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.grade', 'Grade')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.sem', 'Semester')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.unit', 'Unit')
@@ -94,25 +96,28 @@ namespace :seed_eg_stem do
   ###################################################################################
   desc "create the grade bands for this tree type (curriculum)"
   task create_grade_bands: :environment do
-    %w(10 11 12).each do |g|
+    sort_counter = 0
+    %w(fresh soph junior senior).each do |g|
       begin
-        gf = (g == 'k') ? 0 : g
+        gf = (g == 'k') ? 0 : sort_counter
         if GradeBand.where(tree_type_id: @egstem.id, code: g).count < 1
           GradeBand.create(
             tree_type_id: @egstem.id,
             code: g,
-            sort_order: "%02d" % [gf]
+            sort_order: gf
           )
         end
+        sort_counter += 1
       rescue => ex
         puts("exception creating gradeband #{g}, error: #{ex}")
       end
     end
 
-    @gb_10 = GradeBand.where(tree_type_id: @egstem.id, code: '10').first
-    @gb_11 = GradeBand.where(tree_type_id: @egstem.id, code: '11').first
-    @gb_12 = GradeBand.where(tree_type_id: @egstem.id, code: '12').first
-    @gb_hs = [@gb_10, @gb_11, @gb_12]
+    @gb_fresh = GradeBand.where(tree_type_id: @egstem.id, code: 'fresh').first
+    @gb_soph = GradeBand.where(tree_type_id: @egstem.id, code: 'soph').first
+    @gb_junior = GradeBand.where(tree_type_id: @egstem.id, code: 'junior').first
+    @gb_senior = GradeBand.where(tree_type_id: @egstem.id, code: 'senior').first
+    @gb_univ = [@gb_fresh, @gb_soph, @gb_junior, @gb_senior]
     puts "grade bands are created for EGSTEM"
   end #create_grade_bands
 
@@ -120,64 +125,65 @@ namespace :seed_eg_stem do
   ###################################################################################
   desc "create the subjects for this tree type (curriculum)"
   task create_subjects: :environment do
-    if Subject.where(tree_type_id: @egstem.id, code: 'bio')
-      Subject.create(
+    @subjects = []
+    if Subject.where(tree_type_id: @egstem.id, code: 'bio').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'bio',
         base_key: 'subject.egstemuniv.bio'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'cap')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'cap').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'cap',
         base_key: 'subject.egstemuniv.cap'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'che')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'che').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'che',
         base_key: 'subject.egstemuniv.che'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'engl')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'engl').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'engl',
         base_key: 'subject.egstemuniv.engl'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'edu')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'edu').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'edu',
         base_key: 'subject.egstemuniv.edu'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'geo')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'geo').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'geo',
         base_key: 'subject.egstemuniv.geo'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'mat')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'mat').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'mat',
         base_key: 'subject.egstemuniv.mat'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'mec')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'mec').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'mec',
         base_key: 'subject.egstemuniv.mec'
       )
     end
-    if Subject.where(tree_type_id: @egstem.id, code: 'phy')
-      Subject.create(
+    if Subject.where(tree_type_id: @egstem.id, code: 'phy').count < 1
+      @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'phy',
         base_key: 'subject.egstemuniv.phy'
@@ -247,7 +253,27 @@ namespace :seed_eg_stem do
   desc "create the upload control files"
   task create_uploads: :environment do
     # code here
-    puts "No uploads for EGSTEM"
+    puts "Try to create uploads."
+    @gb_univ.each do |g|
+      @subjects.each do |s|
+        if Upload.where(
+          tree_type_code: @egstem.code,
+          subject_id: s.id,
+          grade_band_id: g.id,
+          locale_id: @loc_en.id
+        ).count < 1
+          puts "Try to create uploads for grade #{g} subject #{s}"
+          Upload.create(
+            tree_type_code: @egstem.code,
+            subject_id: s.id,
+            grade_band_id: g.id,
+            locale_id: @loc_en.id,
+            status: 0,
+            filename: "#{@egstem.code}#{s.code.capitalize}#{g.code.capitalize}Eng.txt"
+          )
+        end
+      end
+    end
   end #create_uploads
 
 
