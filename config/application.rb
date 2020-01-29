@@ -15,11 +15,11 @@ module Curriculum
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    config.i18n.available_locales = [:en, :tr]
-    config.i18n.default_locale = :tr
+    config.i18n.available_locales = [:en, :tr, :ar_EG]
+    config.i18n.default_locale = :en
 
     # missing translations fallback to en (English))
-    config.i18n.fallbacks = {'tr_TR' => 'tr', 'tr' => 'en'}
+    config.i18n.fallbacks = {'ar_EG' => 'en', 'tr' => 'en'}
 
   end
 end
