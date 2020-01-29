@@ -148,14 +148,14 @@ class UploadsController < ApplicationController
           if line_num == 0
             infoLine = line.split(',')
             begin
-              grade_band = Integer(infoLine[2])
+              grade_band = @treeTypeRec.code == "EGSTEMUNIV" ? infoLine[2].strip : Integer(infoLine[2])
             rescue ArgumentError, TypeError
               grade_band = 0
             end
             puts "grade_band: #{grade_band.inspect}"
             puts "@gradeBandRec.code: #{@gradeBandRec.code.inspect}"
             if grade_band.to_s != @gradeBandRec.code
-              puts "Abort"
+              puts "Abort (line 158)"
               flash[:alert] = "ERROR: Invalid grade_band: #{grade_band}"
               abortRun = true
               @abortRow = true
@@ -434,7 +434,7 @@ class UploadsController < ApplicationController
     errors = []
     codes.each_with_index do |code, ix|
       begin
-        numCode = Integer(code)
+        numCode = @treeTypeRec.code == "EGSTEMUNIV" ? code : Integer(code)
         numCodes << numCode
       rescue
         numCodes << -1

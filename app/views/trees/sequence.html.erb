@@ -86,7 +86,7 @@
             <% end %>
             <% if k[:connections].length > 0 %>
               <div class="connections-div hide-if-collapsed" data-connections="<%= k[:connections].pluck(:tree_referencee_id) %>">
-              <div><strong class='hide-unless-condition'><%= translate('trees.labels.outcome_connections') %></strong>
+              <div><strong class='hide-unless-condition'><%= I18n.t('trees.labels.outcome_connections', outcome: (@hierarchies[3].pluralize if @hierarchies.length > 3)) %></strong>
               </div>
                 <% k[:connections].each do |c| %>
                   <% if c.active %>

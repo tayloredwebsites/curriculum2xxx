@@ -1,0 +1,18 @@
+en,che,fresh
+fresh Freshman
+fresh.1 Chemistry Semester 1
+fresh.1.1 Unit 1
+fresh.1.1.1 Use the periodic table to predict the properties of elements
+fresh.1.1.2 Represent data on data tables and graphs correctly
+fresh.1.1.3 Conduct, analyze a series of measurements and evaluate the scientific reports with values of significant figures
+fresh.1.1.4 Conduct spectral analysis
+fresh.1.1.5 Use the appropriate laboratory procedures to determine the concentration of analyte
+fresh.1.2 Unit 2
+fresh.1.2.1 Students can compare between organic and inorganic compounds
+fresh.1.2.2 Distinguish between molecular, structural, and empirical formula
+fresh.2 Chemistry Semester 2
+fresh.2.1 Unit 1
+fresh.2.1.1 Determine the formulas, including the charges for common polyatomic ions
+fresh.2.1.2 Construct several electrochemical cells to study redox reactions
+fresh.2.1.3 Explain how the structure and bonding of carbon to the diversity and number of organic compounds
+fresh.2.1.4 Explain the relationships between the properties and structures of organic compounds with various functional groups

@@ -180,7 +180,7 @@ en:
       related_sectors: 'Related Sectors'
       how_sectors_related: 'How Sector is Related'
       indicator_connections: 'Connections to Other Explanations:'
-      outcome_connections: 'Connections to Other Attainments:'
+      outcome_connections: 'Connections to Other %{outcome}:'
       relation: 'Relation'
       how_outcome_related: 'How Attainment is Related'
       relation_types:

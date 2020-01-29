@@ -1,0 +1,17 @@
+en,bio,fresh
+fresh Freshman
+fresh.1 Majors Biological Principals
+fresh.1.1 Unit 1
+fresh.1.1.1 STEM Teacher should be able to overview the prior knowledge of STEM students about biological pollution hazards via quizzes, observation cards, reviews, posters, and oral presentations
+fresh.1.1.2 STEM Teacher should be able to detect, identify and document biological pollutants via figures, photos, videos and maps
+fresh.1.1.3 STEM Teacher should be able to analyze the impact of pollutants on forms, cellular and genetic structure of living organisms as microorganisms, plants, animals and human via field trips to compare in reports between polluted and non-polluted ecosystems
+fresh.1.1.4 STEM Teacher should be able to create, supervise and evaluate projects participating in solving pollution challenges via research article
+fresh.2 Majors Organismal Biology
+fresh.2.1 Unit 1
+fresh.2.1.1 Explain the main definitions and concept of evolution
+fresh.2.1.2 Analyze the main forms of evolution referring to some examples in animal life and plants
+fresh.2.1.3 Apply the newly gained knowledge of different evolution activities
+fresh.2.1.4 Observe some examples from morphological, anatomical and genetic structures relating them to their functions
+fresh.2.1.5 Synthesize and evaluate the concept of evolution as reflecting change over time and how to show the relationship between the climte and environmnetal changes
+fresh.2.1.6 Explain and clarify that evolution is not against religious beliefs
+fresh.2.1.7 Analyze the main genetic changes that occur because of evolution
