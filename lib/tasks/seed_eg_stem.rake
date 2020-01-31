@@ -253,7 +253,7 @@ namespace :seed_eg_stem do
   desc "create the upload control files"
   task create_uploads: :environment do
     # code here
-    puts "Try to create uploads."
+    # puts "Try to create uploads."
     @gb_univ.each do |g|
       @subjects.each do |s|
         if Upload.where(
@@ -262,7 +262,7 @@ namespace :seed_eg_stem do
           grade_band_id: g.id,
           locale_id: @loc_en.id
         ).count < 1
-          puts "Try to create uploads for grade #{g} subject #{s}"
+          # puts "Try to create uploads for grade #{g} subject #{s}"
           Upload.create(
             tree_type_code: @egstem.code,
             subject_id: s.id,
