@@ -1,0 +1,44 @@
+<% content_for(:title_code, 'trees.maint.name') %>
+<% content_for(:page_class, 'trees') %>
+
+<br>
+<div class='text-center sequence-page'>
+  <h2><%= translate('trees.maint.title') %></h2>
+</div>
+<% subj_counter = 0 %>
+<div id="trees" class="sequence-page">
+  <div class="sequence-grid cols-<%= 2 %>">
+    <ul class="list-group maint-column">
+      <% @treeByParents.each do |tkey, codeh| %>
+        <li class="maint-header indent-0"><%= @translations[tkey] %></li>
+        <% codeh.each do |code, h| %>
+          <% if h[:depth] == 4 %>
+          <li class="maint-item indent-3">
+            <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
+            <%= h[:text] %>
+            <div class="pull-right">
+              <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= h[:id] %>?%5Bactive%5D=false">
+                <i class="fa fa-times pull-right" title="deactivate this LO"></i>
+              </a>
+              <a class="sort-handle lo-handle ui-sortable-handle" onclick="" href="#">
+                <i class="fa fa-thumb-tack pull-right" title="resequence this LO"></i>
+              </a>
+              <a class="" href="/<%= @locale_code %>/trees/<%= h[:id] %>?editme=<%= h[:id] %>">
+                <i class="fa fa-edit pull-right" title="edit this LO"></i>
+              </a>
+            </div>
+          </li>
+          <% else %>
+            <li class="maint-sub-header indent-<%= h[:depth]-1 %> ">
+              <a class="" href="#">
+                <i class="fa fa-compress pull-left" title="collapse"></i>
+              </a>
+              <%= h[:depth_name] %>: <%= h[:text] %>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -7,9 +7,9 @@ namespace :seed_eg_stem do
   ###################################################################################
   desc "create the tree type(s)"
   task create_tree_type: :environment do
-    myTreeType = TreeType.where(code: 'EGSTEMUNIV')
+    myTreeType = TreeType.where(code: 'egstemuniv')
     myTreeTypeValues = {
-      code: 'EGSTEMUNIV',
+      code: 'egstemuniv',
       hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN,
       sector_set_code: 'gr.chall',
@@ -21,8 +21,8 @@ namespace :seed_eg_stem do
     else
       TreeType.update(myTreeType.first.id, myTreeTypeValues)
     end
-    throw "Invalid Tree Type Count" if TreeType.where(code: 'EGSTEMUNIV').count != 1
-    @egstem = TreeType.where(code: 'EGSTEMUNIV').first
+    throw "Invalid Tree Type Count" if TreeType.where(code: 'egstemuniv').count != 1
+    @egstem = TreeType.where(code: 'egstemuniv').first
 
     # Create translation(s) for hierarchy codes
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.grade', 'Grade')
@@ -42,7 +42,7 @@ namespace :seed_eg_stem do
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.title', 'Egypt STEM Teacher Prep Curriculum')
     throw "ERROR updating curriculum.egstemuniv.title translation: #{message}" if status == BaseRec::REC_ERROR
 
-    puts "Curriculum (Tree Type) is created for EGSTEMUNIV "
+    puts "Curriculum (Tree Type) is created for egstemuniv "
     puts "  Created Curriculum: #{@egstem.code} with Hierarchy: #{@egstem.hierarchy_codes}"
   end #create_tree_type
 
@@ -89,7 +89,7 @@ namespace :seed_eg_stem do
       )
     end
     @user = User.where(email: 'egstemuniv@sample.com').first
-    puts "admin user is created for EGSTEMUNIV"
+    puts "admin user is created for egstemuniv"
   end #create_admin_user
 
 
@@ -119,6 +119,17 @@ namespace :seed_eg_stem do
     @gb_senior = GradeBand.where(tree_type_id: @egstem.id, code: 'senior').first
     @gb_univ = [@gb_fresh, @gb_soph, @gb_junior, @gb_senior]
     puts "grade bands are created for EGSTEM"
+
+    # put in translations for Grade Names
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.fresh.name', 'Freshman')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.soph.name', 'Sophmore')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.junior.name', 'Junior')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.senior.name', 'Senior')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
   end #create_grade_bands
 
 

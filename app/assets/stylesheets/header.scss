@@ -42,6 +42,11 @@ nav#topNav {
     background-color: #ddd;
   }
 }
+.flexContainer {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 
 
 @media only screen and (max-width: 767px) {

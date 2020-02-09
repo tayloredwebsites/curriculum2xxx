@@ -88,6 +88,12 @@ en:
     sectors:
       name: "Sectors"
       hover: "Displays the Curriculum by Sectors"
+    relations:
+      name: "Relations"
+      hover: "Display the Relations between Curriculum Items"
+    maint:
+      name: "Maintenance"
+      hover: "Page for Maintenance of Curriculum Items"
     connections:
       name: "Other"
       hover: "Other Connections"
@@ -160,6 +166,8 @@ en:
       title: "Turkey STEM Curriculum"
     sequencing:
       title: "Relations"
+    maint:
+      title: "Maintenance"
     miscon:
       title: "Misconceptions"
       singular: "Misconception"
