@@ -547,7 +547,6 @@ class TreesController < ApplicationController
   end
 
   def update_dim_tree
-    puts "update!!!"
     @dim_tree = DimTree.find dim_tree_params[:id]
     translation_matches = Translation.where(
       :locale => @locale_code,

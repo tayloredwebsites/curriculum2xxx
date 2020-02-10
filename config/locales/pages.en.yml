@@ -15,7 +15,7 @@ en:
       edit: "Edit"
       leave_edit_mode: "Leave Edit Mode"
       deactivate: "Deactivate"
-      confirm_deactivate: "Are you sure you want to deactivate connection to the following item?:\n%{item}"
+      confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
       create: "Create"
       subject: "Subject"
       grade_band: "Grade"
