@@ -769,12 +769,12 @@ class TreesController < ApplicationController
         if tree_params[:attr_id].length > 0
           @rel = update == 'sector' ? SectorTree.find(tree_params[:attr_id]) : DimTree.find(tree_params[:attr_id])
         else
-          @rel = SectorTree.where(:explanation_key => SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.code, tree_params[:sector_id]))
+          @rel = SectorTree.where(:explanation_key => SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.id, tree_params[:sector_id]))
           if @rel.length <= 0
             @rel = SectorTree.new
             @rel.tree_id = @tree.id
             @rel.sector_id = tree_params[:sector_id]
-            @rel.explanation_key = SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.code, tree_params[:sector_id])
+            @rel.explanation_key = SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.id, tree_params[:sector_id])
           else
             @rel = @rel.first
           end
@@ -812,7 +812,7 @@ class TreesController < ApplicationController
       errors << "Did not attempt update"
     end #if there is an update type
     flash[:alert] = "Errors prevented the LO from being updated: #{errors}" if (errors.length > 0)
-    redirect_to tree_path(@tree.id)
+    redirect_to tree_path(@tree.id, editme: @tree.id)
   end
 
   def reorder

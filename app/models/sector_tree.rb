@@ -4,12 +4,12 @@ class SectorTree < BaseRec
 
   scope :active, -> { where(:active => true) }
 
-  def self.explanationKey(tree_type_code, version_code, tree_code, sector_id)
-    "#{tree_type_code}.#{version_code}.#{tree_code}.sector.#{sector_id}"
+  def self.explanationKey(tree_type_code, version_code, tree_id, sector_id)
+    "#{tree_type_code}.#{version_code}.tree.#{tree_id}.sector.#{sector_id}"
   end
 
-  def explanationKey(tree_type_code, version_code, tree_code, sector_id)
-    "#{tree_type_code}.#{version_code}.#{tree_code}.sector.#{sector_id}"
+  def explanationKey(tree_type_code, version_code, tree_id, sector_id)
+    "#{tree_type_code}.#{version_code}.tree.#{tree_id}.sector.#{sector_id}"
   end
 
 end
