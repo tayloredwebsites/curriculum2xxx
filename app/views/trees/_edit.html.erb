@@ -38,7 +38,16 @@
     <% elsif @edit_type == 'sector' || @edit_type == 'dimtree' %>
       <label class="stack"> - <%= I18n.t('trees.bigidea.relates_to') %> - </label>
     <% end %>
-    <span class="stack"><%= @tree_referencee_code %></span>
+    <span class="stack">
+      <%= @tree_referencee_code %>
+      <% if !@tree_referencee_code %>
+        <select name= 'tree[sector_id]'>
+          <% @sectors.each do |s| %>
+            <option value="<%= s.id %>"><%= @sector_names[s.name_key] %></option>
+          <% end %>
+        </select>
+      <% end %>
+    </span>
     </div>
   </fieldset>
   <fieldset>

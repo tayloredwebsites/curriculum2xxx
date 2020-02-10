@@ -704,23 +704,29 @@ class TreesController < ApplicationController
         )
         @explanation = translation[expl_key]
       elsif @edit_type == "sector" || @edit_type == "dimtree"
-        @rel = SectorTree.find(tree_params[:attr_id]) if (@edit_type == "sector")
+        if tree_params[:attr_id] != "new"
+          @rel = SectorTree.find(tree_params[:attr_id]) if (@edit_type == "sector")
+        else
+          @rel = SectorTree.new
+          @sectors = Sector.where(:sector_set_code => @treeTypeRec.sector_set_code)
+          @sector_names = Translation.translationsByKeys(@locale_code, @sectors.pluck('name_key'))
+        end
         @rel = DimTree.find(tree_params[:attr_id]) if (@edit_type == "dimtree")
         @attr_id = @rel.id
         expl_key = @edit_type == "sector" ? @rel.explanation_key : @rel.dim_explanation_key
-        name_key = @edit_type == "sector" ? @rel.sector.name_key : @rel.dimension.dim_name_key
+        name_key = @edit_type == "sector" ? (@rel.id ? @rel.sector.name_key : nil) : @rel.dimension.dim_name_key
         name_matches = Translation.where(
           :locale => @locale_code,
           :key => name_key
           )
         @rel_name = (name_matches.length > 0 ? ": #{name_matches.first.value}" : '')
-        @tree_referencee_code = "#{I18n.t('app.labels.sector_num', num: @rel.sector.code)}#{@rel_name}" if @edit_type == "sector"
+        @tree_referencee_code = "#{I18n.t('app.labels.sector_num', num: @rel.sector.code)}#{@rel_name}" if (@edit_type == "sector" && @rel.id)
         @tree_referencee_code = "#{I18n.t("trees.#{@rel.dimension.dim_type}.singular")} #{@rel_name}" if @edit_type == "dimtree"
         translation = Translation.translationsByKeys(
           @locale_code,
           expl_key
-        )
-        @explanation = translation[expl_key]
+        ) if @rel.id
+        @explanation = @rel.id ? translation[expl_key] : ""
       end
     end
     respond_to do |format|
@@ -760,7 +766,19 @@ class TreesController < ApplicationController
         @reciprocal_tree_tree.active = tree_params[:active]
         save_translation = false if (tree_tree_params[:active].to_s == 'false')
       elsif update == 'sector' || update == 'dimtree'
-        @rel = update == 'sector' ? SectorTree.find(tree_params[:attr_id]) : DimTree.find(tree_params[:attr_id])
+        if tree_params[:attr_id].length > 0
+          @rel = update == 'sector' ? SectorTree.find(tree_params[:attr_id]) : DimTree.find(tree_params[:attr_id])
+        else
+          @rel = SectorTree.where(:explanation_key => SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.code, tree_params[:sector_id]))
+          if @rel.length <= 0
+            @rel = SectorTree.new
+            @rel.tree_id = @tree.id
+            @rel.sector_id = tree_params[:sector_id]
+            @rel.explanation_key = SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.code, tree_params[:sector_id])
+          else
+            @rel = @rel.first
+          end
+        end
         name_key = update == 'sector' ? @rel.explanation_key : @rel.dim_explanation_key
         @rel.active = tree_params[:active] if (update == 'sector')
         save_translation = false if (tree_params[:active].to_s == 'false')
@@ -828,6 +846,7 @@ class TreesController < ApplicationController
       :code,
       :tree_id,
       :dimension_id,
+      :sector_id,
       :edit_type,
       :attr_id,
       :name_translation,

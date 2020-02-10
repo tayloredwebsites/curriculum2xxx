@@ -40,6 +40,9 @@ body {
     label {
       font-weight: bold;
     }
+    select {
+      max-width: 100%;
+    }
   }
 
   .show-hide-gradeband {

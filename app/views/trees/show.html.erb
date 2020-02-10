@@ -148,10 +148,8 @@
         <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
             <%= I18n.t('nav_bar.sectors.name') %>
-              <% if @editMe && false %>
-                <a href="#"><span class="pull-right">
-                  <i class="fa fa-plus-square fa-lg"></i>
-                </span></a>
+              <% if @editMe %>
+                <%= link_to(fa_icon("plus-square"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: 'new'}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
               <% end %>
           </div>
         </div>
