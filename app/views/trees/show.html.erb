@@ -76,19 +76,19 @@
               <%= I18n.t('app.labels.explanation') %>
             </div>
           </div>
-          <% tree.dim_trees.each do |dt|
-            d = dt.dimension
-            if d.dim_type == @treeTypeRec.big_ideas_dim_type
+          <% tree.dim_trees.where(:active => true).each do |dt|
+          d = dt.dimension
+          if d.dim_type == @treeTypeRec.big_ideas_dim_type
           %>
-            <div class='row'>
-              <div class='col col-lg-6 rel-sectors'>
-                <%= @translations[d.dim_name_key] %>
-              </div>
-              <div class='col col-lg-6 ind-col last-col'>
-                <%= @translations[dt.dim_explanation_key] %>
-                <% if @editMe %>
-                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          <div class='row'>
+            <div class='col col-lg-6 rel-sectors'>
+              <%= @translations[d.dim_name_key] %>
+            </div>
+            <div class='col col-lg-6 ind-col last-col'>
+              <%= @translations[dt.dim_explanation_key] %>
+              <% if @editMe %>
+              <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
+              <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
               <% end %>
             </div>
           </div>
@@ -105,37 +105,32 @@
         <div class='related-items-table'>
           <div class='row center-label-bold top-label'>
             <div class='col col-lg-12'>
-              <%= I18n.t('trees.miscon.title') %>
-            </div>
-          </div>
-          <div class='row'>
-            <div class='col col-lg-6 rel-sector-col center-label'>
-              <%= I18n.t('trees.miscon.title') %>
+              <%= @misconTitle %>
             </div>
             <div class='col col-lg-6 rel-reason-col center-label'>
               <%= I18n.t('app.labels.explanation') %>
             </div>
           </div>
-          <% tree.dim_trees.each do |dt|
-            d = dt.dimension
-            if d.dim_type ==  @treeTypeRec.miscon_dim_type
-          %>
-            <div class='row'>
-              <div class='col col-lg-6 rel-sectors'>
-                <%= @translations[d.dim_name_key] %>
-              </div>
-              <div class='col col-lg-6 ind-col last-col'>
-              <%= @translations[dt.dim_explanation_key] %>
-              <% if @editMe %>
-                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
-              <% end %>
-              </div>
+        <% tree.dim_trees.where(:active => true).each do |dt|
+          d = dt.dimension
+          if d.dim_type == @treeTypeRec.miscon_dim_type
+        %>
+          <div class='row'>
+            <div class='col col-lg-6 rel-sectors'>
+              <%= @translations[d.dim_name_key] %>
             </div>
-          <%
-            end
+            <div class='col col-lg-6 ind-col last-col'>
+            <%= @translations[dt.dim_explanation_key] %>
+            <% if @editMe %>
+              <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
+              <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+            <% end %>
+            </div>
+          </div>
+        <%
           end
-          %>
+        end
+        %>
         </div>
       <% end %>
 

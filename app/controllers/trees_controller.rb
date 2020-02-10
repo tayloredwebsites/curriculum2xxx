@@ -547,7 +547,9 @@ class TreesController < ApplicationController
   end
 
   def update_dim_tree
+    puts "ACTIVE DIM TREE? #{dim_tree_params[:active]}"
     @dim_tree = DimTree.find dim_tree_params[:id]
+    @dim_tree.active = dim_tree_params[:active]
     translation_matches = Translation.where(
       :locale => @locale_code,
       :key => dim_tree_params[:dim_explanation_key]
@@ -565,7 +567,7 @@ class TreesController < ApplicationController
     ActiveRecord::Base.transaction do
       begin
         @dim_tree.save!
-        @translation.save!
+        @translation.save! if dim_tree_params[:active] != "false"
       rescue ActiveRecord::StatementInvalid => e
         errors << e
       end
@@ -629,7 +631,7 @@ class TreesController < ApplicationController
             treeKeys << st.sector.name_key
             treeKeys << st.explanation_key
           end
-          t.dim_trees.each do |dt|
+          t.dim_trees.where(:active => true).each do |dt|
             treeKeys << dt.dimension.dim_name_key
             treeKeys << dt.dim_explanation_key
           end
@@ -736,7 +738,6 @@ class TreesController < ApplicationController
 
   def update
     puts "+++++UPDATE PARAMS: #{params.inspect}"
-    puts "+++++NIL PARAM??: #{tree_params[:attr_id]}"
     errors = []
     # if @tree.update(tree_params)
     #   flash[:notice] = "Tree  updated."
@@ -779,7 +780,7 @@ class TreesController < ApplicationController
           end
         end
         name_key = update == 'sector' ? @rel.explanation_key : @rel.dim_explanation_key
-        @rel.active = tree_params[:active] if (update == 'sector')
+        @rel.active = tree_params[:active] #if (update == 'sector')
         save_translation = false if (tree_params[:active].to_s == 'false')
       end #if update type is 'outcome', 'indicator', etc
 
@@ -860,7 +861,8 @@ class TreesController < ApplicationController
       :explanation,
       :tree_id,
       :dimension_id,
-      :dim_type
+      :dim_type,
+      :active
     )
   end
 

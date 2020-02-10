@@ -29,6 +29,13 @@
     <%= f.text_area :explanation, name: 'dim_tree[explanation]', id: 'explanation', value: @explanation %>
     </div>
   </fieldset>
+
+  <fieldset>
+    <label for="dim_tree[active]">Active?</label>
+      <input name="dim_tree[active]" type="checkbox"
+        <%= @dim_tree.active ? ' checked' : '' %>></input>
+  </fieldset>
+
  <div class="modal-footer">
    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
    <button type="submit" class="btn btn-primary">Save changes</button>

@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20200213233406) do
     t.string "dim_explanation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true
     t.index ["dimension_id"], name: "index_dimension_trees_on_dimension_id"
     t.index ["tree_id"], name: "index_dimension_trees_on_tree_id"
   end

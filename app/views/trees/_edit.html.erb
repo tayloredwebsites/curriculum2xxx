@@ -56,13 +56,13 @@
     <%= f.text_area :explanation, name: 'tree[name_translation]', id: 'explanation', value: @explanation %>
     </div>
   </fieldset>
-  <% if @edit_type != "dimtree" %>
+
   <fieldset>
     <label for="<%= @edit_type == 'treetree' ? 'tree' : 'sector' %>_tree[active]">Active?</label>
       <input name="tree[active]" type="checkbox"
         <%= @rel.active ? ' checked' : '' %>></input>
   </fieldset>
-  <% end %>
+
 
 	<% end #build fieldsets by @edit_type %>
 
