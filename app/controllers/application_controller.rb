@@ -159,8 +159,8 @@ class ApplicationController < ActionController::Base
         @sectorName = Translation.find_translation_name(@locale_code, @treeTypeRec.sector_set_name_key, '')
         @hierarchies = []
         @treeTypeRec.hierarchy_codes.split(',').each do |c|
-          @hierarchies << Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')
-          Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')}")
+          @hierarchies << Translation.find_translation_name(@locale_code, "curriculum.#{@treeTypeRec.code}.hierarchy.#{c}", '')
+          Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.#{@treeTypeRec.code}.hierarchy.#{c}", '')}")
         end
         Rails.logger.debug("*** @hierarchies: #{@hierarchies.inspect}")
         # To Do - is this needed anywhere else?
@@ -170,8 +170,8 @@ class ApplicationController < ActionController::Base
         subjects.each do |subj|
           h = {
             rec: subj,
-            abbr: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.abbr", ''),
-            name: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.name", ''),
+            abbr: Translation.find_translation_name(@locale_code, "subject.#{@treeTypeRec.code}.#{subj.code}.abbr", ''),
+            name: Translation.find_translation_name(@locale_code, "subject.#{@treeTypeRec.code}.#{subj.code}.name", ''),
           }
           @subjectByCode[subj.code] = h
           @subjectById[subj.id] = h
