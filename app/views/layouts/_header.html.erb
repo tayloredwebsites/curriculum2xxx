@@ -1,9 +1,21 @@
 <header id='pageHeader' class='d-flex flex-row justify-content-between'>
-  <a id='pageHeaderLogo' class=' href='#'>
+  <a id='pageHeaderLogo' class='' href='#'>
     <div class='logoImage'></div>
   </a>
   <div id='pageHeaderTitle' class=''>
     <h1 class='text-center'><%= @appTitle %></h1>
+  </div>
+  <div id='pageHeaderCurriculumSelect'>
+    <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum(<%= current_user.present? ? current_user.id : '' %>)">
+      <% @versionsHash.each_value do |arr| %>
+        <% arr.each do |cur| %>
+          <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>
+          <option value="<%= [cur[:tree_type_id], cur[:version_id]].to_s %>"<%= selected_curriculum ? " selected" : "" %>>
+            <%= cur[:str] %>
+          </option>
+        <% end %>
+      <% end %>
+    </select>
   </div>
   <div id='pageHeaderFontSize' class='font-size-select'>
     <span class='smallest-text'>A</span>

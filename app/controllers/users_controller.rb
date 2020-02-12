@@ -21,7 +21,9 @@ class UsersController < ApplicationController
     :education_level,
     :work_phone,
     :work_address,
-    :terms_accepted
+    :terms_accepted,
+    :last_tree_type_id,
+    :last_version_id,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,
@@ -103,6 +105,7 @@ class UsersController < ApplicationController
 
   def update
     # admins can edit all, users can edit themselves
+    puts "+++++UPDATE USER. Params: #{regular_user_params.inspect}"
     unauthorized() and return if !user_is_admin?(current_user) && !has_same_id?(current_user, @user)
     if user_is_admin?(current_user)
       # regular user can set user as teacher or admin

@@ -102,6 +102,32 @@ $(function() {
   }
 
 
+  selectCurriculum = function(user_id) {
+    var selected = JSON.parse(document.getElementById("selectCurriculumDropdown").value);
+    console.log("selected curriculum: " + selected);
+    //[cur[:tree_type_id], cur[:version_id]
+    if (user_id) {
+      var data = {
+            "source_controller": "users",
+            "source_action": "update",
+            "user[last_tree_type_id]" : selected[0],
+            "user[last_version_id]" : selected[1]
+          };
+      var token = $("meta[name='csrf-token']").attr('content');
+      $.ajax({
+        "type": 'patch',
+        "url": '/users/' + user_id,
+        "headers": { 'X-CSRF-Token': token },
+        "data": data,
+        "dataType": "json",
+        "async": false
+      })
+      .then(function () { location.reload() })
+      .catch(function (err) { console.log("ERROR:", err) })
+    }
+    else {}
+  }
+
   //###################################
   //# ADD EVENT BINDINGS
 

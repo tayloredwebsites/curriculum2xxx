@@ -132,7 +132,18 @@ class ApplicationController < ActionController::Base
 
     def set_type_and_version
       # assumes only one version record
-      @versionRec = Version.first
+      @versionsHash = TreeType.versions_hash
+      if current_user.present?
+        version_id = current_user[:last_version_id] || cookies[:last_version_id]
+        @versionRec = version_id ? Version.where(:id => version_id).first : Version.first
+        puts "SET VERISON TO #{@versionRec.inspect} with: current_user.present? condition"
+      elsif cookies[:last_version_id]
+        @versionRec = Version.where(:id => cookies[:last_version_id]).first
+      elsif @treeTypeRec
+        @versionRec = (@treeTypeRec[:working_version_id] != 0) ? Version.where(:id => @treeTypeRec[:working_version_id]) : Version.first
+      else
+        @versionRec = Version.first
+      end
       if @versionRec.blank?
         raise I18n.translate('app.errors.missing_version_record')
       elsif @versionRec.code != BaseRec::VERSION_CODE
@@ -142,7 +153,13 @@ class ApplicationController < ActionController::Base
 
     def initTypeCode
       # defaults to first tree type record
-      @treeTypeRec = TreeType.first
+      if current_user.present?
+        puts "SETTING INIT TYPE CODE WITH USER PRESENT #{current_user.inspect}"
+        last_tree_type = TreeType.where(:id => current_user[:last_tree_type_id])
+        @treeTypeRec = last_tree_type.count > 0 ? last_tree_type.first : TreeType.first
+      else
+        @treeTypeRec = TreeType.first
+      end
       if @treeTypeRec
         Rails.logger.debug("*** @treeTypeRec.curriculum_title_key: #{@treeTypeRec.curriculum_title_key}")
         @locale_codes = @treeTypeRec.valid_locales.split(',')
