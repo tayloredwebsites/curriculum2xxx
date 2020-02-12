@@ -8,7 +8,6 @@ class Dimension < BaseRec
   COMPETENCY = 'comp'
   STANDARD = 'standard'
   VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION]
-  DIM_TYPE_KEYS = {BIG_IDEA => 'trees.bigidea.title', MISCONCEPTION => 'trees.miscon.title'}
 
   validate :valid_dim_type
 

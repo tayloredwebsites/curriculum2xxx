@@ -84,10 +84,20 @@ $(function() {
   toggle_visibility = function (selector, trigger, matchTrigger) {
     $(trigger).toggleClass('option-selected');
     var sel = $(trigger).hasClass("option-selected");
-    if (sel)
+    if (sel) {
       $(selector).removeClass('hidden');
-    else
+      if ( $(trigger).hasClass('accordion')) {
+        $(trigger).removeClass('fa-expand');
+        $(trigger).addClass('fa-compress');
+      }
+    }
+    else {
       $(selector).addClass('hidden');
+      if ( $(trigger).hasClass('accordion')) {
+        $(trigger).removeClass('fa-compress');
+        $(trigger).addClass('fa-expand');
+      }
+    }
     if (matchTrigger != undefined && matchTrigger != '') {
         $(matchTrigger).addClass((sel ? "option-selected" : ""))
         $(matchTrigger).removeClass((!sel ? "option-selected" : ""))

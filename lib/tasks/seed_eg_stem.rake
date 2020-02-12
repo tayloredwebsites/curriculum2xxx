@@ -5,8 +5,16 @@ namespace :seed_eg_stem do
 
 
   ###################################################################################
+  # set up Curriculum Tree Type and Version
+
   desc "create the tree type(s)"
   task create_tree_type: :environment do
+
+    # reference version record from seeds.rb
+    @v01 = Version.where(code: 'v01').first
+    throw "Missing version record" if !@v01
+
+    # create Tree Type record for the Curriculum
     myTreeType = TreeType.where(code: 'egstemuniv')
     myTreeTypeValues = {
       code: 'egstemuniv',
@@ -14,7 +22,12 @@ namespace :seed_eg_stem do
       valid_locales: BaseRec::LOCALE_EN,
       sector_set_code: 'gr.chall',
       sector_set_name_key: 'sector.set.gr.chal.name',
-      curriculum_title_key: 'curriculum.egstemuniv.title' #'Egypt STEM Teacher Prep Curriculum'
+      curriculum_title_key: 'curriculum.egstemuniv.title', #'Egypt STEM Teacher Prep Curriculum'
+      outcome_depth: 3,
+      final_version_id: 0,
+      working_version_id: @v01.id,
+      miscon_dim_type: 'miscon',
+      big_ideas_dim_type: 'bigidea'
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)

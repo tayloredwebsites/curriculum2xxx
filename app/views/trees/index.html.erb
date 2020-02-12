@@ -6,10 +6,15 @@
 <% if @otcJson %>
 <br>
 <div class='text-center'>
-  <button id='showAreas' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 2, enableLinks: true/* , showCheckbox: true*/})"><%= I18n.t('app.labels.show') %> <%= @hierarchies[1].pluralize if @hierarchies.length > 1 %></button>
-  <button id='showComponents' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 3, enableLinks: true/* , showCheckbox: true*/})"><%= I18n.t('app.labels.show') %> <%= @hierarchies[2].pluralize if @hierarchies.length > 2 %></button>
-  <button id='showOutcomes' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 4, enableLinks: true/* , showCheckbox: true*/})"><%= I18n.t('app.labels.show') %> <%= @hierarchies[3].pluralize if @hierarchies.length > 3 %></button>
-  <!-- button id='showIndicators' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: 5, enableLinks: true/* , showCheckbox: true*/})"><%= translate('trees.labels.show_indicators') %></button -->
+  <%
+  @hierarchies.each_with_index do |h, ix|
+    if ix > 0
+  %>
+      <button id='showAreas' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: <%= ix+1 %>, enableLinks: true/* , showCheckbox: true*/})"><%= I18n.t('app.labels.show') %> <%= @hierarchies[ix].pluralize if @hierarchies.length > ix %></button>
+  <%
+    end
+  end
+  %>
 </div>
 <div id="tree"></div>
 

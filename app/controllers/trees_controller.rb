@@ -415,7 +415,7 @@ class TreesController < ApplicationController
       )
       Rails.logger.debug("*** dimRecs: #{dimRecs.inspect}")
 
-      @page_title = I18n.translate(Dimension::DIM_TYPE_KEYS[@dim_type])
+      @page_title = @dimTypeTitleByCode[@dim_type]
 
       dimRecs.each do |r|
         subj_code = subjIds[r.subject_id.to_s].code

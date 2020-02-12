@@ -12,7 +12,7 @@
       <% @treeByParents.each do |tkey, codeh| %>
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
-          <% if h[:depth] == 4 %>
+          <% if h[:depth] > @treeTypeRec.outcome_depth %>
           <li class="maint-item indent-3">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
             <%= h[:text] %>

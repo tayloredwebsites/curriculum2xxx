@@ -3,10 +3,15 @@ namespace :seed_turkey do
 
   task populate: [:create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors]
 
-
   ###################################################################################
-  desc "create the tree type(s)"
+  desc "create the Curriculum Tree Type and Version"
   task create_tree_type: :environment do
+
+    # reference version record from seeds.rb
+    @v01 = Version.where(code: 'v01').first
+    throw "Missing version record" if !@v01
+
+    # create Tree Type record for the Curriculum
     myTreeType = TreeType.where(code: 'tfv')
     myTreeTypeValues = {
       code: 'tfv',
@@ -14,7 +19,13 @@ namespace :seed_turkey do
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
       sector_set_code: 'future',
       sector_set_name_key: 'sector.set.future.name',
-      curriculum_title_key: 'curriculum.tfv.title' # 'Turkey STEM Curriculum'
+      curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
+      outcome_depth: 3,
+      final_version_id: 0,
+      working_version_id: @v01.id,
+      miscon_dim_type: 'miscon',
+      big_ideas_dim_type: 'bigidea'
+
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
@@ -41,6 +52,12 @@ namespace :seed_turkey do
     #To Do - Enter translations for curriculum_title_key
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.title', 'Turkey STEM Curriculum')
     throw "ERROR updating curriculum.tfv.title translation: #{message}" if status == BaseRec::REC_ERROR
+
+    # Titles of Turkish Dimension Pages (see seeds.rb for default english)
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'trees.bigidea.title', "Büyük Fikirler")
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'trees.miscon.title', "Yanlış")
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     puts "Curriculum (Tree Type) is created for tfv "
     puts "  Created Curriculum: #{@tfv.code} with Hierarchy: #{@tfv.hierarchy_codes}"

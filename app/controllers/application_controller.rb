@@ -163,6 +163,14 @@ class ApplicationController < ActionController::Base
           Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.#{@treeTypeRec.code}.hierarchy.#{c}", '')}")
         end
         Rails.logger.debug("*** @hierarchies: #{@hierarchies.inspect}")
+        @misconCode = @treeTypeRec.miscon_dim_type
+        @misconTitle = Translation.find_translation_name(@locale_code, @misconCode, 'Misconceptions')
+        @bigIdeasCode = @treeTypeRec.big_ideas_dim_type
+        @bigIdeasTitle = Translation.find_translation_name(@locale_code, @bigIdeasCode, 'Big Ideas')
+        @dimTypeTitleByCode = {
+          @misconCode => @misconTitle,
+          @bigIdeasCode => @bigIdeasTitle
+        }
         # To Do - is this needed anywhere else?
         @subjectByCode = {}
         @subjectById = {}
