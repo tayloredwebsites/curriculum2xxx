@@ -159,10 +159,18 @@ class ApplicationController < ActionController::Base
         @sectorName = Translation.find_translation_name(@locale_code, @treeTypeRec.sector_set_name_key, '')
         @hierarchies = []
         @treeTypeRec.hierarchy_codes.split(',').each do |c|
-          @hierarchies << Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')
-          Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.egstemuniv.hierarchy.#{c}", '')}")
+          @hierarchies << Translation.find_translation_name(@locale_code, "curriculum.#{@treeTypeRec.code}.hierarchy.#{c}", '')
+          Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.#{@treeTypeRec.code}.hierarchy.#{c}", '')}")
         end
         Rails.logger.debug("*** @hierarchies: #{@hierarchies.inspect}")
+        @misconCode = @treeTypeRec.miscon_dim_type
+        @misconTitle = Translation.find_translation_name(@locale_code, @misconCode, 'Misconceptions')
+        @bigIdeasCode = @treeTypeRec.big_ideas_dim_type
+        @bigIdeasTitle = Translation.find_translation_name(@locale_code, @bigIdeasCode, 'Big Ideas')
+        @dimTypeTitleByCode = {
+          @misconCode => @misconTitle,
+          @bigIdeasCode => @bigIdeasTitle
+        }
         # To Do - is this needed anywhere else?
         @subjectByCode = {}
         @subjectById = {}
@@ -170,8 +178,8 @@ class ApplicationController < ActionController::Base
         subjects.each do |subj|
           h = {
             rec: subj,
-            abbr: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.abbr", ''),
-            name: Translation.find_translation_name(@locale_code, "subject.egstemuniv.#{subj.code}.name", ''),
+            abbr: Translation.find_translation_name(@locale_code, "subject.#{@treeTypeRec.code}.#{subj.code}.abbr", ''),
+            name: Translation.find_translation_name(@locale_code, "subject.#{@treeTypeRec.code}.#{subj.code}.name", ''),
           }
           @subjectByCode[subj.code] = h
           @subjectById[subj.id] = h

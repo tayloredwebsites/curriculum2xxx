@@ -8,87 +8,7 @@ class TreesController < ApplicationController
   end
 
   def index_listing
-    # to do - refactor this
-    Rails.logger.debug("*** @treeTypeRec: #{@treeTypeRec.inspect}")
-    @subjects = {}
-    subjIds = {}
-    Subject.where(tree_type_id: @treeTypeRec.id).each do |s|
-      @subjects[s.code] = s
-      subjIds[s.id.to_s] = s
-    end
-    Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
-    @gbs = GradeBand.where(tree_type_id: @treeTypeRec.id)
-    # @gbs_upper = GradeBand.where(code: ['9','13'])
-    Rails.logger.debug("*** @gbs: #{@gbs.inspect}")
-
-    # get subject from tree param or from cookie (app controller getSubjectCode)
-    if params[:tree].present? && tree_params[:subject_id].present?
-      @subj = subjIds[tree_params[:subject_id]]
-      Rails.logger.debug("*** index_listing params ID: #{tree_params[:subject_id]}")
-    elsif @subject_code.present? && @subjects[@subject_code].present?
-      @subj = @subjects[@subject_code]
-      Rails.logger.debug("*** index_listing @subject_code: #{@subject_code.inspect}")
-    else
-      subjCode, @subj = @subjects.first
-      Rails.logger.debug("*** index_listing no match: #{subjCode} #{@subj.inspect}")
-    end
-
-    Rails.logger.debug("*** @subject_code: #{@subject_code.inspect}")
-    Rails.logger.debug("*** @subj: #{@subj.inspect}")
-    Rails.logger.debug("*** @subj.abbr(@locale_code): #{@subj.abbr(@locale_code).inspect}")
-    setSubjectCode(@subj.code)
-
-    # get gradeBand from tree param or from cookie (app controller getSubjectCode)
-    if params[:tree].present? && tree_params[:grade_band_id] == '0'
-      Rails.logger.debug("*** defaults: #{@grade_band_code}")
-      @gb = nil
-      @grade_band_code = GradeBand.all.first
-    elsif params[:tree].present? && tree_params[:grade_band_id].present?
-      @gb = GradeBand.find(tree_params[:grade_band_id])
-      @grade_band_code = @gb.code
-      Rails.logger.debug("*** index_listing gb params ID: #{tree_params[:grade_band_id]}, code: #{@gb.code}")
-    elsif @grade_band_code.present?
-      @gb = GradeBand.where(code: @grade_band_code).first
-      Rails.logger.debug("*** index_listing @grade_band_code: #{@grade_band_code.inspect}")
-      @grade_band_code = @gb.code
-    else
-      # defaults to all
-      Rails.logger.debug("*** defaults: #{@grade_band_code}")
-      @gb = nil
-      @grade_band_code = GradeBand.all.first
-    end
-    setGradeBandCode(@grade_band_code) if @gb
-    Rails.logger.debug("*** @grade_band_code: #{@grade_band_code.inspect}")
-    Rails.logger.debug("*** @gb: #{@gb.inspect}")
-
-    listing = Tree.where(
-      tree_type_id: @treeTypeRec.id,
-      version_id: @versionRec.id
-    )
-    listing = listing.where(subject_id: @subj.id) if @subj.present?
-    listing = listing.where(grade_band_id: @gb.id) if @gb.present?
-    # Note: sort order does matter for sequence of siblings in tree.
-    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
-
-    # @tree is used for filtering form
-    @tree = Tree.new(
-      tree_type_id: @treeTypeRec.id,
-      version_id: @versionRec.id
-    )
-    @tree.subject_id = @subj.id if @subj.present?
-    @tree.grade_band_id = @gb.id if @gb.present?
-
-    # Translations table no longer belonging to I18n Active record gem.
-    # note: Active Record had problems with placeholder conditions in join clause.
-    # Consider having Translations belong_to trees and sectors.
-    # Current solution: get translation from hash of pre-cached translations.
-    base_keys= @trees.map { |t| "#{t.base_key}.name" }
-    @translations = Hash.new
-    translations = Translation.where(locale: @locale_code, key: base_keys)
-    translations.each do |t|
-      # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
-      @translations[t.key] = t.value
-    end
+    treePrep
 
     treeHash = {}
     areaHash = {}
@@ -238,6 +158,67 @@ class TreesController < ApplicationController
   #     @group_indicators << [thisCode, all_translations[ix]] if all_translations.length > ix
   #   end
   # end
+
+  def maint
+    # to do: Issue 77. Relations (Sequencing) page is page where updates to the curriculum are done. Thus this is where adds and deletes should be.
+    # 1) The Relations page needs to display the hierarchy items within the listing, to clarify if a LO sequence change has moved it within the hierarchy. The hierarchy items will not be draggable (at least initially).
+    # 2) An added item should be entered through a popup, indicating its parent, then entered into the correct position in the Relations page. The Sequences should be updated at this point in time (unless we remove the sort_order field).  May want to put Add and Deactivate icons in hierarchy.  May want to add deactivate icon in LOs. May need to add LO indicator to hierarchy level.
+
+    # 3) I recommend that the LO code be reflective of the current position in the hierarchy, not what the old LO code was. Thus we should keep the old LO code when changing versions, but allow the number to change as appropriate in the hierarchy. May want to put LO Code formula (from tree_types record, with old code displayed (from prior version, or from first value when no prior version.)
+
+    # note also Issue 6.  Allow user to change version of Curriculum.
+    # - Have versions listing page, with ability to add new version, select current version, display current version and Curriculum Type in Header.
+
+    # New Issue? - Need ability to choose the columns to display in the relations page.
+    # - Always show current Curriculum Type and version, and either no subjects or last subject chosen to edit.  Maybe this should be on an Edit page?
+    # - Ability to choose other subjects in this or other curriculum.  Column should show Type, Version, subject and grades.
+    # - Should only be able to edit the current subject being edited.
+    # - should be able to drag hierarchy items (and LOs) to the editing column on the left.
+
+    treePrep
+
+    @treeByParents = Hash.new{ |h, k| h[k] = {} }
+
+    # create ruby hash from tree records, to easily build tree from record codes
+    @trees.each do |tree|
+      translation = @translations[tree.name_key]
+      # Parent keys types ( Tree Type, Version, Subject, & Grade Band)
+      tkey = tree.tree_type.code + "." + tree.version.code + "." + tree.subject.code + "." + tree.grade_band.code
+
+      # column header indicating the subject and grade, and if not current one, the curriculum and version
+      tkeyTrans = ''
+      if (false) # when current curriculum and version are known, check if current column is not the current one
+        tkeyTrans += Translation.find_translation_name(@locale_code, 'curriculum.'+tree.tree_type.code+'.title', 'Missing Curriculum Name') + ' - ' + tree.version.code + ' - '
+      end
+      tkeyTrans += Translation.find_translation_name(@locale_code, 'subject.'+tree.tree_type.code+'.'+ tree.subject.code+ '.name', 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, 'grades.'+tree.tree_type.code+'.'+ tree.grade_band.code+ '.name', 'Missing Subject Name')
+      @translations[tkey] = tkeyTrans
+      newHash = {
+        id: tree.id,
+        depth: tree.depth,
+        subj_code: tree.subject.code,
+        gb_code: tree.grade_band.code,
+        code: tree.code,
+        last_code: tree.codeArrayAt(tree.depth-1),
+        depth_name: @hierarchies[tree.depth-1],
+        text: "#{tree.code}: #{translation}"
+        #connections: @relations[tree.id]
+      }
+      @treeByParents[tkey][tree.code] = newHash
+      Rails.logger.debug("*** @treeByParent [#{tkey}] [#{tree.code}] = #{newHash.inspect}")
+    end
+
+    @treeByParents.each do |tkey, codeh|
+      Rails.logger.debug("*** LOOP @treeByParent tkey: #{tkey}")
+      codeh.each do |code, hash|
+        Rails.logger.debug("*** LOOP code: #{code} => #{hash.inspect}")
+      end
+    end
+
+    respond_to do |format|
+      format.html { render 'maint'}
+    end
+
+  end
 
   def sequence
     index_prep
@@ -434,7 +415,7 @@ class TreesController < ApplicationController
       )
       Rails.logger.debug("*** dimRecs: #{dimRecs.inspect}")
 
-      @page_title = I18n.translate(Dimension::DIM_TYPE_KEYS[@dim_type])
+      @page_title = @dimTypeTitleByCode[@dim_type]
 
       dimRecs.each do |r|
         subj_code = subjIds[r.subject_id.to_s].code
@@ -895,6 +876,110 @@ class TreesController < ApplicationController
       version_id: @versionRec.id
     )
     @otcTree = ''
+  end
+
+  def treePrep
+    Rails.logger.debug("*** @treeTypeRec: #{@treeTypeRec.inspect}")
+    @subjects = {}
+    subjIds = {}
+    Subject.where(tree_type_id: @treeTypeRec.id).each do |s|
+      @subjects[s.code] = s
+      subjIds[s.id.to_s] = s
+    end
+    Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
+    @gbs = GradeBand.where(tree_type_id: @treeTypeRec.id)
+    # @gbs_upper = GradeBand.where(code: ['9','13'])
+    Rails.logger.debug("*** @gbs: #{@gbs.inspect}")
+
+    # get subject from tree param or from cookie (app controller getSubjectCode)
+    if params[:tree].present? && tree_params[:subject_id].present?
+      @subj = subjIds[tree_params[:subject_id]]
+      Rails.logger.debug("*** index_listing params ID: #{tree_params[:subject_id]}")
+    elsif @subject_code.present? && @subjects[@subject_code].present?
+      @subj = @subjects[@subject_code]
+      Rails.logger.debug("*** index_listing @subject_code: #{@subject_code.inspect}")
+    elsif @subjects.first
+      subjCode, @subj = @subjects.first
+      Rails.logger.debug("*** index_listing no match: #{subjCode} #{@subj.inspect}")
+    else
+      @subj = Subject.new
+    end
+
+    Rails.logger.debug("*** @subject_code: #{@subject_code.inspect}")
+    Rails.logger.debug("*** @subj: #{@subj.inspect}")
+    Rails.logger.debug("*** @subj.abbr(@locale_code): #{@subj.abbr(@locale_code).inspect}")
+    setSubjectCode(@subj.code)
+
+    # get gradeBand from tree param or from cookie (app controller getSubjectCode)
+    if params[:tree].present? && tree_params[:grade_band_id] == '0'
+      Rails.logger.debug("*** defaults: #{@grade_band_code}")
+      @gb = nil
+      @grade_band_code = GradeBand.all.first
+    elsif params[:tree].present? && tree_params[:grade_band_id].present?
+      @gb = GradeBand.find(tree_params[:grade_band_id])
+      @grade_band_code = @gb.code
+      Rails.logger.debug("*** index_listing gb params ID: #{tree_params[:grade_band_id]}, code: #{@gb.code}")
+    elsif @grade_band_code.present?
+      @gb = GradeBand.where(code: @grade_band_code).first
+      Rails.logger.debug("*** index_listing @grade_band_code: #{@grade_band_code.inspect}")
+      @grade_band_code = @gb.code
+    elsif @gbs.first
+      @gb = @gbs.first
+      @grade_band_code = @gb.code
+      Rails.logger.debug("*** index_listing no match: #{@gb.inspect}")
+    else
+      Rails.logger.debug("*** defaults: #{@grade_band_code}")
+      @gb = nil
+      @grade_band_code = ''
+    end
+    setGradeBandCode(@grade_band_code) if @gb
+    Rails.logger.debug("*** @grade_band_code: #{@grade_band_code.inspect}")
+    Rails.logger.debug("*** @gb: #{@gb.inspect}")
+
+    listing = Tree.where(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+    Rails.logger.debug("*** listing.count: #{listing.count}")
+    listing = listing.where(subject_id: @subj.id) if @subj.present?
+    Rails.logger.debug("*** listing.count: #{listing.count}")
+    listing = listing.where(grade_band_id: @gb.id) if @gb.present?
+    Rails.logger.debug("*** listing.count: #{listing.count}")
+    # Note: sort order does matter for sequence of siblings in tree.
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
+    Rails.logger.debug("*** @trees.count: #{@trees.count}")
+
+    # @tree is used for filtering form
+    @tree = Tree.new(
+      tree_type_id: @treeTypeRec.id,
+      version_id: @versionRec.id
+    )
+    @tree.subject_id = @subj.id if @subj.present?
+    @tree.grade_band_id = @gb.id if @gb.present?
+
+    @relations = Hash.new { |h, k| h[k] = [] }
+    relations = TreeTree.active
+    relations.each do |rel|
+      @relations[rel.tree_referencer_id] << rel
+    end
+
+    # Translations table no longer belonging to I18n Active record gem.
+    # note: Active Record had problems with placeholder conditions in join clause.
+    # Consider having Translations belong_to trees and sectors.
+    # Current solution: get translation from hash of pre-cached translations.
+    base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    tempArray = []
+    @subjects.each { |k, v| tempArray << "#{v.base_key}.name" }
+    @subjects.each { |s, v| tempArray << "#{v.base_key}.abbr" }
+    relations.each { |r| tempArray << r.explanation_key }
+    base_keys.concat(tempArray)
+
+    @translations = Hash.new
+    translations = Translation.where(locale: @locale_code, key: base_keys)
+    translations.each do |t|
+      # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
+      @translations[t.key] = t.value
+    end
   end
 
 end

@@ -43,7 +43,7 @@
           <%= @subjectByCode[i][:abbr] %>
         </label>
         <% if @subj_gradebands[i].length > 0 %>
-          <i id="show-gb-controls-<%= i %>" class="rotate fa fa-angle-left down" onclick="toggle_visibility('#<%= i %>-gradebands-list', '#show-gb-controls-<%= i %>');"></i>
+          <i id="show-gb-controls-<%= i %>" class="fa fa-expand down link-blue accordion" onclick="toggle_visibility('#<%= i %>-gradebands-list', '#show-gb-controls-<%= i %>');"></i>
           <ul id="<%= i %>-gradebands-list" class="gradebands-list hidden">
             <%
             @subj_gradebands[i].each do |gb_code|

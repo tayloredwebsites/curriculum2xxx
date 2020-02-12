@@ -47,6 +47,7 @@ en:
       subject_related_explain: "Subjects Related Explanation"
       explanation: "Reason for Relation"
       sector_num: "Sector %{num}"
+      show: "Show"
     roles:
       name: 'Roles'
       admin:
@@ -88,6 +89,12 @@ en:
     sectors:
       name: "Sectors"
       hover: "Displays the Curriculum by Sectors"
+    relations:
+      name: "Relations"
+      hover: "Display the Relations between Curriculum Items"
+    maint:
+      name: "Maintenance"
+      hover: "Page for Maintenance of Curriculum Items"
     connections:
       name: "Other"
       hover: "Other Connections"
@@ -160,6 +167,8 @@ en:
       title: "Turkey STEM Curriculum"
     sequencing:
       title: "Relations"
+    maint:
+      title: "Maintenance"
     miscon:
       title: "Misconceptions"
       singular: "Misconception"
@@ -170,10 +179,6 @@ en:
     show:
       name: "Curriculum Detail Page"
     labels:
-      show_areas: "Show Units"
-      show_components: "Show Chapters"
-      show_outcomes: "Show Attainments"
-      show_indicators: "Show Explanations"
       filter_by_subject_grade: "Filter by Subject & Grade"
       future_vision: "Future Vision"
       future_vision_hover: "Future Vision"

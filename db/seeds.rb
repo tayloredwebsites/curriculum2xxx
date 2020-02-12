@@ -32,5 +32,11 @@ end
 puts "Locales: #{Locale.all.inspect}"
 throw "Invalid Locale Count" if Locale.count != 3
 
-#To Do - Enter translations for valid locales???
+# Titles of (Default) English Dimension Pages
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'trees.bigidea.title', 'Big Ideas')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'trees.miscon.title', 'Misconceptions')
+throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+
 

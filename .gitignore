@@ -17,6 +17,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# allow for mariadb/mysql backups in the db directory
+/db/*.sql.bz
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*

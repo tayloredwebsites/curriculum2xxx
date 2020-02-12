@@ -148,7 +148,7 @@ class UploadsController < ApplicationController
           if line_num == 0
             infoLine = line.split(',')
             begin
-              grade_band = @treeTypeRec.code == "EGSTEMUNIV" ? infoLine[2].strip : Integer(infoLine[2])
+              grade_band = @treeTypeRec.code == "egstemuniv" ? infoLine[2].strip : Integer(infoLine[2])
             rescue ArgumentError, TypeError
               grade_band = 0
             end
@@ -434,7 +434,7 @@ class UploadsController < ApplicationController
     errors = []
     codes.each_with_index do |code, ix|
       begin
-        numCode = @treeTypeRec.code == "EGSTEMUNIV" ? code : Integer(code)
+        numCode = @treeTypeRec.code == "egstemuniv" ? code : Integer(code)
         numCodes << numCode
       rescue
         numCodes << -1
