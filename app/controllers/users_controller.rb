@@ -21,7 +21,10 @@ class UsersController < ApplicationController
     :education_level,
     :work_phone,
     :work_address,
-    :terms_accepted
+    :terms_accepted,
+    :user_id,
+    :last_tree_type_id,
+    :last_version_id,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,
@@ -116,6 +119,18 @@ class UsersController < ApplicationController
       end
     end
     render :configuration
+  end
+
+  def set_curriculum
+    puts "SET CURRICULUM PARAMS #{params.inspect}"
+    if (regular_user_params[:user_id])
+      @user = User.find(regular_user_params[:user_id])
+      @user.last_tree_type_id = regular_user_params[:last_tree_type_id]
+      @user.last_version_id = regular_user_params[:last_version_id]
+      @user.save
+    end
+    cookies.permanent.signed[:last_tree_type_id] = regular_user_params[:last_tree_type_id]
+    cookies.permanent.signed[:last_version_id] = regular_user_params[:last_version_id]
   end
 
   private

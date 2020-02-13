@@ -71,6 +71,7 @@ scope "(:locale)", locale: /tr|en/ do
       get 'registrations'
       get 'index'
       get 'home'
+      patch 'set_curriculum'
     end
     member do
       get 'configuration'

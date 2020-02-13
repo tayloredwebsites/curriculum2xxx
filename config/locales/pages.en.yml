@@ -19,8 +19,8 @@ en:
       grade_band: "Grade"
       grade_band_show: "Show Grade"
       grade_band_num: "Grade %{num}"
-      show_indicators: "Show Explanations"
-      hide_indicators: "Hide Explanations"
+      show_indicators: "Show %{name}"
+      hide_indicators: "Hide %{name}"
       action: "Action"
       actions: "Actions"
       language: "Language"
@@ -48,6 +48,8 @@ en:
       explanation: "Reason for Relation"
       sector_num: "Sector %{num}"
       show: "Show"
+      working_version: "Working"
+      final_version: "Final"
     roles:
       name: 'Roles'
       admin:
@@ -98,10 +100,10 @@ en:
     connections:
       name: "Other"
       hover: "Other Connections"
-    big_ideas:
+    bigidea:
       name: "Big Ideas"
       hover: "Big Ideas"
-    misconceptions:
+    miscon:
       name: "Misconceptions"
       hover: "Displays Misconceptions"
     questions:

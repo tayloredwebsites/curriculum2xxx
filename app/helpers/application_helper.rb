@@ -25,13 +25,13 @@ module ApplicationHelper
   end
 
   # subject select options built for options_for_select
-  def subjectsOptions(selected_id, options_all=false)
+  def subjectsOptions(selected_id, options_all=false, tree_type_id)
     if options_all
       ret = [['All', '']]
     else
       ret = []
     end
-    Subject.all.each do |s|
+    Subject.where(:tree_type_id => tree_type_id).each do |s|
       # ret << [ @translations["sector.#{s.code}.name"], s.id ]
       ret << [s.code, s.id]
     end
@@ -39,9 +39,9 @@ module ApplicationHelper
   end
 
   # sectors select options built for options_for_select
-  def sectorsOptions(selected_id, transl)
+  def sectorsOptions(selected_id, transl, sector_set_code)
     ret = [['All', '']]
-    Sector.all.each do |s|
+    Sector.where(:sector_set_code => sector_set_code).each do |s|
       # ret << [ transl["sector.#{s.code}.name"], s.id ]
       ret << [ Translation.where(locale: @locale_code, key: s.name_key).first.value, s.id ]
     end

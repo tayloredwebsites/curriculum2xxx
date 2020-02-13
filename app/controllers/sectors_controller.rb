@@ -3,9 +3,9 @@ class SectorsController < ApplicationController
 
   def index
 
-    @subjects = Subject.all.order(:code)
-    @gbs = GradeBand.all
-    @sectors = Sector.all
+    @subjects = Subject.where(:tree_type_id => @treeTypeRec.id).order(:code)
+    @gbs = GradeBand.where(:tree_type_id => @treeTypeRec.id)
+    @sectors = Sector.where(:sector_set_code => @treeTypeRec.sector_set_code)
     @sector = Sector.new
 
     # get translation from hash of pre-cached translations.
@@ -21,8 +21,8 @@ class SectorsController < ApplicationController
       @grade_band_id = params[:tree][:grade_band_id].present? ? params[:tree][:grade_band_id] : nil
       @sector_id = params[:tree][:sector_id].present? ? params[:tree][:sector_id] : nil
     end
-    @subjectOptions = helpers.subjectsOptions(@subject_id)
-    @sectorsOptions = helpers.sectorsOptions(@sector_id, @translations)
+    @subjectOptions = helpers.subjectsOptions(@subject_id, false, @treeTypeRec.id)
+    @sectorsOptions = helpers.sectorsOptions(@sector_id, @translations, @treeTypeRec.sector_set_code)
 
     @rptRows = []
     if params[:tree].present?

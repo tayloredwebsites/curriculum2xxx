@@ -15,14 +15,14 @@ namespace :seed_turkey do
     myTreeType = TreeType.where(code: 'tfv')
     myTreeTypeValues = {
       code: 'tfv',
-      hierarchy_codes: 'grade,unit,chapt,attain',
+      hierarchy_codes: 'grade,unit,chapt,attain,explanation',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
       sector_set_code: 'future',
       sector_set_name_key: 'sector.set.future.name',
       curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
       outcome_depth: 3,
-      final_version_id: 0,
-      working_version_id: @v01.id,
+      version_id: @v01.id,
+      working_status: true,
       miscon_dim_type: 'miscon',
       big_ideas_dim_type: 'bigidea'
 
@@ -44,9 +44,11 @@ namespace :seed_turkey do
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.attain', 'Attainment')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.explanation', 'Explanation')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for sector_set_name_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.set.fut.sect.name', 'Future Sectors')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.set.future.name', 'Future Sectors')
     throw "ERROR updating sector.set.fut.sect.name: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for curriculum_title_key
@@ -284,7 +286,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_en.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
           )
         end
         if Upload.where(tree_type_code: 'tfv',
@@ -298,7 +300,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_tr.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
           )
         end
       end
@@ -316,7 +318,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_en.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
           )
         end
         if Upload.where(tree_type_code: 'tfv',
@@ -330,7 +332,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_tr.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
           )
         end
       end
@@ -348,7 +350,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_en.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
           )
         end
         if Upload.where(tree_type_code: 'tfv',
@@ -362,7 +364,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_tr.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
           )
         end
       end

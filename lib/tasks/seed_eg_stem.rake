@@ -18,14 +18,14 @@ namespace :seed_eg_stem do
     myTreeType = TreeType.where(code: 'egstemuniv')
     myTreeTypeValues = {
       code: 'egstemuniv',
-      hierarchy_codes: 'grade,sem,unit,lo',
+      hierarchy_codes: 'grade,sem,unit,lo,indicator',
       valid_locales: BaseRec::LOCALE_EN,
-      sector_set_code: 'gr.chall',
+      sector_set_code: 'gr_chall',
       sector_set_name_key: 'sector.set.gr.chal.name',
       curriculum_title_key: 'curriculum.egstemuniv.title', #'Egypt STEM Teacher Prep Curriculum'
       outcome_depth: 3,
-      final_version_id: 0,
-      working_version_id: @v01.id,
+      version_id: @v01.id,
+      working_status: true,
       miscon_dim_type: 'miscon',
       big_ideas_dim_type: 'bigidea'
     }
@@ -45,6 +45,8 @@ namespace :seed_eg_stem do
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.unit', 'Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.lo', 'Learning Outcome')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.indicator', 'Indicator')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for sector_set_name_key

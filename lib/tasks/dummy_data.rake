@@ -208,14 +208,14 @@ namespace :dummy_data do
         :text => "What do all living things have in common? How do living things’ different parts and structures work together in systems to enable them to function?",
         :desc => "Although there is incredible diversity in different forms of life, all organisms have some things in common. Students should explore the diversity of living things by answering the question ‘How are things different and how are they similar?",
         :trees => [
-          {
-            :lo => bio9111,
-            :explanation => "In the upper grades, students ask questions like ‘How do children grow bigger?’ and ’Why do bone cells look different from skin cells in the same organism?’ to explore mitosis and cellular differentiation and ask questions such as ‘How can we survive in the cold/heat?’ to explore feedback mechanisms."
-          },
-          {
-            :lo => sciBiodiversity,
-            :explanation => "At the elementary level, students should ask the question ‘What do the different parts of organisms do?’ to explore how external parts of an organism help them perform their daily functions. As student progress in the middle years, they then need to ask the question ‘What are living things made out of?’ to build toward an understanding of a central tenet of Biology—cell theory. Students then consider ’How are different body systems interrelated?’ by comparing different kinds of cells and how they work together, and then explore how systems of specialized cells work together in bodies to perform the essential functions of life."
-          }
+          # {
+          #   :lo => bio9111,
+          #   :explanation => "In the upper grades, students ask questions like ‘How do children grow bigger?’ and ’Why do bone cells look different from skin cells in the same organism?’ to explore mitosis and cellular differentiation and ask questions such as ‘How can we survive in the cold/heat?’ to explore feedback mechanisms."
+          # },
+          # {
+          #   :lo => sciBiodiversity,
+          #   :explanation => "At the elementary level, students should ask the question ‘What do the different parts of organisms do?’ to explore how external parts of an organism help them perform their daily functions. As student progress in the middle years, they then need to ask the question ‘What are living things made out of?’ to build toward an understanding of a central tenet of Biology—cell theory. Students then consider ’How are different body systems interrelated?’ by comparing different kinds of cells and how they work together, and then explore how systems of specialized cells work together in bodies to perform the essential functions of life."
+          # }
         ]
       },
       {
@@ -226,18 +226,18 @@ namespace :dummy_data do
         :text => "How do matter and energy cycle throughout an ecosystem? How do organisms use this matter and energy to live, grow, and reproduce?",
         :desc => "One of the most fundamental ideas of ecosystems is that matter and energy move from organism to organism and thus the different components of the organism are connected. To begin building toward an understanding of these interrelations, students at the elementary level should be facilitated to come up with the question ‘What do plants and animals need in order to live?’ guiding their learning that plants need water and sunlight to live and grow and sometimes depend on animals to transfer their pollen or seeds. Animals need to eat plants or other animals as food.",
         :trees => [
-          {
-            :lo => sciEnv,
-            :explanation => "In later elementary school, students begin to ask, ‘Why do plants matter?’ to explore the fundamental role plants play in ecosystems. They also ask, ‘How do we use food?’ to learn that food provides animals with the materials and energy they need for growth, warmth, and motion, and that plants use their matter and energy to grow and maintain conditions necessary for survival."
-          },
-          {
-            :lo => sciFoodChain,
-            :explanation => "At the middle school level, students ask ‘How can the same atom move from one organism to another?’ They explore to build toward the idea that atoms that make up living things are cycled repeatedly through the living and non-living parts of ecosystems. They also learn that food webs model how matter and energy are transferred among producers, consumers, and decomposers. Students at this level also make connections between Biology and Chemistry by asking ‘How does chemistry help us understand how plants make their own food?’ Students examine more closely how plants use energy from light to make sugars through photosynthesis."
-          },
-          {
-            :lo => bioFoodEnergy,
-            :explanation => "At the high school level, students ask ‘How do molecules rearrange as they move through an ecosystem?’ They consider different kinds of atoms and their recombination through photosynthesis and cellular respiration, transferring energy in an ecosystem. For example, carbon journeys from CO2 to hydrocarbon backbones of sugars and then to amino acids or other molecules. Students also connect to their understanding of the conservation of matter and energy built in middle school to ask, ‘Why is such a low percentage of matter and energy transferred at each level of a food web?’ They discover that only a fraction of matter consumed at a lower level of a food web is transferred up, resulting in fewer organisms at higher levels, although matter and energy are conserved."
-          }
+          # {
+          #   :lo => sciEnv,
+          #   :explanation => "In later elementary school, students begin to ask, ‘Why do plants matter?’ to explore the fundamental role plants play in ecosystems. They also ask, ‘How do we use food?’ to learn that food provides animals with the materials and energy they need for growth, warmth, and motion, and that plants use their matter and energy to grow and maintain conditions necessary for survival."
+          # },
+          # {
+          #   :lo => sciFoodChain,
+          #   :explanation => "At the middle school level, students ask ‘How can the same atom move from one organism to another?’ They explore to build toward the idea that atoms that make up living things are cycled repeatedly through the living and non-living parts of ecosystems. They also learn that food webs model how matter and energy are transferred among producers, consumers, and decomposers. Students at this level also make connections between Biology and Chemistry by asking ‘How does chemistry help us understand how plants make their own food?’ Students examine more closely how plants use energy from light to make sugars through photosynthesis."
+          # },
+          # {
+          #   :lo => bioFoodEnergy,
+          #   :explanation => "At the high school level, students ask ‘How do molecules rearrange as they move through an ecosystem?’ They consider different kinds of atoms and their recombination through photosynthesis and cellular respiration, transferring energy in an ecosystem. For example, carbon journeys from CO2 to hydrocarbon backbones of sugars and then to amino acids or other molecules. Students also connect to their understanding of the conservation of matter and energy built in middle school to ask, ‘Why is such a low percentage of matter and energy transferred at each level of a food web?’ They discover that only a fraction of matter consumed at a lower level of a food web is transferred up, resulting in fewer organisms at higher levels, although matter and energy are conserved."
+          # }
         ]
       },
       {

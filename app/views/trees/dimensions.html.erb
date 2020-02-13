@@ -48,7 +48,7 @@
     </div>
     <div id="<%=i%>-lo-column" class="dimension-item subject-column <%= 'hidden' if i != subject_visible %>">
       <ul class="list-group">
-        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= translate('app.labels.outcome').camelcase.pluralize %>
+        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %>
           <% if @subj_gradebands[i].length > 0 %>
           - <%= translate('app.labels.grade_band_show').pluralize if (@subj_gradebands[i].length > 1) %>
             <%= translate('app.labels.grade_band_show') if (@subj_gradebands[i].length == 1)

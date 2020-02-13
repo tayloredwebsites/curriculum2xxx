@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200212152511) do
+ActiveRecord::Schema.define(version: 20200213213309) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "dimension_id", null: false
@@ -121,10 +121,10 @@ ActiveRecord::Schema.define(version: 20200212152511) do
     t.string "sector_set_name_key", default: "", null: false
     t.string "curriculum_title_key", default: "", null: false
     t.integer "outcome_depth", default: 0, null: false
-    t.integer "final_version_id", default: 0, null: false
-    t.integer "working_version_id", default: 0, null: false
     t.string "miscon_dim_type", default: "miscon", null: false
     t.string "big_ideas_dim_type", default: "bigidea", null: false
+    t.integer "version_id", default: 0, null: false
+    t.boolean "working_status", default: true
     t.index ["code"], name: "index_tree_types_on_code", unique: true
   end
 
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 20200212152511) do
     t.integer "sort_order", default: 0
     t.integer "sequence_order", default: 0
     t.boolean "active", default: true
+    t.integer "old_tree_id"
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["name_key"], name: "index_trees_on_name_key"
     t.index ["subject_id"], name: "index_trees_on_subject_id"
@@ -205,6 +206,7 @@ ActiveRecord::Schema.define(version: 20200212152511) do
     t.boolean "terms_accepted"
     t.integer "last_tree_type_id"
     t.string "last_selected_subject_ids", default: "", null: false
+    t.integer "last_version_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
