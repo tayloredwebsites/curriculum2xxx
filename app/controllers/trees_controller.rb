@@ -243,7 +243,7 @@ class TreesController < ApplicationController
     @gradebands = ["All", *listing.joins(:grade_band).pluck('grade_bands.code').uniq]
     @subjects = {}
     subjIds = {}
-    subjects = Subject.all
+    subjects = Subject.where(:tree_type_id => @treeTypeRec.id)
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
@@ -390,7 +390,7 @@ class TreesController < ApplicationController
     @subj_gradebands = Hash.new { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
-    subjects = Subject.all
+    subjects = Subject.where(:tree_type_id => @treeTypeRec.id)
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s

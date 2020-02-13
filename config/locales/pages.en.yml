@@ -48,6 +48,8 @@ en:
       explanation: "Reason for Relation"
       sector_num: "Sector %{num}"
       show: "Show"
+      working_version: "Working"
+      final_version: "Final"
     roles:
       name: 'Roles'
       admin:

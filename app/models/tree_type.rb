@@ -7,7 +7,7 @@ class TreeType < BaseRec
       version_ids << working_version if !version_ids.include?(working_version)
       Version.where(:id => version_ids).each do |ver|
         curriculum_code = "#{tree_type.code}.#{ver.code}"
-        ret_hash[tree_type.id] << { str: curriculum_code, tree_type_id: tree_type.id, version_id: ver.id }
+        ret_hash[tree_type.id] << { str: curriculum_code, tree_type_id: tree_type.id, version_id: ver.id, working: (ver.id == working_version) }
       end
     end
     ret_hash

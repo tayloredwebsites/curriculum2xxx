@@ -134,13 +134,13 @@ class ApplicationController < ActionController::Base
       # assumes only one version record
       @versionsHash = TreeType.versions_hash
       if current_user.present?
-        version_id = current_user[:last_version_id] || cookies[:last_version_id]
+        version_id = current_user[:last_version_id] || cookies.permanent.signed[:last_version_id]
         @versionRec = version_id ? Version.where(:id => version_id).first : Version.first
         puts "SET VERISON TO #{@versionRec.inspect} with: current_user.present? condition"
-      elsif cookies[:last_version_id]
-        @versionRec = Version.where(:id => cookies[:last_version_id]).first
+      elsif cookies.permanent.signed[:last_version_id]
+        @versionRec = Version.where(:id => cookies.permanent.signed[:last_version_id]).first
       elsif @treeTypeRec
-        @versionRec = (@treeTypeRec[:working_version_id] != 0) ? Version.where(:id => @treeTypeRec[:working_version_id]) : Version.first
+        @versionRec = (@treeTypeRec[:working_version_id] != 0) ? Version.where(:id => @treeTypeRec[:working_version_id]).first : Version.first
       else
         @versionRec = Version.first
       end
@@ -157,6 +157,8 @@ class ApplicationController < ActionController::Base
         puts "SETTING INIT TYPE CODE WITH USER PRESENT #{current_user.inspect}"
         last_tree_type = TreeType.where(:id => current_user[:last_tree_type_id])
         @treeTypeRec = last_tree_type.count > 0 ? last_tree_type.first : TreeType.first
+      elsif cookies.permanent.signed[:last_tree_type_id]
+        @treeTypeRec = TreeType.where(:id => cookies.permanent.signed[:last_tree_type_id]).first || TreeType.first
       else
         @treeTypeRec = TreeType.first
       end
