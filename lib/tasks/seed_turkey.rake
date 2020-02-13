@@ -284,7 +284,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_en.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
           )
         end
         if Upload.where(tree_type_code: 'tfv',
@@ -298,7 +298,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_tr.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
           )
         end
       end
@@ -316,7 +316,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_en.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
           )
         end
         if Upload.where(tree_type_code: 'tfv',
@@ -330,7 +330,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_tr.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
           )
         end
       end
@@ -348,7 +348,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_en.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Eng.txt"
           )
         end
         if Upload.where(tree_type_code: 'tfv',
@@ -362,7 +362,7 @@ namespace :seed_turkey do
             grade_band_id: g.id,
             locale_id: @loc_tr.id,
             status: 0,
-            filename: "#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
+            filename: "tfvV01#{s.code.capitalize}#{sprintf('%02d', g.code)}Tur.txt"
           )
         end
       end
