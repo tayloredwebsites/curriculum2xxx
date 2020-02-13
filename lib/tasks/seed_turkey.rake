@@ -21,8 +21,8 @@ namespace :seed_turkey do
       sector_set_name_key: 'sector.set.future.name',
       curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
       outcome_depth: 3,
-      final_version_id: 0,
-      working_version_id: @v01.id,
+      version_id: @v01.id,
+      working_status: true,
       miscon_dim_type: 'miscon',
       big_ideas_dim_type: 'bigidea'
 

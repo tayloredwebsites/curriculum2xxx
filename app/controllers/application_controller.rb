@@ -142,7 +142,7 @@ class ApplicationController < ActionController::Base
       elsif cookies.permanent.signed[:last_version_id]
         @versionRec = Version.where(:id => cookies.permanent.signed[:last_version_id]).first
       elsif @treeTypeRec
-        @versionRec = (@treeTypeRec[:working_version_id] != 0) ? Version.where(:id => @treeTypeRec[:working_version_id]).first : Version.first
+        @versionRec = (@treeTypeRec[:version_id] != 0) ? Version.where(:id => @treeTypeRec[:version_id]).first : Version.first
       else
         @versionRec = Version.first
       end
@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
       elsif @versionRec.code != BaseRec::VERSION_CODE
         raise I18n.translate('app.errors.missing_version_code')
       end
-      @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_version_id == @versionRec.id ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
+      @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
     end
 
     def initTypeCode
