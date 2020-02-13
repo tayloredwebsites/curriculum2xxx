@@ -15,7 +15,7 @@ namespace :seed_turkey do
     myTreeType = TreeType.where(code: 'tfv')
     myTreeTypeValues = {
       code: 'tfv',
-      hierarchy_codes: 'grade,unit,chapt,attain',
+      hierarchy_codes: 'grade,unit,chapt,attain,explanation',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
       sector_set_code: 'future',
       sector_set_name_key: 'sector.set.future.name',
@@ -43,6 +43,8 @@ namespace :seed_turkey do
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.chapt', 'Chapter')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.attain', 'Attainment')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.explanation', 'Explanation')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for sector_set_name_key

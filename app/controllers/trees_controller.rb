@@ -225,6 +225,7 @@ class TreesController < ApplicationController
     @max_subjects = 6
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
+    @indicator_name = @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -598,6 +599,7 @@ class TreesController < ApplicationController
       if editMe && editMe == @tree.id.to_s && current_user.present?
         @editMe = true
       end
+      @indicator_name = @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize
       # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
       # prepare to output detail page
       @tree_items_to_display = []

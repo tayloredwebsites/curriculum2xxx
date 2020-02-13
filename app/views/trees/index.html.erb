@@ -8,7 +8,7 @@
 <div class='text-center'>
   <%
   @hierarchies.each_with_index do |h, ix|
-    if ix > 0
+    if ix > 0 && ix <= @treeTypeRec.outcome_depth
   %>
       <button id='showAreas' class='btn-info' onclick="$('#tree').treeview({data: otcTree, levels: <%= ix+1 %>, enableLinks: true/* , showCheckbox: true*/})"><%= I18n.t('app.labels.show') %> <%= @hierarchies[ix].pluralize if @hierarchies.length > ix %></button>
   <%

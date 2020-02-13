@@ -6,8 +6,10 @@
   <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
   <div id="controls">
     <div>
-      <button id="show-indicators" class="btn-info" onclick="showIndicators(true);"><%= I18n.t('app.labels.show_indicators') %></button>
-      <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden><%= I18n.t('app.labels.hide_indicators') %></button>
+      <% if @indicator_name %>
+      <button id="show-indicators" class="btn-info" onclick="showIndicators(true);"><%= I18n.t('app.labels.show_indicators', name: @indicator_name) %></button>
+      <button id="hide-indicators" class="btn-info" onclick="showIndicators(false);" aria-hidden="true" hidden><%= I18n.t('app.labels.hide_indicators', name: @indicator_name) %></button>
+      <% end %>
        <button id="filter-gradebands-btn" class="btn-info" onclick="toggle_visibility('#all-gradebands-list', '#show-gb-controls-all');">
        <span>Filter by Grade </span>
        <i id="show-gb-controls-all" class="rotate fa fa-angle-left down"></i>
