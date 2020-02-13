@@ -46,7 +46,7 @@ namespace :seed_turkey do
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for sector_set_name_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.set.fut.sect.name', 'Future Sectors')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'sector.set.future.name', 'Future Sectors')
     throw "ERROR updating sector.set.fut.sect.name: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for curriculum_title_key

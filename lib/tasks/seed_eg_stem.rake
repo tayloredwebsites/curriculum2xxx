@@ -20,7 +20,7 @@ namespace :seed_eg_stem do
       code: 'egstemuniv',
       hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN,
-      sector_set_code: 'gr.chall',
+      sector_set_code: 'gr_chall',
       sector_set_name_key: 'sector.set.gr.chal.name',
       curriculum_title_key: 'curriculum.egstemuniv.title', #'Egypt STEM Teacher Prep Curriculum'
       outcome_depth: 3,

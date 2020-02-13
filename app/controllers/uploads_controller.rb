@@ -333,7 +333,7 @@ class UploadsController < ApplicationController
   end
 
   def index_prep
-    @uploads = Upload.order(:id).includes([:subject, :grade_band, :locale]).all.upload_listing
+    @uploads = Upload.order(:id).includes([:subject, :grade_band, :locale]).where(:tree_type_code => @treeTypeRec.code).upload_listing
   end
 
 

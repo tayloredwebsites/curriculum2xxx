@@ -391,6 +391,7 @@ class TreesController < ApplicationController
     @subjects = {}
     subjIds = {}
     subjects = Subject.where(:tree_type_id => @treeTypeRec.id)
+    include_science = subjects.pluck('code').include?("sci")
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
@@ -418,20 +419,22 @@ class TreesController < ApplicationController
       @page_title = @dimTypeTitleByCode[@dim_type]
 
       dimRecs.each do |r|
-        subj_code = subjIds[r.subject_id.to_s].code
-        dimHash = {
-          id: r.id,
-          subject_id: r.subject_id,
-          code: r.dim_code,
-          dim_name_key: r.dim_name_key,
-          dim_desc_key: r.dim_desc_key,
-          rel: @relations["dim_id_#{r.id}"]
-        }
-        transl_keys << r.dim_name_key
-        transl_keys << r.dim_desc_key
-        Rails.logger.debug("*** newHash: #{dimHash.inspect}")
-        @s_o_hash[subj_code][:dimensions] << dimHash
-        @s_o_hash['sci'][:dimensions] << dimHash
+        if subjIds[r.subject_id.to_s]
+          subj_code = subjIds[r.subject_id.to_s].code
+          dimHash = {
+            id: r.id,
+            subject_id: r.subject_id,
+            code: r.dim_code,
+            dim_name_key: r.dim_name_key,
+            dim_desc_key: r.dim_desc_key,
+            rel: @relations["dim_id_#{r.id}"]
+          }
+          transl_keys << r.dim_name_key
+          transl_keys << r.dim_desc_key
+          Rails.logger.debug("*** newHash: #{dimHash.inspect}")
+          @s_o_hash[subj_code][:dimensions] << dimHash
+          @s_o_hash['sci'][:dimensions] << dimHash if include_science
+        end
       end
       Rails.logger.debug("*** @s_o_hash: #{@s_o_hash.inspect}")
 
