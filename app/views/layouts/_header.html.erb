@@ -96,22 +96,22 @@
       </li>
     <%
     end
-    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == Dimension::BIG_IDEA %>
+    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.big_ideas_dim_type && @treeTypeRec.big_ideas_dim_type %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.big_ideas_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.big_ideas_dim_type+'.name') %></a>
       </li>
-    <% else %>
+    <% elsif @treeTypeRec.big_ideas_dim_type %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::BIG_IDEA) %>><%= translate('nav_bar.big_ideas.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.big_ideas_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.big_ideas_dim_type+'.name') %></a>
       </li>
     <% end
-    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == Dimension::MISCONCEPTION %>
+    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.miscon_dim_type && @treeTypeRec.miscon_dim_type %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.miscon_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
       </li>
-    <% else %>
+    <% elsif @treeTypeRec.miscon_dim_type %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: Dimension::MISCONCEPTION) %>><%= translate('nav_bar.misconceptions.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.miscon_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
       </li>
     <% end %>
 

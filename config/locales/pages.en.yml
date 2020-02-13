@@ -100,10 +100,10 @@ en:
     connections:
       name: "Other"
       hover: "Other Connections"
-    big_ideas:
+    bigidea:
       name: "Big Ideas"
       hover: "Big Ideas"
-    misconceptions:
+    miscon:
       name: "Misconceptions"
       hover: "Displays Misconceptions"
     questions:

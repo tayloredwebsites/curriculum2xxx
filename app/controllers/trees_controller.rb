@@ -914,7 +914,7 @@ class TreesController < ApplicationController
     setSubjectCode(@subj.code)
 
     # get gradeBand from tree param or from cookie (app controller getSubjectCode)
-    if params[:tree].present? && tree_params[:grade_band_id] == '0'
+    if (params[:tree].present? && tree_params[:grade_band_id] == '0') || (!params[:tree].present? && @grade_band_code == 0)
       Rails.logger.debug("*** defaults: #{@grade_band_code}")
       @gb = nil
       @grade_band_code = GradeBand.all.first

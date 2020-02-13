@@ -58,78 +58,82 @@
       </div>
 
       <!-- Related Big Ideas Table -->
-      <div class='related-items-table'>
-        <div class='row center-label-bold top-label'>
-          <div class='col col-lg-12'>
-            <%= @bigIdeasTitle %>
-          </div>
-        </div>
-      <div class='row'>
-        <div class='col col-lg-6 rel-sector-col center-label'>
-          <%= @bigIdeasTitle %>
-        </div>
-        <div class='col col-lg-6 rel-reason-col center-label'>
-          <%= I18n.t('app.labels.explanation') %>
-        </div>
-      </div>
-        <% tree.dim_trees.each do |dt|
-          d = dt.dimension
-          if d.dim_type == Dimension::BIG_IDEA
-        %>
-          <div class='row'>
-            <div class='col col-lg-6 rel-sectors'>
-              <%= @translations[d.dim_name_key] %>
-            </div>
-            <div class='col col-lg-6 ind-col last-col'>
-              <%= @translations[dt.dim_explanation_key] %>
-              <% if @editMe %>
-                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
-              <% end %>
+      <% if  @treeTypeRec.big_ideas_dim_type %>
+        <div class='related-items-table'>
+          <div class='row center-label-bold top-label'>
+            <div class='col col-lg-12'>
+              <%= @bigIdeasTitle %>
             </div>
           </div>
-        <%
-          end
-        end
-        %>
-      </div>
-
-      <!-- Related Misconceptions Table -->
-      <div class='related-items-table'>
-        <div class='row center-label-bold top-label'>
-          <div class='col col-lg-12'>
-            <%= I18n.t('trees.miscon.title') %>
-          </div>
-        </div>
         <div class='row'>
           <div class='col col-lg-6 rel-sector-col center-label'>
-            <%= I18n.t('trees.miscon.title') %>
+            <%= @bigIdeasTitle %>
           </div>
           <div class='col col-lg-6 rel-reason-col center-label'>
             <%= I18n.t('app.labels.explanation') %>
           </div>
         </div>
-        <% tree.dim_trees.each do |dt|
-          d = dt.dimension
-          if d.dim_type == Dimension::MISCONCEPTION
-        %>
-          <div class='row'>
-            <div class='col col-lg-6 rel-sectors'>
-              <%= @translations[d.dim_name_key] %>
+          <% tree.dim_trees.each do |dt|
+            d = dt.dimension
+            if d.dim_type == @treeTypeRec.big_ideas_dim_type
+          %>
+            <div class='row'>
+              <div class='col col-lg-6 rel-sectors'>
+                <%= @translations[d.dim_name_key] %>
+              </div>
+              <div class='col col-lg-6 ind-col last-col'>
+                <%= @translations[dt.dim_explanation_key] %>
+                <% if @editMe %>
+                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+                <% end %>
+              </div>
             </div>
-            <div class='col col-lg-6 ind-col last-col'>
-              <%= @translations[dt.dim_explanation_key] %>
-              <% if @editMe %>
-                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
-              <% end %>
+          <%
+            end
+          end
+          %>
+        </div>
+      <% end %>
+
+      <!-- Related Misconceptions Table -->
+      <% if @treeTypeRec.miscon_dim_type %>
+        <div class='related-items-table'>
+          <div class='row center-label-bold top-label'>
+            <div class='col col-lg-12'>
+              <%= I18n.t('trees.miscon.title') %>
             </div>
           </div>
-        <%
+          <div class='row'>
+            <div class='col col-lg-6 rel-sector-col center-label'>
+              <%= I18n.t('trees.miscon.title') %>
+            </div>
+            <div class='col col-lg-6 rel-reason-col center-label'>
+              <%= I18n.t('app.labels.explanation') %>
+            </div>
+          </div>
+          <% tree.dim_trees.each do |dt|
+            d = dt.dimension
+            if d.dim_type ==  @treeTypeRec.miscon_dim_type
+          %>
+            <div class='row'>
+              <div class='col col-lg-6 rel-sectors'>
+                <%= @translations[d.dim_name_key] %>
+              </div>
+              <div class='col col-lg-6 ind-col last-col'>
+                <%= @translations[dt.dim_explanation_key] %>
+                <% if @editMe %>
+                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", method: :patch}) if @editMe %>
+                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+                <% end %>
+              </div>
+            </div>
+          <%
+            end
           end
-        end
-        %>
-      </div>
+          %>
+        </div>
+      <% end %>
 
       <!-- Future Sectors Table -->
       <div class='related-items-table'>

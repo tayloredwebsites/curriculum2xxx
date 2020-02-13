@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
       subc = cookies['subject'].to_s
       @subject_code = ''
       validSubjects = []
-      Subject.all.each do |s|
+      Subject.where(:tree_type_id => @treeTypeRec.id).each do |s|
         validSubjects << s.code
       end
       if validSubjects.include?(subp)
@@ -73,6 +73,7 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug("app cookie set subject code: param: #{subp} cookie: #{subc}")
         @subject_code = subc
       else
+        @subject_code = validSubjects.first.code
         Rails.logger.debug("app no set subject code: param: #{subp} cookie: #{subc}")
       end
       Rails.logger.debug "app @subject_code: #{@subject_code.inspect}"
@@ -85,7 +86,7 @@ class ApplicationController < ActionController::Base
       gbp = params['gradeBand'].to_s
       gbc = cookies['gradeBand'].to_s
       @grade_band_code = ''
-      validGradeBands = GradeBand.pluck(:code)
+      validGradeBands = GradeBand.where(:tree_type_id => @treeTypeRec.id).pluck(:code)
       if validGradeBands.include?(gbp)
         # first set gradeBand to the gradeBand passed as the gradeBand param
         Rails.logger.debug("app param set GradeBand code: param: #{gbp} cookie: #{gbc}")
@@ -95,6 +96,7 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug("app cookie set GradeBand code: param: #{gbp} cookie: #{gbc}")
         @grade_band_code = gbc
       else
+        @grade_band_code = 0
         Rails.logger.debug("app no set subject code: param: #{gbp} cookie: #{gbc}")
       end
       Rails.logger.debug "app @grade_band_code: #{@grade_band_code.inspect}"
