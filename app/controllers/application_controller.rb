@@ -151,6 +151,7 @@ class ApplicationController < ActionController::Base
       elsif @versionRec.code != BaseRec::VERSION_CODE
         raise I18n.translate('app.errors.missing_version_code')
       end
+      @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_version_id == @versionRec.id ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
     end
 
     def initTypeCode
