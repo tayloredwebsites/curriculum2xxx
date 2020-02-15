@@ -22,7 +22,7 @@
 var otcTree = <%= raw @otcJson %>;
 $('#tree').treeview({
   data: otcTree,
-  levels: 4,
+  levels: <%= @treeTypeRec[:outcome_depth] + 1 %>,
   enableLinks: true // ,
   // showCheckbox: true
 });

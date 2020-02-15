@@ -6,7 +6,7 @@
     <h1 class='text-center'><%= @appTitle %></h1>
   </div>
   <div id='pageHeaderCurriculumSelect'>
-    <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum(<%= current_user.present? ? current_user.id : '' %>)">
+    <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum('<%= request.env['PATH_INFO'] %>', <%= current_user.present? ? current_user.id : '' %>)">
       <% @versionsHash.each_value do |arr| %>
         <% arr.each do |cur| %>
           <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>

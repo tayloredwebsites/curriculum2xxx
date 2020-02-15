@@ -92,7 +92,8 @@ class TreesController < ApplicationController
         area[:nodes].each do |key2, comp|
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            a4 = {text: outc[:text], href: "javascript:void(0);", setting: 'outcome'}
+            path4 = @treeTypeRec[:outcome_depth] == 2 ? tree_path(outc[:id]) : "javascript:void(0);"
+            a4 = {text: outc[:text], href: path4, setting: 'outcome'}
             outc[:nodes].each do |key4, indic|
               a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
               a4[:nodes] = [] if a4[:nodes].blank?
@@ -190,7 +191,7 @@ class TreesController < ApplicationController
       if (false) # when current curriculum and version are known, check if current column is not the current one
         tkeyTrans += Translation.find_translation_name(@locale_code, 'curriculum.'+tree.tree_type.code+'.title', 'Missing Curriculum Name') + ' - ' + tree.version.code + ' - '
       end
-      tkeyTrans += Translation.find_translation_name(@locale_code, 'subject.'+tree.tree_type.code+'.'+ tree.subject.code+ '.name', 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, 'grades.'+tree.tree_type.code+'.'+ tree.grade_band.code+ '.name', 'Missing Subject Name')
+      tkeyTrans += Translation.find_translation_name(@locale_code, 'subject.'+tree.tree_type.code+'.'+ tree.subject.code+ '.name', 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, 'grades.'+tree.tree_type.code+'.'+ tree.grade_band.code+ '.name', 'Missing Grade Name')
       @translations[tkey] = tkeyTrans
       newHash = {
         id: tree.id,
@@ -225,7 +226,7 @@ class TreesController < ApplicationController
     @max_subjects = 6
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }
-    @indicator_name = @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize
+    @indicator_name = @hierarchies.length > @treeTypeRec[:outcome_depth] + 1 ? @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize : nil
     listing = Tree.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -307,7 +308,7 @@ class TreesController < ApplicationController
       #   Rails.logger.debug("*** #{tree.codeArrayAt(2)} to area #{tree.codeArrayAt(1)} in treeHash")
       #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
-      when 4
+      when  @treeTypeRec[:outcome_depth] + 1
         tcode = tree.subject.code + tree.code.split('.').join('')
         newHash = {
           code: tcode,
@@ -326,7 +327,7 @@ class TreesController < ApplicationController
         @s_o_hash[tree.subject.code] << newHash
         #addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
 
-      when 5
+      when  @treeTypeRec[:outcome_depth] + 2
       #   # # to do - look into refactoring this
       #   # # check to make sure parent in hash exists.
       #   # Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
@@ -452,7 +453,7 @@ class TreesController < ApplicationController
         translation = @translations[tree.name_key]
         depth = tree.depth
         case depth
-        when 4
+        when  @treeTypeRec[:outcome_depth] + 1
           tcode = tree.subject.code + tree.code.split('.').join('')
           newHash = {
             code: tcode,
@@ -578,7 +579,7 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** depth: #{@tree.depth}")
     case @tree.depth
       # process this tree item, is at proper depth to show detail
-    when 4
+    when  @treeTypeRec[:outcome_depth] + 1
       # get the Tree Item for this Learning Outcome
       # only detail page currently is at LO level
       # Indicators are listed in the LO Detail page
@@ -599,7 +600,7 @@ class TreesController < ApplicationController
       if editMe && editMe == @tree.id.to_s && current_user.present?
         @editMe = true
       end
-      @indicator_name = @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize
+      @indicator_name = @hierarchies.count > @treeTypeRec[:outcome_depth] + 1 ? @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize : nil
       # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
       # prepare to output detail page
       @tree_items_to_display = []
@@ -660,7 +661,7 @@ class TreesController < ApplicationController
     process_tree = false
     case @tree.depth
       # process this tree item, is at proper depth to show detail
-    when 4
+    when @treeTypeRec[:outcome_depth] + 1
       # get the Tree Item for this Learning Outcome
       # only detail page currently is at LO level
       # Indicators are listed in the LO Detail page

@@ -8,10 +8,15 @@ namespace :seed_turkey_v02 do
   task create_tree_type: :environment do
 
     # reference version record from seeds.rb
-    @v02 = Verson.New
-    @v02.code = 'v02'
-    @v02.save
-    @v02.reload
+    myVersion = Version.where(:code => 'v02')
+    if myVersion.count > 0
+      @v02 = myVersion.first
+    else
+      @v02 = Version.new
+      @v02.code = 'v02'
+      @v02.save
+      @v02.reload
+    end
 
     # create Tree Type record for the Curriculum
     myTreeType = TreeType.where(code: 'tfv', version_id: @v02.id)
@@ -34,7 +39,7 @@ namespace :seed_turkey_v02 do
     else
       TreeType.update(myTreeType.first.id, myTreeTypeValues)
     end
-    throw "Invalid Tree Type Count" if TreeType.where(code: 'tfv').count != 1
+    throw "Invalid Tree Type Count" if TreeType.where(code: 'tfv').count != 2
     @tfv = TreeType.where(code: 'tfv', version_id: @v02.id).first
 
     # Create translation(s) for hierarchy codes
@@ -116,7 +121,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'bio',
-        base_key: 'subject.tfv.bio'
+        base_key: 'subject.bio'
       )
     end
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
@@ -124,7 +129,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'che',
-        base_key: 'subject.tfv.che'
+        base_key: 'subject.che'
       )
     end
     @che = Subject.where(tree_type_id: @tfv.id, code: 'che').first
@@ -132,7 +137,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'mat',
-        base_key: 'subject.tfv.mat'
+        base_key: 'subject.mat'
       )
     end
     @mat = Subject.where(tree_type_id: @tfv.id, code: 'mat').first
@@ -140,7 +145,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'sci',
-        base_key: 'subject.tfv.sci'
+        base_key: 'subject.sci'
       )
     end
     @sci = Subject.where(tree_type_id: @tfv.id, code: 'sci').first
@@ -148,7 +153,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'phy',
-        base_key: 'subject.tfv.phy'
+        base_key: 'subject.phy'
       )
     end
     @phy = Subject.where(tree_type_id: @tfv.id, code: 'phy').first
@@ -156,7 +161,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'ear',
-        base_key: 'subject.tfv.ear'
+        base_key: 'subject.ear'
       )
     end
     @ear = Subject.where(tree_type_id: @tfv.id, code: 'ear').first

@@ -25,6 +25,7 @@ class UsersController < ApplicationController
     :user_id,
     :last_tree_type_id,
     :last_version_id,
+    :refresh_path,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,
@@ -123,6 +124,16 @@ class UsersController < ApplicationController
 
   def set_curriculum
     puts "SET CURRICULUM PARAMS #{params.inspect}"
+    safe_to_refresh = [
+      "trees",
+      "index",
+      "sequence",
+      "maint",
+      "dimensions?dim_type=bigidea",
+      "dimensions?dim_type=miscon",
+    ]
+    path = regular_user_params[:refresh_path].split("/")
+    refresh = safe_to_refresh.include?(path[path.length - 1])
     if (regular_user_params[:user_id])
       @user = User.find(regular_user_params[:user_id])
       @user.last_tree_type_id = regular_user_params[:last_tree_type_id]
@@ -131,6 +142,9 @@ class UsersController < ApplicationController
     end
     cookies.permanent.signed[:last_tree_type_id] = regular_user_params[:last_tree_type_id]
     cookies.permanent.signed[:last_version_id] = regular_user_params[:last_version_id]
+    respond_to do |format|
+      format.json {render json: { refresh: refresh}}
+    end
   end
 
   private

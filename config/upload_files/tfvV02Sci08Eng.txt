@@ -1,0 +1,67 @@
+en,sci,8
+8.1 Patterns in earth’s weather
+bigidea: How can we understand patterns in night and day and seasons using models?
+comment: Students learn to use 3D models and drawings to explain observations about the sun’s angle in the sky and movement over the year.
+comment: Students can explore variations in the sun’s angle, and seasonal variation, at different points on earth.
+comment: The relevance of angle to energy input could be demonstrated and investigated.
+8.1.1 Students coordinate 3D and 2D models of the earth-sun relations to interpret and predict variations in seasons over the year, at different earth locations (old 8.1.1.1).
+8.1.2 Students describe the main features of models used by climate scientists to explain and predict climate patterns (see 8.1.2.2).
+8.1.3 Students relate weather events to climate in interpreting local weather variations (see 8.1.2.1).
+8.2 Genetics in the modern world
+bigidea: How are our lives affected by chemical processes?
+bigidea: How does our body know how to look like our parents?
+bigidea: What are genes and how do they determine heredity?
+bigidea: What are the respective roles of nature and nurture in determining how we look and behave?
+bigidea: What are the benefits and potential dangers of gene technologies?
+comment: In these modified outcome statements, the emphasis is on using Genetics concepts to explain, predict, and discuss, rather than describe.
+comment: The classroom practices that develop these competences emphasise students solving problems that interest them, debating, expressing viewpoints, and interpreting the science understandings in a variety of contexts.
+8.2.1 DNA and Genetic Code: Students use diagrams and text to represent the relations between nucleotides, genes, DNA, and chromosomes, to describe variations within and across species, heredity, and DNA identification processes.
+8.2.2 DNA and Genetic Code: Students interpret a model of DNA to explain how its structure allows it to match itself.
+8.2.3 Heredity: Students use the concepts of genotype and phenotype, and dominant and recessive genes, to: explain inheritance in humans; comment on the nature vs nurture debate; solve simple problems of inheritance with single character crosses; and relate these with examples to more complex inheritance patterns in humans.
+8.2.4  Adaptation: Students construct explanations, with examples as evidence, of how environments impact animal populations to change their genetic features over time.
+8.2.5 Biotechnology: Students use examples to discuss the useful and potentially harmful effects of current and future biotechnology practices including: genetic engineering; gene therapy; DNA testing.
+8.3 Transforming forces for human use
+bigidea: What are the effects of forces and how can they be manipulated for human use?
+bigidea: How can understandings of force be harnessed to support effective machine design?
+comment: This topic could be combined with the simple machines topic as an extended topic exploring the manipulation of force for everyday applications.
+comment: Discussion around pressure could be centered around everyday experiences of pressure – the design of a nail for instance, the pressure involved in a ballet point, etc., and design solutions that use this concept. Supporting an upturned table on many balloons can be related to the intensive nature of the pressure concept. Students could invent mathematical relations to describe this as a modeling process.
+comment: Simple hydraulic systems are available that make use of area variation to control force and that could be useful for classroom exploration.
+comment: The emphasis is on the interpretation of everyday devices, to show how their operation can be explained using force modification.
+comment: This unit could involve practical investigations where students explore how the machines make work easier. It could begin by raising questions about ‘what is happening’ with everyday machines such as wrenches, or door handles, or the use of a spade.
+comment: The design process involves a design cycle where knowledge of the simple machine principles is used to refine the design.
+8.3.1 Pressure and Hydraulics: Students draw on informal relations between pressure, area, and force to explain and solve design problems involving pressure in hydraulic and other contexts.
+8.3.2 Pressure and Hydraulics: Students conduct and interpret investigations into fluid pressure and describe the relevance of these to technological applications.
+8.3.3 Simple Machines: Students use a variety of simple machine principles, including the modification of forces, to categorise and explain the operation of a variety of everyday mechanical devices.
+8.3.4 Simple Machines: Students design, construct, and effectively modify a device using simple machine principles that will be useful in daily life.
+8.4 Substances
+8.4.1 To be determined
+8.5 Living things, energy and matter in the environment
+8.5.1 To be determined
+8.6 Electric circuits and energy
+bigidea: Why is electricity such a good way to transfer energy?
+bigidea: How do we think about and model energy?
+bigidea: How can mathematical models help us predict and design for energy transfer?
+bigidea: How is energy transformed and distributed?
+comment: In this topic students could investigate series and parallel connections and relate brightness of lamps to voltage and current. They could investigate sustainability issues around the production and use of electricity.
+comment: Students could investigate the brightness of lamps in simple circuits and generate explanations using non-quantiative ideas of voltage and current.
+comment: Students could use Ohm’s law V=RI informally to describe what happens with more or fewer batteries, different lamps, and switches that control current in different parts of circuits.
+comment: Students could use models, such as a fluid flow model, or a role play, to make sense of the voltage and current and energy relations.
+comment: This topic of static electricity seems too abstract and lacks real context for year 8. It’s not linked to anything that is really significant. The year 7 and 8 electric circuits topics, if done in the same year, will allow a more in-depth treatment.
+comment: Students could model household circuitry using simple Direct Current circuits.
+comment: Students could critically appraise different features of electricity production using coal, hydroelectric, wind, solar or nuclear sources. They could design, with evidence-based justification, different system features of electrical energy distribution and use, such as batteries, individual solar panels etc.
+comment: Students could conduct a personal study of their electricity use over time.
+comment: The model could involve the design of a device that uses electricity, or it could involve the design of features of the electricity distribution system, balancing different sources and drawing on evidence for electricity saving devices.
+8.6.1 Electric Circuits: Students use concepts of voltage and current and energy to interpret investigations into simple series and parallel circuits.
+8.6.2 Electric Circuits: Students apply simple circuit ideas to design lighting systems with specified conditions.
+8.6.3 Generating and distributing electrical energy: Students use concepts of energy and energy transformation to describe how electricity is produced from a variety of sources and how it is used in multiple ways around the home and in industry.
+8.6.4 Generating and distributing electrical energy: Students use ideas of parallel circuitry to describe features of household electrical wiring such as switches, fuses and grounding.
+8.6.5 Generating and distributing electrical energy: Students use evidence to critically evaluate the use of different energy sources for the home, including their efficiency and their sustainability implications.
+8.6.6 Generating and distributing electrical energy: Students use science ideas to design a model, or system, of electrical energy transformation for human use.
+8.7 STEM Project
+bigidea: How do we produce new knowledge in science?
+bigidea: How do science ideas relate to engineering, and mathematics?
+comment: The project could be chosen from a list developed by the school, or could be projects that students themselves identify.
+comment: Teachers could set aside class time where they suggest ideas, support students in planning, and put students in touch with outside experts.
+comment: The project could be built around a problem or need identified for the school, or a local problem or need.
+8.7.1 In this project students develop a product or design solution that will be presented at a Year-End STEM Festival. The project should be interdisciplinary, involving at least 3 of the following domains: Science, Engineering, Digital Technology, Mathematics, and Entrepreneurship concepts:
+8.7.2 Students, collaboratively or individually plan, implement, and communicate to an audience a STEM project that engages concepts at a Year 8 level from multiple STEM disciplines.
