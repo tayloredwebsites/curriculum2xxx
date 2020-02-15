@@ -5,5 +5,5 @@ class DimTree < BaseRec
   belongs_to :dimension
   belongs_to :tree
 
-  scope :active, -> { all }
+  scope :active, -> { where(:active => true) }
 end
