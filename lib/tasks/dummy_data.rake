@@ -4,12 +4,12 @@ namespace :dummy_data do
   desc "create dummy data after bio 9 and che 9 load (must run bio 9, then chem 9, then run this)"
   task create: :environment do
 
-    bio = Subject.where(code: 'bio').first
-    che = Subject.where(code: 'che').first
-    phy = Subject.where(code: 'phy').first
-    ear = Subject.where(code: 'ear').first
-    sci = Subject.where(code: 'sci').first
-    mat = Subject.where(code: 'mat').first
+    bio = Subject.where(code: 'bio')
+    che = Subject.where(code: 'che')
+    phy = Subject.where(code: 'phy')
+    ear = Subject.where(code: 'ear')
+    sci = Subject.where(code: 'sci')
+    mat = Subject.where(code: 'mat')
     bio9111 = Tree.where(base_key: "TFV.v01.bio.9.1.1.1").first
     che9111 = Tree.where(base_key: "TFV.v01.che.9.1.1.1").first
     sector3 = Sector.where(name_key: "sector.3.name").first
@@ -458,36 +458,38 @@ namespace :dummy_data do
     ] #dimensions array
 
     dimensions.each do |dim|
-      d = Dimension.create!(
-        subject_id: dim[:subject].id,
-        dim_type: dim[:dim_type],
-        dim_name_key: dim[:dim_name_key],
-        dim_desc_key: dim[:dim_desc_key]
-      )
-      Translation.create!(
-        locale: 'en',
-        key: dim[:dim_name_key],
-        value: dim[:text]
-      )
-      Translation.create!(
-        locale: 'en',
-        key: dim[:dim_desc_key],
-        value: dim[:desc]
-      )
-      dim[:trees].each do |t|
-        key = "TFV.v01.#{t[:lo].subject.code}.#{t[:lo].code}.bigidea.#{d.id}.expl"
-        puts "creating dimension_tree: #{key}"
-        DimTree.create!(
-          dimension_id: d.id,
-          tree_id: t[:lo].id,
-          dim_explanation_key: key
+      dim[:subject].each do |subj|
+        d = Dimension.create!(
+          subject_id: subj.id,
+          dim_type: dim[:dim_type],
+          dim_name_key: dim[:dim_name_key],
+          dim_desc_key: dim[:dim_desc_key]
         )
         Translation.create!(
-          locale:'en',
-          key: key,
-          value: t[:explanation]
+          locale: 'en',
+          key: dim[:dim_name_key],
+          value: dim[:text]
         )
-      end #make dimension trees
+        Translation.create!(
+          locale: 'en',
+          key: dim[:dim_desc_key],
+          value: dim[:desc]
+        )
+        dim[:trees].each do |t|
+          key = "TFV.v01.#{t[:lo].subject.code}.#{t[:lo].code}.bigidea.#{d.id}.expl"
+          puts "creating dimension_tree: #{key}"
+          DimTree.create!(
+            dimension_id: d.id,
+            tree_id: t[:lo].id,
+            dim_explanation_key: key
+          )
+          Translation.create!(
+            locale:'en',
+            key: key,
+            value: t[:explanation]
+          )
+        end #make dimension trees
+      end
     end #dimensions.each do |dim|
 
   end

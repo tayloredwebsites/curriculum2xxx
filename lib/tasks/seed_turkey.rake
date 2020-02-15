@@ -148,10 +148,10 @@ namespace :seed_turkey do
     @gb_sci = [@gb_3, @gb_4, @gb_5, @gb_6, @gb_7, @gb_8]
     puts "grade bands are created for tfv"
     # put in translations for Grade Names
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.k.name', 'Kindergarten')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.tfv.k.name', 'Kindergarten')
     throw "ERROR creating kindergarten translation: #{message}" if status == BaseRec::REC_ERROR
     [1..12].each do |g|
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.egstemuniv.g#{g}.name", "Grade #{g}")
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.tfv.#{g}.name", "Grade #{g}")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_grade_bands

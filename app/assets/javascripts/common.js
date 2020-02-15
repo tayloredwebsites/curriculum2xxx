@@ -102,7 +102,7 @@ $(function() {
   }
 
 
-  selectCurriculum = function(user_id) {
+  selectCurriculum = function(refresh_path, user_id) {
     var selected = JSON.parse(document.getElementById("selectCurriculumDropdown").value);
     console.log("selected curriculum: " + selected);
     //[cur[:tree_type_id], cur[:version_id]
@@ -111,7 +111,8 @@ $(function() {
           "source_action": "set_curriculum",
           "user[last_tree_type_id]" : selected[0],
           "user[last_version_id]" : selected[1],
-          "user[user_id]" : user_id
+          "user[user_id]" : user_id,
+          "user[refresh_path]" : refresh_path,
         };
     var token = $("meta[name='csrf-token']").attr('content');
     $.ajax({
@@ -122,7 +123,10 @@ $(function() {
       "dataType": "json",
       "async": false
     })
-    .then(function () { location.reload() })
+    .then(function (res) {
+      if (res.refresh) location.reload()
+      else document.location.href="/";
+    })
     .catch(function (err) { console.log("ERROR:", err) })
   }
 

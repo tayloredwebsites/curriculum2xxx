@@ -64,6 +64,7 @@ class ApplicationController < ActionController::Base
       Subject.where(:tree_type_id => @treeTypeRec.id).each do |s|
         validSubjects << s.code
       end
+      puts "VALID SUBJECTS: #{validSubjects.inspect}, subp: #{subp}, subc: #{subc}"
       if validSubjects.include?(subp)
         # first set Subject to the Subject passed as the Subject param
         Rails.logger.debug("app param set subject code: param: #{subp} cookie: #{subc}")
@@ -73,7 +74,7 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug("app cookie set subject code: param: #{subp} cookie: #{subc}")
         @subject_code = subc
       else
-        @subject_code = validSubjects.first.code
+        @subject_code = validSubjects.first
         Rails.logger.debug("app no set subject code: param: #{subp} cookie: #{subc}")
       end
       Rails.logger.debug "app @subject_code: #{@subject_code.inspect}"
@@ -97,7 +98,7 @@ class ApplicationController < ActionController::Base
         @grade_band_code = gbc
       else
         @grade_band_code = 0
-        Rails.logger.debug("app no set subject code: param: #{gbp} cookie: #{gbc}")
+        Rails.logger.debug("app no subject code: param: #{gbp} cookie: #{gbc}")
       end
       Rails.logger.debug "app @grade_band_code: #{@grade_band_code.inspect}"
       cookies[:gradeBand] = @grade_band_code
@@ -135,20 +136,16 @@ class ApplicationController < ActionController::Base
     def set_type_and_version
       # assumes only one version record
       @versionsHash = TreeType.versions_hash
-      if current_user.present?
-        version_id = current_user[:last_version_id] || cookies.permanent.signed[:last_version_id]
+      if @treeTypeRec
+        version_id = @treeTypeRec.version_id
         @versionRec = version_id ? Version.where(:id => version_id).first : Version.first
         puts "SET VERISON TO #{@versionRec.inspect} with: current_user.present? condition"
-      elsif cookies.permanent.signed[:last_version_id]
-        @versionRec = Version.where(:id => cookies.permanent.signed[:last_version_id]).first
-      elsif @treeTypeRec
-        @versionRec = (@treeTypeRec[:version_id] != 0) ? Version.where(:id => @treeTypeRec[:version_id]).first : Version.first
       else
         @versionRec = Version.first
       end
       if @versionRec.blank?
         raise I18n.translate('app.errors.missing_version_record')
-      elsif @versionRec.code != BaseRec::VERSION_CODE
+      elsif !@versionRec.code
         raise I18n.translate('app.errors.missing_version_code')
       end
       @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
@@ -159,7 +156,9 @@ class ApplicationController < ActionController::Base
       if current_user.present?
         puts "SETTING INIT TYPE CODE WITH USER PRESENT #{current_user.inspect}"
         last_tree_type = TreeType.where(:id => current_user[:last_tree_type_id])
+        puts "SETTING INIT TYPE CODE WITH USER PRESENT #{last_tree_type.inspect}"
         @treeTypeRec = last_tree_type.count > 0 ? last_tree_type.first : TreeType.first
+        puts "SET TREE_TYPE_REC #{@treeTypeRec.inspect}"
       elsif cookies.permanent.signed[:last_tree_type_id]
         @treeTypeRec = TreeType.where(:id => cookies.permanent.signed[:last_tree_type_id]).first || TreeType.first
       else

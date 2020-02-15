@@ -11,26 +11,33 @@
   <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
   <% @tree_items_to_display.each do |tree| %>
     <div class='detail-page'>
+      <% tree_parents = tree.getAllParents %>
 
       <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
-      <div class='row subject-grade-row'><div class='col col-lg-12 text-left'><%= @hierarchies[0] if @hierarchies.length > 0 %>: <%= tree.grade_band.code %></div></div>
-      <div class='row area-row'><div class='col col-lg-12 text-left'><%= "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{@translations[area.buildNameKey]}" %></div></div>
-      <div class='row component-row'><div class='col col-lg-12 text-left'><%= "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{@translations[component.buildNameKey]}" %></div></div>
-      <div class='row outcome-row'>
-        <div class='col col-lg-6 text-left'><%= "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.codeArrayAt(3)}: #{@translations[outcome.buildNameKey]}" %>
-          <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
-        </div>
-        <div class='col col-lg-6 text-right'>
+      <% @hierarchies.each_with_index do |e, i|
+         if i <= @treeTypeRec[:outcome_depth]
+           rec = (i == @treeTypeRec[:outcome_depth] ? tree : tree_parents[tree_parents.length - 1 - i])
+           label_text = @translations[rec.buildNameKey]
+       %>
+         <div class='row subject-<%= e.downcase %>-row'><div class='col col-lg-6 text-left'><%= "#{"#{@subjectByCode[tree.subject.code][:name]} " if i == 0}#{e}#{" " + rec.codeArrayAt(i) if i > 0}" %>: <%= label_text %>
+           <% if i == @treeTypeRec[:outcome_depth] %>
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+           <% end %>
+         </div></div>
+      <% end
+      end %>
+
+      <div class='col col-lg-12 text-right'>
           <% if @editMe %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
-            <%= link_to("Edit #{@hierarchies[3] if @hierarchies.length > 3}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? %>
+            <%= link_to("Edit #{@hierarchies[@treeTypeRec[:outcome_depth]]}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? %>
             <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
           <% end %>
         </div>
-      </div>
 
       <!-- Related Indicators Table -->
+      <% if @hierarchies.count > @treeTypeRec[:outcome_depth] + 1 %>
       <div class='related-indicators'>
         <div class='row center-label-bold top-label'>
           <div class='col col-lg-12'>
@@ -56,6 +63,7 @@
           <p><%= "#{I18n.translate('app.labels.indicator')} #{ia}: #{@translations[code]}" %></p>
         <% end %>
       </div>
+      <% end %>
 
       <!-- Related Big Ideas Table -->
       <% if  @treeTypeRec.big_ideas_dim_type %>

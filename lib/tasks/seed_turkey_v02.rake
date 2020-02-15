@@ -8,10 +8,15 @@ namespace :seed_turkey_v02 do
   task create_tree_type: :environment do
 
     # reference version record from seeds.rb
-    @v02 = Verson.New
-    @v02.code = 'v02'
-    @v02.save
-    @v02.reload
+    myVersion = Version.where(:code => 'v02')
+    if myVersion.count > 0
+      @v02 = myVersion.first
+    else
+      @v02 = Version.new
+      @v02.code = 'v02'
+      @v02.save
+      @v02.reload
+    end
 
     # create Tree Type record for the Curriculum
     myTreeType = TreeType.where(code: 'tfv', version_id: @v02.id)
@@ -34,7 +39,7 @@ namespace :seed_turkey_v02 do
     else
       TreeType.update(myTreeType.first.id, myTreeTypeValues)
     end
-    throw "Invalid Tree Type Count" if TreeType.where(code: 'tfv').count != 1
+    throw "Invalid Tree Type Count" if TreeType.where(code: 'tfv').count != 2
     @tfv = TreeType.where(code: 'tfv', version_id: @v02.id).first
 
     # Create translation(s) for hierarchy codes
@@ -99,10 +104,10 @@ namespace :seed_turkey_v02 do
     @gb_sci = [@gb_3, @gb_4, @gb_5, @gb_6, @gb_7, @gb_8]
     puts "grade bands are created for tfv"
     # put in translations for Grade Names
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.k.name', 'Kindergarten')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.tfv.k.name', 'Kindergarten')
     throw "ERROR creating kindergarten translation: #{message}" if status == BaseRec::REC_ERROR
     [1..12].each do |g|
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.egstemuniv.g#{g}.name", "Grade #{g}")
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.tfv.#{g}.name", "Grade #{g}")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_grade_bands
