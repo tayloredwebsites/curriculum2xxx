@@ -104,10 +104,10 @@ namespace :seed_turkey_v02 do
     @gb_sci = [@gb_3, @gb_4, @gb_5, @gb_6, @gb_7, @gb_8]
     puts "grade bands are created for tfv"
     # put in translations for Grade Names
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.egstemuniv.k.name', 'Kindergarten')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.tfv.k.name', 'Kindergarten')
     throw "ERROR creating kindergarten translation: #{message}" if status == BaseRec::REC_ERROR
     [1..12].each do |g|
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.egstemuniv.g#{g}.name", "Grade #{g}")
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.tfv.#{g}.name", "Grade #{g}")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_grade_bands
@@ -121,7 +121,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'bio',
-        base_key: 'subject.bio'
+        base_key: 'subject.tfv.bio'
       )
     end
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
@@ -129,7 +129,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'che',
-        base_key: 'subject.che'
+        base_key: 'subject.tfv.che'
       )
     end
     @che = Subject.where(tree_type_id: @tfv.id, code: 'che').first
@@ -137,7 +137,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'mat',
-        base_key: 'subject.mat'
+        base_key: 'subject.tfv.mat'
       )
     end
     @mat = Subject.where(tree_type_id: @tfv.id, code: 'mat').first
@@ -145,7 +145,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'sci',
-        base_key: 'subject.sci'
+        base_key: 'subject.tfv.sci'
       )
     end
     @sci = Subject.where(tree_type_id: @tfv.id, code: 'sci').first
@@ -153,7 +153,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'phy',
-        base_key: 'subject.phy'
+        base_key: 'subject.tfv.phy'
       )
     end
     @phy = Subject.where(tree_type_id: @tfv.id, code: 'phy').first
@@ -161,7 +161,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'ear',
-        base_key: 'subject.ear'
+        base_key: 'subject.tfv.ear'
       )
     end
     @ear = Subject.where(tree_type_id: @tfv.id, code: 'ear').first
