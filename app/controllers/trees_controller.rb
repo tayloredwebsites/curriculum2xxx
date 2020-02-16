@@ -940,13 +940,13 @@ class TreesController < ApplicationController
     if (params[:tree].present? && tree_params[:grade_band_id] == '0') || (!params[:tree].present? && @grade_band_code == 0)
       Rails.logger.debug("*** defaults: #{@grade_band_code}")
       @gb = nil
-      @grade_band_code = GradeBand.all.first
+      @grade_band_code = GradeBand.where(:tree_type_id => @treeTypeRec.id).first
     elsif params[:tree].present? && tree_params[:grade_band_id].present?
       @gb = GradeBand.find(tree_params[:grade_band_id])
       @grade_band_code = @gb.code
       Rails.logger.debug("*** index_listing gb params ID: #{tree_params[:grade_band_id]}, code: #{@gb.code}")
     elsif @grade_band_code.present?
-      @gb = GradeBand.where(code: @grade_band_code).first
+      @gb = GradeBand.where(code: @grade_band_code, tree_type_id: @treeTypeRec.id).first
       Rails.logger.debug("*** index_listing @grade_band_code: #{@grade_band_code.inspect}")
       @grade_band_code = @gb.code
     elsif @gbs.first
@@ -958,7 +958,7 @@ class TreesController < ApplicationController
       @gb = nil
       @grade_band_code = ''
     end
-    setGradeBandCode(@grade_band_code) if @gb
+    setGradeBandCode(@grade_band_code) #if @gb
     Rails.logger.debug("*** @grade_band_code: #{@grade_band_code.inspect}")
     Rails.logger.debug("*** @gb: #{@gb.inspect}")
 
