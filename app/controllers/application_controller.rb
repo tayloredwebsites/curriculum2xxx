@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     # set the current Subject ID
     def setSubjectCode(code)
       Rails.logger.debug("app setSubjectCode code: #{code.inspect}")
-      if Subject.all.map{ |s| s.code}.include?(code)
+      if Subject.where(:tree_type_id => @treeTypeRec.id).map{ |s| s.code}.include?(code)
         # next default Subject to cookie:
         Rails.logger.debug("app Subject code matched! #{code.inspect}")
         @subject_code = code
@@ -44,11 +44,12 @@ class ApplicationController < ActionController::Base
     # set the current gradeBand ID
     def setGradeBandCode(code)
       Rails.logger.debug("app setGradeBand code: #{code.inspect}")
-      if GradeBand.all.map{ |gb| gb.code}.include?(code)
+      if GradeBand.where(:tree_type_id => @treeTypeRec.id).map{ |gb| gb.code}.include?(code)
         # next default gradeBand to cookie:
         Rails.logger.debug("app gradeBand code matched! #{code.inspect}")
         cookies['gradeBand'] = code
       else
+        cookies['gradeBand'] = 0
         Rails.logger.debug("app gradeBand code not matched! #{code}")
       end
     end
