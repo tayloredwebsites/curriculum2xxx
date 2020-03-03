@@ -125,20 +125,36 @@
       </li>
     <%
     end
-    if current_user.present? && current_user.is_admin?
-      if controller.controller_name == 'trees' && action_name == 'maint' %>
+    if controller.controller_name == 'trees' && action_name == 'maint' && current_user.present? && current_user.is_admin? %>
         <li class="nav-item active" aria-selected='true'>
           <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
         </li>
   <%
-      else %>
+      elsif current_user.present? && current_user.is_admin? %>
         <li class="nav-item" role='menuitem'>
           <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
         </li>
-  <%
-      end
-      if controller.controller_name == 'uploads'
-    %>
+  <% end %>
+  <li class="nav-item" role='menuitem'>
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" title=<%= translate('nav_bar.connections.hover') %>>
+        <%= translate('nav_bar.connections.name') %>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.questions.name') %></a>
+        </li>
+        <li class="nav-item active" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#">
+          <%= translate('nav_bar.concepts.name') %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.standards.name') %></a>
+        </li>
+      </ul>
+  </li>
+  <% if current_user.present? && current_user.is_admin?
+      if controller.controller_name == 'uploads' %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
       </li>
