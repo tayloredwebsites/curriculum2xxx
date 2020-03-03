@@ -13,7 +13,7 @@
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
           <% if h[:depth] == @treeTypeRec.outcome_depth+1 %>
-          <li class="maint-item indent-3">
+          <li class="maint-item indent-3 <%= h[:selectors_by_parent] %>">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
             <%= h[:text] %>
             <% if @editing %>
@@ -32,9 +32,9 @@
           </li>
           <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
           <% else %>
-            <li class="maint-sub-header indent-<%= h[:depth]-1 %> ">
-              <a class="" href="#">
-                <i class="fa fa-compress pull-left" title="collapse"></i>
+            <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %>">
+              <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
+                <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
               </a>
               <%= h[:depth_name] %>: <%= h[:text] %>
             </li>

@@ -201,6 +201,7 @@ class TreesController < ApplicationController
         gb_code: tree.grade_band.code,
         code: tree.code,
         last_code: tree.codeArrayAt(tree.depth-1),
+        selectors_by_parent: tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }.join(" "),
         depth_name: @hierarchies[tree.depth-1],
         text: "#{tree.code}: #{translation}"
         #connections: @relations[tree.id]

@@ -97,6 +97,16 @@ class Tree < BaseRec
     end
   end
 
+  def parentCodes
+    arr = self.codeArray
+    ret = []
+    while arr && arr.length > 0
+      arr.pop(1)
+      ret << arr.join('.')
+    end
+    ret
+  end
+
   # overrides of deprecated depth field
   def depth
     return codeArray.length
