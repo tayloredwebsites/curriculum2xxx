@@ -16,6 +16,7 @@
           <li class="maint-item indent-3">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
             <%= h[:text] %>
+            <% if @editing %>
             <div class="pull-right">
               <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= h[:id] %>?%5Bactive%5D=false">
                 <i class="fa fa-times pull-right" title="deactivate this LO"></i>
@@ -27,6 +28,7 @@
                 <i class="fa fa-edit pull-right" title="edit this LO"></i>
               </a>
             </div>
+            <% end %>
           </li>
           <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
           <% else %>

@@ -177,6 +177,7 @@ class TreesController < ApplicationController
     # - should be able to drag hierarchy items (and LOs) to the editing column on the left.
 
     treePrep
+    @editing = params[:editme] && current_user.is_admin?
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
 
@@ -219,9 +220,6 @@ class TreesController < ApplicationController
       format.html { render 'maint'}
     end
 
-  end
-
-  def outcomes
   end
 
   def sequence
@@ -853,7 +851,8 @@ class TreesController < ApplicationController
       :edit_type,
       :attr_id,
       :name_translation,
-      :active
+      :active,
+      :editing,
     )
   end
 
