@@ -31,7 +31,7 @@ module ApplicationHelper
     else
       ret = []
     end
-    Subject.where(:tree_type_id => tree_type_id).each do |s|
+    Subject.where("tree_type_id = ? AND min_grade < ?", tree_type_id, 999).order("max_grade desc", "min_grade asc", "code").each do |s|
       # ret << [ @translations["sector.#{s.code}.name"], s.id ]
       ret << [s.code, s.id]
     end

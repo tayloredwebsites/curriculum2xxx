@@ -3,7 +3,7 @@ class SectorsController < ApplicationController
 
   def index
 
-    @subjects = Subject.where(:tree_type_id => @treeTypeRec.id).order(:code)
+    @subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
     @gbs = GradeBand.where(:tree_type_id => @treeTypeRec.id)
     @sectors = Sector.where(:sector_set_code => @treeTypeRec.sector_set_code)
     @sector = Sector.new

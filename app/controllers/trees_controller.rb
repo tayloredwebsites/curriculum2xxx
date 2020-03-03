@@ -246,7 +246,7 @@ class TreesController < ApplicationController
     @gradebands = ["All", *listing.joins(:grade_band).pluck('grade_bands.code').uniq]
     @subjects = {}
     subjIds = {}
-    subjects = Subject.where(:tree_type_id => @treeTypeRec.id)
+    subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
     subjects.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
@@ -393,7 +393,8 @@ class TreesController < ApplicationController
     @subj_gradebands = Hash.new { |h, k| h[k] = [] }
     @subjects = {}
     subjIds = {}
-    subjects = Subject.where(:tree_type_id => @treeTypeRec.id)
+    subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
+    @default_subj_code = subjects.first.code if subjects.count > 0
     include_science = subjects.pluck('code').include?("sci")
     subjects.each do |s|
       @subjects[s.code] = s
@@ -896,7 +897,7 @@ class TreesController < ApplicationController
   end
 
   def index_prep
-    @subjects = Subject.all.order(:code)
+    @subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
     @gbs = GradeBand.all
     # @gbs_upper = GradeBand.where(code: ['9','13'])
     @tree = Tree.new(
@@ -910,7 +911,7 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** @treeTypeRec: #{@treeTypeRec.inspect}")
     @subjects = {}
     subjIds = {}
-    Subject.where(tree_type_id: @treeTypeRec.id).each do |s|
+    Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code").each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end

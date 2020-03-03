@@ -1,7 +1,9 @@
 <% content_for(:title_code, 'trees.index.name') %>
 <% content_for(:page_class, 'trees') %>
 
-<% subject_visible = cookies["#{@page_title}_subject_visible"] || 'bio' %>
+<% subject_visible = cookies["#{@page_title}_subject_visible"] || @default_subj_code
+   subject_visible = @s_o_hash.keys.include?(subject_visible) ? subject_visible : @default_subj_code
+%>
 <br>
 <div class='text-center dimension-page'>
   <h2 id="dimension-header"><%= @page_title %></h2>
