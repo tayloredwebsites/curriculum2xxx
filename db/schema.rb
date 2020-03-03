@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200213233406) do
+ActiveRecord::Schema.define(version: 20200303165934) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20200213233406) do
     t.integer "dim_order", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "min_grade", default: 999, null: false
+    t.integer "max_grade", default: 999, null: false
     t.index ["dim_code"], name: "index_dimensions_on_dim_code"
     t.index ["dim_type", "dim_code"], name: "index_dimensions_on_dim_type_and_dim_code"
     t.index ["subject_id"], name: "index_dimensions_on_subject_id"
@@ -44,6 +46,8 @@ ActiveRecord::Schema.define(version: 20200213233406) do
     t.datetime "updated_at", null: false
     t.integer "sort_order", default: 0
     t.boolean "active", default: true
+    t.integer "min_grade", default: 999, null: false
+    t.integer "max_grade", default: 999, null: false
     t.index ["tree_type_id"], name: "index_grade_bands_on_tree_type_id"
   end
 
@@ -83,6 +87,8 @@ ActiveRecord::Schema.define(version: 20200213233406) do
     t.datetime "updated_at", null: false
     t.string "base_key"
     t.boolean "active", default: true
+    t.integer "min_grade", default: 999, null: false
+    t.integer "max_grade", default: 999, null: false
     t.index ["tree_type_id"], name: "index_subjects_on_tree_type_id"
   end
 
