@@ -221,6 +221,9 @@ class TreesController < ApplicationController
 
   end
 
+  def outcomes
+  end
+
   def sequence
     index_prep
     @max_subjects = 6

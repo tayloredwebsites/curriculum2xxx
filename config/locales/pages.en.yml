@@ -97,8 +97,8 @@ en:
       name: "Relations"
       hover: "Display the Relations between Curriculum Items"
     maint:
-      name: "Maintenance"
-      hover: "Page for Maintenance of Curriculum Items"
+      name: "Editing"
+      hover: "Page for Editing of Curriculum Items"
     connections:
       name: "Other"
       hover: "Other Connections"
@@ -172,7 +172,7 @@ en:
     sequencing:
       title: "Relations"
     maint:
-      title: "Maintenance"
+      title: "Editing"
     miscon:
       title: "Misconceptions"
       singular: "Misconception"
