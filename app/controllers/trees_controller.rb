@@ -912,7 +912,8 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** @treeTypeRec: #{@treeTypeRec.inspect}")
     @subjects = {}
     subjIds = {}
-    Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code").each do |s|
+    @subj_list = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
+    @subj_list.each do |s|
       @subjects[s.code] = s
       subjIds[s.id.to_s] = s
     end
@@ -922,7 +923,7 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** @gbs: #{@gbs.inspect}")
 
     # get subject from tree param or from cookie (app controller getSubjectCode)
-    if params[:tree].present? && tree_params[:subject_id].present?
+    if params[:tree].present? && tree_params[:subject_id].present? && subjIds[tree_params[:subject_id]]
       @subj = subjIds[tree_params[:subject_id]]
       Rails.logger.debug("*** index_listing params ID: #{tree_params[:subject_id]}")
     elsif @subject_code.present? && @subjects[@subject_code].present?
@@ -932,7 +933,7 @@ class TreesController < ApplicationController
       subjCode, @subj = @subjects.first
       Rails.logger.debug("*** index_listing no match: #{subjCode} #{@subj.inspect}")
     else
-      @subj = Subject.new
+      @subj = @subj_list.first || Subject.new
     end
 
     Rails.logger.debug("*** @subject_code: #{@subject_code.inspect}")

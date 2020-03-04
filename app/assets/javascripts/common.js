@@ -127,37 +127,6 @@ $(function() {
       });
   };
 
-  /**
-   * Generic toggle visibility method
-   * @param {String} selector CSS selector for the element or elements to hide
-   * @param {String} trigger CSS selector for the element triggering this function
-   * @param {String} matchTrigger Selectors for elements or elements that should
-   *                              be updated to match the trigger element's
-   *                              settings with regard to the ".option-selected"
-   *                              class.
-   */
-  toggle_visibility = function(selector, trigger, matchTrigger) {
-    $(trigger).toggleClass("option-selected");
-    var sel = $(trigger).hasClass("option-selected");
-    if (sel) {
-      $(selector).removeClass("hidden");
-      if ($(trigger).hasClass("accordion")) {
-        $(trigger).removeClass("fa-expand");
-        $(trigger).addClass("fa-compress");
-      }
-    } else {
-      $(selector).addClass("hidden");
-      if ($(trigger).hasClass("accordion")) {
-        $(trigger).removeClass("fa-compress");
-        $(trigger).addClass("fa-expand");
-      }
-    }
-    if (matchTrigger != undefined && matchTrigger != "") {
-      $(matchTrigger).addClass(sel ? "option-selected" : "");
-      $(matchTrigger).removeClass(!sel ? "option-selected" : "");
-    }
-  };
-
   //###################################
   //# ADD EVENT BINDINGS
 

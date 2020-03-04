@@ -1,5 +1,6 @@
 <% content_for(:title_code, 'trees.maint.name') %>
 <% content_for(:page_class, 'trees') %>
+<% current_path = @editing ? maint_trees_path(editme: true) : maint_trees_path %>
 
 <br>
 <div class='text-center sequence-page'>
@@ -9,6 +10,40 @@
 <div id="trees" class="sequence-page">
   <div class="sequence-grid cols-<%= 2 %>">
     <ul class="list-group maint-column">
+      <li>
+        <%= form_for @tree, url: current_path, :html => { :method => 'GET' } do |form| %>
+      <div class='row'>
+        <div class='col col-md-4'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
+        <div class='col col-md-4'><label for='tree_grade_band'><%= translate('app.labels.grade_band') %></label></div>
+        <div class='col col-md-4'><%= translate('app.labels.actions') %></div>
+      </div>
+      <div class='row'>
+        <div class='col col-md-4 subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
+          <% @subjects.each do |k, s| %>
+            <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
+            <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
+            <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
+          <% end %>
+        </select></div>
+        <div id='gb-container' class='col col-md-4'>
+          <span id='all-gbs-select'>
+          <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
+          <select id='tree_grade_band_id' name='tree[grade_band_id]'>
+            <option value='0'><%= I18n.t('app.labels.all') %></option>
+          <% gbs = @gbOptions || @gbs %>
+          <% gbs.each do |gb| %>
+            <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
+            <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
+            <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
+          <% end %>
+        </select>
+          </span>
+        </div>
+
+        <div class='col col-md-4 margin-bottom'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
+      </div>
+    <% end %>
+      </li>
       <% @treeByParents.each do |tkey, codeh| %>
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>

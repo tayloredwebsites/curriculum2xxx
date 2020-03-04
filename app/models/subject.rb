@@ -21,4 +21,10 @@ class Subject < BaseRec
     Translation.where(locale: loc, key: self.base_key+'.name').first.value
   end
 
+  def getSubjectGradeBands()
+    gbIDs = Tree.where(:subject_id => self.id).pluck('grade_band_id').uniq
+    gbRecs = GradeBand.where(:id => gbIDs).order('max_grade asc')
+    gbRecs
+  end
+
 end
