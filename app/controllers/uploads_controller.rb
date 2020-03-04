@@ -314,6 +314,7 @@ class UploadsController < ApplicationController
         @upload.status_detail = @errs.join('$$$')
         @upload.status = BaseRec::UPLOAD_DONE if @upload.status == BaseRec::UPLOAD_TREE_UPLOADED
         @upload.save
+        updateSubjectGrades(@subjectRec)
       end
       render :do_upload
     end
@@ -442,6 +443,24 @@ class UploadsController < ApplicationController
       end
     end
     return numCodes, errors
+  end
+
+  # Use when new curriculum has been uploaded for a
+  # Subject to update the Subject's max_grade and min_grade
+  def updateSubjectGrades(s)
+    subj_gbs = GradeBand.where(:id => Tree.where(:subject_id => s.id).pluck("grade_band_id").uniq)
+    min_grades = subj_gbs.order("min_grade asc").pluck("min_grade").uniq
+    max_grades = subj_gbs.order("max_grade desc").pluck("max_grade").uniq
+    if min_grades.length > 0 && max_grades.length > 0
+      s.min_grade = min_grades[0]
+      s.max_grade = max_grades[0]
+      begin
+        s.save!
+        Rails.logger.debug("Updated Subject #{s[:code]}: min_grade = #{s[:min_grade]} and max_grade = #{s[:max_grade]}")
+      rescue
+        Rails.logger.error("Failed to update Subject #{s[:code]} with values: min_grade = #{s[:min_grade]} and max_grade = #{s[:max_grade]}")
+      end
+    end
   end
 
 
