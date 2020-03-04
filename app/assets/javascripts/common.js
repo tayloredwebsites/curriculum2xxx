@@ -132,6 +132,10 @@ $(function() {
 
   $(document).on("turbolinks:load", function(event, state) {
     console.log("turbolinks:load");
+    $('[data-toggle="tooltip"]').tooltip({
+      html: true,
+      track: true
+    });
     readyFontSizes();
   });
   readyFontSizes();
@@ -142,5 +146,9 @@ $(function() {
 
   $(".subject-with-gb").on("change", function(event, state) {
     showCorrectGradeBand(this, event);
+  });
+  $('[data-toggle="tooltip"]').tooltip({
+    html: true,
+    track: true
   });
 });

@@ -180,6 +180,44 @@ class TreesController < ApplicationController
     @editing = params[:editme] && current_user.is_admin?
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
+    dimtrees_by_tree_id = Hash.new{ |h, k| h[k] = [] }
+    @subj_key_by_dt_id = {}
+    @dim_grades = Hash.new{ |h, k| h[k] = {} }
+    @dim_subjs = {}
+    @dim_subjs['bigidea'] = @trees.first.subject if @trees.first.present?
+    @dim_subjs['miscon'] = @trees.first.subject if @trees.first.present?
+    @dim_grades['bigidea'] = { min_grade: @dim_subjs['bigidea'].min_grade, max_grade: @dim_subjs['bigidea'].max_grade} if @dim_subjs['bigidea'].present?
+    @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade: @dim_subjs['miscon'].max_grade} if @dim_subjs['miscon'].present?
+
+    # Get dimensions and dimtrees for displayed curriculum
+    @dimtrees = DimTree.joins(:dimension).where(:tree_id => @trees.pluck("id"))
+    dimKeys = @dimtrees.pluck('dim_explanation_key')
+    @idea_subj_base_key = "#{@trees.first.subject.base_key}.name" if @trees.first.present?
+    @misc_subj_base_key = "#{@trees.first.subject.base_key}.name" if @trees.first.present?
+    dimKeys << @idea_subj_base_key
+    dimKeys << @misc_subj_base_key
+    @dimtrees.each do |dt|
+      dimtrees_by_tree_id[dt[:tree_id]] << dt
+      dt_dim = dt.dimension
+      dt_dim_subj = nil
+      if @trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
+        dimKeys << dt_dim.dim_name_key
+        dt_dim_subj = "#{Subject.find(dt_dim.subject_id).base_key}.name"
+        dimKeys << dt_dim_subj if !dimKeys.include?(dt_dim_subj)
+      end
+      @subj_key_by_dt_id[dt.id] = dt_dim_subj
+    end
+    if @trees.first
+      @dimensions = Dimension.where(:subject_id => @trees.first.subject_id)
+      @dimensions.pluck('dim_name_key').map { |k| dimKeys << k }
+    end
+    dim_translations = Translation.translationsByKeys(
+      @locale_code,
+      dimKeys
+      )
+    dim_translations.each do |tKey, tVal|
+      @translations[tKey] = tVal
+    end
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
@@ -203,10 +241,12 @@ class TreesController < ApplicationController
         last_code: tree.codeArrayAt(tree.depth-1),
         selectors_by_parent: tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }.join(" "),
         depth_name: @hierarchies[tree.depth-1],
-        text: "#{tree.code}: #{translation}"
+        text: "#{tree.code}: #{translation}",
+        dimtrees: dimtrees_by_tree_id[tree.id]
         #connections: @relations[tree.id]
       }
       @treeByParents[tkey][tree.code] = newHash
+
       Rails.logger.debug("*** @treeByParent [#{tkey}] [#{tree.code}] = #{newHash.inspect}")
     end
 

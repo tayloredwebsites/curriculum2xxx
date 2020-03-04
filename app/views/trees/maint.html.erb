@@ -45,13 +45,47 @@
       </div>
     <% end %>
       </li>
-      <% @treeByParents.each do |tkey, codeh| %>
+      <%
+       ideas_title = translate('nav_bar.bigidea.name')
+       misc_title = translate('nav_bar.miscon.name')
+       @treeByParents.each do |tkey, codeh| %>
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
           <% if h[:depth] == @treeTypeRec.outcome_depth+1 %>
+          <% ideas_str = '' #ideas_title
+             misc_str = '' #misc_title
+             ideas_found = 0
+             misc_found = 0
+           %>
           <li class="maint-item indent-3 <%= h[:selectors_by_parent] %>">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
             <%= h[:text] %>
+            <% if h[:dimtrees].length > 0 %>
+            <% h[:dimtrees].each do |dt|
+                 dim = dt.dimension
+                 if dim.dim_type == "bigidea"
+                    ideas_found += 1
+                    ideaSubjKey = @subj_key_by_dt_id[dt.id] || @idea_subj_base_key
+                    ideas_str += "<br/>______________<br/>"
+                    ideas_str += "[#{@translations[ideaSubjKey]}] #{@translations[dim.dim_name_key]}"
+                 else
+                    misc_found += 1
+                    miscSubjKey = @subj_key_by_dt_id[dt.id] || @misc_subj_base_key
+                    misc_str += "<br/>______________<br/>"
+                    misc_str += "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
+                 end
+               end
+               ideas_str = "<strong>#{(ideas_found > 1 ? ideas_title : ideas_title.singularize)}:</strong>#{ideas_str}"
+               misc_str = "<strong>#{(misc_found > 1 ? misc_title : misc_title.singularize)}:</strong>#{misc_str}"
+            %>
+            <% if ideas_found > 0 %>
+            <i class="fa fa-lightbulb-o" data-toggle="tooltip" title="<%= ideas_str %>"></i>
+            <% end
+              if misc_found > 0
+            %>
+            <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="<%= misc_str %>"></i>
+            <% end %>
+            <% end %>
             <% if @editing %>
             <div class="pull-right">
               <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= h[:id] %>?%5Bactive%5D=false">
@@ -77,6 +111,16 @@
           <% end %>
         <% end %>
       <% end %>
+      </ul>
+      <ul class="list-group maint-column bigideas-col">
+        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{translate('app.labels.grade_band').pluralize}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
+        <% @dimensions.each do |dim| %>
+          <li>
+            <%= "#{translate('app.labels.subject')}: #{@translations[@idea_subj_base_key]}" %>
+            <br/>
+            <%= @translations[dim.dim_name_key] %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
