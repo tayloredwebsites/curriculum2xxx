@@ -1,6 +1,5 @@
 <% content_for(:title_code, 'trees.maint.name') %>
 <% content_for(:page_class, 'trees') %>
-<% current_path = @editing ? maint_trees_path(editme: true) : maint_trees_path %>
 
 <br>
 <div class='text-center sequence-page'>
@@ -11,8 +10,11 @@
   <div class="sequence-grid cols-<%= 2 %>">
     <ul class="list-group maint-column">
       <li>
-        <%= form_for @tree, url: current_path, :html => { :method => 'GET' } do |form| %>
+        <%= form_for @tree, url: maint_trees_path, :html => { :method => 'GET' } do |form| %>
       <div class='row'>
+        <% if @editing %>
+        <input type='hidden' name='editme' value=true></input>
+        <% end %>
         <div class='col col-md-4'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
         <div class='col col-md-4'><label for='tree_grade_band'><%= translate('app.labels.grade_band') %></label></div>
         <div class='col col-md-4'><%= translate('app.labels.actions') %></div>
@@ -30,8 +32,7 @@
           <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
           <select id='tree_grade_band_id' name='tree[grade_band_id]'>
             <option value='0'><%= I18n.t('app.labels.all') %></option>
-          <% gbs = @gbOptions || @gbs %>
-          <% gbs.each do |gb| %>
+          <% @gbs.each do |gb| %>
             <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
             <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
             <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
