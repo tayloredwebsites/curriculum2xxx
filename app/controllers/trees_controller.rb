@@ -190,7 +190,7 @@ class TreesController < ApplicationController
     @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade: @dim_subjs['miscon'].max_grade} if @dim_subjs['miscon'].present?
 
     # Get dimensions and dimtrees for displayed curriculum
-    @dimtrees = DimTree.joins(:dimension).where(:tree_id => @trees.pluck("id"))
+    @dimtrees = DimTree.active.joins(:dimension).where(:tree_id => @trees.pluck("id"))
     dimKeys = @dimtrees.pluck('dim_explanation_key')
     @idea_subj_base_key = "#{@trees.first.subject.base_key}.name" if @trees.first.present?
     @misc_subj_base_key = "#{@trees.first.subject.base_key}.name" if @trees.first.present?
@@ -586,7 +586,8 @@ class TreesController < ApplicationController
         errors << e
       end
     end #end transaction
-    redirect_to controller: 'trees', action: 'dimensions', dim_type: dim_tree_params[:dim_type]
+    @editing = true
+    redirect_to maint_trees_path(editme: true)
   end
 
   def update_dim_tree
@@ -615,7 +616,7 @@ class TreesController < ApplicationController
         errors << e
       end
     end #end transaction
-    redirect_to controller: 'trees', action: 'dimensions', dim_type: dim_tree_params[:dim_type]
+    redirect_to maint_trees_path(editme: true)
   end
 
   def show

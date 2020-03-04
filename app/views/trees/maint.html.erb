@@ -1,53 +1,65 @@
 <% content_for(:title_code, 'trees.maint.name') %>
 <% content_for(:page_class, 'trees') %>
+<% big_idea_dims = @dimensions.where(:dim_type => @treeTypeRec.big_ideas_dim_type) if @dimensions.present?
 
+   miscon_dims = @dimensions.where(:dim_type => @treeTypeRec.miscon_dim_type) if @dimensions.present?
+
+   ideas_title = translate('nav_bar.bigidea.name')
+   misc_title = translate('nav_bar.miscon.name')
+%>
 <br>
-<div class='text-center sequence-page'>
+<div class='text-center dimension-page'>
   <h2><%= translate('trees.maint.title') %></h2>
 </div>
+<% if big_idea_dims && big_idea_dims.count > 0 %>
+  <button id="show_bigidea_btn" class="btn-info margin-bottom hidden" onclick="show_maint_col('bigidea', true);"><%= I18n.t('app.labels.show_indicators', name: ideas_title) %></button>
+  <button id="hide_bigidea_btn" class="btn-info margin-bottom" onclick="show_maint_col('bigidea', false);"><%= I18n.t('app.labels.hide_indicators', name: ideas_title) %></button>
+<% end %>
+<% if miscon_dims && miscon_dims.count > 0 %>
+  <button id="show_miscon_btn" class="btn-info margin-bottom" onclick="show_maint_col('miscon', true);"><%= I18n.t('app.labels.show_indicators', name: misc_title) %></button>
+  <button id="hide_miscon_btn" class="btn-info margin-bottom hidden" onclick="show_maint_col('miscon', false);"><%= I18n.t('app.labels.hide_indicators', name: misc_title) %></button>
+<% end %>
 <% subj_counter = 0 %>
-<div id="trees" class="sequence-page">
+<div id="trees" class="dimension-page maint-page">
   <div class="sequence-grid cols-<%= 2 %>">
     <ul class="list-group maint-column">
       <li>
         <%= form_for @tree, url: maint_trees_path, :html => { :method => 'GET' } do |form| %>
-      <div class='row'>
-        <% if @editing %>
-        <input type='hidden' name='editme' value=true></input>
-        <% end %>
-        <div class='col col-md-4'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
-        <div class='col col-md-4'><label for='tree_grade_band'><%= translate('app.labels.grade_band') %></label></div>
-        <div class='col col-md-4'><%= translate('app.labels.actions') %></div>
-      </div>
-      <div class='row'>
-        <div class='col col-md-4 subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
-          <% @subjects.each do |k, s| %>
-            <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
-            <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
-            <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
-          <% end %>
-        </select></div>
-        <div id='gb-container' class='col col-md-4'>
-          <span id='all-gbs-select'>
-          <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
-          <select id='tree_grade_band_id' name='tree[grade_band_id]'>
-            <option value='0'><%= I18n.t('app.labels.all') %></option>
-          <% @gbs.each do |gb| %>
-            <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
-            <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
-            <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
-          <% end %>
-        </select>
-          </span>
-        </div>
+          <div class='row'>
+            <% if @editing %>
+            <input type='hidden' name='editme' value=true></input>
+            <% end %>
+            <div class='col col-md-4'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
+            <div class='col col-md-4'><label for='tree_grade_band'><%= translate('app.labels.grade_band') %></label></div>
+            <div class='col col-md-4'><%= translate('app.labels.actions') %></div>
+          </div>
+          <div class='row'>
+            <div class='col col-md-4 subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
+              <% @subjects.each do |k, s| %>
+                <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
+                <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
+                <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
+              <% end %>
+            </select></div>
+            <div id='gb-container' class='col col-md-4'>
+              <span id='all-gbs-select'>
+              <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
+              <select id='tree_grade_band_id' name='tree[grade_band_id]'>
+                <option value='0'><%= I18n.t('app.labels.all') %></option>
+              <% @gbs.each do |gb| %>
+                <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
+                <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
+                <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
+              <% end %>
+            </select>
+              </span>
+            </div>
 
-        <div class='col col-md-4 margin-bottom'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
-      </div>
-    <% end %>
+            <div class='col col-md-4 margin-bottom'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
+          </div>
+        <% end #form %>
       </li>
       <%
-       ideas_title = translate('nav_bar.bigidea.name')
-       misc_title = translate('nav_bar.miscon.name')
        @treeByParents.each do |tkey, codeh| %>
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
@@ -57,7 +69,7 @@
              ideas_found = 0
              misc_found = 0
            %>
-          <li class="maint-item indent-3 <%= h[:selectors_by_parent] %>">
+          <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
             <%= h[:text] %>
             <% if h[:dimtrees].length > 0 %>
@@ -112,16 +124,47 @@
         <% end %>
       <% end %>
       </ul>
-      <ul class="list-group maint-column bigideas-col">
-        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{translate('app.labels.grade_band').pluralize}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
-        <% @dimensions.each do |dim| %>
-          <li>
-            <%= "#{translate('app.labels.subject')}: #{@translations[@idea_subj_base_key]}" %>
-            <br/>
-            <%= @translations[dim.dim_name_key] %>
-          </li>
-        <% end %>
-      </ul>
+      <% grades_str = translate('app.labels.grade_band').pluralize %>
+      <% if big_idea_dims && big_idea_dims.count > 0 %>
+        <ul class="list-group maint-column bigidea-col">
+          <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
+          <% big_idea_dims.each do |dim| %>
+            <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+              <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@idea_subj_base_key]}" %></span>
+                <br/>
+                <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]}" %></span>
+
+              <br/>
+              <span class='pull-left'><strong><%= "#{ideas_title.singularize}:" %></strong></span>
+              <br/>
+              <%= @translations[dim.dim_name_key] %>
+              <br/>
+              <% if current_user.present? && current_user.is_admin? && @editing%>
+                <a class="connect-handle lo-handle pull-right" onclick=""><i class="fa fa-link" title="make a connection"></i></a>
+            <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end #if big_idea_dims
+         if miscon_dims && miscon_dims.count > 0
+      %>
+        <ul class="list-group maint-column miscon-col hidden">
+          <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %></li>
+          <% miscon_dims.each do |dim| %>
+            <li id="<%= "#{@translations[@misc_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+              <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@misc_subj_base_key]}" %></span>
+              <br/>
+              <span class='pull-left'><strong><%= "#{misc_title.singularize}:" %></strong></span>
+              <br/>
+              <%= @translations[dim.dim_name_key] %>
+              <br/>
+              <% if current_user.present? && current_user.is_admin? && @editing%>
+                <a class="connect-handle lo-handle pull-right" onclick=""><i class="fa fa-link" title="make a connection"></i></a>
+            <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end #if miscon_dims %>
     </div>
   </div>
 </div>
