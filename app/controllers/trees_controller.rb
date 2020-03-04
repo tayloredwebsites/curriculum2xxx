@@ -178,6 +178,8 @@ class TreesController < ApplicationController
 
     treePrep
     @editing = params[:editme] && current_user.is_admin?
+    @show_miscon = params[:show_miscon]
+    @show_bigidea = params[:show_bigidea] || @editing
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
     dimtrees_by_tree_id = Hash.new{ |h, k| h[k] = [] }
@@ -587,7 +589,7 @@ class TreesController < ApplicationController
       end
     end #end transaction
     @editing = true
-    redirect_to maint_trees_path(editme: true)
+    redirect_to maint_trees_path(editme: true, show_bigidea: true)
   end
 
   def update_dim_tree
@@ -616,7 +618,7 @@ class TreesController < ApplicationController
         errors << e
       end
     end #end transaction
-    redirect_to maint_trees_path(editme: true)
+    redirect_to maint_trees_path(editme: true, show_bigidea: true)
   end
 
   def show
