@@ -127,7 +127,6 @@ class UsersController < ApplicationController
     safe_to_refresh = [
       "trees",
       "index",
-      "sequence",
       "maint",
       "dimensions?dim_type=bigidea",
       "dimensions?dim_type=miscon",

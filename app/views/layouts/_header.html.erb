@@ -76,13 +76,42 @@
       </li>
     <%
     end
+    if controller.controller_name == 'trees' && action_name == 'outcomes' %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
+      </li>
+    <%
+    else %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
+      </li>
+    <%
+    end
+        if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.big_ideas_dim_type && @treeTypeRec.big_ideas_dim_type %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_bigidea: true, dim_tree: {dim_type: @treeTypeRec.big_ideas_dim_type}) %>><%= translate('nav_bar.'+@treeTypeRec.big_ideas_dim_type+'.name') %></a>
+      </li>
+    <% elsif @treeTypeRec.big_ideas_dim_type %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_bigidea: true, dim_tree: {dim_type: @treeTypeRec.big_ideas_dim_type}) %>><%= translate('nav_bar.'+@treeTypeRec.big_ideas_dim_type+'.name') %></a>
+      </li>
+    <% end
+    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.miscon_dim_type && @treeTypeRec.miscon_dim_type %>
+      <li class="nav-item active" aria-selected='true'>
+        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_miscon: true, dim_tree: {dim_type: @treeTypeRec.micon_dim_type}) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
+      </li>
+    <% elsif @treeTypeRec.miscon_dim_type %>
+      <li class="nav-item" role='menuitem'>
+        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_miscon: true, dim_tree: {dim_type: @treeTypeRec.miscon_dim_type}) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
+      </li>
+    <% end
     if controller.controller_name == 'sectors' && action_name == 'index' %>
       <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= translate('nav_bar.sectors.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
       </li>
     <% else %>
       <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= translate('nav_bar.sectors.name') %></a>
+        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
       </li>
     <% end
     if controller.controller_name == 'trees' && action_name == 'sequence' %>
@@ -96,26 +125,17 @@
       </li>
     <%
     end
-    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.big_ideas_dim_type && @treeTypeRec.big_ideas_dim_type %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.big_ideas_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.big_ideas_dim_type+'.name') %></a>
-      </li>
-    <% elsif @treeTypeRec.big_ideas_dim_type %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.big_ideas_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.big_ideas_dim_type+'.name') %></a>
-      </li>
-    <% end
-    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.miscon_dim_type && @treeTypeRec.miscon_dim_type %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.miscon_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
-      </li>
-    <% elsif @treeTypeRec.miscon_dim_type %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= dimensions_trees_path(dim_type: @treeTypeRec.miscon_dim_type) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
-      </li>
-    <% end %>
-
-    <li class="nav-item" role='menuitem'>
+    if controller.controller_name == 'trees' && action_name == 'maint' && current_user.present? && current_user.is_admin? %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
+        </li>
+  <%
+      elsif current_user.present? && current_user.is_admin? %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
+        </li>
+  <% end %>
+  <li class="nav-item" role='menuitem'>
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" title=<%= translate('nav_bar.connections.hover') %>>
         <%= translate('nav_bar.connections.name') %>
         <span class="caret"></span>
@@ -129,28 +149,12 @@
           <%= translate('nav_bar.concepts.name') %></a>
         </li>
         <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.competencies.name') %></a>
-        </li>
-        <li class="nav-item" role='menuitem'>
         <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.standards.name') %></a>
         </li>
       </ul>
-    </li>
-    <%
-    if current_user.present? && current_user.is_admin?
-      if controller.controller_name == 'trees' && action_name == 'maint' %>
-        <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= translate('nav_bar.maint.name') %></a>
-        </li>
-  <%
-      else %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= translate('nav_bar.maint.name') %></a>
-        </li>
-  <%
-      end
-      if controller.controller_name == 'uploads'
-    %>
+  </li>
+  <% if current_user.present? && current_user.is_admin?
+      if controller.controller_name == 'uploads' %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
       </li>

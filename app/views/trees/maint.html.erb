@@ -1,21 +1,71 @@
 <% content_for(:title_code, 'trees.maint.name') %>
 <% content_for(:page_class, 'trees') %>
+<% big_idea_dims = @dimensions_bigideas
 
+   miscon_dims = @dimensions_miscons
+
+   ideas_title = translate('nav_bar.bigidea.name')
+   misc_title = translate('nav_bar.miscon.name')
+%>
 <br>
-<div class='text-center sequence-page'>
-  <h2><%= translate('trees.maint.title') %></h2>
+<div class='text-center dimension-page'>
+  <h2><%= @page_title %></h2>
 </div>
+<% if true #big_idea_dims && big_idea_dims.count > 0 %>
+  <button id="show_bigidea_btn" class="btn-secondary margin-bottom<%= @show_bigidea ? ' hidden' : '' %>" onclick="show_maint_col('bigidea', true);"><%= I18n.t('app.labels.show_indicators', name: ideas_title) %></button>
+  <button id="hide_bigidea_btn" class="btn-info margin-bottom<%= @show_bigidea ? '' : ' hidden' %>" onclick="show_maint_col('bigidea', false);"><%= I18n.t('app.labels.hide_indicators', name: ideas_title) %></button>
+<% end %>
+<% if true #miscon_dims && miscon_dims.count > 0 %>
+  <button id="show_miscon_btn" class="btn-secondary margin-bottom<%= @show_miscon ? ' hidden' : '' %>" onclick="show_maint_col('miscon', true);"><%= I18n.t('app.labels.show_indicators', name: misc_title) %></button>
+  <button id="hide_miscon_btn" class="btn-info margin-bottom<%= @show_miscon ? '' : ' hidden' %>" onclick="show_maint_col('miscon', false);"><%= I18n.t('app.labels.hide_indicators', name: misc_title) %></button>
+<% end %>
 <% subj_counter = 0 %>
-<div id="trees" class="sequence-page">
-  <div class="sequence-grid cols-<%= 2 %>">
+<div id="trees" class="dimension-page maint-page">
+  <div class="sequence-grid cols-<%= @show_miscon && @show_bigidea ? 3 : 2 %>">
     <ul class="list-group maint-column">
-      <% @treeByParents.each do |tkey, codeh| %>
+      <li>
+        <%= render partial: "maint_filter", locals: {col: "tree"} %>
+      </li>
+      <%
+       @treeByParents.each do |tkey, codeh| %>
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
           <% if h[:depth] == @treeTypeRec.outcome_depth+1 %>
-          <li class="maint-item indent-3">
+          <% ideas_str = '' #ideas_title
+             misc_str = '' #misc_title
+             ideas_found = 0
+             misc_found = 0
+           %>
+          <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
             <%= h[:text] %>
+            <% if h[:dimtrees].length > 0 %>
+            <% h[:dimtrees].each do |dt|
+                 dim = dt.dimension
+                 if dim.dim_type == "bigidea"
+                    ideas_found += 1
+                    ideaSubjKey = @subj_key_by_dt_id[dt.id] || @idea_subj_base_key
+                    ideas_str += "<br/>______________<br/>"
+                    ideas_str += "[#{@translations[ideaSubjKey]}] #{@translations[dim.dim_name_key]}"
+                 else
+                    misc_found += 1
+                    miscSubjKey = @subj_key_by_dt_id[dt.id] || @misc_subj_base_key
+                    misc_str += "<br/>______________<br/>"
+                    misc_str += "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
+                 end
+               end
+               ideas_str = "<strong>#{(ideas_found > 1 ? ideas_title : ideas_title.singularize)}:</strong>#{ideas_str}"
+               misc_str = "<strong>#{(misc_found > 1 ? misc_title : misc_title.singularize)}:</strong>#{misc_str}"
+            %>
+            <% if ideas_found > 0 %>
+            <i class="fa fa-lightbulb-o" data-toggle="tooltip" title="<%= ideas_str %>"></i>
+            <% end
+              if misc_found > 0
+            %>
+            <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="<%= misc_str %>"></i>
+            <% end %>
+            <% end %>
+            <% if @editing %>
             <div class="pull-right">
               <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= h[:id] %>?%5Bactive%5D=false">
                 <i class="fa fa-times pull-right" title="deactivate this LO"></i>
@@ -27,18 +77,67 @@
                 <i class="fa fa-edit pull-right" title="edit this LO"></i>
               </a>
             </div>
+            <% end %>
           </li>
           <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
           <% else %>
-            <li class="maint-sub-header indent-<%= h[:depth]-1 %> ">
-              <a class="" href="#">
-                <i class="fa fa-compress pull-left" title="collapse"></i>
+            <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %>">
+              <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
+                <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
               </a>
               <%= h[:depth_name] %>: <%= h[:text] %>
             </li>
           <% end %>
         <% end %>
       <% end %>
+      </ul>
+      <% grades_str = translate('app.labels.grade_band').pluralize %>
+
+      <ul class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>">
+        <li>
+          <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
+        </li>
+        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
+        <% if big_idea_dims && big_idea_dims.count > 0 %>
+          <% big_idea_dims.each do |dim| %>
+            <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+              <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@idea_subj_base_key]}" %></span>
+                <br/>
+                <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]}" %></span>
+
+              <br/>
+              <span class='pull-left'><strong><%= "#{ideas_title.singularize}:" %></strong></span>
+              <br/>
+              <%= @translations[dim.dim_name_key] %>
+              <br/>
+              <% if current_user.present? && current_user.is_admin? && @editing%>
+                <a class="connect-handle lo-handle pull-right" onclick=""><i class="fa fa-link" title="make a connection"></i></a>
+            <% end %>
+            </li>
+          <% end %>
+        <% end #if big_idea_dims %>
+      </ul>
+
+      <ul class="list-group maint-column miscon-col<%= @show_miscon ? '' : ' hidden' %>">
+        <li>
+          <%= render partial: "maint_filter", locals: {col: "miscon"} %>
+        </li>
+        <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %></li>
+         <% if  miscon_dims && miscon_dims.count > 0 %>
+          <% miscon_dims.each do |dim| %>
+            <li id="<%= "#{@translations[@misc_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+              <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@misc_subj_base_key]}" %></span>
+              <br/>
+              <span class='pull-left'><strong><%= "#{misc_title.singularize}:" %></strong></span>
+              <br/>
+              <%= @translations[dim.dim_name_key] %>
+              <br/>
+              <% if current_user.present? && current_user.is_admin? && @editing%>
+                <a class="connect-handle lo-handle pull-right" onclick=""><i class="fa fa-link" title="make a connection"></i></a>
+            <% end %>
+            </li>
+          <% end %>
+        <% end #if miscon_dims %>
       </ul>
     </div>
   </div>

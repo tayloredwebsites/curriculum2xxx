@@ -65,6 +65,22 @@ body {
     font-weight: bold;
     color: black;
   }
+
+  .accordion {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .tooltip {
+    * {
+      width: 40vw;
+    }
+  }
+
+  .margin-bottom {
+    margin-bottom: 10px;
+  }
 }
 
 // use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)
