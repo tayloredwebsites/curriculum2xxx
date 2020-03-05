@@ -4,8 +4,9 @@
     <!-- Hidden fields -->
     <!-- Pass setting to stay in edit mode after submitting form, if currently in edit mode -->
     <% if @editing %>
-    <input type='hidden' name='editme' value=true></input>
+      <input type='hidden' name='editme' value=true></input>
     <% end %>
+
     <!-- If searching for a different set of misconceptions, don't forget the current set of big ideas. -->
     <% if col == "miscon"
        if @dim_subjs['bigidea'] %>
@@ -53,7 +54,7 @@
            gbc = @bi_gb[:code] if (@bi_gb && col == "bigidea")
            gbc = @m_gb[:code] if (@m_gb && col == "miscon")
         %>
-        <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
+        <%- selectedStr = (gb.code == gbc) ? ' selected = "selected"' : '' %>
         <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
         <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
       <% end %>

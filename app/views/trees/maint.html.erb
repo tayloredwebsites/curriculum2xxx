@@ -11,11 +11,11 @@
 <div class='text-center dimension-page'>
   <h2><%= translate('trees.maint.title') %></h2>
 </div>
-<% if big_idea_dims && big_idea_dims.count > 0 %>
+<% if true #big_idea_dims && big_idea_dims.count > 0 %>
   <button id="show_bigidea_btn" class="btn-info margin-bottom<%= @show_bigidea ? ' hidden' : '' %>" onclick="show_maint_col('bigidea', true);"><%= I18n.t('app.labels.show_indicators', name: ideas_title) %></button>
   <button id="hide_bigidea_btn" class="btn-info margin-bottom<%= @show_bigidea ? '' : ' hidden' %>" onclick="show_maint_col('bigidea', false);"><%= I18n.t('app.labels.hide_indicators', name: ideas_title) %></button>
 <% end %>
-<% if miscon_dims && miscon_dims.count > 0 %>
+<% if true #miscon_dims && miscon_dims.count > 0 %>
   <button id="show_miscon_btn" class="btn-info margin-bottom<%= @show_miscon ? ' hidden' : '' %>" onclick="show_maint_col('miscon', true);"><%= I18n.t('app.labels.show_indicators', name: misc_title) %></button>
   <button id="hide_miscon_btn" class="btn-info margin-bottom<%= @show_miscon ? '' : ' hidden' %>" onclick="show_maint_col('miscon', false);"><%= I18n.t('app.labels.hide_indicators', name: misc_title) %></button>
 <% end %>
@@ -92,12 +92,13 @@
       <% end %>
       </ul>
       <% grades_str = translate('app.labels.grade_band').pluralize %>
-      <% if big_idea_dims && big_idea_dims.count > 0 %>
-        <ul class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>">
-          <li>
-            <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
-          </li>
-          <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
+
+      <ul class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>">
+        <li>
+          <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
+        </li>
+        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
+        <% if big_idea_dims && big_idea_dims.count > 0 %>
           <% big_idea_dims.each do |dim| %>
             <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
               <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@idea_subj_base_key]}" %></span>
@@ -114,12 +115,15 @@
             <% end %>
             </li>
           <% end %>
-        </ul>
-      <% end #if big_idea_dims
-         if miscon_dims && miscon_dims.count > 0
-      %>
-        <ul class="list-group maint-column miscon-col<%= @show_miscon ? '' : ' hidden' %>">
-          <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %></li>
+        <% end #if big_idea_dims %>
+      </ul>
+
+      <ul class="list-group maint-column miscon-col<%= @show_miscon ? '' : ' hidden' %>">
+        <li>
+          <%= render partial: "maint_filter", locals: {col: "miscon"} %>
+        </li>
+        <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %></li>
+         <% if  miscon_dims && miscon_dims.count > 0 %>
           <% miscon_dims.each do |dim| %>
             <li id="<%= "#{@translations[@misc_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
               <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@misc_subj_base_key]}" %></span>
@@ -133,8 +137,8 @@
             <% end %>
             </li>
           <% end %>
-        </ul>
-      <% end #if miscon_dims %>
+        <% end #if miscon_dims %>
+      </ul>
     </div>
   </div>
 </div>

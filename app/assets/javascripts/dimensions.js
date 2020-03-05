@@ -9,10 +9,12 @@ $(function() {
       $("#hide_" + dimtype + "_btn").removeClass("hidden");
       $("#show_" + dimtype + "_btn").addClass("hidden");
       $("." + dimtype + "-col").removeClass("hidden");
+      document.cookie = dimtype + "_visible=true";
     } else {
       $("#show_" + dimtype + "_btn").removeClass("hidden");
       $("#hide_" + dimtype + "_btn").addClass("hidden");
       $("." + dimtype + "-col").addClass("hidden");
+      document.cookie = dimtype + "_visible=false";
     }
     $(".sequence-grid").removeClass("cols-" + num_cols);
     num_cols = $(".list-group:not('.hidden')").length;

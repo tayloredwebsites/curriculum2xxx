@@ -11,6 +11,14 @@
     <% if @show_miscon %>
       <input type="hidden" name="show_miscon" value=true>
     <% end %>
+    <% if @bi_gb && @bi_gb[:id] %>
+      <input type="hidden" name="dim_tree[bigidea_gb_id]" value=<%= @bi_gb[:id] %>>
+    <% end %>
+    <% if @m_gb && @m_gb[:id] %>
+      <input type="hidden" name="dim_tree[miscon_gb_id]" value=<%= @m_gb[:id] %>>
+    <% end %>
+    <input type="hidden" name="dim_tree[bigidea_subj_id]" value='<%= @dim_subjs['bigidea'][:id] %>'>
+    <input type="hidden" name="dim_tree[miscon_subj_id]" value='<%= @dim_subjs['miscon'][:id] %>'>
   	<input type="hidden" name="dim_tree[tree_id]" value='<%= @dim_tree.tree_id %>'>
   	<input type="hidden" name="dim_tree[dimension_id]" value='<%= @dim_tree.dimension_id %>'>
     <input type="hidden" name="dim_tree[dim_explanation_key]" value='<%= @dim_tree.dim_explanation_key %>'>
