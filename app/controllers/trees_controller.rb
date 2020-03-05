@@ -180,9 +180,9 @@ class TreesController < ApplicationController
     treePrep
     dimPrep
     @editing = params[:editme] && current_user.present? && current_user.is_admin?
-    @show_miscon = cookies[:miscon_visible] == "true" #params[:show_miscon]
-    @show_bigidea = cookies[:bigidea_visible] == "true" #params[:show_bigidea]
-    @show_bigidea = @editing if !(@show_bigidea || @show_miscon)
+    @page_title = @editing ? translate('trees.maint.title') : (dim_tree_params && dim_tree_params[:dim_type] ? translate('nav_bar.'+dim_tree_params[:dim_type]+'.name') : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
+    @show_miscon = dim_tree_params && dim_tree_params[:dim_type] ? (dim_tree_params[:dim_type] == @treeTypeRec.miscon_dim_type) : (cookies[:miscon_visible] == "true") #params[:show_miscon]
+    @show_bigidea = dim_tree_params && dim_tree_params[:dim_type] ? (dim_tree_params[:dim_type] == @treeTypeRec.big_ideas_dim_type) : (cookies[:bigidea_visible] == "true") #params[:show_bigidea]
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
 
@@ -1056,12 +1056,6 @@ class TreesController < ApplicationController
     @dim_grades = Hash.new{ |h, k| h[k] = {} }
     @dim_subjs = {}
     dimKeys = []
-
-    # If loading this page for the first time or changing subjects, reset
-    if !dim_tree_params
-      cookies[:bigidea_visible] = @editing ? "true" : params[:show_bigidea]
-      cookies[:miscon_visible] = params[:show_miscon]
-    end
 
     if dim_tree_params && dim_tree_params[:bigidea_subj_id]
       @dim_subjs['bigidea'] = Subject.find(dim_tree_params[:bigidea_subj_id])

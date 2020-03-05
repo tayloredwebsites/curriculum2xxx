@@ -6,14 +6,26 @@ $(function() {
   show_maint_col = function(dimtype, show) {
     var num_cols = $(".list-group:not('.hidden')").length;
     if (show) {
-      $("#hide_" + dimtype + "_btn").removeClass("hidden");
-      $("#show_" + dimtype + "_btn").addClass("hidden");
-      $("." + dimtype + "-col").removeClass("hidden");
+      $("#hide_" + dimtype + "_btn")
+        .attr("aria-hidden", "false")
+        .removeClass("hidden");
+      $("#show_" + dimtype + "_btn")
+        .attr("aria-hidden", "true")
+        .addClass("hidden");
+      $("." + dimtype + "-col")
+        .attr("aria-hidden", "false")
+        .removeClass("hidden");
       document.cookie = dimtype + "_visible=true";
     } else {
-      $("#show_" + dimtype + "_btn").removeClass("hidden");
-      $("#hide_" + dimtype + "_btn").addClass("hidden");
-      $("." + dimtype + "-col").addClass("hidden");
+      $("#show_" + dimtype + "_btn")
+        .attr("aria-hidden", "false")
+        .removeClass("hidden");
+      $("#hide_" + dimtype + "_btn")
+        .attr("aria-hidden", "true")
+        .addClass("hidden");
+      $("." + dimtype + "-col")
+        .attr("aria-hidden", "true")
+        .addClass("hidden");
       document.cookie = dimtype + "_visible=false";
     }
     $(".sequence-grid").removeClass("cols-" + num_cols);
