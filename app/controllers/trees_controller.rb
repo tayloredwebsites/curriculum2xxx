@@ -1120,8 +1120,22 @@ class TreesController < ApplicationController
     end #if @trees is prepared, look for connected dimtrees
 
     if @dim_subjs['bigidea'] && @dim_subjs['miscon']
-      @dimensions = Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.big_ideas_dim_type, @dim_subjs['bigidea'].id, @dim_grades['bigidea'][:min_grade], @dim_grades['bigidea'][:max_grade]).or(Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.miscon_dim_type, @dim_subjs['miscon'].id, @dim_grades['miscon'][:min_grade], @dim_grades['miscon'][:max_grade]))
-      @dimensions.pluck('dim_name_key').map { |k| dimKeys << k }
+      bigidea_subj_ids = Subject.where(:code => @dim_subjs['bigidea'].code).pluck(:id)
+      bigidea_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['bigidea'][:max_grade]]
+      bigidea_max_arr = [@dim_grades['bigidea'][:min_grade] .. GradeBand::MAX_GRADE]
+      @dimensions_bigideas = Dimension.where(dim_type: @treeTypeRec.big_ideas_dim_type,
+        subject_id: bigidea_subj_ids, min_grade: bigidea_min_arr, max_grade: bigidea_max_arr)
+
+      miscon_subj_ids = Subject.where(:code => @dim_subjs['miscon'].code).pluck(:id)
+      miscon_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['miscon'][:max_grade]]
+      miscon_max_arr = [@dim_grades['miscon'][:min_grade] .. GradeBand::MAX_GRADE]
+      @dimensions_miscons = Dimension.where(dim_type: @treeTypeRec.miscon_dim_type,
+        subject_id: miscon_subj_ids, min_grade: miscon_min_arr, max_grade: miscon_max_arr)
+
+      #@dimensions = Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.big_ideas_dim_type, @dim_subjs['bigidea'].id, @dim_grades['bigidea'][:min_grade], @dim_grades['bigidea'][:max_grade]).or(Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.miscon_dim_type, @dim_subjs['miscon'].id, @dim_grades['miscon'][:min_grade], @dim_grades['miscon'][:max_grade]))
+      @dimensions_bigideas.pluck('dim_name_key').map { |k| dimKeys << k }
+      @dimensions_miscons.pluck('dim_name_key').map { |k| dimKeys << k }
+     # @dimensions.pluck('dim_name_key').map { |k| dimKeys << k }
     end
     if @translations
       dim_translations = Translation.translationsByKeys(
