@@ -21,43 +21,10 @@
 <% end %>
 <% subj_counter = 0 %>
 <div id="trees" class="dimension-page maint-page">
-  <div class="sequence-grid cols-<%= 2 %>">
+  <div class="sequence-grid cols-<%= @show_miscon && @show_bigidea ? 3 : 2 %>">
     <ul class="list-group maint-column">
       <li>
-        <%= form_for @tree, url: maint_trees_path, :html => { :method => 'GET' } do |form| %>
-          <div class='row'>
-            <% if @editing %>
-            <input type='hidden' name='editme' value=true></input>
-            <% end %>
-            <div class='col col-md-4'><label for='tree_subject'><%= translate('app.labels.subject') %></label></div>
-            <div class='col col-md-4'><label for='tree_grade_band'><%= translate('app.labels.grade_band') %></label></div>
-            <div class='col col-md-4'><%= translate('app.labels.actions') %></div>
-          </div>
-          <div class='row'>
-            <div class='col col-md-4 subject-with-gb'><select id='tree_subject_id' name='tree[subject_id]'>
-              <% @subjects.each do |k, s| %>
-                <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
-                <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
-                <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
-              <% end %>
-            </select></div>
-            <div id='gb-container' class='col col-md-4'>
-              <span id='all-gbs-select'>
-              <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
-              <select id='tree_grade_band_id' name='tree[grade_band_id]'>
-                <option value='0'><%= I18n.t('app.labels.all') %></option>
-              <% @gbs.each do |gb| %>
-                <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
-                <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
-                <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
-              <% end %>
-            </select>
-              </span>
-            </div>
-
-            <div class='col col-md-4 margin-bottom'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
-          </div>
-        <% end #form %>
+        <%= render partial: "maint_filter", locals: {col: "tree"} %>
       </li>
       <%
        @treeByParents.each do |tkey, codeh| %>
@@ -127,6 +94,9 @@
       <% grades_str = translate('app.labels.grade_band').pluralize %>
       <% if big_idea_dims && big_idea_dims.count > 0 %>
         <ul class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>">
+          <li>
+            <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
+          </li>
           <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
           <% big_idea_dims.each do |dim| %>
             <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">

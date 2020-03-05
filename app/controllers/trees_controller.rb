@@ -177,49 +177,13 @@ class TreesController < ApplicationController
     # - should be able to drag hierarchy items (and LOs) to the editing column on the left.
 
     treePrep
-    @editing = params[:editme] && current_user.is_admin?
+    dimPrep
+    @editing = params[:editme] && current_user.present? && current_user.is_admin?
     @show_miscon = params[:show_miscon]
-    @show_bigidea = params[:show_bigidea] || @editing
+    @show_bigidea = params[:show_bigidea]
+    @show_bigidea = @editing if !(@show_bigidea || @show_miscon)
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
-    dimtrees_by_tree_id = Hash.new{ |h, k| h[k] = [] }
-    @subj_key_by_dt_id = {}
-    @dim_grades = Hash.new{ |h, k| h[k] = {} }
-    @dim_subjs = {}
-    @dim_subjs['bigidea'] = @trees.first.subject if @trees.first.present?
-    @dim_subjs['miscon'] = @trees.first.subject if @trees.first.present?
-    @dim_grades['bigidea'] = { min_grade: @dim_subjs['bigidea'].min_grade, max_grade: @dim_subjs['bigidea'].max_grade} if @dim_subjs['bigidea'].present?
-    @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade: @dim_subjs['miscon'].max_grade} if @dim_subjs['miscon'].present?
-
-    # Get dimensions and dimtrees for displayed curriculum
-    @dimtrees = DimTree.active.joins(:dimension).where(:tree_id => @trees.pluck("id"))
-    dimKeys = @dimtrees.pluck('dim_explanation_key')
-    @idea_subj_base_key = "#{@trees.first.subject.base_key}.name" if @trees.first.present?
-    @misc_subj_base_key = "#{@trees.first.subject.base_key}.name" if @trees.first.present?
-    dimKeys << @idea_subj_base_key
-    dimKeys << @misc_subj_base_key
-    @dimtrees.each do |dt|
-      dimtrees_by_tree_id[dt[:tree_id]] << dt
-      dt_dim = dt.dimension
-      dt_dim_subj = nil
-      if @trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
-        dimKeys << dt_dim.dim_name_key
-        dt_dim_subj = "#{Subject.find(dt_dim.subject_id).base_key}.name"
-        dimKeys << dt_dim_subj if !dimKeys.include?(dt_dim_subj)
-      end
-      @subj_key_by_dt_id[dt.id] = dt_dim_subj
-    end
-    if @trees.first
-      @dimensions = Dimension.where(:subject_id => @trees.first.subject_id)
-      @dimensions.pluck('dim_name_key').map { |k| dimKeys << k }
-    end
-    dim_translations = Translation.translationsByKeys(
-      @locale_code,
-      dimKeys
-      )
-    dim_translations.each do |tKey, tVal|
-      @translations[tKey] = tVal
-    end
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
@@ -244,7 +208,7 @@ class TreesController < ApplicationController
         selectors_by_parent: tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }.join(" "),
         depth_name: @hierarchies[tree.depth-1],
         text: "#{tree.code}: #{translation}",
-        dimtrees: dimtrees_by_tree_id[tree.id]
+        dimtrees: @dimtrees_by_tree_id[tree.id]
         #connections: @relations[tree.id]
       }
       @treeByParents[tkey][tree.code] = newHash
@@ -525,6 +489,8 @@ class TreesController < ApplicationController
   def edit_dimensions
     errors = []
     @explanation = ''
+    @show_bigidea = true if params[:show_bigidea]
+    @show_miscon = true if params[:show_miscon]
     @tree = Tree.find(tree_params[:tree_id])
     @dim = Dimension.find(tree_params[:dimension_id])
     #Check whether a tree_tree for this relationship already exists.
@@ -588,8 +554,10 @@ class TreesController < ApplicationController
         errors << e
       end
     end #end transaction
-    @editing = true
-    redirect_to maint_trees_path(editme: true, show_bigidea: true)
+    options = {editme: true}
+    options[:show_bigidea] = true if params[:show_bigidea]
+    options[:show_miscon] = true if params[:show_miscon]
+    redirect_to maint_trees_path(options)
   end
 
   def update_dim_tree
@@ -618,7 +586,10 @@ class TreesController < ApplicationController
         errors << e
       end
     end #end transaction
-    redirect_to maint_trees_path(editme: true, show_bigidea: true)
+    options = {editme: true}
+    options[:show_bigidea] = true if params[:show_bigidea]
+    options[:show_miscon] = true if params[:show_miscon]
+    redirect_to maint_trees_path(options)
   end
 
   def show
@@ -902,15 +873,23 @@ class TreesController < ApplicationController
   end
 
   def dim_tree_params
-    params.require(:dim_tree).permit(
-      :id,
-      :dim_explanation_key,
-      :explanation,
-      :tree_id,
-      :dimension_id,
-      :dim_type,
-      :active
-    )
+    begin
+      params.require(:dim_tree).permit(
+        :id,
+        :dim_explanation_key,
+        :explanation,
+        :tree_id,
+        :dimension_id,
+        :dim_type,
+        :active,
+        :bigidea_subj_id,
+        :bigidea_gb_id,
+        :miscon_subj_id,
+        :miscon_gb_id
+      )
+    rescue
+      nil
+    end
   end
 
   def tree_tree_params
@@ -1053,6 +1032,84 @@ class TreesController < ApplicationController
     translations.each do |t|
       # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
       @translations[t.key] = t.value
+    end
+  end
+
+  def dimPrep
+    @dimtrees_by_tree_id = Hash.new{ |h, k| h[k] = [] }
+    @subj_key_by_dt_id = {}
+    @dim_grades = Hash.new{ |h, k| h[k] = {} }
+    @dim_subjs = {}
+
+    if dim_tree_params && dim_tree_params[:bigidea_subj_id]
+      @dim_subjs['bigidea'] = Subject.find(dim_tree_params[:bigidea_subj_id])
+      Rails.logger.debug("@dim_subjs['bigidea']: #{@dim_subjs['bigidea'].inspect}")
+    elsif @trees.first.present?
+      @dim_subjs['bigidea'] = @trees.first.subject
+    else
+      @dim_subjs['bigidea'] = Subject.where(:tree_type_id => @treeTypeRec.id).first
+    end
+    if dim_tree_params && dim_tree_params[:miscon_subj_id]
+      @dim_subjs['miscon'] = Subject.find(dim_tree_params[:miscon_subj_id])
+      Rails.logger.debug("dim_tree_params[:miscon_subj_id]: #{dim_tree_params[:miscon_subj_id]}, gb: #{@dim_subjs['miscon'].inspect}")
+    elsif @trees.first.present?
+      @dim_subjs['miscon'] = @trees.first.subject
+    else
+      @dim_subjs['miscon'] = Subject.where(:tree_type_id => @treeTypeRec.id).first
+    end
+
+    if dim_tree_params && dim_tree_params[:bigidea_gb_id]
+      @bi_gb = dim_tree_params[:bigidea_gb_id] != "0" ? GradeBand.find(dim_tree_params[:bigidea_gb_id]) : { min_grade: @dim_subjs['bigidea'].min_grade, max_grade:@dim_subjs['bigidea'].max_grade }
+      @dim_grades['bigidea'] = { min_grade: @bi_gb[:min_grade], max_grade: @bi_gb[:max_grade]}
+    elsif @dim_subjs['bigidea'].present?
+      @dim_grades['bigidea'] = { min_grade: @dim_subjs['bigidea'].min_grade, max_grade: @dim_subjs['bigidea'].max_grade}
+    else
+      @dim_grades['bigidea'] = { min_grade: @dim_subjs['bigidea'].min_grade, max_grade:@dim_subjs['bigidea'].max_grade}
+    end
+
+    if dim_tree_params && dim_tree_params[:miscon_gb_id]
+      @m_gb = dim_tree_params[:miscon_gb_id] != "0" ? GradeBand.find(dim_tree_params[:miscon_gb_id]) : { min_grade: @dim_subjs['miscon'].min_grade, max_grade:dim_subjs['miscon'].max_grade }
+      @dim_grades['miscon'] = { min_grade: @m_gb[:min_grade], max_grade: @m_gb[:max_grade]}
+    elsif @dim_subjs['miscon'].present?
+      @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade: @dim_subjs['miscon'].max_grade}
+    else
+      @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade:dim_subjs['miscon'].max_grade }
+    end
+
+
+    # Get dimensions and dimtrees for displayed curriculum
+    @dimtrees = DimTree.active.joins(:dimension).where(:tree_id => @trees.pluck("id"))
+    dimKeys = @dimtrees.pluck('dim_explanation_key')
+    @idea_subj_base_key = "#{@dim_subjs['bigidea'].base_key}.name" if @dim_subjs['bigidea']
+    @misc_subj_base_key = "#{@dim_subjs['miscon'].base_key}.name" if @dim_subjs['miscon']
+    dimKeys << @idea_subj_base_key if @idea_subj_base_key
+    dimKeys << @misc_subj_base_key if @misc_subj_base_key
+    @dimtrees.each do |dt|
+      @dimtrees_by_tree_id[dt[:tree_id]] << dt
+      dt_dim = dt.dimension
+      dt_dim_subj = nil
+      is_bigidea = (dt_dim.dim_type == @treeTypeRec.big_ideas_dim_type)
+      is_miscon = dt_dim.dim_type == @treeTypeRec.miscon_dim_type
+      # If the dimension will not be captured by the dimension
+      # columns displayed on the page.
+      if (is_bigidea && @dim_subjs['bigidea']  && @dim_subjs['bigidea'].id != dt_dim.subject_id) || (is_miscon && @dim_subjs['miscon']  && @dim_subjs['miscon'].id != dt_dim.subject_id)
+      #@trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
+        dimKeys << dt_dim.dim_name_key
+        dt_dim_subj = "#{Subject.find(dt_dim.subject_id).base_key}.name"
+        dimKeys << dt_dim_subj if !dimKeys.include?(dt_dim_subj)
+      end
+      @subj_key_by_dt_id[dt.id] = dt_dim_subj
+    end
+    if @dim_subjs['bigidea'] && @dim_subjs['miscon']
+      @dimensions = Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.big_ideas_dim_type, @dim_subjs['bigidea'].id, @dim_grades['bigidea'][:min_grade], @dim_grades['bigidea'][:max_grade]).or(Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.miscon_dim_type, @dim_subjs['miscon'].id, @dim_grades['miscon'][:min_grade], @dim_grades['miscon'][:max_grade]))
+      @dimensions.pluck('dim_name_key').map { |k| dimKeys << k }
+    end
+    dim_translations = Translation.translationsByKeys(
+      @locale_code,
+      dimKeys
+      )
+    dim_translations.each do |tKey, tVal|
+      @translations[tKey] = tVal
     end
   end
 

@@ -1,0 +1,66 @@
+<%= form_for @tree, url: maint_trees_path, :html => { :method => 'GET' } do |form| %>
+  <% param_name = (col == "tree" ? col : "dim_tree" ) %>
+  <div class='row'>
+    <!-- Hidden fields -->
+    <!-- Pass setting to stay in edit mode after submitting form, if currently in edit mode -->
+    <% if @editing %>
+    <input type='hidden' name='editme' value=true></input>
+    <% end %>
+    <!-- If searching for a different set of misconceptions, don't forget the current set of big ideas. -->
+    <% if col == "miscon"
+       if @dim_subjs['bigidea'] %>
+        <input type='hidden' name='dim_tree[bigidea_subj_id]' value=<%= @dim_subjs['bigidea'].id %>></input>
+    <% end
+       if @bi_gb %>
+         <input type='hidden' name='dim_tree[bigidea_gb_id]' value=<%= @bi_gb[:id] || 0 %>></input>
+    <% end
+    end %>
+    <!-- If searching for a different set of bigideas, don't forget the current set of misconceptions. -->
+    <% if col == "bigidea"
+         if @dim_subjs['miscon'] %>
+    		  <input type='hidden' name='dim_tree[miscon_subj_id]' value=<%= @dim_subjs['miscon'].id %>></input>
+    	<% end
+    	   if @m_gb
+    	%>
+    		  <input type='hidden' name='dim_tree[miscon_gb_id]' value=<%= @m_gb[:id] || 0 %>></input>
+    <% end
+    end %>
+
+    <!-- Labels -->
+    <div class='col col-md-3'><label for='<%= param_name %>_subject'><%= translate('app.labels.subject') %></label></div>
+    <div class='col col-md-4'><label for='<%= param_name %>_grade_band'><%= translate('app.labels.grade_band') %></label></div>
+  </div>
+
+  <!-- Form input options -->
+  <div class='row'>
+    <div class='col col-md-3 subject-with-gb'><select id='<%= param_name %>_subject_id' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_id"%>]'>
+      <% @subjects.each do |k, s| %>
+        <% sel_code = @subject_code
+           sel_code = @dim_subjs[col].code if @dim_subjs[col]
+        %>
+        <%- selectedStr = (s.code == sel_code) ? ' selected = "selected"' : '' %>
+        <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
+        <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
+      <% end %>
+    </select></div>
+    <div id='<%= param_name %>-gb-container' class='col col-md-4'>
+      <span id='<%= param_name %>-all-gbs-select'>
+      <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
+      <select id='<%= param_name %>_grade_band_id' name='<%= param_name %>[<%= param_name == "tree" ? "grade_band_id" : "#{col}_gb_id" %>]'>
+        <option value='0'><%= I18n.t('app.labels.all') %></option>
+      <% @gbs.each do |gb| %>
+        <% gbc = @grade_band_code
+           gbc = @bi_gb[:code] if (@bi_gb && col == "bigidea")
+           gbc = @m_gb[:code] if (@m_gb && col == "miscon")
+        %>
+        <%- selectedStr = (gb.code == @grade_band_code) ? ' selected = "selected"' : '' %>
+        <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
+        <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
+      <% end %>
+    </select>
+      </span>
+    </div>
+
+    <div class='col col-md-3 margin-bottom'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
+  </div>
+<% end #form %>

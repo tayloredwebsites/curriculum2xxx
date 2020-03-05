@@ -124,15 +124,21 @@ initializeDrag = function() {
         }
         console.log("treeeID", tree_id, "dimension_id", dimension_id);
         // $("#modal_popup").modal('show');
+        var data = {
+          source_controller: "trees",
+          source_action: "edit_dimensions",
+          "tree[tree_id]": tree_id,
+          "tree[dimension_id]": dimension_id
+        };
+        if ($(".bigidea-col:not('.hidden')").length > 0)
+          data["show_bigidea"] = true;
+        if ($(".miscon-col:not('.hidden')").length > 0)
+          data["show_miscon"] = true;
+        console.log("data");
         $.ajax({
           type: "get",
           url: "/trees/edit_dimensions",
-          data: {
-            source_controller: "trees",
-            source_action: "edit_dimensions",
-            "tree[tree_id]": tree_id,
-            "tree[dimension_id]": dimension_id
-          },
+          data: data,
           dataType: "script",
           async: false
         })

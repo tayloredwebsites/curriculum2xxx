@@ -5,6 +5,12 @@
 
 <%= form_for(@dim_tree, :url => @form_path, html: { data: { modal: true } })  do |f| %>
   <div>
+    <% if @show_bigidea %>
+      <input type="hidden" name="show_bigidea" value=true>
+    <% end %>
+    <% if @show_miscon %>
+      <input type="hidden" name="show_miscon" value=true>
+    <% end %>
   	<input type="hidden" name="dim_tree[tree_id]" value='<%= @dim_tree.tree_id %>'>
   	<input type="hidden" name="dim_tree[dimension_id]" value='<%= @dim_tree.dimension_id %>'>
     <input type="hidden" name="dim_tree[dim_explanation_key]" value='<%= @dim_tree.dim_explanation_key %>'>
