@@ -225,7 +225,7 @@ class TreesController < ApplicationController
     end
 
     saved_dim_tree = @dimtrees.find(dim_tree_params[:id]) if (dim_tree_params && dim_tree_params[:id])
-    flash[:notice] = "Saved relationship: #{@hierarchies[@treeTypeRec.outcome_depth]} #{saved_dim_tree.tree.code} is related to the #{translate('nav_bar.'+saved_dim_tree.dimension.dim_type+'.name')}, \"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"" if saved_dim_tree
+    flash[:notice] = I18n.translate("app.notice.saved_relationship", item_type_1: @hierarchies[@treeTypeRec.outcome_depth], item_desc_1: saved_dim_tree.tree.code, item_type_2: translate('nav_bar.'+saved_dim_tree.dimension.dim_type+'.name').singularize, item_desc_2: "\"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"") if saved_dim_tree
 
     respond_to do |format|
       format.html { render 'maint'}

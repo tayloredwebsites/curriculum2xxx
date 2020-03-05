@@ -80,6 +80,8 @@ en:
       missing_version_record: "error - missing Version Record"
       missing_version_code: "error - invalid Version Code"
       max_subj_display_count: "A maximum of %{num} subjects can be displayed at once."
+    notice:
+      saved_relationship: "Saved relationship: %{item_type_1} [%{item_desc_1}] is related to the %{item_type_2} [%{item_desc_2}]"
   home:
     name: "Curriculum Home Page"
     title: "Curriculum Home Page"
