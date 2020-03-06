@@ -93,7 +93,7 @@
       </ul>
       <% grades_str = translate('app.labels.grade_band').pluralize %>
 
-      <ul class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>">
+      <ul id="bigidea-col" class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>" data-subjid="<%= @dim_subjs['bigidea'].id %>" data-gbid="<%= @bi_gb ? (@bi_gb[:id] || 0) : 0 %>">
         <li>
           <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
         </li>
@@ -118,7 +118,7 @@
         <% end #if big_idea_dims %>
       </ul>
 
-      <ul class="list-group maint-column miscon-col<%= @show_miscon ? '' : ' hidden' %>">
+      <ul id="miscon-col" class="list-group maint-column miscon-col<%= @show_miscon ? '' : ' hidden' %>" data-subjid="<%= @dim_subjs['miscon'].id %>" data-gbid="<%= @m_gb ? (@m_gb[:id] || 0) : 0 %>">
         <li>
           <%= render partial: "maint_filter", locals: {col: "miscon"} %>
         </li>
