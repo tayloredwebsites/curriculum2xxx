@@ -224,7 +224,19 @@ class TreesController < ApplicationController
       end
     end
 
-    saved_dim_tree = @dimtrees.find(dim_tree_params[:id]) if (dim_tree_params && dim_tree_params[:id])
+    begin
+      saved_dim_tree = @dimtrees.find(dim_tree_params[:id]) if (dim_tree_params && dim_tree_params[:id])
+    rescue
+      # dim_tree_params[:id] will not be found in @dimtrees,
+      # and will cause a server exception
+      # if the user switched curriculum versions immediately
+      # after connecting a dimension to a learning outcome.
+      #
+      # This query could be rewritten with DimTree.find(...)
+      # to prevent the exception, but then the app would try to
+      # display a success notice about an action performed
+      # on a different version of the curriculum.
+    end
     flash[:notice] = I18n.translate("app.notice.saved_relationship", item_type_1: @hierarchies[@treeTypeRec.outcome_depth], item_desc_1: saved_dim_tree.tree.code, item_type_2: translate('nav_bar.'+saved_dim_tree.dimension.dim_type+'.name').singularize, item_desc_2: "\"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"") if saved_dim_tree
 
     respond_to do |format|
@@ -1063,7 +1075,7 @@ class TreesController < ApplicationController
     elsif @trees && @trees.first.present?
       @dim_subjs['bigidea'] = @trees.first.subject
     else
-      @dim_subjs['bigidea'] = Subject.where(:tree_type_id => @treeTypeRec.id).first
+      @dim_subjs['bigidea'] = Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first
     end
     if dim_tree_params && dim_tree_params[:miscon_subj_id]
       @dim_subjs['miscon'] = Subject.find(dim_tree_params[:miscon_subj_id])
@@ -1071,7 +1083,7 @@ class TreesController < ApplicationController
     elsif @trees && @trees.first.present?
       @dim_subjs['miscon'] = @trees.first.subject
     else
-      @dim_subjs['miscon'] = Subject.where(:tree_type_id => @treeTypeRec.id).first
+      @dim_subjs['miscon'] = Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first
     end
 
     if dim_tree_params && dim_tree_params[:bigidea_gb_id]
@@ -1080,7 +1092,7 @@ class TreesController < ApplicationController
     elsif @dim_subjs['bigidea'].present?
       @dim_grades['bigidea'] = { min_grade: @dim_subjs['bigidea'].min_grade, max_grade: @dim_subjs['bigidea'].max_grade}
     else
-      @dim_grades['bigidea'] = { min_grade: @dim_subjs['bigidea'].min_grade, max_grade:@dim_subjs['bigidea'].max_grade}
+      @dim_grades['bigidea'] = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
     end
 
     if dim_tree_params && dim_tree_params[:miscon_gb_id]
@@ -1089,7 +1101,7 @@ class TreesController < ApplicationController
     elsif @dim_subjs['miscon'].present?
       @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade: @dim_subjs['miscon'].max_grade}
     else
-      @dim_grades['miscon'] = { min_grade: @dim_subjs['miscon'].min_grade, max_grade:dim_subjs['miscon'].max_grade }
+      @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
     end
 
     #if @trees is prepared, look for connected dimtrees

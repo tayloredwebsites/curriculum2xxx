@@ -142,13 +142,18 @@ initializeDrag = function() {
           source_controller: "trees",
           source_action: "edit_dimensions",
           "tree[tree_id]": tree_id,
-          "tree[dimension_id]": dimension_id
+          "tree[dimension_id]": dimension_id,
+          "dim_tree[bigidea_subj_id]": $("#bigidea-col").data("subjid"),
+          "dim_tree[miscon_subj_id]": $("#miscon-col").data("subjid"),
+          "dim_tree[bigidea_gb_id]": $("#bigidea-col").data("gbid"),
+          "dim_tree[miscon_gb_id]": $("#miscon-col").data("gbid")
         };
         if ($(".bigidea-col:not('.hidden')").length > 0)
           data["show_bigidea"] = true;
         if ($(".miscon-col:not('.hidden')").length > 0)
           data["show_miscon"] = true;
-        console.log("data");
+
+        console.log(JSON.stringify(data));
         $.ajax({
           type: "get",
           url: "/trees/edit_dimensions",
