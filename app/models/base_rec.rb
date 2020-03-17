@@ -33,6 +33,19 @@ class BaseRec < ActiveRecord::Base
   LOCALE_TR_TR = 'tr_TR'
   VALID_LOCALES = [LOCALE_TR, LOCALE_EN]
   DEFAULT_LOCALE = LOCALE_EN
+  BASE_SUBJECTS = [
+    'bio', #Biology
+    'cap', #Capstones
+    'che', #Chemistry
+    'edu', #Education
+    'eng', #English
+    'mat', #Math
+    'mec', #Mechanics
+    'phy', #Physics
+    'sci', #Science
+    'ear', #Earth Science
+    'geo', #Geology
+  ]
 
 
   # only used in uploads
