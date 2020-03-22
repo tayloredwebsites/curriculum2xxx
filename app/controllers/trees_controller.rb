@@ -180,9 +180,10 @@ class TreesController < ApplicationController
     treePrep
     dimPrep
     @editing = params[:editme] && current_user.present? && current_user.is_admin?
-    @page_title = @editing ? translate('trees.maint.title') : (dim_tree_params && dim_tree_params[:dim_type] ? translate('nav_bar.'+dim_tree_params[:dim_type]+'.name') : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
-    @show_miscon = dim_tree_params && dim_tree_params[:dim_type] ? (dim_tree_params[:dim_type] == @treeTypeRec.miscon_dim_type) : (cookies[:miscon_visible] == "true") #params[:show_miscon]
-    @show_bigidea = dim_tree_params && dim_tree_params[:dim_type] ? (dim_tree_params[:dim_type] == @treeTypeRec.big_ideas_dim_type) : (cookies[:bigidea_visible] == "true") #params[:show_bigidea]
+    @dim_type = dim_tree_params && dim_tree_params[:dim_type] ? dim_tree_params[:dim_type] : nil
+    @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? translate('nav_bar.'+@dim_type+'.name') : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
+    @show_miscon = @dim_type ? (@dim_type == @treeTypeRec.miscon_dim_type) : (cookies[:miscon_visible] == "true") #params[:show_miscon]
+    @show_bigidea = @dim_type ? (@dim_type == @treeTypeRec.big_ideas_dim_type) : (cookies[:bigidea_visible] == "true") #params[:show_bigidea]
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
 

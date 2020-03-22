@@ -6,22 +6,25 @@
     <% if @editing %>
       <input type='hidden' name='editme' value=true></input>
     <% end %>
+    <% if @dim_type %>
+      <input type='hidden' name='dim_tree[dim_type]' value="<%= @dim_type%>"></input>
+    <% end %>
 
     <!-- If searching for a different set of misconceptions, don't forget the current set of big ideas. -->
     <% if col == "miscon"
-       if @dim_subjs['bigidea'] %>
+       if @dim_subjs['bigidea'] && @dim_type != 'miscon' %>
         <input type='hidden' name='dim_tree[bigidea_subj_code]' value=<%= @dim_subjs['bigidea'] %>></input>
     <% end
-       if @bi_gb %>
+       if @bi_gb && @dim_type != 'miscon' %>
          <input type='hidden' name='dim_tree[bigidea_gb_id]' value=<%= @bi_gb[:id] || 0 %>></input>
     <% end
     end %>
     <!-- If searching for a different set of bigideas, don't forget the current set of misconceptions. -->
     <% if col == "bigidea"
-         if @dim_subjs['miscon'] %>
+         if @dim_subjs['miscon'] && @dim_type != 'bigidea' %>
     		  <input type='hidden' name='dim_tree[miscon_subj_code]' value=<%= @dim_subjs['miscon'] %>></input>
     	<% end
-    	   if @m_gb
+    	   if @m_gb && @dim_type != 'bigidea'
     	%>
     		  <input type='hidden' name='dim_tree[miscon_gb_id]' value=<%= @m_gb[:id] || 0 %>></input>
     <% end

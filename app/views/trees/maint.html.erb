@@ -11,11 +11,11 @@
 <div class='text-center dimension-page'>
   <h2><%= @page_title %></h2>
 </div>
-<% if true #big_idea_dims && big_idea_dims.count > 0 %>
+<% if !@dim_type #big_idea_dims && big_idea_dims.count > 0 %>
   <button id="show_bigidea_btn" class="btn-secondary margin-bottom<%= @show_bigidea ? ' hidden' : '' %>" onclick="show_maint_col('bigidea', true);"><%= I18n.t('app.labels.show_indicators', name: ideas_title) %></button>
   <button id="hide_bigidea_btn" class="btn-info margin-bottom<%= @show_bigidea ? '' : ' hidden' %>" onclick="show_maint_col('bigidea', false);"><%= I18n.t('app.labels.hide_indicators', name: ideas_title) %></button>
 <% end %>
-<% if true #miscon_dims && miscon_dims.count > 0 %>
+<% if !@dim_type #miscon_dims && miscon_dims.count > 0 %>
   <button id="show_miscon_btn" class="btn-secondary margin-bottom<%= @show_miscon ? ' hidden' : '' %>" onclick="show_maint_col('miscon', true);"><%= I18n.t('app.labels.show_indicators', name: misc_title) %></button>
   <button id="hide_miscon_btn" class="btn-info margin-bottom<%= @show_miscon ? '' : ' hidden' %>" onclick="show_maint_col('miscon', false);"><%= I18n.t('app.labels.hide_indicators', name: misc_title) %></button>
 <% end %>
