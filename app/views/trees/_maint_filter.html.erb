@@ -40,12 +40,12 @@
             <% sel_code = @subject_code %>
             <%- selectedStr = (s.code == sel_code) ? ' selected = "selected"' : '' %>
             <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
-            <option value=<%= s.id %><%= selectedStr %>><%= s.abbr( @locale_code ) %></option>
+            <option value=<%= s.id %><%= selectedStr %>><%= @translations["subject.base.#{s.code}.abbr"] %></option>
           <% end %>
         <% else # if col != "tree" %>
           <% BaseRec::BASE_SUBJECTS.each do |s| %>
             <% sel_code = @dim_subjs[col] if @dim_subjs[col]
-               opt_name = @translations["subject.base.#{s}.name"]
+               opt_name = @translations["subject.base.#{s}.abbr"]
             %>
             <%- selectedStr = (s == sel_code) ? ' selected = "selected"' : '' %>
             <option value=<%= s %><%= selectedStr %>><%= opt_name %></option>

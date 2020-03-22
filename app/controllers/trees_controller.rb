@@ -1089,13 +1089,13 @@ class TreesController < ApplicationController
       if dim_tree_params[:bigidea_gb_id] != "0"
         @bi_gb = GradeBand.find(dim_tree_params[:bigidea_gb_id])
       else
-        subjs = Subject.where(:code => @dim_subjs['bigidea'])
-        @bi_gb = {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]}
+        subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['bigidea'], 999)
+        @bi_gb = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
       end
       @dim_grades['bigidea'] = { min_grade: @bi_gb[:min_grade], max_grade: @bi_gb[:max_grade]}
     elsif @dim_subjs['bigidea']
-      subjs = Subject.where(:code => @dim_subjs['bigidea'])
-      @dim_grades['bigidea'] = {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]}
+      subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['bigidea'], 999)
+      @dim_grades['bigidea'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
     else
       @dim_grades['bigidea'] = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
     end
@@ -1104,13 +1104,13 @@ class TreesController < ApplicationController
       if dim_tree_params[:miscon_gb_id] != "0"
         @m_gb = GradeBand.find(dim_tree_params[:miscon_gb_id])
       else
-        subjs = Subject.where(:code => @dim_subjs['miscon'])
-        @m_gb = {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]}
+        subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
+        @m_gb = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
       end
       @dim_grades['miscon'] = { min_grade: @m_gb[:min_grade], max_grade: @m_gb[:max_grade]}
     elsif @dim_subjs['miscon']
-      subjs = Subject.where(:code => @dim_subjs['miscon'])
-      @dim_grades['miscon'] = {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]}
+      subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
+      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
     else
       @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
     end
