@@ -1,0 +1,63 @@
+<div class="modal-header">
+   <h3 id="myModalLabel"><%= translate('trees.' + @dimension.dim_type + '.title') %></h3>
+ </div>
+ <div class="modal-body">
+
+<%= form_for(@dimension, :url => @form_path, html: { data: { modal: true } })  do |f| %>
+  <div>
+    <% if @dimension.id %>
+      <input type="hidden" name="dimension[id]" value="<%= @dimension.id %>">
+    <% end %>
+  </div>
+
+  <!-- When editing an existing dimension, do not allow user to change the dimension's subject -->
+  <% if @dimension.id %>
+    <div><strong><%= translate('app.labels.subject') + ": " %></strong>
+      <%= @dimension_subject %>
+    </div>
+  <!-- If creating a new dimension, set dimension's subject with a dropdown -->
+  <% else %>
+    <fieldset>
+      <div>
+      <div><label for='dim_subject'><strong><%= translate('app.labels.subject') + ": " %></strong></label>
+      <select id="dim_subject" name="dimension[subject_code]">
+      <!-- Show subject translations as options, set subject by subject_code -->
+      <% @dimension_subject_opts.each do |subject| %>
+        <option value="<%= subject[:code]%>"><%= subject[:name] %></option>
+      <% end %>
+    </select>
+    </fieldset>
+  <% end %>
+
+  <br>
+
+  <fieldset>
+    <div>
+    <div><label for='dim_min_grade'><strong><%= translate('app.labels.min_grade') + ": " %></strong></label>
+    <%= f.number_field :min_grade, name: 'dimension[min_grade]', id: 'min_grade', in: GradeBand::MIN_GRADE .. GradeBand::MAX_GRADE, value: (@dimension.min_grade < 999 ? @dimension.min_grade : GradeBand::MIN_GRADE) %>
+  </fieldset>
+
+  <br>
+
+  <fieldset>
+    <div>
+    <div><label for='dim_max_grade'><strong><%= translate('app.labels.max_grade') + ": " %></strong></label>
+    <%= f.number_field :max_grade, name: 'dimension[max_grade]', id: 'max_grade', in: GradeBand::MIN_GRADE .. GradeBand::MAX_GRADE, value: (@dimension.max_grade < 999 ? @dimension.max_grade : GradeBand::MIN_GRADE) %>
+  </fieldset>
+
+  <br>
+
+  <fieldset>
+    <div>
+    <div><label for='name'><%= translate('trees.' + @dimension.dim_type + '.textlabel') %>:</label></div>
+    <%= f.text_area :name, name: 'dimension[text]', id: 'name', value: @dimension_text %>
+    </div>
+  </fieldset>
+
+  <br>
+
+ <div class="modal-footer">
+   <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+   <button type="submit" class="btn btn-primary">Save changes</button>
+ </div>
+<% end %>

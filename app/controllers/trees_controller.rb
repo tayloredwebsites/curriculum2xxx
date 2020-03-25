@@ -387,6 +387,49 @@ class TreesController < ApplicationController
     end
   end
 
+  #add/edit form for a dimension
+  def dimension_form
+    @dimension = dimension_params[:id] ? Dimension.find(dimension_params[:id]) : Dimension.new(
+          dim_type: dimension_params[:dim_type]
+        )
+    #TO DO:
+    @form_path = @dimension.id ? update_dimension_trees_path : create_dimension_trees_path
+    subjects = Subject.where(:tree_type_id => @treeTypeRec.id).pluck("code").uniq
+    @dimension_subject_opts = [] #used only for new dimensions?
+    subjects.each do |subj_code|
+
+      @dimension_subject_opts << {code: subj_code, name: Translation.find_translation_name(
+          @locale_code,
+          Subject.name_translation_key(subj_code),
+          subj_code)
+      }
+    end
+
+    @dimension_subject = Translation.find_translation_name(
+      @locale_code,
+      Subject.name_translation_key(@dimension.subject_code),
+      @dimension.subject_code) if @dimension.subject_code
+    @dimension_text = Translation.find_translation_name(
+        @locale_code,
+        @dimension.dim_name_key,
+        ""
+      ) if @dimension.dim_name_key
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def create_dimension
+    puts "params: {#{params.inspect}}"
+    respond_to do |format|
+      format.json {render json: {hello_message: 'hello world'}}
+    end
+  end
+
+  def update_dimension
+  end
+
   def dimensions
     puts "params #{params}"
     # index_prep
@@ -918,6 +961,23 @@ class TreesController < ApplicationController
     rescue
       nil
     end
+  end
+
+  def dimension_params
+    params.require(:dimension).permit(
+      :id,
+      :active,
+      :subject_code,
+      :subject_id,
+      :dim_type,
+      :dim_code,
+      :dim_name_key,
+      :dim_desc_key,
+      :min_grade,
+      :max_grade,
+      :text,
+      :desc
+    )
   end
 
   def tree_tree_params

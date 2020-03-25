@@ -97,7 +97,11 @@
         <li>
           <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
         </li>
-        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %></li>
+        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %>
+          <% if @editing %>
+            <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: @treeTypeRec.big_ideas_dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
+          <% end %>
+        </li>
         <% if big_idea_dims && big_idea_dims.count > 0 %>
           <% big_idea_dims.each do |dim| %>
             <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
@@ -111,7 +115,15 @@
               <%= @translations[dim.dim_name_key] %>
               <br/>
               <% if current_user.present? && current_user.is_admin? && @editing%>
-                <a class="connect-handle lo-handle pull-right" onclick=""><i class="fa fa-link" title="make a connection"></i></a>
+                <div class="pull-right">
+                    <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
+                    <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= dim[:id] %>?%5Bactive%5D=false">
+                      <i class="fa fa-times pull-right" title="deactivate"></i>
+                    </a>
+                    <a class="" href="/<%= @locale_code %>/trees/<%= dim[:id] %>?editme=<%= dim[:id] %>">
+                      <i class="fa fa-edit pull-right" title="edit"></i>
+                    </a>
+                </div>
             <% end %>
             </li>
           <% end %>
@@ -122,7 +134,11 @@
         <li>
           <%= render partial: "maint_filter", locals: {col: "miscon"} %>
         </li>
-        <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %></li>
+        <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %>
+          <% if @editing %>
+           <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: @treeTypeRec.miscon_dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
+          <% end %>
+        </li>
          <% if  miscon_dims && miscon_dims.count > 0 %>
           <% miscon_dims.each do |dim| %>
             <li id="<%= "#{@translations[@misc_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
@@ -133,7 +149,13 @@
               <%= @translations[dim.dim_name_key] %>
               <br/>
               <% if current_user.present? && current_user.is_admin? && @editing%>
-                <a class="connect-handle lo-handle pull-right" onclick=""><i class="fa fa-link" title="make a connection"></i></a>
+                <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
+                <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= dim[:id] %>?%5Bactive%5D=false">
+                  <i class="fa fa-times pull-right" title="deactivate"></i>
+                </a>
+                <a class="" href="/<%= @locale_code %>/trees/<%= dim[:id] %>?editme=<%= dim[:id] %>">
+                  <i class="fa fa-edit pull-right" title="edit"></i>
+                </a>
             <% end %>
             </li>
           <% end %>
