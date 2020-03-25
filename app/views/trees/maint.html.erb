@@ -120,9 +120,7 @@
                     <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= dim[:id] %>?%5Bactive%5D=false">
                       <i class="fa fa-times pull-right" title="deactivate"></i>
                     </a>
-                    <a class="" href="/<%= @locale_code %>/trees/<%= dim[:id] %>?editme=<%= dim[:id] %>">
-                      <i class="fa fa-edit pull-right" title="edit"></i>
-                    </a>
+                    <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
                 </div>
             <% end %>
             </li>
@@ -144,6 +142,8 @@
             <li id="<%= "#{@translations[@misc_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
               <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@misc_subj_base_key]}" %></span>
               <br/>
+              <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
+              <br/>
               <span class='pull-left'><strong><%= "#{misc_title.singularize}:" %></strong></span>
               <br/>
               <%= @translations[dim.dim_name_key] %>
@@ -153,9 +153,7 @@
                 <a class="" data-confirm="Are you sure?"  href="/<%= @locale_code %>/trees/<%= dim[:id] %>?%5Bactive%5D=false">
                   <i class="fa fa-times pull-right" title="deactivate"></i>
                 </a>
-                <a class="" href="/<%= @locale_code %>/trees/<%= dim[:id] %>?editme=<%= dim[:id] %>">
-                  <i class="fa fa-edit pull-right" title="edit"></i>
-                </a>
+                <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
             <% end %>
             </li>
           <% end %>

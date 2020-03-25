@@ -448,6 +448,17 @@ class TreesController < ApplicationController
   end
 
   def update_dimension
+    dimension = Dimension.find(dimension_params[:id])
+    dimension.update(
+        :min_grade => dimension_params[:min_grade],
+        :max_grade => dimension_params[:max_grade]
+      )
+    Translation.find_or_update_translation(@locale_code,
+        dimension.get_dim_name_key,
+        dimension_params[:text]
+      )
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: dimension_params[:text], item_type: dimension.dim_type)
+    redirect_to maint_trees_path(editme: true)
   end
 
   def dimensions
