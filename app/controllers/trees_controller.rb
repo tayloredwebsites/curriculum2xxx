@@ -397,7 +397,6 @@ class TreesController < ApplicationController
     subjects = Subject.where(:tree_type_id => @treeTypeRec.id).pluck("code").uniq
     @dimension_subject_opts = [] #used only for new dimensions?
     subjects.each do |subj_code|
-
       @dimension_subject_opts << {code: subj_code, name: Translation.find_translation_name(
           @locale_code,
           Subject.name_translation_key(subj_code),
@@ -422,9 +421,30 @@ class TreesController < ApplicationController
 
   def create_dimension
     puts "params: {#{params.inspect}}"
-    respond_to do |format|
-      format.json {render json: {hello_message: 'hello world'}}
-    end
+    subject = Subject.where(
+        :tree_type_id => @treeTypeRec.id,
+        :code => dimension_params[:subject_code]
+      ).first
+    subject_id = subject ? subject.id : nil
+    dimension = Dimension.create(
+        :subject_code => dimension_params[:subject_code],
+        :subject_id => subject_id,
+        :dim_type => dimension_params[:dim_type],
+        :min_grade => dimension_params[:min_grade],
+        :max_grade => dimension_params[:max_grade]
+      )
+    dimension.update(
+      :dim_name_key => dimension.get_dim_name_key,
+      :dim_desc_key => dimension.get_dim_desc_key
+      )
+    dim_translation = Translation.create(
+        :value => dimension_params[:text],
+        :key => dimension.get_dim_name_key,
+        :locale => @locale_code
+      )
+
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: dim_translation.value, item_type: dimension.dim_type)
+    redirect_to maint_trees_path(editme: true)
   end
 
   def update_dimension
@@ -1145,13 +1165,12 @@ class TreesController < ApplicationController
       @dim_subjs['miscon'] = Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first.code
     end
 
-    puts "dim_subjs[bigidea]: #{@dim_subjs['bigidea'].inspect}"
+    Rails.logger.debug("dim_subjs[bigidea]: #{@dim_subjs['bigidea'].inspect}")
     if dim_tree_params && dim_tree_params[:bigidea_gb_id]
       if dim_tree_params[:bigidea_gb_id] != "0"
         @bi_gb = GradeBand.find(dim_tree_params[:bigidea_gb_id])
       else
-        subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['bigidea'], 999)
-        @bi_gb = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
+        @bi_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
       end
       @dim_grades['bigidea'] = { min_grade: @bi_gb[:min_grade], max_grade: @bi_gb[:max_grade]}
     elsif @dim_subjs['bigidea']
@@ -1165,15 +1184,14 @@ class TreesController < ApplicationController
       if dim_tree_params[:miscon_gb_id] != "0"
         @m_gb = GradeBand.find(dim_tree_params[:miscon_gb_id])
       else
-        subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
-        @m_gb = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
+        @m_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
       end
       @dim_grades['miscon'] = { min_grade: @m_gb[:min_grade], max_grade: @m_gb[:max_grade]}
     elsif @dim_subjs['miscon']
       subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
-      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
+      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
     else
-      @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
+      @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
     end
 
     #if @trees is prepared, look for connected dimtrees

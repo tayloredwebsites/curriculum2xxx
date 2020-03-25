@@ -7,6 +7,8 @@
   <div>
     <% if @dimension.id %>
       <input type="hidden" name="dimension[id]" value="<%= @dimension.id %>">
+    <% else %>
+      <input type="hidden" name="dimension[dim_type]" value="<%= @dimension.dim_type %>">
     <% end %>
   </div>
 

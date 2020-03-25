@@ -107,7 +107,7 @@
             <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
               <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@idea_subj_base_key]}" %></span>
                 <br/>
-                <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]}" %></span>
+                <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
 
               <br/>
               <span class='pull-left'><strong><%= "#{ideas_title.singularize}:" %></strong></span>

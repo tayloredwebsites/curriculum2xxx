@@ -35,7 +35,7 @@ scope "(:locale)", locale: /tr|en/ do
       get 'sequence'
       get 'dimension_form'
       post 'create_dimension'
-      patch 'update_dimension'
+      post 'update_dimension'
       get 'dimensions'
       get 'edit_dimensions'
       post 'reorder'
