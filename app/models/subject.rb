@@ -2,6 +2,10 @@ class Subject < BaseRec
 
   has_and_belongs_to_many :trees
 
+  def self.name_translation_key(code)
+    "subject.base.#{code}.name"
+  end
+
   def abbr(loc)
     Rails.logger.debug("loc: #{loc.inspect}")
     Rails.logger.debug("self.base_key: #{self.base_key.inspect}")

@@ -387,6 +387,113 @@ class TreesController < ApplicationController
     end
   end
 
+  #add/edit form for a dimension
+  def dimension_form
+    @dimension = dimension_params[:id] ? Dimension.find(dimension_params[:id]) : Dimension.new(
+          dim_type: dimension_params[:dim_type]
+        )
+    #TO DO:
+    @form_path = @dimension.id ? update_dimension_trees_path : create_dimension_trees_path
+    subjects = Subject.where(:tree_type_id => @treeTypeRec.id).pluck("code").uniq
+    @dimension_subject_opts = [] #used only for new dimensions?
+    subjects.each do |subj_code|
+      @dimension_subject_opts << {code: subj_code, name: Translation.find_translation_name(
+          @locale_code,
+          Subject.name_translation_key(subj_code),
+          subj_code)
+      }
+    end
+
+    @dimension_subject = Translation.find_translation_name(
+      @locale_code,
+      Subject.name_translation_key(@dimension.subject_code),
+      @dimension.subject_code) if @dimension.subject_code
+    @dimension_text = Translation.find_translation_name(
+        @locale_code,
+        @dimension.dim_name_key,
+        ""
+      ) if @dimension.dim_name_key
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def create_dimension
+    changes = "[CREATE]"
+    subject = Subject.where(
+        :tree_type_id => @treeTypeRec.id,
+        :code => dimension_params[:subject_code]
+      ).first
+    subject_id = subject ? subject.id : nil
+    dimension = Dimension.create(
+        :subject_code => dimension_params[:subject_code],
+        :subject_id => subject_id,
+        :dim_type => dimension_params[:dim_type],
+        :min_grade => dimension_params[:min_grade],
+        :max_grade => dimension_params[:max_grade]
+      )
+    dimension.update(
+      :dim_name_key => dimension.get_dim_name_key,
+      :dim_desc_key => dimension.get_dim_desc_key
+      )
+    dim_translation = Translation.create(
+        :value => dimension_params[:text],
+        :key => dimension.get_dim_name_key,
+        :locale => @locale_code
+      )
+
+    changes += ", #{{'dimension': dimension.as_json, 'text': dim_translation.as_json}},,,[END OF LINE]"
+
+    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+      f.puts changes
+    end
+
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: dim_translation.value, item_type: dimension.dim_type)
+    redirect_to maint_trees_path(editme: true)
+  end
+
+  def update_dimension
+    changes = "[CHANGE]"
+    dimension = Dimension.find(dimension_params[:id])
+    if dimension_params[:min_grade]
+      dimension.min_grade = dimension_params[:min_grade]
+      changes += ", min_grade: #{dimension_params[:min_grade]}"
+    end
+    if dimension_params[:max_grade]
+    dimension.max_grade = dimension_params[:max_grade]
+    changes += ", max_grade: #{dimension_params[:max_grade]}"
+    end
+    if dimension_params[:active]
+      dimension.active = dimension_params[:active]
+      changes += ", active: #{dimension_params[:active]}"
+    end
+
+    dimension.save
+
+    if dimension_params[:text]
+      Translation.find_or_update_translation(@locale_code,
+          dimension.get_dim_name_key,
+          dimension_params[:text]
+        )
+      changes += ", text: #{dimension_params[:text]}"
+    end
+    changes += ",,,[END OF LINE]"
+    translation = Translation.find_translation_name(
+        @locale_code,
+        dimension.get_dim_name_key,
+        dimension.get_dim_name_key
+      )
+
+    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+      f.puts changes
+    end
+
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: translation, item_type: dimension.dim_type)
+
+    redirect_to maint_trees_path(editme: true)
+  end
+
   def dimensions
     puts "params #{params}"
     # index_prep
@@ -920,6 +1027,23 @@ class TreesController < ApplicationController
     end
   end
 
+  def dimension_params
+    params.require(:dimension).permit(
+      :id,
+      :active,
+      :subject_code,
+      :subject_id,
+      :dim_type,
+      :dim_code,
+      :dim_name_key,
+      :dim_desc_key,
+      :min_grade,
+      :max_grade,
+      :text,
+      :desc
+    )
+  end
+
   def tree_tree_params
     params.require(:tree_tree).permit(
       :id,
@@ -1085,13 +1209,12 @@ class TreesController < ApplicationController
       @dim_subjs['miscon'] = Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first.code
     end
 
-    puts "dim_subjs[bigidea]: #{@dim_subjs['bigidea'].inspect}"
+    Rails.logger.debug("dim_subjs[bigidea]: #{@dim_subjs['bigidea'].inspect}")
     if dim_tree_params && dim_tree_params[:bigidea_gb_id]
       if dim_tree_params[:bigidea_gb_id] != "0"
         @bi_gb = GradeBand.find(dim_tree_params[:bigidea_gb_id])
       else
-        subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['bigidea'], 999)
-        @bi_gb = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
+        @bi_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
       end
       @dim_grades['bigidea'] = { min_grade: @bi_gb[:min_grade], max_grade: @bi_gb[:max_grade]}
     elsif @dim_subjs['bigidea']
@@ -1105,15 +1228,14 @@ class TreesController < ApplicationController
       if dim_tree_params[:miscon_gb_id] != "0"
         @m_gb = GradeBand.find(dim_tree_params[:miscon_gb_id])
       else
-        subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
-        @m_gb = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
+        @m_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
       end
       @dim_grades['miscon'] = { min_grade: @m_gb[:min_grade], max_grade: @m_gb[:max_grade]}
     elsif @dim_subjs['miscon']
       subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
-      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
+      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
     else
-      @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE.min_grade, max_grade: GradeBand::MAX_GRADE }
+      @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
     end
 
     #if @trees is prepared, look for connected dimtrees
@@ -1148,13 +1270,13 @@ class TreesController < ApplicationController
       puts "DIM GRADES BIG IDEA: #{@dim_grades['bigidea'].inspect}"
       bigidea_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['bigidea'][:max_grade]]
       bigidea_max_arr = [@dim_grades['bigidea'][:min_grade] .. GradeBand::MAX_GRADE]
-      @dimensions_bigideas = Dimension.where(dim_type: @treeTypeRec.big_ideas_dim_type,
+      @dimensions_bigideas = Dimension.active.where(dim_type: @treeTypeRec.big_ideas_dim_type,
         subject_code: @dim_subjs['bigidea'], min_grade: bigidea_min_arr, max_grade: bigidea_max_arr)
 
       # miscon_subj_ids = Subject.where(:code => @dim_subjs['miscon'].code).pluck(:id)
       miscon_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['miscon'][:max_grade]]
       miscon_max_arr = [@dim_grades['miscon'][:min_grade] .. GradeBand::MAX_GRADE]
-      @dimensions_miscons = Dimension.where(dim_type: @treeTypeRec.miscon_dim_type,
+      @dimensions_miscons = Dimension.active.where(dim_type: @treeTypeRec.miscon_dim_type,
         subject_code: @dim_subjs['miscon'], min_grade: miscon_min_arr, max_grade: miscon_max_arr)
 
       #@dimensions = Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.big_ideas_dim_type, @dim_subjs['bigidea'].id, @dim_grades['bigidea'][:min_grade], @dim_grades['bigidea'][:max_grade]).or(Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.miscon_dim_type, @dim_subjs['miscon'].id, @dim_grades['miscon'][:min_grade], @dim_grades['miscon'][:max_grade]))

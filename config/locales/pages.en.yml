@@ -19,6 +19,8 @@ en:
       create: "Create"
       subject: "Subject"
       grade_band: "Grade"
+      min_grade: "Minimum Grade"
+      max_grade: "Maximum Grade"
       grade_band_show: "Show Grade"
       grade_band_num: "Grade %{num}"
       show_indicators: "Show %{name}"
@@ -82,6 +84,7 @@ en:
       max_subj_display_count: "A maximum of %{num} subjects can be displayed at once."
     notice:
       saved_relationship: "Saved relationship: %{item_type_1} [%{item_desc_1}] is related to the %{item_type_2} [%{item_desc_2}]"
+      saved_item: "Saved %{item_type}: %{item}"
   home:
     name: "Curriculum Home Page"
     title: "Curriculum Home Page"
@@ -178,10 +181,12 @@ en:
     miscon:
       title: "Misconceptions"
       singular: "Misconception"
+      textlabel: "Misconception Text"
     bigidea:
       title: "Big Ideas"
       singular: "Big Idea"
       relates_to: "relates to"
+      textlabel: "Big Idea Text"
     show:
       name: "Curriculum Detail Page"
     labels:
