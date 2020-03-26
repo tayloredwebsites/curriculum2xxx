@@ -420,7 +420,7 @@ class TreesController < ApplicationController
   end
 
   def create_dimension
-    puts "params: {#{params.inspect}}"
+    changes = "[CREATE]"
     subject = Subject.where(
         :tree_type_id => @treeTypeRec.id,
         :code => dimension_params[:subject_code]
@@ -443,27 +443,51 @@ class TreesController < ApplicationController
         :locale => @locale_code
       )
 
+    changes += ", #{{'dimension': dimension.as_json, 'text': dim_translation.as_json}},,,[END OF LINE]"
+
+    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+      f.puts changes
+    end
+
     flash[:notice] = I18n.translate("app.notice.saved_item", item: dim_translation.value, item_type: dimension.dim_type)
     redirect_to maint_trees_path(editme: true)
   end
 
   def update_dimension
+    changes = "[CHANGE]"
     dimension = Dimension.find(dimension_params[:id])
-    dimension.min_grade = dimension_params[:min_grade] if dimension_params[:min_grade]
-    dimension.max_grade = dimension_params[:max_grade] if dimension_params[:max_grade]
-    dimension.active = dimension_params[:active] if dimension_params[:active]
+    if dimension_params[:min_grade]
+      dimension.min_grade = dimension_params[:min_grade]
+      changes += ", min_grade: #{dimension_params[:min_grade]}"
+    end
+    if dimension_params[:max_grade]
+    dimension.max_grade = dimension_params[:max_grade]
+    changes += ", max_grade: #{dimension_params[:max_grade]}"
+    end
+    if dimension_params[:active]
+      dimension.active = dimension_params[:active]
+      changes += ", active: #{dimension_params[:active]}"
+    end
+
     dimension.save
 
-    Translation.find_or_update_translation(@locale_code,
-        dimension.get_dim_name_key,
-        dimension_params[:text]
-      ) if dimension_params[:text]
-
+    if dimension_params[:text]
+      Translation.find_or_update_translation(@locale_code,
+          dimension.get_dim_name_key,
+          dimension_params[:text]
+        )
+      changes += ", text: #{dimension_params[:text]}"
+    end
+    changes += ",,,[END OF LINE]"
     translation = Translation.find_translation_name(
         @locale_code,
         dimension.get_dim_name_key,
         dimension.get_dim_name_key
       )
+
+    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+      f.puts changes
+    end
 
     flash[:notice] = I18n.translate("app.notice.saved_item", item: translation, item_type: dimension.dim_type)
 
