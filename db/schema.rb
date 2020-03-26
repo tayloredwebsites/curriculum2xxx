@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20200326015125) do
 
-  create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "dimension_id", null: false
     t.bigint "tree_id", null: false
     t.string "dim_explanation_key"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20200326015125) do
     t.index ["tree_id"], name: "index_dimension_trees_on_tree_id"
   end
 
-  create_table "dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "subject_id"
     t.string "dim_type"
     t.string "dim_code"
@@ -56,6 +56,12 @@ ActiveRecord::Schema.define(version: 20200326015125) do
   create_table "locales", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.string "base_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -103,7 +109,8 @@ ActiveRecord::Schema.define(version: 20200326015125) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_translations_on_key"
-    t.index ["value"], name: "index_translations_on_value", length: { value: 255 }
+    t.index ["locale", "key"], name: "index_translations_on_keys"
+    t.index ["value"], name: "index_translations_on_value", length: { value: 256 }
   end
 
   create_table "tree_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -133,6 +140,10 @@ ActiveRecord::Schema.define(version: 20200326015125) do
     t.string "big_ideas_dim_type", default: "bigidea", null: false
     t.integer "version_id", default: 0, null: false
     t.boolean "working_status", default: true
+    t.string "ess_q_dim_type", default: "", null: false
+    t.string "tree_code_format", default: "", null: false
+    t.string "detail_headers", default: "", null: false
+    t.string "grid_headers", default: "", null: false
     t.index ["code", "version_id"], name: "index_tree_types_on_code_and_version_id", unique: true
   end
 
@@ -152,8 +163,10 @@ ActiveRecord::Schema.define(version: 20200326015125) do
     t.integer "sequence_order", default: 0
     t.boolean "active", default: true
     t.integer "old_tree_id"
+    t.integer "outcome_id"
     t.index ["grade_band_id"], name: "index_trees_on_grade_band_id"
     t.index ["name_key"], name: "index_trees_on_name_key"
+    t.index ["outcome_id"], name: "index_trees_on_outcome_id", unique: true
     t.index ["subject_id"], name: "index_trees_on_subject_id"
     t.index ["tree_type_id", "version_id", "subject_id", "grade_band_id", "code"], name: "index_trees_on_keys"
     t.index ["tree_type_id"], name: "index_trees_on_tree_type_id"
