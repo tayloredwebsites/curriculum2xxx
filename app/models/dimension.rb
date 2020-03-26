@@ -14,6 +14,8 @@ class Dimension < BaseRec
   has_many :dim_trees
   has_many :trees, through: :dim_trees
 
+  scope :active, -> { where(:active => true) }
+
   # Translation Field
   def get_dim_name_key
     ret = dim_name_key ? dim_name_key : "dimension.#{id}.name"

@@ -58,6 +58,14 @@
 
   <br>
 
+  <fieldset>
+    <label for="dimension[active]">Active?</label>
+      <input name="dimension[active]" type="checkbox"
+        <%= @dimension.active ? ' checked' : '' %>></input>
+  </fieldset>
+
+  <br>
+
  <div class="modal-footer">
    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
    <button type="submit" class="btn btn-primary">Save changes</button>

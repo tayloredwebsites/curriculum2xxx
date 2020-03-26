@@ -449,15 +449,24 @@ class TreesController < ApplicationController
 
   def update_dimension
     dimension = Dimension.find(dimension_params[:id])
-    dimension.update(
-        :min_grade => dimension_params[:min_grade],
-        :max_grade => dimension_params[:max_grade]
-      )
+    dimension.min_grade = dimension_params[:min_grade] if dimension_params[:min_grade]
+    dimension.max_grade = dimension_params[:max_grade] if dimension_params[:max_grade]
+    dimension.active = dimension_params[:active] if dimension_params[:active]
+    dimension.save
+
     Translation.find_or_update_translation(@locale_code,
         dimension.get_dim_name_key,
         dimension_params[:text]
+      ) if dimension_params[:text]
+
+    translation = Translation.find_translation_name(
+        @locale_code,
+        dimension.get_dim_name_key,
+        dimension.get_dim_name_key
       )
-    flash[:notice] = I18n.translate("app.notice.saved_item", item: dimension_params[:text], item_type: dimension.dim_type)
+
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: translation, item_type: dimension.dim_type)
+
     redirect_to maint_trees_path(editme: true)
   end
 
@@ -1237,13 +1246,13 @@ class TreesController < ApplicationController
       puts "DIM GRADES BIG IDEA: #{@dim_grades['bigidea'].inspect}"
       bigidea_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['bigidea'][:max_grade]]
       bigidea_max_arr = [@dim_grades['bigidea'][:min_grade] .. GradeBand::MAX_GRADE]
-      @dimensions_bigideas = Dimension.where(dim_type: @treeTypeRec.big_ideas_dim_type,
+      @dimensions_bigideas = Dimension.active.where(dim_type: @treeTypeRec.big_ideas_dim_type,
         subject_code: @dim_subjs['bigidea'], min_grade: bigidea_min_arr, max_grade: bigidea_max_arr)
 
       # miscon_subj_ids = Subject.where(:code => @dim_subjs['miscon'].code).pluck(:id)
       miscon_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['miscon'][:max_grade]]
       miscon_max_arr = [@dim_grades['miscon'][:min_grade] .. GradeBand::MAX_GRADE]
-      @dimensions_miscons = Dimension.where(dim_type: @treeTypeRec.miscon_dim_type,
+      @dimensions_miscons = Dimension.active.where(dim_type: @treeTypeRec.miscon_dim_type,
         subject_code: @dim_subjs['miscon'], min_grade: miscon_min_arr, max_grade: miscon_max_arr)
 
       #@dimensions = Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.big_ideas_dim_type, @dim_subjs['bigidea'].id, @dim_grades['bigidea'][:min_grade], @dim_grades['bigidea'][:max_grade]).or(Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.miscon_dim_type, @dim_subjs['miscon'].id, @dim_grades['miscon'][:min_grade], @dim_grades['miscon'][:max_grade]))
