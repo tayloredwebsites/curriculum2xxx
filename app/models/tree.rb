@@ -19,6 +19,7 @@ class Tree < BaseRec
   belongs_to :version
   belongs_to :subject
   belongs_to :grade_band
+  belongs_to :outcome
 
   has_many :tree_referencers, foreign_key: :tree_referencer_id, class_name: 'TreeTree'
   # has_many :tree_referencer_trees, through: :tree_referencers
@@ -51,6 +52,9 @@ class Tree < BaseRec
     # where(active: true)
   }
 
+  # Field Translations
+
+  ####################################################
   def code_by_ix(ix)
     if depth == 3
       if self.matching_codes.length > ix
