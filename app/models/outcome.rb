@@ -16,7 +16,8 @@ class Outcome < BaseRec
   end
 
   def set_base_key(tree_base_key)
-    base_key = tree_base_key + '.outc'
+    self.base_key = tree_base_key + '.outc'
+    self.save
   end
 
 end
