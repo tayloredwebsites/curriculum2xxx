@@ -50,7 +50,7 @@ namespace :seed_turkey_v02a do
     Tree.all.each do |t|
       tt = t.tree_type
       if tt.outcome_depth > 0
-        if t.depth == tt.outcome_depth && t.outcome_id != nil
+        if t.depth == tt.outcome_depth && t.outcome_id == nil
           out = Outcome.new()
           out.set_base_key(t.base_key)
           out.save
