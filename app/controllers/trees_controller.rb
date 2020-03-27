@@ -195,11 +195,13 @@ class TreesController < ApplicationController
     @show_bigidea = @dim_type ? (@dim_type == @treeTypeRec.big_ideas_dim_type) : (cookies[:bigidea_visible] == "true") #params[:show_bigidea]
     @show_ess_q = @dim_type ? (@dim_type == @treeTypeRec.ess_q_dim_type) : true #(cookies[:ess_q_visible] == "true")
 
-    @ideas_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.big_ideas_dim_type, @treeTypeRec.code, @version_code), nil) || translate('nav_bar.bigidea.name')
+    @ideas_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.big_ideas_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.bigidea.name')
 
-    @miscon_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.miscon_dim_type, @treeTypeRec.code, @version_code), nil) || translate('nav_bar.miscon.name')
+    @miscon_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.miscon_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.miscon.name')
 
-    @ess_q_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @version_code), nil) || translate('nav_bar.ess_q.name')
+    @ess_q_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.ess_q.name')
+
+    puts "ESSENTIAL QUESTION TRANSLATION #{@ess_q_title}"
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
 

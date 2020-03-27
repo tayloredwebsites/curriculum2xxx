@@ -3,11 +3,12 @@ class Dimension < BaseRec
   # dim_type field valid options
   BIG_IDEA = 'bigidea'
   MISCONCEPTION = 'miscon'
+  ESSENTIAL_QUESTION = 'essq'
   QUESTION = 'question'
   CONCEPT = 'concept'
   COMPETENCY = 'comp'
   STANDARD = 'standard'
-  VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION]
+  VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION, ESSENTIAL_QUESTION]
 
   validate :valid_dim_type
 

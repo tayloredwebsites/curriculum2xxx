@@ -1,0 +1,2 @@
+<button id="show_<%= dim_type %>_btn" class="btn-secondary margin-bottom<%= show_dim ? ' hidden' : '' %>" onclick="show_maint_col('<%= dim_type %>', true);"><%= I18n.t('app.labels.show_indicators', name: dim_title) %></button>
+  <button id="hide_<%= dim_type %>_btn" class="btn-info margin-bottom<%= show_dim ? '' : ' hidden' %>" onclick="show_maint_col('<%= dim_type %>', false);"><%= I18n.t('app.labels.hide_indicators', name: dim_title) %></button>
