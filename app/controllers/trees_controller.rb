@@ -18,9 +18,16 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.name_key]
+      translation = @translations[tree.buildNameKey]
       areaHash = {}
       depth = tree.depth
+      code_arr = tree.code.split(".")
+      parent = treeHash[code_arr.shift] if code_arr.length > 1
+      while code_arr.length > 1
+        c = code_arr.shift
+        parent = parent[:nodes][c] if c != ""
+      end
+
       case depth
 
       when 1
@@ -35,7 +42,7 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_grade_in_tree')
         end
         Rails.logger.debug("*** #{tree.codeArrayAt(1)} to area #{tree.codeArrayAt(0)} in treeHash")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)], tree.subCode, newHash)
+        addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 3
         newHash = {text: "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
@@ -46,7 +53,7 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_area_in_tree')
         end
         Rails.logger.debug("*** #{tree.codeArrayAt(2)} to area #{tree.codeArrayAt(1)} in treeHash")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
+        addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 4
         newHash = {text: "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
@@ -54,10 +61,10 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_grade_in_tree')
         elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
-          raise I18n.t('trees.errors.missing_component_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+        #   raise I18n.t('trees.errors.missing_component_in_tree')
         end
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
+        addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 5
         # # to do - look into refactoring this
@@ -78,7 +85,7 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
         end
         Rails.logger.debug("*** translation: #{translation.inspect}")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
+        addNodeToArrHash(parent, tree.codeArrayAt(4), newHash)
 
       else
         raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
@@ -189,7 +196,7 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.name_key]
+      translation = @translations[tree.buildNameKey]
       # Parent keys types ( Tree Type, Version, Subject, & Grade Band)
       tkey = tree.tree_type.code + "." + tree.version.code + "." + tree.subject.code + "." + tree.grade_band.code
 
@@ -303,7 +310,7 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.name_key]
+      translation = @translations[tree.buildNamekey]
       areaHash = {}
       depth = tree.depth
       case depth
@@ -583,7 +590,7 @@ class TreesController < ApplicationController
 
        # create ruby hash from tree records, to easily build tree from record codes
       @trees.each do |tree|
-        translation = @translations[tree.name_key]
+        translation = @translations[tree.buildNameKey]
         depth = tree.depth
         case depth
         when  @treeTypeRec[:outcome_depth] + 1
@@ -769,14 +776,14 @@ class TreesController < ApplicationController
       if @tree.depth == 4
         # when outcome level, get children (indicators), to in outcome page
         @tree.getAllChildren.each do |c|
-          treeKeys << c.name_key
+          treeKeys << c.buildNameKey
         end
 
       end
       Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
       @trees.each do |t|
         # get translation key for this item
-        treeKeys << t.name_key
+        treeKeys << t.buildNameKey
         # get translation key for each sector, big idea and misconception for this item
         if treeKeys
           t.sector_trees.each do |st|
@@ -791,13 +798,13 @@ class TreesController < ApplicationController
         # get translation key for each related item for this item
         t.tree_referencers.each do |r|
           rTree = r.tree_referencee
-          treeKeys << rTree.name_key
+          treeKeys << rTree.buildNameKey
           treeKeys << r.explanation_key
           subCode = @subjById[rTree.subject_id]
           @relatedBySubj[subCode] << {
             code: rTree.code,
             relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
-            tkey: rTree.name_key,
+            tkey: rTree.buildNameKey,
             explanation: r.explanation_key,
             tid: (rTree.depth < 2) ? 0 : rTree.id,
             ttid: r.id

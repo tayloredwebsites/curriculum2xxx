@@ -46,20 +46,43 @@ namespace :seed_turkey_v02a do
     puts "Curriculum (Tree Type) is updated for tfv "
     puts "  Updated Curriculum: #{@tfv.code} with Hierarchy: #{@tfv.hierarchy_codes}"
 
+    # Create translation(s) for hierarchy codes
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.sub_unit', 'Sub-Unit')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    STDOUT.puts 'Create translation record for Sub-Unit.'
+
     STDOUT.puts 'Create all Outcome records for all tree records at the outcome level.'
     Tree.all.each do |t|
       tt = t.tree_type
       if tt.outcome_depth > 0
-        if t.depth == tt.outcome_depth && t.outcome_id == nil
+        # Tree model overrides the depth field. Returns the length of the code.
+        if t.depth == tt.outcome_depth + 1 && !t.outcome_id.present?
+          puts "try to save outcome for #{t.code}"
           out = Outcome.new()
-          out.set_base_key(t.base_key)
+          out.base_key = out.get_base_key(t.base_key)
           out.save
           t.outcome_id = out.id
           t.save
+          puts "saved outcome for #{t.code}"
         end
       end
     end
     STDOUT.puts 'Done: Outcome records for all tree records at the outcome level have been created.'
+
+    myTreeType.update(:outcome_depth => 3)
+
+    # Tree.joins(:outcome).where(:tree_type_id => 2).each do |t|
+    #   old_name_key = t.buildNameKey
+    #   code_arr = t.code.split(".")
+    #   t.code = code_arr.insert(code_arr.length - 1, "").join(".")
+    #   t.save
+    #   new_name_key = t.buildNameKey
+    #   Translation.where(:key => old_name_key).each do |tr|
+    #     tr.key = new_name_key
+    #     tr.save
+    #   end
+    #   puts "saved new code for #{t.code}"
+    # end
 
   end #update_tree_type
 

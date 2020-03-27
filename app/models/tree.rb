@@ -252,9 +252,25 @@ class Tree < BaseRec
   def getAllParents
     parents = []
     parent = self.getParentRec
-    while parent.present? do
-      parents << parent
-      parent = parent.getParentRec
+    self_code = self.code.split('.')
+    self_code.pop(1)
+    while self_code.length > 0 do
+      puts "self_code: #{self_code}"
+      if parent.present?
+        parents << parent
+        parent = parent.getParentRec
+        self_code.pop(1)
+      else
+        parents << nil
+        self_code.pop(1)
+        parent = Tree.where(
+            tree_type_id: self.tree_type_id,
+            version_id: self.version_id,
+            subject_id: self.subject_id,
+            grade_band_id: self.grade_band_id,
+            code: self_code.join(".")
+          ).first
+      end
     end
     Rails.logger.debug("*** tree parents: #{parents.inspect}")
     return parents
@@ -271,7 +287,7 @@ class Tree < BaseRec
   def getAllTransNameKeys
     parents = self.getAllParents
     allRecs = parents.concat([self])
-    treeKeys = (allRecs).map { |rec| rec.name_key}
+    treeKeys = (allRecs).map { |rec| rec.name_key if rec}
   end
 
   # Tree.find_or_add_code_in_tree

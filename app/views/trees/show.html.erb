@@ -17,14 +17,16 @@
       <% @hierarchies.each_with_index do |e, i|
          if i <= @treeTypeRec[:outcome_depth]
            rec = (i == @treeTypeRec[:outcome_depth] ? tree : tree_parents[tree_parents.length - 1 - i])
-           label_text = @translations[rec.buildNameKey]
-       %>
-         <div class='row subject-<%= e.downcase %>-row'><div class='col col-lg-6 text-left'><%= "#{"#{@subjectByCode[tree.subject.code][:name]} " if i == 0}#{e}#{" " + rec.codeArrayAt(i) if i > 0}" %>: <%= label_text %>
-           <% if i == @treeTypeRec[:outcome_depth] %>
-             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
-           <% end %>
-         </div></div>
-      <% end
+           if rec
+             label_text = @translations[rec.buildNameKey]
+           %>
+             <div class='row subject-<%= e.downcase %>-row'><div class='col col-lg-6 text-left'><%= "#{"#{@subjectByCode[tree.subject.code][:name]} " if i == 0 && rec}#{e} #{rec.codeArrayAt(i) if i > 0 && rec}" %>: <%= label_text %>
+               <% if i == @treeTypeRec[:outcome_depth] %>
+                 <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+               <% end %>
+             </div></div>
+      <%  end
+        end
       end %>
 
       <div class='col col-lg-12 text-right'>
