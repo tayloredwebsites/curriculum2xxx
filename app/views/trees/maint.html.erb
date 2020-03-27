@@ -30,7 +30,7 @@
        @treeByParents.each do |tkey, codeh| %>
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
-          <% if h[:depth] == @treeTypeRec.outcome_depth+1 %>
+          <% if h[:outcome] %>
           <% ideas_str = '' #ideas_title
              misc_str = '' #misc_title
              ideas_found = 0
@@ -79,6 +79,7 @@
             </div>
             <% end %>
           </li>
+          <!-- TO DO: Find a different workaround for hiding indicator-level items -->
           <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
           <% else %>
             <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %>">
