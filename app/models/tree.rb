@@ -19,7 +19,7 @@ class Tree < BaseRec
   belongs_to :version
   belongs_to :subject
   belongs_to :grade_band
-  belongs_to :outcome
+  belongs_to :outcome, optional: true
 
   has_many :tree_referencers, foreign_key: :tree_referencer_id, class_name: 'TreeTree'
   # has_many :tree_referencer_trees, through: :tree_referencers
