@@ -193,7 +193,7 @@ class TreesController < ApplicationController
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? translate('nav_bar.'+@dim_type+'.name') : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
     @show_miscon = @dim_type ? (@dim_type == @treeTypeRec.miscon_dim_type) : (cookies[:miscon_visible] == "true") #params[:show_miscon]
     @show_bigidea = @dim_type ? (@dim_type == @treeTypeRec.big_ideas_dim_type) : (cookies[:bigidea_visible] == "true") #params[:show_bigidea]
-    @show_ess_q = @dim_type ? (@dim_type == @treeTypeRec.ess_q_dim_type) : true #(cookies[:ess_q_visible] == "true")
+    @show_ess_q = @dim_type ? (@dim_type == @treeTypeRec.ess_q_dim_type) : (cookies[:essq_visible] == "true")
 
     @ideas_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.big_ideas_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.bigidea.name')
 

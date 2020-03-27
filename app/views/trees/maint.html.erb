@@ -8,7 +8,7 @@
 <div class='text-center dimension-page'>
   <h2><%= @page_title %></h2>
 </div>
-<% if !@dim_type #big_idea_dims && big_idea_dims.count > 0 %>
+<% if !@dim_type && @treeTypeRec.ess_q_dim_type != ""  %>
   <%=
       render partial: "show_maint_col_buttons", locals: {
       dim_type: @treeTypeRec.ess_q_dim_type,
@@ -17,7 +17,7 @@
       }
   %>
 <% end %>
-<% if !@dim_type #big_idea_dims && big_idea_dims.count > 0 %>
+<% if !@dim_type && @treeTypeRec.big_ideas_dim_type != "" %>
   <%=
       render partial: "show_maint_col_buttons", locals: {
       dim_type: @treeTypeRec.big_ideas_dim_type,
@@ -26,7 +26,7 @@
       }
   %>
 <% end %>
-<% if !@dim_type #miscon_dims && miscon_dims.count > 0 %>
+<% if !@dim_type && @treeTypeRec.miscon_dim_type != ""  %>
   <%=
       render partial: "show_maint_col_buttons", locals: {
       dim_type: @treeTypeRec.miscon_dim_type,
