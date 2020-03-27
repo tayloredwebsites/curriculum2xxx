@@ -18,27 +18,34 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.name_key]
+      translation = @translations[tree.buildNameKey]
       areaHash = {}
       depth = tree.depth
+      code_arr = tree.code.split(".")
+      parent = treeHash[code_arr.shift] if code_arr.length > 1
+      while code_arr.length > 1
+        c = code_arr.shift
+        parent = parent[:nodes][c] if c != ""
+      end
+
       case depth
 
       when 1
-        newHash = {text: "#{@hierarchies[0] if @hierarchies.length > 0} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[0] if @hierarchies.length > 0} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
         # add grade (band) if not there already
         treeHash[tree.codeArrayAt(0)] = newHash if !treeHash[tree.codeArrayAt(0)].present?
 
       when 2
-        newHash = {text: "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
         puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
         end
         Rails.logger.debug("*** #{tree.codeArrayAt(1)} to area #{tree.codeArrayAt(0)} in treeHash")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)], tree.subCode, newHash)
+        addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
         puts ("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -46,18 +53,18 @@ class TreesController < ApplicationController
           raise I18n.t('trees.errors.missing_area_in_tree')
         end
         Rails.logger.debug("*** #{tree.codeArrayAt(2)} to area #{tree.codeArrayAt(1)} in treeHash")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
+        addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
         elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
           raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
-          raise I18n.t('trees.errors.missing_component_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+        #   raise I18n.t('trees.errors.missing_component_in_tree')
         end
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
+        addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 5
         # # to do - look into refactoring this
@@ -65,20 +72,22 @@ class TreesController < ApplicationController
         # Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
         # Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
         # Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
-        newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", nodes: {}}
+        newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
+        #If certain levels in the hierarchy are optional, these missing components are not necessarily errors.
+        #
         # Rails.logger.debug("indicator newhash: #{newHash.inspect}")
-        if treeHash[tree.codeArrayAt(0)].blank?
-          raise I18n.t('trees.errors.missing_grade_in_tree')
-        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
-          raise I18n.t('trees.errors.missing_area_in_tree')
-        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
-          raise I18n.t('trees.errors.missing_component_in_tree')
-        elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)].blank?
-          Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
-          raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
-        end
+        # if treeHash[tree.codeArrayAt(0)].blank?
+        #   raise I18n.t('trees.errors.missing_grade_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
+        #   raise I18n.t('trees.errors.missing_area_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
+        #   raise I18n.t('trees.errors.missing_component_in_tree')
+        # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)].blank?
+        #   Rails.logger.error I18n.t('trees.errors.missing_outcome_in_tree')
+        #   raise I18n.t('trees.errors.missing_outcome_in_tree', treeHash[tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)])
+        # end
         Rails.logger.debug("*** translation: #{translation.inspect}")
-        addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
+        addNodeToArrHash(parent, tree.codeArrayAt(4), newHash)
 
       else
         raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
@@ -93,7 +102,7 @@ class TreesController < ApplicationController
         area[:nodes].each do |key2, comp|
           a3 = {text: comp[:text], href: "javascript:void(0);"}
           comp[:nodes].each do |key3, outc|
-            path4 = @treeTypeRec[:outcome_depth] == 2 ? tree_path(outc[:id]) : "javascript:void(0);"
+            path4 = outc[:outcome] ? tree_path(outc[:id]) : "javascript:void(0);"
             a4 = {text: outc[:text], href: path4, setting: 'outcome'}
             outc[:nodes].each do |key4, indic|
               a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
@@ -189,7 +198,7 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.name_key]
+      translation = @translations[tree.buildNameKey]
       # Parent keys types ( Tree Type, Version, Subject, & Grade Band)
       tkey = tree.tree_type.code + "." + tree.version.code + "." + tree.subject.code + "." + tree.grade_band.code
 
@@ -203,6 +212,7 @@ class TreesController < ApplicationController
       newHash = {
         id: tree.id,
         depth: tree.depth,
+        outcome: tree.outcome,
         subj_code: tree.subject.code,
         gb_code: tree.grade_band.code,
         code: tree.code,
@@ -289,7 +299,7 @@ class TreesController < ApplicationController
     # note: Active Record had problems with placeholder conditions in join clause.
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
-    base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    base_keys= @trees.map { |t| t.buildNameKey }
     base_keys =  base_keys | subjects.map { |s| "#{s.base_key}.name" }
     base_keys = base_keys | subjects.map { |s| "#{s.base_key}.abbr" }
     base_keys = base_keys | relations.map { |r| r.explanation_key }
@@ -303,7 +313,7 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.name_key]
+      translation = @translations[tree.buildNameKey]
       areaHash = {}
       depth = tree.depth
       case depth
@@ -583,7 +593,7 @@ class TreesController < ApplicationController
 
        # create ruby hash from tree records, to easily build tree from record codes
       @trees.each do |tree|
-        translation = @translations[tree.name_key]
+        translation = @translations[tree.buildNameKey]
         depth = tree.depth
         case depth
         when  @treeTypeRec[:outcome_depth] + 1
@@ -769,14 +779,14 @@ class TreesController < ApplicationController
       if @tree.depth == 4
         # when outcome level, get children (indicators), to in outcome page
         @tree.getAllChildren.each do |c|
-          treeKeys << c.name_key
+          treeKeys << c.buildNameKey
         end
 
       end
       Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
       @trees.each do |t|
         # get translation key for this item
-        treeKeys << t.name_key
+        treeKeys << t.buildNameKey
         # get translation key for each sector, big idea and misconception for this item
         if treeKeys
           t.sector_trees.each do |st|
@@ -791,13 +801,13 @@ class TreesController < ApplicationController
         # get translation key for each related item for this item
         t.tree_referencers.each do |r|
           rTree = r.tree_referencee
-          treeKeys << rTree.name_key
+          treeKeys << rTree.buildNameKey
           treeKeys << r.explanation_key
           subCode = @subjById[rTree.subject_id]
           @relatedBySubj[subCode] << {
             code: rTree.code,
             relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
-            tkey: rTree.name_key,
+            tkey: rTree.buildNameKey,
             explanation: r.explanation_key,
             tid: (rTree.depth < 2) ? 0 : rTree.id,
             ttid: r.id
@@ -1172,7 +1182,7 @@ class TreesController < ApplicationController
     # note: Active Record had problems with placeholder conditions in join clause.
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
-    base_keys= @trees.map { |t| "#{t.base_key}.name" }
+    base_keys= @trees.map { |t| t.buildNameKey }
     tempArray = []
     @subjects.each { |k, v| tempArray << "#{v.base_key}.name" }
     @subjects.each { |s, v| tempArray << "#{v.base_key}.abbr" }

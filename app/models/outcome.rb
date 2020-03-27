@@ -15,8 +15,8 @@ class Outcome < BaseRec
     return base_key + ".explain"
   end
 
-  def set_base_key(tree_base_key)
-    base_key = tree_base_key + '.outc'
+  def get_base_key(tree_base_key)
+    return tree_base_key + '.outc'
   end
 
 end
