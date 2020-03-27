@@ -113,6 +113,9 @@ en:
     miscon:
       name: "Misconceptions"
       hover: "Displays Misconceptions"
+    ess_q:
+      name: "Essential Questions"
+      hover: "Displays Essential Questions"
     questions:
       name: "Essential Questions"
       hover: "Displays Essential Questions"

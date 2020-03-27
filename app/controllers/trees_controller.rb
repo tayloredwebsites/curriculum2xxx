@@ -193,6 +193,13 @@ class TreesController < ApplicationController
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? translate('nav_bar.'+@dim_type+'.name') : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
     @show_miscon = @dim_type ? (@dim_type == @treeTypeRec.miscon_dim_type) : (cookies[:miscon_visible] == "true") #params[:show_miscon]
     @show_bigidea = @dim_type ? (@dim_type == @treeTypeRec.big_ideas_dim_type) : (cookies[:bigidea_visible] == "true") #params[:show_bigidea]
+    @show_ess_q = @dim_type ? (@dim_type == @treeTypeRec.ess_q_dim_type) : true #(cookies[:ess_q_visible] == "true")
+
+    @ideas_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.big_ideas_dim_type, @treeTypeRec.code, @version_code), nil) || translate('nav_bar.bigidea.name')
+
+    @miscon_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.miscon_dim_type, @treeTypeRec.code, @version_code), nil) || translate('nav_bar.miscon.name')
+
+    @ess_q_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @version_code), nil) || translate('nav_bar.ess_q.name')
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }
 
@@ -1030,7 +1037,9 @@ class TreesController < ApplicationController
         :bigidea_subj_code,
         :bigidea_gb_id,
         :miscon_subj_code,
-        :miscon_gb_id
+        :miscon_gb_id,
+        :ess_q_subj_code,
+        :ess_q_gb_id,
       )
     rescue
       nil
@@ -1203,81 +1212,105 @@ class TreesController < ApplicationController
     @dim_grades = Hash.new{ |h, k| h[k] = {} }
     @dim_subjs = {}
     dimKeys = []
+    default_subj_code = @trees && @trees.first.present? ? @trees.first.subject.code : Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first.code
+    default_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
 
+    #####################################################
+    # Set Subject Code to Display for Dimension Columns
+    # on the maint pages (i.e., editing, big ideas, etc.)
+    if dim_tree_params && dim_tree_params[:ess_q_subj_code]
+      @dim_subjs[@treeTypeRec.ess_q_dim_type] = dim_tree_params[:ess_q_subj_code]
+    else
+      @dim_subjs[@treeTypeRec.ess_q_dim_type] = default_subj_code
+    end
     if dim_tree_params && dim_tree_params[:bigidea_subj_code]
       @dim_subjs['bigidea'] = dim_tree_params[:bigidea_subj_code]
-    elsif @trees && @trees.first.present?
-      @dim_subjs['bigidea'] = @trees.first.subject.code
     else
-      @dim_subjs['bigidea'] = Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first.code
+      @dim_subjs['bigidea'] = default_subj_code
     end
     if dim_tree_params && dim_tree_params[:miscon_subj_code]
       @dim_subjs['miscon'] = dim_tree_params[:miscon_subj_code]
-    elsif @trees && @trees.first.present?
-      @dim_subjs['miscon'] = @trees.first.subject.code
     else
-      @dim_subjs['miscon'] = Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first.code
+      @dim_subjs['miscon'] = default_subj_code
     end
 
     Rails.logger.debug("dim_subjs[bigidea]: #{@dim_subjs['bigidea'].inspect}")
+
+    ####################################################
+    # Set Gradebands to Display for Dimension Columns
+    if dim_tree_params && dim_tree_params[:ess_q_gb_id]
+      @eq_gb = dim_tree_params[:ess_q_gb_id] != "0" ? GradeBand.find(dim_tree_params[:ess_q_gb_id]) : default_gb
+      @dim_grades[@treeTypeRec.ess_q_dim_type] = { min_grade: @eq_gb[:min_grade], max_grade: @eq_gb[:max_grade]}
+    elsif @dim_subjs[@treeTypeRec.ess_q_dim_type]
+      subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs[@treeTypeRec.ess_q_dim_type], 999)
+      @dim_grades[@treeTypeRec.ess_q_dim_type] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : default_gb
+    else
+      @dim_grades[@treeTypeRec.ess_q_dim_type] = default_gb
+    end
+
     if dim_tree_params && dim_tree_params[:bigidea_gb_id]
-      if dim_tree_params[:bigidea_gb_id] != "0"
-        @bi_gb = GradeBand.find(dim_tree_params[:bigidea_gb_id])
-      else
-        @bi_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
-      end
+      @bi_gb = dim_tree_params[:bigidea_gb_id] != "0" ? GradeBand.find(dim_tree_params[:bigidea_gb_id]) : default_gb
       @dim_grades['bigidea'] = { min_grade: @bi_gb[:min_grade], max_grade: @bi_gb[:max_grade]}
     elsif @dim_subjs['bigidea']
       subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['bigidea'], 999)
-      @dim_grades['bigidea'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
+      @dim_grades['bigidea'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : default_gb
     else
-      @dim_grades['bigidea'] = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
+      @dim_grades['bigidea'] = default_gb
     end
 
     if dim_tree_params && dim_tree_params[:miscon_gb_id]
-      if dim_tree_params[:miscon_gb_id] != "0"
-        @m_gb = GradeBand.find(dim_tree_params[:miscon_gb_id])
-      else
-        @m_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
-      end
+      @m_gb = dim_tree_params[:miscon_gb_id] != "0" ? GradeBand.find(dim_tree_params[:miscon_gb_id]) : default_gb
       @dim_grades['miscon'] = { min_grade: @m_gb[:min_grade], max_grade: @m_gb[:max_grade]}
     elsif @dim_subjs['miscon']
       subjs = Subject.where('code = ? AND max_grade < ?', @dim_subjs['miscon'], 999)
-      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
+      @dim_grades['miscon'] = subjs.count > 0 ? {min_grade: subjs.order("min_grade asc").pluck("min_grade")[0], max_grade: subjs.order("max_grade desc").pluck("max_grade")[0]} : default_gb
     else
-      @dim_grades['miscon'] = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE }
+      @dim_grades['miscon'] = default_gb
     end
 
+    ####################################################
     #if @trees is prepared, look for connected dimtrees
     if @trees
       # Get dimensions and dimtrees for displayed curriculum
       @dimtrees = DimTree.active.joins(:dimension).where(:tree_id => @trees.pluck("id"))
       dimKeys = @dimtrees.pluck('dim_explanation_key')
-      @idea_subj_base_key = "subject.base.#{@dim_subjs['bigidea']}.name" if @dim_subjs['bigidea']
-      @misc_subj_base_key = "subject.base.#{@dim_subjs['miscon']}.name" if @dim_subjs['miscon']
+      @ess_q_subj_base_key = Subject.name_translation_key(@dim_subjs[@treeTypeRec.ess_q_dim_type]) if @dim_subjs[@treeTypeRec.ess_q_dim_type]
+      @idea_subj_base_key = Subject.name_translation_key(@dim_subjs['bigidea']) if @dim_subjs['bigidea']
+      @misc_subj_base_key = Subject.name_translation_key(@dim_subjs['miscon']) if @dim_subjs['miscon']
       dimKeys << @idea_subj_base_key if @idea_subj_base_key
+      dimKeys << @ess_q_subj_base_key if @ess_q_subj_base_key
       dimKeys << @misc_subj_base_key if @misc_subj_base_key
       @dimtrees.each do |dt|
         @dimtrees_by_tree_id[dt[:tree_id]] << dt
         dt_dim = dt.dimension
         dt_dim_subj = nil
+        is_ess_q = (dt_dim.dim_type == @treeTypeRec.ess_q_dim_type)
         is_bigidea = (dt_dim.dim_type == @treeTypeRec.big_ideas_dim_type)
         is_miscon = dt_dim.dim_type == @treeTypeRec.miscon_dim_type
         # If the dimension will not be captured by the dimension
         # columns displayed on the page.
-        if (is_bigidea && @dim_subjs['bigidea']  && @dim_subjs['bigidea'] != dt_dim.subject_code) || (is_miscon && @dim_subjs['miscon']  && @dim_subjs['miscon'] != dt_dim.subject_code)
+        if (is_bigidea && @dim_subjs['bigidea']  && @dim_subjs['bigidea'] != dt_dim.subject_code) || (is_miscon && @dim_subjs['miscon']  && @dim_subjs['miscon'] != dt_dim.subject_code) || (is_ess_q && @dim_subjs[@treeTypeRec.ess_q_dim_type]  && @dim_subjs[@treeTypeRec.ess_q_dim_type] != dt_dim.subject_code)
         #@trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
-          dimKeys << dt_dim.dim_name_key
-          dt_dim_subj = "subject.base.#{dt_dim.subject_code}.name"
-          dimKeys << dt_dim_subj if !dimKeys.include?(dt_dim_subj)
+            dimKeys << dt_dim.dim_name_key
+            dt_dim_subj = "subject.base.#{dt_dim.subject_code}.name"
+            dimKeys << dt_dim_subj if !dimKeys.include?(dt_dim_subj)
         end
         @subj_key_by_dt_id[dt.id] = dt_dim_subj
       end
     end #if @trees is prepared, look for connected dimtrees
 
-    if @dim_subjs['bigidea'] && @dim_subjs['miscon']
+
+
+    ###################################################
+    # BUILD DIMENSIONS COLUMNS
+    if @dim_subjs['bigidea'] && @dim_subjs['miscon'] && @dim_subjs[@treeTypeRec.ess_q_dim_type]
+
+      ess_q_min_arr = [GradeBand::MIN_GRADE .. @dim_grades[@treeTypeRec.ess_q_dim_type][:max_grade]]
+      ess_q_max_arr = [@dim_grades[@treeTypeRec.ess_q_dim_type][:min_grade] .. GradeBand::MAX_GRADE]
+      @dimensions_ess_q = Dimension.active.where(dim_type: @treeTypeRec.ess_q_dim_type,
+        subject_code: @dim_subjs[@treeTypeRec.ess_q_dim_type], min_grade: ess_q_min_arr, max_grade: ess_q_max_arr)
+
       # bigidea_subj_ids = Subject.where(:code => @dim_subjs['bigidea']).pluck(:id)
-      puts "DIM GRADES BIG IDEA: #{@dim_grades['bigidea'].inspect}"
       bigidea_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['bigidea'][:max_grade]]
       bigidea_max_arr = [@dim_grades['bigidea'][:min_grade] .. GradeBand::MAX_GRADE]
       @dimensions_bigideas = Dimension.active.where(dim_type: @treeTypeRec.big_ideas_dim_type,
@@ -1290,6 +1323,7 @@ class TreesController < ApplicationController
         subject_code: @dim_subjs['miscon'], min_grade: miscon_min_arr, max_grade: miscon_max_arr)
 
       #@dimensions = Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.big_ideas_dim_type, @dim_subjs['bigidea'].id, @dim_grades['bigidea'][:min_grade], @dim_grades['bigidea'][:max_grade]).or(Dimension.where("dim_type = ? AND subject_id = ? AND max_grade >= ? AND min_grade <= ?", @treeTypeRec.miscon_dim_type, @dim_subjs['miscon'].id, @dim_grades['miscon'][:min_grade], @dim_grades['miscon'][:max_grade]))
+      @dimensions_ess_q.pluck('dim_name_key').map { |k| dimKeys << k }
       @dimensions_bigideas.pluck('dim_name_key').map { |k| dimKeys << k }
       @dimensions_miscons.pluck('dim_name_key').map { |k| dimKeys << k }
      # @dimensions.pluck('dim_name_key').map { |k| dimKeys << k }

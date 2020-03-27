@@ -1,27 +1,24 @@
 <% content_for(:title_code, 'trees.maint.name') %>
 <% content_for(:page_class, 'trees') %>
-<% big_idea_dims = @dimensions_bigideas
-
-   miscon_dims = @dimensions_miscons
-
-   ideas_title = translate('nav_bar.bigidea.name')
-   misc_title = translate('nav_bar.miscon.name')
+<%
+   grades_str = translate('app.labels.grade_band').pluralize
+   num_cols = 1 + (@show_bigidea ? 1 : 0) + (@show_miscon ? 1 : 0) + (@show_ess_q ? 1 :0)
 %>
 <br>
 <div class='text-center dimension-page'>
   <h2><%= @page_title %></h2>
 </div>
 <% if !@dim_type #big_idea_dims && big_idea_dims.count > 0 %>
-  <button id="show_bigidea_btn" class="btn-secondary margin-bottom<%= @show_bigidea ? ' hidden' : '' %>" onclick="show_maint_col('bigidea', true);"><%= I18n.t('app.labels.show_indicators', name: ideas_title) %></button>
-  <button id="hide_bigidea_btn" class="btn-info margin-bottom<%= @show_bigidea ? '' : ' hidden' %>" onclick="show_maint_col('bigidea', false);"><%= I18n.t('app.labels.hide_indicators', name: ideas_title) %></button>
+  <button id="show_bigidea_btn" class="btn-secondary margin-bottom<%= @show_bigidea ? ' hidden' : '' %>" onclick="show_maint_col('bigidea', true);"><%= I18n.t('app.labels.show_indicators', name: @ideas_title) %></button>
+  <button id="hide_bigidea_btn" class="btn-info margin-bottom<%= @show_bigidea ? '' : ' hidden' %>" onclick="show_maint_col('bigidea', false);"><%= I18n.t('app.labels.hide_indicators', name: @ideas_title) %></button>
 <% end %>
 <% if !@dim_type #miscon_dims && miscon_dims.count > 0 %>
-  <button id="show_miscon_btn" class="btn-secondary margin-bottom<%= @show_miscon ? ' hidden' : '' %>" onclick="show_maint_col('miscon', true);"><%= I18n.t('app.labels.show_indicators', name: misc_title) %></button>
-  <button id="hide_miscon_btn" class="btn-info margin-bottom<%= @show_miscon ? '' : ' hidden' %>" onclick="show_maint_col('miscon', false);"><%= I18n.t('app.labels.hide_indicators', name: misc_title) %></button>
+  <button id="show_miscon_btn" class="btn-secondary margin-bottom<%= @show_miscon ? ' hidden' : '' %>" onclick="show_maint_col('miscon', true);"><%= I18n.t('app.labels.show_indicators', name: @miscon_title) %></button>
+  <button id="hide_miscon_btn" class="btn-info margin-bottom<%= @show_miscon ? '' : ' hidden' %>" onclick="show_maint_col('miscon', false);"><%= I18n.t('app.labels.hide_indicators', name: @miscon_title) %></button>
 <% end %>
 <% subj_counter = 0 %>
 <div id="trees" class="dimension-page maint-page">
-  <div class="sequence-grid cols-<%= @show_miscon && @show_bigidea ? 3 : 2 %>">
+  <div class="sequence-grid cols-<%= num_cols %>">
     <ul class="list-group maint-column">
       <li>
         <%= render partial: "maint_filter", locals: {col: "tree"} %>
@@ -31,8 +28,11 @@
         <li class="maint-header indent-0"><%= @translations[tkey] %></li>
         <% codeh.each do |code, h| %>
           <% if h[:outcome] %>
-          <% ideas_str = '' #ideas_title
-             misc_str = '' #misc_title
+          <%
+             ess_q_str = ''
+             ideas_str = '' #@ideas_title
+             misc_str = '' #@misc_title
+             ess_q_found = 0
              ideas_found = 0
              misc_found = 0
            %>
@@ -42,7 +42,12 @@
             <% if h[:dimtrees].length > 0 %>
             <% h[:dimtrees].each do |dt|
                  dim = dt.dimension
-                 if dim.dim_type == "bigidea"
+                 if dim.dim_type == @treeTypeRec.ess_q_dim_type
+                    ess_q_found += 1
+                    essqSubjKey = @subj_key_by_dt_id[dt.id] || @ess_q_subj_base_key
+                    ess_q_str += "<br/>______________<br/>"
+                    ess_q_str += "[#{@translations[essqSubjKey]}] #{@translations[dim.dim_name_key]}"
+                 elsif dim.dim_type == "bigidea"
                     ideas_found += 1
                     ideaSubjKey = @subj_key_by_dt_id[dt.id] || @idea_subj_base_key
                     ideas_str += "<br/>______________<br/>"
@@ -54,15 +59,19 @@
                     misc_str += "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
                  end
                end
-               ideas_str = "<strong>#{(ideas_found > 1 ? ideas_title : ideas_title.singularize)}:</strong>#{ideas_str}"
-               misc_str = "<strong>#{(misc_found > 1 ? misc_title : misc_title.singularize)}:</strong>#{misc_str}"
+               ess_q_str = "<strong>#{(ess_q_found > 1 ? @ess_q_title : @ess_q_title.singularize)}:</strong>#{ess_q_str}"
+               ideas_str = "<strong>#{(ideas_found > 1 ? @ideas_title : @ideas_title.singularize)}:</strong>#{ideas_str}"
+               misc_str = "<strong>#{(misc_found > 1 ? @misc_title : @miscon_title.singularize)}:</strong>#{misc_str}"
             %>
-            <% if ideas_found > 0 %>
-            <i class="fa fa-lightbulb-o" data-toggle="tooltip" title="<%= ideas_str %>"></i>
+            <% if ess_q_found > 0 %>
+                <i class="fa fa-question" data-toggle="tooltip" title="<%= ess_q_str %>"></i>
+            <% end
+               if ideas_found > 0 %>
+                <i class="fa fa-lightbulb-o" data-toggle="tooltip" title="<%= ideas_str %>"></i>
             <% end
               if misc_found > 0
             %>
-            <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="<%= misc_str %>"></i>
+                <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="<%= misc_str %>"></i>
             <% end %>
             <% end %>
             <% if @editing %>
@@ -87,70 +96,48 @@
         <% end %>
       <% end %>
       </ul>
-      <% grades_str = translate('app.labels.grade_band').pluralize %>
 
-      <ul id="bigidea-col" class="list-group maint-column bigidea-col<%= @show_bigidea ? '' : ' hidden' %>" data-subjcode="<%= @dim_subjs['bigidea'] %>" data-gbid="<%= @bi_gb ? (@bi_gb[:id] || 0) : 0 %>">
-        <li>
-          <%= render partial: "maint_filter", locals: {col: "bigidea"} %>
-        </li>
-        <li class="maint-header"><%= "#{@translations[@idea_subj_base_key]} - #{ideas_title} (#{grades_str}: #{@dim_grades['bigidea'][:min_grade]} - #{@dim_grades['bigidea'][:max_grade]})" %>
-          <% if @editing %>
-            <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: @treeTypeRec.big_ideas_dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
-          <% end %>
-        </li>
-        <% if big_idea_dims && big_idea_dims.count > 0 %>
-          <% big_idea_dims.each do |dim| %>
-            <li id="<%= "#{@translations[@idea_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
-              <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@idea_subj_base_key]}" %></span>
-                <br/>
-                <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
+      <%= if @treeTypeRec.ess_q_dim_type != ""
+            render partial: "dim_column", locals: {
+            dim_type: @treeTypeRec.ess_q_dim_type,
+            show_dim: @show_ess_q,
+            dim_gb: @eq_gb,
+            dim_subj_base_key: @ess_q_subj_base_key,
+            dim_title: @ess_q_title,
+            dims: @dimensions_ess_q,
+            grades_str: grades_str
+            }
+          end
+      %>
 
-              <br/>
-              <span class='pull-left'><strong><%= "#{ideas_title.singularize}:" %></strong></span>
-              <br/>
-              <%= @translations[dim.dim_name_key] %>
-              <br/>
-              <% if current_user.present? && current_user.is_admin? && @editing%>
-                <div class="pull-right">
-                    <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
-                    <%= link_to(fa_icon("times", class: "pull-right"), update_dimension_trees_path(dimension: { id: dim.id, active: false}), {'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[dim.dim_name_key]), method: :patch}) %>
-                    <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
-                </div>
-            <% end %>
-            </li>
-          <% end %>
-        <% end #if big_idea_dims %>
-      </ul>
+      <%= if @treeTypeRec.big_ideas_dim_type != ""
+            render partial: "dim_column", locals: {
+            dim_type: @treeTypeRec.big_ideas_dim_type,
+            show_dim: @show_bigidea,
+            dim_gb: @bi_gb,
+            dim_subj_base_key: @idea_subj_base_key,
+            dim_title: @ideas_title,
+            dims: @dimensions_bigideas,
+            grades_str: grades_str
+            }
+          end
+      %>
 
-      <ul id="miscon-col" class="list-group maint-column miscon-col<%= @show_miscon ? '' : ' hidden' %>" data-subjcode="<%= @dim_subjs['miscon'] %>" data-gbid="<%= @m_gb ? (@m_gb[:id] || 0) : 0 %>">
-        <li>
-          <%= render partial: "maint_filter", locals: {col: "miscon"} %>
-        </li>
-        <li class="maint-header"><%= "#{@translations[@misc_subj_base_key]} - #{misc_title} (#{grades_str}: #{@dim_grades['miscon'][:min_grade]} - #{@dim_grades['miscon'][:max_grade]})" %>
-          <% if @editing %>
-           <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: @treeTypeRec.miscon_dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
-          <% end %>
-        </li>
-         <% if  miscon_dims && miscon_dims.count > 0 %>
-          <% miscon_dims.each do |dim| %>
-            <li id="<%= "#{@translations[@misc_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
-              <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[@misc_subj_base_key]}" %></span>
-              <br/>
-              <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
-              <br/>
-              <span class='pull-left'><strong><%= "#{misc_title.singularize}:" %></strong></span>
-              <br/>
-              <%= @translations[dim.dim_name_key] %>
-              <br/>
-              <% if current_user.present? && current_user.is_admin? && @editing%>
-                <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
-                <%= link_to(fa_icon("times", class: "pull-right"), update_dimension_trees_path(dimension: { id: dim.id, active: false}), {'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[dim.dim_name_key]), method: :patch}) %>
-                <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
-            <% end %>
-            </li>
-          <% end %>
-        <% end #if miscon_dims %>
-      </ul>
+      <%= if @treeTypeRec.miscon_dim_type != ""
+            render partial: "dim_column", locals: {
+            dim_type: @treeTypeRec.miscon_dim_type,
+            show_dim: @show_miscon,
+            dim_gb: @m_gb,
+            dim_subj_base_key: @misc_subj_base_key,
+            dim_title: @miscon_title,
+            dims: @dimensions_miscons,
+            grades_str: grades_str
+            }
+          end
+      %>
+
+
+
     </div>
   </div>
 </div>

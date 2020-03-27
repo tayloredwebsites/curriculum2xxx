@@ -10,34 +10,63 @@
       <input type='hidden' name='dim_tree[dim_type]' value="<%= @dim_type%>"></input>
     <% end %>
 
-    <!-- If searching for a different set of misconceptions, don't forget the current set of big ideas. -->
+    <!-- If searching for a different set of essential questions, don't forget the current set of misconceptions and big ideas. -->
+    <% if col == @treeTypeRec.ess_q_dim_type
+         if @dim_subjs['miscon'] && @dim_type != @treeTypeRec.ess_q_dim_type %>
+          <input type='hidden' name='dim_tree[miscon_subj_code]' value=<%= @dim_subjs['miscon'] %>></input>
+      <% end
+         if @dim_subjs['bigidea'] && @dim_type != @treeTypeRec.ess_q_dim_type %>
+        <input type='hidden' name='dim_tree[bigidea_subj_code]' value=<%= @dim_subjs['bigidea'] %>></input>
+    <% end
+       if @m_gb && @dim_type != 'bigidea'
+      %>
+          <input type='hidden' name='dim_tree[miscon_gb_id]' value=<%= @m_gb[:id] || 0 %>></input>
+    <% end
+       if @bi_gb && @dim_type != @treeTypeRec.ess_q_dim_type %>
+         <input type='hidden' name='dim_tree[bigidea_gb_id]' value=<%= @eq_gb[:id] || 0 %>></input>
+    <% end
+    end %>
+
+    <!-- If searching for a different set of misconceptions, don't forget the current set of big ideas and essential questions. -->
     <% if col == "miscon"
        if @dim_subjs['bigidea'] && @dim_type != 'miscon' %>
         <input type='hidden' name='dim_tree[bigidea_subj_code]' value=<%= @dim_subjs['bigidea'] %>></input>
     <% end
+      if @dim_subjs[@treeTypeRec.ess_q_dim_type] && @dim_type != 'miscon' %>
+        <input type='hidden' name='dim_tree[ess_q_subj_code]' value=<%= @dim_subjs[@treeTypeRec.ess_q_dim_type] %>></input>
+    <% end
        if @bi_gb && @dim_type != 'miscon' %>
          <input type='hidden' name='dim_tree[bigidea_gb_id]' value=<%= @bi_gb[:id] || 0 %>></input>
     <% end
+       if @eq_gb && @dim_type != 'miscon' %>
+         <input type='hidden' name='dim_tree[ess_q_gb_id]' value=<%= @eq_gb[:id] || 0 %>></input>
+    <% end
     end %>
-    <!-- If searching for a different set of bigideas, don't forget the current set of misconceptions. -->
+    <!-- If searching for a different set of bigideas, don't forget the current set of misconceptions and essential questions. -->
     <% if col == "bigidea"
          if @dim_subjs['miscon'] && @dim_type != 'bigidea' %>
     		  <input type='hidden' name='dim_tree[miscon_subj_code]' value=<%= @dim_subjs['miscon'] %>></input>
     	<% end
-    	   if @m_gb && @dim_type != 'bigidea'
+         if @dim_subjs[@treeTypeRec.ess_q_dim_type] && @dim_type != 'bigidea' %>
+        <input type='hidden' name='dim_tree[ess_q_subj_code]' value=<%= @dim_subjs[@treeTypeRec.ess_q_dim_type] %>></input>
+    <% end
+    	 if @m_gb && @dim_type != 'bigidea'
     	%>
     		  <input type='hidden' name='dim_tree[miscon_gb_id]' value=<%= @m_gb[:id] || 0 %>></input>
+    <% end
+       if @eq_gb && @dim_type != 'bigidea' %>
+         <input type='hidden' name='dim_tree[ess_q_gb_id]' value=<%= @eq_gb[:id] || 0 %>></input>
     <% end
     end %>
 
     <!-- Labels -->
     <div class='col col-md-3'><label for='<%= param_name %>_subject'><%= translate('app.labels.subject') %></label></div>
-    <div class='col col-md-4'><label for='<%= param_name %>_grade_band'><%= translate('app.labels.grade_band') %></label></div>
+    <div class='col col-md-2'><label for='<%= param_name %>_grade_band'><%= translate('app.labels.grade_band') %></label></div>
   </div>
 
   <!-- Form input options -->
   <div class='row'>
-    <div class='col col-md-3 subject-with-gb'><select id='<%= param_name %>_subject_id' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_code"%>]'>
+    <div class='col col-md-2 subject-with-gb'><select id='<%= param_name %>_subject_id' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_code"%>]'>
         <% if col == "tree" %>
           <% @subjects.each do |k, s| %>
             <% sel_code = @subject_code %>
