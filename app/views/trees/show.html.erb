@@ -43,7 +43,7 @@
       <% @detail_areas.each do |area|
           detail_lookup = {
             "explanation": {tree: tree, indicator: true}, #indicator
-            "explain": {tree: tree}, #explanatory comment
+            "explain": {tree: tree, comment: true}, #explanatory comment
             "bigidea": {title: @bigIdeasTitle, expl: I18n.t('app.labels.explanation'), details: tree.dim_trees.where(:active => true), dim: true},
             "miscon": {title: @misconTitle, expl: I18n.t('app.labels.explanation'), details: tree.dim_trees.where(:active => true), dim: true},
             "essq": {title: @essqTitle, expl: I18n.t('app.labels.explanation'), details: tree.dim_trees.where(:active => true), dim: true},
@@ -76,7 +76,8 @@
           <%=
             render partial: "trees/show/tree_detail_area", locals: {
                 tree: detail[:tree],
-                indicator: detail[:indicator]
+                indicator: detail[:indicator],
+                comment: detail[:comment]
               }
           %>
           <%
