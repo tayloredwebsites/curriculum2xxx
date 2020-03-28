@@ -24,7 +24,7 @@ namespace :seed_turkey_v02a do
       sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
       curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
-      outcome_depth: 2,
+      outcome_depth: 3,
       version_id: @v02.id,
       working_status: true,
       miscon_dim_type: 'miscon',
@@ -71,8 +71,6 @@ namespace :seed_turkey_v02a do
       end
     end
     STDOUT.puts 'Done: Outcome records for all tree records at the outcome level have been created.'
-
-    myTreeType.update(:outcome_depth => 3)
 
     # Tree.joins(:outcome).where(:tree_type_id => 2).each do |t|
     #   old_name_key = t.buildNameKey
