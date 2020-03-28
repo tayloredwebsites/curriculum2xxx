@@ -29,6 +29,7 @@
     <div class='row center-label-bold top-label'>
       <div class='col col-lg-12'>
         <%= I18n.translate('app.labels.comments') %>
+        <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'comment'}), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
       </div>
     </div>
     <div class='row'>

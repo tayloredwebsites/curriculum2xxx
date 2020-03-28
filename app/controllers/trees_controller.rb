@@ -875,7 +875,6 @@ class TreesController < ApplicationController
           name_key
         )
         @translation = translation[name_key]
-        @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
       elsif @edit_type == "indicator"
         @indicator = Tree.find(tree_params[:attr_id])
         @attr_id = @indicator.id
@@ -885,7 +884,8 @@ class TreesController < ApplicationController
           name_key
         )
         @translation = translation[name_key]
-        @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
+      elsif @edit_type == "comment"
+         @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
