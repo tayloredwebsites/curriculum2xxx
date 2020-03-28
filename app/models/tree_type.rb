@@ -17,4 +17,9 @@ class TreeType < BaseRec
     end
     ret_hash
   end
+
+  def hide_sectors
+    return self.sector_set_code.split(",").length > 1
+  end
+
 end
