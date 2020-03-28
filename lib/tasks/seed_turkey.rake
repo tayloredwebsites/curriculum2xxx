@@ -27,8 +27,8 @@ namespace :seed_turkey do
       big_ideas_dim_type: 'bigidea',
       ess_q_dim_type: 'essq',
       tree_code_format: 'grade,unit,sub_unit,comp',
-      detail_headers: 'grade,unit,chapt,attain,[subj_big_idea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,chapt,attain,[subj_big_idea],[ess_q],explain,[miscon],[connect],[refs]'
+      detail_headers: 'grade,unit,chapt,attain,[bigidea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
+      grid_headers: 'grade,unit,chapt,attain,[bigidea],[ess_q],explain,[miscon],[connect],[refs]'
 
     }
     if myTreeType.count < 1

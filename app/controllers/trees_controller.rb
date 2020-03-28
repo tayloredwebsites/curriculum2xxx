@@ -761,6 +761,23 @@ class TreesController < ApplicationController
       # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
       @trees = [@tree]
       process_tree = true
+      detail_areas = @treeTypeRec.detail_headers.split(",")
+      @detail_headers = []
+      @detail_areas = []
+      detail_areas.each do |a|
+        detail_type = 'header'
+        detail = a
+        if a.first == "{" && a.last == "}"
+          detail_type = 'single'
+          detail = a[1..a.length - 2]
+        elsif a.first == "[" && a.last == "]"
+          detail_type = 'multi'
+          detail = a[1..a.length - 2]
+        end
+        detail = detail.split("_").join("")
+        @detail_headers << {type: detail_type, name: detail} if detail_type == 'header'
+        @detail_areas << {type: detail_type, name: detail} if detail_type != 'header'
+      end
     else
       # not a detail page, go back to index page
       index_prep

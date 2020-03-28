@@ -150,6 +150,7 @@ class ApplicationController < ActionController::Base
         raise I18n.translate('app.errors.missing_version_code')
       end
       @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
+      @essqTitle = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.ess_q.name')
     end
 
     def initTypeCode
