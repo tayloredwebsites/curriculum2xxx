@@ -15,6 +15,7 @@ class TreesController < ApplicationController
     areaHash = {}
     componentHash = {}
     newHash = {}
+    hierarchiesInTrees = []
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
@@ -22,6 +23,9 @@ class TreesController < ApplicationController
       areaHash = {}
       depth = tree.depth
       code_arr = tree.code.split(".")
+      hierarchy_level = @hierarchies[depth - 1]
+      hierarchiesInTrees << hierarchy_level if !hierarchiesInTrees.include?(hierarchy_level)
+
       parent = treeHash[code_arr.shift] if code_arr.length > 1
       while code_arr.length > 1
         c = code_arr.shift
@@ -93,6 +97,7 @@ class TreesController < ApplicationController
         raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
       end
     end
+
     # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
     # puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
     otcArrHash = []
@@ -123,6 +128,10 @@ class TreesController < ApplicationController
 
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
+
+    @hierarchiesInTrees = []
+    @hierarchies[0 .. 3].each { |h| @hierarchiesInTrees << h if hierarchiesInTrees.include?(h) }
+
     respond_to do |format|
       format.html { render 'index'}
       format.json { render json: {trees: @trees, subjects: @subjects, grade_bands: @gbs}}
@@ -1195,9 +1204,6 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** listing.count: #{listing.count}")
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     Rails.logger.debug("*** listing.count: #{listing.count}")
-    # Note: sort order does matter for sequence of siblings in tree.
-    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
-    Rails.logger.debug("*** @trees.count: #{@trees.count}")
 
     # @tree is used for filtering form
     @tree = Tree.new(
@@ -1206,6 +1212,10 @@ class TreesController < ApplicationController
     )
     @tree.subject_id = @subj.id if @subj.present?
     @tree.grade_band_id = @gb.id if @gb.present?
+
+    # Note: sort order does matter for sequence of siblings in tree.
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
+    Rails.logger.debug("*** @trees.count: #{@trees.count}")
 
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = TreeTree.active
