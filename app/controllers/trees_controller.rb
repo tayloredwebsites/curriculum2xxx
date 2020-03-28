@@ -900,7 +900,7 @@ class TreesController < ApplicationController
           @rel = SectorTree.find(tree_params[:attr_id]) if (@edit_type == "sector")
         else
           @rel = SectorTree.new
-          @sectors = Sector.where(:sector_set_code => @treeTypeRec.sector_set_code)
+          @sectors = Sector.where(:sector_set_code => TreeType.get_sector_set_code(@treeTypeRec.sector_set_code))
           @sector_names = Translation.translationsByKeys(@locale_code, @sectors.pluck('name_key'))
         end
         @rel = DimTree.find(tree_params[:attr_id]) if (@edit_type == "dimtree")

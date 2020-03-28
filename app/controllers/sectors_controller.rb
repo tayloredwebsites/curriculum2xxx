@@ -5,7 +5,7 @@ class SectorsController < ApplicationController
 
     @subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
     @gbs = GradeBand.where(:tree_type_id => @treeTypeRec.id)
-    @sectors = Sector.where(:sector_set_code => @treeTypeRec.sector_set_code)
+    @sectors = Sector.where(:sector_set_code => TreeType.get_sector_set_code(@treeTypeRec.sector_set_code))
     @sector = Sector.new
 
     # get translation from hash of pre-cached translations.
@@ -22,7 +22,7 @@ class SectorsController < ApplicationController
       @sector_id = params[:tree][:sector_id].present? ? params[:tree][:sector_id] : nil
     end
     @subjectOptions = helpers.subjectsOptions(@subject_id, false, @treeTypeRec.id)
-    @sectorsOptions = helpers.sectorsOptions(@sector_id, @translations, @treeTypeRec.sector_set_code)
+    @sectorsOptions = helpers.sectorsOptions(@sector_id, @translations, TreeType.get_sector_set_code(@treeTypeRec.sector_set_code))
 
     @rptRows = []
     if params[:tree].present?

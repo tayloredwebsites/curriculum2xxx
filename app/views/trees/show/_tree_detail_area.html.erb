@@ -1,0 +1,27 @@
+ <% if @hierarchies.count > @treeTypeRec[:outcome_depth] + 1 && indicator %>
+      <div class='related-indicators'>
+        <div class='row center-label-bold top-label'>
+          <div class='col col-lg-12'>
+            <%= @indicator_name %>
+          </div>
+        </div>
+        <% tree.getAllChildren.each do |c| %>
+        <div class='row'>
+          <div class='col col-lg-2 ind-col'>
+            <%= c.code %>
+          </div>
+          <div class='col col-lg-10 ind-col last-col'>
+            <%= @translations[c.buildNameKey] %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'indicator', attr_id: c.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+        </div>
+        <% end %>
+        <%
+          ind_codes = JSON.load(tree.matching_codes)
+          ind_codes.each do |ia|
+            code = "#{tree.buildRootKey}.#{ia}.name"
+        %>
+          <p><%= "#{I18n.translate('app.labels.indicator')} #{ia}: #{@translations[code]}" %></p>
+        <% end %>
+      </div>
+      <% end %>

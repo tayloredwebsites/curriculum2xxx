@@ -1,4 +1,9 @@
 class TreeType < BaseRec
+
+  def self.get_sector_set_code(code)
+    return code.split(",")[0]
+  end
+
   def self.versions_hash()
     ret_hash = Hash.new { |hash, key| hash[key] = [] }
     all.each do |tree_type|
