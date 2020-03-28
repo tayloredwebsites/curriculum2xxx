@@ -875,6 +875,7 @@ class TreesController < ApplicationController
           name_key
         )
         @translation = translation[name_key]
+        @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
       elsif @edit_type == "indicator"
         @indicator = Tree.find(tree_params[:attr_id])
         @attr_id = @indicator.id
@@ -884,6 +885,7 @@ class TreesController < ApplicationController
           name_key
         )
         @translation = translation[name_key]
+        @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
@@ -940,6 +942,7 @@ class TreesController < ApplicationController
     update = tree_params[:edit_type]
     if update
       save_translation = true
+      Translation.find_or_update_translation(@locale_code, @tree.outcome.get_explain_key, tree_params[:comment]) if tree_params[:comment]
       if update == 'outcome'
         name_key = @tree.buildNameKey
       elsif update == 'indicator'
@@ -1043,6 +1046,7 @@ class TreesController < ApplicationController
       :name_translation,
       :active,
       :editing,
+      :comment
     )
   end
 
