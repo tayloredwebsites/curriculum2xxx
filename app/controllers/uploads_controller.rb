@@ -217,10 +217,10 @@ class UploadsController < ApplicationController
     # structure of hash = parentCode: { lastSubCode: code ,valuesAssigned: { name: code } }
     @lastSubCode = Hash.new{ |h, k| h[k] = {} }
 
-    CSV.open(filePath, {headers: true, col_sep: separator}).each_with_index do |row, ix|
+    CSV.open(filePath, {headers: true, col_sep: separator}).each_with_index do |row, iy|
       Rails.logger.debug("")
       Rails.logger.debug("##########################################################")
-      Rails.logger.debug("### row ix: #{ix}")
+      Rails.logger.debug("### row iy: #{iy}, rowNum: #{rowNum}")
       rowH = row.to_hash.with_indifferent_access
       Rails.logger.debug("### tree type rec: #{@treeTypeRec.inspect}")
       Rails.logger.debug("### tree code format: #{@treeTypeRec.tree_code_format}")
@@ -248,34 +248,8 @@ class UploadsController < ApplicationController
         ######################################################
         # Write the Unit level tree record (create or update)
         unitName = rowH['Unit']
-        # determine unit code.
-        # if no units yet for this grade, then set it to 1
-        # if grade already has this unit name, use that code
-        # otherwise increment the last code used for this grade
-        lastCodeH = @lastSubCode[gradeCodeA.join('.')]
-        Rails.logger.debug("+++ lastCodeH: #{lastCodeH.inspect}")
-        if lastCodeH.present?
-          Rails.logger.debug("+++ lastCodeH.present?")
-          Rails.logger.debug("+++ lastCodeH[:valuesAssigned]: #{lastCodeH[:valuesAssigned].inspect}")
-          Rails.logger.debug("+++ lastCodeH[:valuesAssigned][unitName]: #{lastCodeH[:valuesAssigned][unitName]}")
-        lookupUnit = lastCodeH[:valuesAssigned][unitName]
-          if lookupUnit.present?
-            Rails.logger.debug("+++ set code to matched value (lookupUnit.present?)")
-            # found matching code text, use that code (as an integer)
-            lastCode = Integer(lookupUnit) rescue 0
-          else
-            # no matching code text, increment from the last code used for this parent.
-            Rails.logger.debug("+++ set code to increment last grade's value: #{lastCodeH[:lastSubCode].inspect}")
-            lastCode = Integer(lastCodeH[:lastSubCode]) rescue 0
-            lastCode += 1
-          end
-        else
-          # no units have been assigned yet
-          Rails.logger.debug("+++ set code to 1")
-          lastCode = 1
-        end
-        unitCode = lastCode.to_s
-        Rails.logger.debug("### Unit: #{unitCode} #{unitName}")
+        unitCode = lookupItemCodeForName(unitName, gradeCodeA.join('.'))
+        Rails.logger.debug("### Sub Unit: #{unitCode} #{unitName}")
         unitCodeA = [@gradeCodeIn, unitCode]
         currentRec = @currentRecs[unitCodeA.join('.')]
         rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, gradeCodeA, unitCodeA, unitCode, unitName, recordOrder, rowNum, currentRec)
@@ -285,12 +259,21 @@ class UploadsController < ApplicationController
         end
         recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
 
+        ######################################################
+        # Write the SubUnit level tree record (create or update)
+        itemName = rowH[' Sub unit']
+        itemCode = lookupItemCodeForName(itemName, unitCodeA.join('.'))
+        Rails.logger.debug("### Sub Unit: #{itemCode} #{itemName}")
+        itemCodeA = [@gradeCodeIn, unitCode, itemCode]
+        currentRec = @currentRecs[itemCodeA.join('.')]
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, unitCodeA, itemCodeA, itemCode, itemName, recordOrder, rowNum, currentRec)
+        if rptRec.present?
+          @rptRecs << rptRec
+        end
+        recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
 
-        # @rptRecs << writeTreeRecord(baseKeyRoot, gradeBandRec, 1, [@gradeCodeIn, ], thisCode, thisCodeStr, order, rowNum)
-        # @rptRecs << writeTreeRecord(baseKeyRoot, gradeBandRec, depth, codeA, thisCode, thisCodeStr, order, rowNum)
       elsif isValidRow == 'blank'
-        # skip this record, but increment row number of file
-        rowNum += 1
+        # # skip this record
       else
         # build a report with an error
         rptRec = [rowNum.to_s]
@@ -298,13 +281,10 @@ class UploadsController < ApplicationController
         rptRec.concat(['', '', "Missing required fields"])
         Rails.logger.debug("+++ final rptRec: #{rptRec.inspect}")
         @rptRecs << rptRec
-        rowNum += 1
 
       end
 
 
-      # Rails.logger.debug("### Unit: #{rowH['Unit']}")
-      # Rails.logger.debug("### Sub unit: #{rowH[' Sub unit']}")
       # Rails.logger.debug("### Proposed Student Competences: #{rowH['Proposed Student Competences']}")
       # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
       # Rails.logger.debug("### Specific big idea: #{rowH['Specific big idea']}")
@@ -316,6 +296,42 @@ class UploadsController < ApplicationController
       rowNum += 1
     end
     @rptRecs << ['','','','','','','','','End of Report']
+  end
+
+  def lookupItemCodeForName(itemName, parentCode)
+    # determine code from codeName field.
+    # check hash for parent, seeing last used, and the hash to get the code from the codeName(key)
+    # if blank codeName, then should be optional subUnit, so return empty string.
+    # if no children written yet for code, then set it to 1
+    # if a child has a matching codeName, then use that code
+    # otherwise increment the code last used.
+    lastCodeH = @lastSubCode[parentCode]
+    Rails.logger.debug("+++ parentCode: #{parentCode}, lastCodeH: #{lastCodeH.inspect}")
+    if itemName.blank?
+      itemCode = ''
+    elsif lastCodeH.present?
+      Rails.logger.debug("+++ lastCodeH.present?")
+      Rails.logger.debug("+++ lastCodeH[:valuesAssigned]: #{lastCodeH[:valuesAssigned].inspect}")
+      Rails.logger.debug("+++ lastCodeH[:valuesAssigned][unitName]: #{lastCodeH[:valuesAssigned][itemName]}")
+      lookupItem = lastCodeH[:valuesAssigned][itemName]
+      if lookupItem.present?
+        Rails.logger.debug("+++ set code to matched value (lookupItem.present?)")
+        # found matching code text, use that code (as an integer)
+        lastCode = Integer(lookupItem) rescue 0
+      else
+        # no matching code text, increment from the last code used for this parent.
+        Rails.logger.debug("+++ set code to increment last grade's value: #{lastCodeH[:lastSubCode].inspect}")
+        lastCode = Integer(lastCodeH[:lastSubCode]) rescue 0
+        lastCode += 1
+      end
+      itemCode = lastCode.to_s
+    else
+      # no units have been assigned yet
+      Rails.logger.debug("+++ set code to 1")
+      lastCode = 1
+      itemCode = '1'
+    end
+    return itemCode
   end
 
   def abortWithMessage(msg)
@@ -353,6 +369,15 @@ class UploadsController < ApplicationController
     codeStr = codeA.join('.')
     codeA2 = codeA.clone
     reportRecord = true
+    wroteRecord = true
+    if thisCodeTransl.blank? && thisCode.blank?
+      # create tree items to be ignored (e.g. optional sub-unit to not show in tree displays)
+      baseKeyStr = ''
+      reportRecord = false
+      # wroteRecord = true # for clarity
+    else
+      baseKeyStr = baseKeyRoot + '.' + codeStr
+    end
     if currentRec.blank?
       rec = Tree.create(
         tree_type_id: @treeTypeRec.id,
@@ -360,7 +385,7 @@ class UploadsController < ApplicationController
         subject_id: @subjectRec.id,
         grade_band_id: gradeBandRec.id,
         code: codeA.join('.'),
-        base_key: baseKeyRoot + '.' + codeStr,
+        base_key: baseKeyStr,
         depth: depth,
         sort_order: order,
         sequence_order: order
@@ -378,6 +403,7 @@ class UploadsController < ApplicationController
       Rails.logger.debug("+++ currentRec updated is #{currentRec[:updated]}")
       rptRec = nil
       reportRecord = false
+      wroteRecord = false
     else
       Rails.logger.debug("+++ currentRec not updated is #{currentRec[:updated]}")
       rec = Tree.update(currentRec[:rec].id,
@@ -386,7 +412,7 @@ class UploadsController < ApplicationController
         subject_id: @subjectRec.id,
         grade_band_id: gradeBandRec.id,
         code: codeStr,
-        base_key: baseKeyRoot + '.' + codeStr,
+        base_key: baseKeyStr,
         depth: depth,
         sort_order: order,
         sequence_order: order
@@ -400,26 +426,30 @@ class UploadsController < ApplicationController
         rptErrorMsg = "Updated"
       end
     end
-    # output the translation record if any changes
-    if reportRecord
+    if wroteRecord
+      # output the translation record if any changes
       transl_rec, text_status, transl_text = Translation.find_or_update_translation(
         @localeRec.code,
         "#{baseKeyRoot}.#{codeA.join('.')}.name",
         thisCodeTransl
       )
+      # update hashes
+      Rails.logger.debug("+++ codeA.joined: #{codeA.join('.')}")
+      @currentRecs[codeA.join('.')] = {updated: true, rec: rec, transl_name: thisCodeTransl, transl_id: transl_rec.id}
+      Rails.logger.debug("+++ updated current rec [#{codeA.join('.')}]: #{@currentRecs[codeA.join('.')].inspect}")
+      @lastSubCode[parentCodeA.join('.')] = {valuesAssigned: {thisCodeTransl => thisCode}, lastSubCode: thisCode}
+    end
+    if reportRecord
       # build report record array of values
       rptRec = [fileRow.to_s]
       rptRec.concat(codeA2.concat(['','','','']).slice(0,5)) # get exactly 5 codes to output
       rptRec.concat([thisCode, thisCodeTransl, rptErrorMsg])
       Rails.logger.debug("+++ final rptRec: #{rptRec.inspect}")
       Rails.logger.debug("+++ at end currentRec updated: #{currentRec[:updated]}")
-      Rails.logger.debug("+++ codeA.joined: #{codeA.join('.')}")
-      @lastSubCode[parentCodeA.join('.')] = {valuesAssigned: {thisCodeTransl => thisCode}, lastSubCode: thisCode}
-      @currentRecs[codeA.join('.')] = {updated: true, rec: rec, transl_name: thisCodeTransl, transl_id: transl_rec.id}
-      Rails.logger.debug("+++ updated current rec [#{codeA.join('.')}]: #{@currentRecs[codeA.join('.')].inspect}")
     end
     return rptRec
   end
+
 
 
   def v1FileUpload(filePath, separator)
