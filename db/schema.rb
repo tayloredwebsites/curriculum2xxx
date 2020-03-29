@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20200326015125) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "base_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
