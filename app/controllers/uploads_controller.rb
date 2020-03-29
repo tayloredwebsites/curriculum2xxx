@@ -246,7 +246,7 @@ class UploadsController < ApplicationController
         gradeCodeA = [@gradeCodeIn]
         currentRec = @currentRecs[gradeCodeA.join('.')]
         codeName = "#{I18n.translate('app.labels.grade_band')} #{@gradeCodeIn}"
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 0, [], gradeCodeA, @gradeCodeIn, codeName, recordOrder, rowNum, currentRec)
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 0, [], gradeCodeA, @gradeCodeIn, codeName, recordOrder, rowNum, currentRec, '')
         @rptRecs <<  rptRec if rptRec.present?
         recordOrder += 1
 
@@ -257,7 +257,7 @@ class UploadsController < ApplicationController
         Rails.logger.debug("### Sub Unit: #{unitCode} #{unitName}")
         unitCodeA = [@gradeCodeIn, unitCode]
         currentRec = @currentRecs[unitCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, gradeCodeA, unitCodeA, unitCode, unitName, recordOrder, rowNum, currentRec)
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, gradeCodeA, unitCodeA, unitCode, unitName, recordOrder, rowNum, currentRec, '')
 
         if rptRec.present?
           @rptRecs << rptRec
@@ -271,7 +271,7 @@ class UploadsController < ApplicationController
         Rails.logger.debug("### Sub Unit: #{subUnitCode} #{subUnitName}")
         subUnitCodeA = [@gradeCodeIn, unitCode, subUnitCode]
         currentRec = @currentRecs[subUnitCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 2, unitCodeA, subUnitCodeA, subUnitCode, subUnitName, recordOrder, rowNum, currentRec)
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 2, unitCodeA, subUnitCodeA, subUnitCode, subUnitName, recordOrder, rowNum, currentRec, '')
         if rptRec.present?
           @rptRecs << rptRec
           recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
@@ -284,7 +284,7 @@ class UploadsController < ApplicationController
         Rails.logger.debug("### Sub Unit: #{compCode} #{compName}")
         compCodeA = [@gradeCodeIn, unitCode, subUnitCode, compCode]
         currentRec = @currentRecs[compCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 3, subUnitCodeA, compCodeA, compCode, compName, recordOrder, rowNum, currentRec)
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 3, subUnitCodeA, compCodeA, compCode, compName, recordOrder, rowNum, currentRec, rowH['Explanatory Comments'])
         if rptRec.present?
           @rptRecs << rptRec
           recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
@@ -387,7 +387,7 @@ class UploadsController < ApplicationController
     end
   end
 
-  def writeTreeRecord(baseKeyRoot, gradeBandRec, depth, parentCodeA, codeA, thisCode, thisCodeTransl, order, fileRow, currentRec)
+  def writeTreeRecord(baseKeyRoot, gradeBandRec, depth, parentCodeA, codeA, thisCode, thisCodeTransl, order, fileRow, currentRec, explainText)
     codeStr = codeA.join('.')
     codeA2 = codeA.clone
     reportRecord = true
@@ -401,6 +401,7 @@ class UploadsController < ApplicationController
       baseKeyStr = baseKeyRoot + '.' + codeStr
     end
     if currentRec.blank?
+      outRecId = updateOutcome(depth, baseKeyStr, explainText, nil)
       rec = Tree.create(
         tree_type_id: @treeTypeRec.id,
         version_id: @treeTypeRec.version_id,
@@ -410,7 +411,8 @@ class UploadsController < ApplicationController
         base_key: baseKeyStr,
         depth: depth,
         sort_order: order,
-        sequence_order: order
+        sequence_order: order,
+        outcome_id: outRecId
       )
       rptErrorMsg = ''
       if rec.errors.count > 0
@@ -420,6 +422,7 @@ class UploadsController < ApplicationController
         Rails.logger.debug("+++ created tree rec: #{rec.inspect}")
         rptErrorMsg = 'Created'
       end
+
     elsif currentRec[:updated]
       # don't bother updating it again this upload
       Rails.logger.debug("+++ currentRec updated is #{currentRec[:updated]}")
@@ -428,6 +431,7 @@ class UploadsController < ApplicationController
       wroteRecord = false
     else
       Rails.logger.debug("+++ currentRec not updated is #{currentRec[:updated]}")
+      outRecId = updateOutcome(depth, baseKeyStr, explainText, currentRec[:rec].outcome_id)
       rec = Tree.update(currentRec[:rec].id,
         tree_type_id: @treeTypeRec.id,
         version_id: @treeTypeRec.version_id,
@@ -437,7 +441,8 @@ class UploadsController < ApplicationController
         base_key: baseKeyStr,
         depth: depth,
         sort_order: order,
-        sequence_order: order
+        sequence_order: order,
+        outcome_id: outRecId
       )
       rptErrorMsg = ''
       if rec.errors.count > 0
@@ -472,6 +477,24 @@ class UploadsController < ApplicationController
     return rptRec
   end
 
+  def updateOutcome(depth, baseKeyStr, localText, outRecId)
+    if depth == 3 # To Do: fix this for other hierarchies
+      if outRecId.present?
+        outRec = Outcome.find(outRecId)
+      else
+        outRec = Outcome.create(base_key: baseKeyStr+'.outc')
+      end
+      transl, text_status, text_msg = Translation.find_or_update_translation(
+        @localeRec.code,
+        "#{baseKeyStr}.outc.explain",
+        localText
+      )
+      outRecId = outRec.id
+    else
+      outRecId = nil
+    end
+    return outRecId
+  end
 
 
   def v1FileUpload(filePath, separator)
