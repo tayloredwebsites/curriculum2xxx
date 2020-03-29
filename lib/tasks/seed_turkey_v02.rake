@@ -22,17 +22,20 @@ namespace :seed_turkey_v02 do
     myTreeType = TreeType.where(code: 'tfv', version_id: @v02.id)
     myTreeTypeValues = {
       code: 'tfv',
-      hierarchy_codes: 'grade,unit,comp',
+      hierarchy_codes: 'grade,unit,sub_unit,comp',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
-      sector_set_code: 'future',
+      sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
       curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
-      outcome_depth: 2,
+      outcome_depth: 3,
       version_id: @v02.id,
       working_status: true,
       miscon_dim_type: 'miscon',
-      big_ideas_dim_type: 'bigidea'
-
+      big_ideas_dim_type: 'bigidea',
+      ess_q_dim_type: 'essq',
+      tree_code_format: 'grade,unit,sub_unit,comp',
+      detail_headers: 'grade,unit,(sub_unit),comp,[subj_big_idea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
+      grid_headers: 'grade,unit,(sub_unit),comp,[subj_big_idea],[ess_q],explain,[miscon],[connect],[refs]'
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
@@ -42,9 +45,17 @@ namespace :seed_turkey_v02 do
     throw "Invalid Tree Type Count" if TreeType.where(code: 'tfv').count != 2
     @tfv = TreeType.where(code: 'tfv', version_id: @v02.id).first
 
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Dimension.get_dim_type_key(myTreeType.ess_q_dim_type, myTreeType.code, @v02.code), 'K-12 Big Ideas')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    STDOUT.puts 'Create translation record for essential questions as K-12 Big Ideas.'
+
     # Create translation(s) for hierarchy codes
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.comp', 'Competency')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.sub_unit', 'Sub-Unit')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    STDOUT.puts 'Create translation record for Sub-Unit.'
 
     puts "Curriculum (Tree Type) is created for tfv "
     puts "  Created Curriculum: #{@tfv.code} with Hierarchy: #{@tfv.hierarchy_codes}"

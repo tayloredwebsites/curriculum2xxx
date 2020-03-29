@@ -113,6 +113,9 @@ en:
     miscon:
       name: "Misconceptions"
       hover: "Displays Misconceptions"
+    essq:
+      name: "Essential Questions"
+      hover: "Displays Essential Questions"
     questions:
       name: "Essential Questions"
       hover: "Displays Essential Questions"
@@ -178,15 +181,15 @@ en:
       title: "Relations"
     maint:
       title: "Editing"
+    dimension:
+      textlabel: "%{dim_name} Text"
     miscon:
       title: "Misconceptions"
       singular: "Misconception"
-      textlabel: "Misconception Text"
     bigidea:
       title: "Big Ideas"
       singular: "Big Idea"
       relates_to: "relates to"
-      textlabel: "Big Idea Text"
     show:
       name: "Curriculum Detail Page"
     labels:

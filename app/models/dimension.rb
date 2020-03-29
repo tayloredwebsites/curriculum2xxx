@@ -3,11 +3,12 @@ class Dimension < BaseRec
   # dim_type field valid options
   BIG_IDEA = 'bigidea'
   MISCONCEPTION = 'miscon'
+  ESSENTIAL_QUESTION = 'essq'
   QUESTION = 'question'
   CONCEPT = 'concept'
   COMPETENCY = 'comp'
   STANDARD = 'standard'
-  VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION]
+  VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION, ESSENTIAL_QUESTION]
 
   validate :valid_dim_type
 
@@ -25,6 +26,10 @@ class Dimension < BaseRec
   def get_dim_desc_key
     ret = dim_desc_key ? dim_desc_key : "dimension.#{id}.desc"
     return ret
+  end
+
+  def self.get_dim_type_key(dim_type, tree_type, version)
+    return "curriculum.#{tree_type}.#{version}.#{dim_type}"
   end
 
   ###############################################

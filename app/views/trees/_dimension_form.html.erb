@@ -1,5 +1,8 @@
+<% dim_type_name = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dimension.dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('trees.' + @dimension.dim_type + '.title')
+  dim_type_name = dim_type_name.singularize
+%>
 <div class="modal-header">
-   <h3 id="myModalLabel"><%= translate('trees.' + @dimension.dim_type + '.title') %></h3>
+   <h3 id="myModalLabel"><%= dim_type_name %></h3>
  </div>
  <div class="modal-body">
 
@@ -51,7 +54,7 @@
 
   <fieldset>
     <div>
-    <div><label for='name'><%= translate('trees.' + @dimension.dim_type + '.textlabel') %>:</label></div>
+    <div><label for='name'><%= translate('trees.dimension.textlabel', dim_name: dim_type_name) %>:</label></div>
     <%= f.text_area :name, name: 'dimension[text]', id: 'name', value: @dimension_text %>
     </div>
   </fieldset>

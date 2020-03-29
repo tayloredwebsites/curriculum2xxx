@@ -1,0 +1,32 @@
+<ul id="<%= dim_type %>-col" class="list-group maint-column <%= dim_type %>-col<%= show_dim ? '' : ' hidden' %>" data-subjcode="<%= @dim_subjs[dim_type] %>" data-gbid="<%= dim_gb ? (dim_gb[:id] || 0) : 0 %>">
+  <li>
+    <%= render partial: "maint_filter", locals: {col: (dim_type == @treeTypeRec.ess_q_dim_type ? "ess_q" : dim_type)} %>
+  </li>
+  <li class="maint-header"><%= "#{@translations[dim_subj_base_key]} - #{dim_title} (#{grades_str}: #{@dim_grades[dim_type][:min_grade]} - #{@dim_grades[dim_type][:max_grade]})" %>
+    <% if @editing %>
+      <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
+    <% end %>
+  </li>
+  <% if dims && dims.count > 0 %>
+    <% dims.each do |dim| %>
+      <li id="<%= "#{@translations[dim_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+        <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[dim_subj_base_key]}" %></span>
+          <br/>
+          <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
+
+        <br/>
+        <span class='pull-left'><strong><%= "#{dim_title.singularize}:" %></strong></span>
+        <br/>
+        <%= @translations[dim.dim_name_key] %>
+        <br/>
+        <% if current_user.present? && current_user.is_admin? && @editing%>
+          <div class="pull-right">
+              <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
+              <%= link_to(fa_icon("times", class: "pull-right"), update_dimension_trees_path(dimension: { id: dim.id, active: false}), {'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[dim.dim_name_key]), method: :patch}) %>
+              <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
+          </div>
+      <% end %>
+      </li>
+    <% end %>
+  <% end #if dims %>
+</ul>

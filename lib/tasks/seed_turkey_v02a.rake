@@ -46,6 +46,10 @@ namespace :seed_turkey_v02a do
     puts "Curriculum (Tree Type) is updated for tfv "
     puts "  Updated Curriculum: #{@tfv.code} with Hierarchy: #{@tfv.hierarchy_codes}"
 
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Dimension.get_dim_type_key(myTreeType.ess_q_dim_type, myTreeType.code, @v02.code), 'K-12 Big Ideas')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    STDOUT.puts 'Create translation record for essential questions as K-12 Big Ideas.'
+
     # Create translation(s) for hierarchy codes
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.sub_unit', 'Sub-Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR

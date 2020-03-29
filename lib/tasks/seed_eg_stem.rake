@@ -27,7 +27,11 @@ namespace :seed_eg_stem do
       version_id: @v01.id,
       working_status: true,
       miscon_dim_type: 'miscon',
-      big_ideas_dim_type: 'bigidea'
+      big_ideas_dim_type: 'bigidea',
+      ess_q_dim_type: 'essq',
+      tree_code_format: 'grade,unit,lo',
+      detail_headers: 'grade,sem,unit,lo,indicator,[subj_big_idea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
+      grid_headers: 'grade,unit,(sub_unit),comp,[subj_big_idea],[ess_q],explain,[miscon],[connect],[refs]'
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
