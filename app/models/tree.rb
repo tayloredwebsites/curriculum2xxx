@@ -52,6 +52,9 @@ class Tree < BaseRec
     # where(active: true)
   }
 
+  scope :not_blank, -> { where.not(:base_key => ["", nil]) }
+  scope :active, -> { not_blank.where(:active => true) }
+
   # Field Translations
 
   ####################################################

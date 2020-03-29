@@ -29,7 +29,7 @@ class TreesController < ApplicationController
       parent = treeHash[code_arr.shift] if code_arr.length > 1
       while code_arr.length > 1
         c = code_arr.shift
-        parent = parent[:nodes][c] if c != ""
+        parent = parent[:nodes][c] if c != "" && parent[:nodes][c]
       end
 
       case depth
@@ -1195,7 +1195,7 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** @grade_band_code: #{@grade_band_code.inspect}")
     Rails.logger.debug("*** @gb: #{@gb.inspect}")
 
-    listing = Tree.where(
+    listing = Tree.active.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
