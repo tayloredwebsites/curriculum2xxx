@@ -218,6 +218,11 @@ class UploadsController < ApplicationController
     @lastSubCode = Hash.new{ |h, k| h[k] = {} }
 
     CSV.open(filePath, {headers: true, col_sep: separator}).each_with_index do |row, iy|
+
+      # To Do: make sure that all upload file column headers are correct and accounted for:
+      #   - mispellings will cause missing values from the CSV row hash
+      #   - maybe pre-read row 1 and confirm the column headers.  Sequence and similarity may help with this.
+
       Rails.logger.debug("")
       Rails.logger.debug("##########################################################")
       Rails.logger.debug("### row iy: #{iy}, rowNum: #{rowNum}")
@@ -240,8 +245,8 @@ class UploadsController < ApplicationController
         # Write the Grade level tree record (create or update)
         gradeCodeA = [@gradeCodeIn]
         currentRec = @currentRecs[gradeCodeA.join('.')]
-        codeName = "#{I18n.translate('app.labels.grade_band')}: #{@gradeCodeIn}"
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, [], gradeCodeA, @gradeCodeIn, codeName, recordOrder, rowNum, currentRec)
+        codeName = "#{I18n.translate('app.labels.grade_band')} #{@gradeCodeIn}"
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 0, [], gradeCodeA, @gradeCodeIn, codeName, recordOrder, rowNum, currentRec)
         @rptRecs <<  rptRec if rptRec.present?
         recordOrder += 1
 
@@ -256,21 +261,35 @@ class UploadsController < ApplicationController
 
         if rptRec.present?
           @rptRecs << rptRec
+          recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
         end
-        recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
 
         ######################################################
         # Write the SubUnit level tree record (create or update)
-        itemName = rowH[' Sub unit']
-        itemCode = lookupItemCodeForName(itemName, unitCodeA.join('.'))
-        Rails.logger.debug("### Sub Unit: #{itemCode} #{itemName}")
-        itemCodeA = [@gradeCodeIn, unitCode, itemCode]
-        currentRec = @currentRecs[itemCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, unitCodeA, itemCodeA, itemCode, itemName, recordOrder, rowNum, currentRec)
+        subUnitName = rowH[' Sub unit']
+        subUnitCode = lookupItemCodeForName(subUnitName, unitCodeA.join('.'))
+        Rails.logger.debug("### Sub Unit: #{subUnitCode} #{subUnitName}")
+        subUnitCodeA = [@gradeCodeIn, unitCode, subUnitCode]
+        currentRec = @currentRecs[subUnitCodeA.join('.')]
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 2, unitCodeA, subUnitCodeA, subUnitCode, subUnitName, recordOrder, rowNum, currentRec)
         if rptRec.present?
           @rptRecs << rptRec
+          recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
         end
-        recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
+
+        ######################################################
+        # Write the Competency level tree record (create or update)
+        compName = rowH['Proposed Student Competences']
+        compCode = lookupItemCodeForName(compName, subUnitCodeA.join('.'))
+        Rails.logger.debug("### Sub Unit: #{compCode} #{compName}")
+        compCodeA = [@gradeCodeIn, unitCode, subUnitCode, compCode]
+        currentRec = @currentRecs[compCodeA.join('.')]
+        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 3, subUnitCodeA, compCodeA, compCode, compName, recordOrder, rowNum, currentRec)
+        if rptRec.present?
+          @rptRecs << rptRec
+          recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
+        end
+
 
       elsif isValidRow == 'blank'
         # # skip this record
@@ -285,7 +304,6 @@ class UploadsController < ApplicationController
       end
 
 
-      # Rails.logger.debug("### Proposed Student Competences: #{rowH['Proposed Student Competences']}")
       # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
       # Rails.logger.debug("### Specific big idea: #{rowH['Specific big idea']}")
       # Rails.logger.debug("### Explanatory Comments: #{rowH['Explanatory Comments']}")
@@ -295,6 +313,10 @@ class UploadsController < ApplicationController
 
       rowNum += 1
     end
+
+    # To Do: remove records in @currentRecs that were not updated.
+    #    Otherwise, old uploads for this curriculum/subject will remain.
+
     @rptRecs << ['','','','','','','','','End of Report']
   end
 
@@ -443,7 +465,7 @@ class UploadsController < ApplicationController
       # build report record array of values
       rptRec = [fileRow.to_s]
       rptRec.concat(codeA2.concat(['','','','']).slice(0,5)) # get exactly 5 codes to output
-      rptRec.concat([thisCode, thisCodeTransl, rptErrorMsg])
+      rptRec.concat([codeA.join('.'), "#{@hierarchies[depth]}: #{thisCodeTransl}", rptErrorMsg])
       Rails.logger.debug("+++ final rptRec: #{rptRec.inspect}")
       Rails.logger.debug("+++ at end currentRec updated: #{currentRec[:updated]}")
     end

@@ -51,10 +51,10 @@
         <th><%= @hierarchies[1] %></th>
         <th><%= @hierarchies[2] %></th>
         <th><%= @hierarchies[3] %></th>
-        <th><%= translate('app.labels.indicator')  %></th>
+        <th><%= @hierarchies.length > 4 ? @hierarchies[4] : ''  %></th>
         <th><%= translate('app.labels.code') %></th>
-        <th style="width: 30%;"><%= translate('app.labels.description') %></th>
-        <th style="width: 30%;"><%= translate('app.labels.message') %></th>
+        <th style="width: 40%; max-width: 40%;"><%= translate('app.labels.description') %></th>
+        <th style="width: 20%; max-width: 20%"><%= translate('app.labels.message') %></th>
       </tr>
     </thead>
     <tbody>
