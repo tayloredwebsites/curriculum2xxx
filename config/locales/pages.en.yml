@@ -36,6 +36,7 @@ en:
       outcomes: "Attainments"
       indicator: "Explanation"
       indicators: "Explanations"
+      comments: "Explanatory Comment"
       code: "Code"
       description: 'Description'
       message: "Message"

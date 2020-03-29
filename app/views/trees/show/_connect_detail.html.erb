@@ -1,0 +1,70 @@
+<!-- Connections to Other Outcomes Table -->
+      <div class='related-items-table'>
+        <div class='row subject-relations center-label-bold top-label'>
+          <div class='col col-lg-12'>
+            <%= detail_title %>
+              <% if @editMe && false %>
+                <a href="#"><span class="pull-right">
+                  <i class="fa fa-plus-square fa-lg"></i>
+                </span></a>
+              <% end %>
+          </div>
+        </div>
+        <div class='connections-grid'>
+          <div class='connections-header'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('trees.labels.relation') %>
+            </div>
+          </div>
+          <div class='connections-header'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.subject') %>
+            </div>
+          </div>
+          <div class='connections-header'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.code') %>
+            </div>
+          </div>
+          <div class='connections-header'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('app.labels.description') %>
+            </div>
+          </div>
+          <div class='connections-header'>
+            <div class='center-label sub-header-margin'>
+              <%= I18n.t('trees.labels.how_outcome_related') %>
+            </div>
+          </div>
+
+        </div>
+        <div class='connections-grid'>
+          <% @relatedBySubj.each do |subj, rel|%>
+            <% rel.each do |r| %>
+              <div class='connections-item'>
+                <%= r[:relationship] %>
+              </div>
+              <div class='connections-item'>
+                <%= I18n.t("trees.labels.#{subj}") %>
+              </div>
+              <div class='connections-item'>
+                <%= r[:code] %>
+              </div>
+              <div class='connections-item'>
+                <% if r[:tid] == 0 %>
+                  <%= @translations[r[:tkey]] %>
+                <% else %>
+                  <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+                <% end %>
+              </div>
+              <div class='connections-item'>
+                <%= @translations[r[:explanation]] %>
+                <% if @editMe %>
+                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe %>
+                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>

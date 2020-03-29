@@ -15,6 +15,7 @@ class TreesController < ApplicationController
     areaHash = {}
     componentHash = {}
     newHash = {}
+    hierarchiesInTrees = []
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
@@ -22,10 +23,13 @@ class TreesController < ApplicationController
       areaHash = {}
       depth = tree.depth
       code_arr = tree.code.split(".")
+      hierarchy_level = @hierarchies[depth - 1]
+      hierarchiesInTrees << hierarchy_level if !hierarchiesInTrees.include?(hierarchy_level)
+
       parent = treeHash[code_arr.shift] if code_arr.length > 1
       while code_arr.length > 1
         c = code_arr.shift
-        parent = parent[:nodes][c] if c != ""
+        parent = parent[:nodes][c] if c != "" && parent[:nodes][c]
       end
 
       case depth
@@ -93,6 +97,7 @@ class TreesController < ApplicationController
         raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
       end
     end
+
     # convert tree of record codes so that nodes are arrays not hashes for conversion to JSON
     # puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
     otcArrHash = []
@@ -123,6 +128,10 @@ class TreesController < ApplicationController
 
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
+
+    @hierarchiesInTrees = []
+    @hierarchies[0 .. 3].each { |h| @hierarchiesInTrees << h if hierarchiesInTrees.include?(h) }
+
     respond_to do |format|
       format.html { render 'index'}
       format.json { render json: {trees: @trees, subjects: @subjects, grade_bands: @gbs}}
@@ -761,6 +770,23 @@ class TreesController < ApplicationController
       # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
       @trees = [@tree]
       process_tree = true
+      detail_areas = @treeTypeRec.detail_headers.split(",")
+      @detail_headers = []
+      @detail_areas = []
+      detail_areas.each do |a|
+        detail_type = 'header'
+        detail = a
+        if a.first == "{" && a.last == "}"
+          detail_type = 'single'
+          detail = a[1..a.length - 2]
+        elsif a.first == "[" && a.last == "]"
+          detail_type = 'multi'
+          detail = a[1..a.length - 2]
+        end
+        detail = detail.split("_").join("")
+        @detail_headers << {type: detail_type, name: detail} if detail_type == 'header'
+        @detail_areas << {type: detail_type, name: detail} if detail_type != 'header'
+      end
     else
       # not a detail page, go back to index page
       index_prep
@@ -867,6 +893,8 @@ class TreesController < ApplicationController
           name_key
         )
         @translation = translation[name_key]
+      elsif @edit_type == "comment"
+         @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
@@ -883,7 +911,7 @@ class TreesController < ApplicationController
           @rel = SectorTree.find(tree_params[:attr_id]) if (@edit_type == "sector")
         else
           @rel = SectorTree.new
-          @sectors = Sector.where(:sector_set_code => @treeTypeRec.sector_set_code)
+          @sectors = Sector.where(:sector_set_code => TreeType.get_sector_set_code(@treeTypeRec.sector_set_code))
           @sector_names = Translation.translationsByKeys(@locale_code, @sectors.pluck('name_key'))
         end
         @rel = DimTree.find(tree_params[:attr_id]) if (@edit_type == "dimtree")
@@ -923,6 +951,7 @@ class TreesController < ApplicationController
     update = tree_params[:edit_type]
     if update
       save_translation = true
+      Translation.find_or_update_translation(@locale_code, @tree.outcome.get_explain_key, tree_params[:comment]) if tree_params[:comment]
       if update == 'outcome'
         name_key = @tree.buildNameKey
       elsif update == 'indicator'
@@ -1026,6 +1055,7 @@ class TreesController < ApplicationController
       :name_translation,
       :active,
       :editing,
+      :comment
     )
   end
 
@@ -1165,7 +1195,7 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** @grade_band_code: #{@grade_band_code.inspect}")
     Rails.logger.debug("*** @gb: #{@gb.inspect}")
 
-    listing = Tree.where(
+    listing = Tree.active.where(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
@@ -1174,9 +1204,6 @@ class TreesController < ApplicationController
     Rails.logger.debug("*** listing.count: #{listing.count}")
     listing = listing.where(grade_band_id: @gb.id) if @gb.present?
     Rails.logger.debug("*** listing.count: #{listing.count}")
-    # Note: sort order does matter for sequence of siblings in tree.
-    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
-    Rails.logger.debug("*** @trees.count: #{@trees.count}")
 
     # @tree is used for filtering form
     @tree = Tree.new(
@@ -1185,6 +1212,10 @@ class TreesController < ApplicationController
     )
     @tree.subject_id = @subj.id if @subj.present?
     @tree.grade_band_id = @gb.id if @gb.present?
+
+    # Note: sort order does matter for sequence of siblings in tree.
+    @trees = listing.joins(:grade_band).order("grade_bands.sort_order, trees.sort_order, code").all
+    Rails.logger.debug("*** @trees.count: #{@trees.count}")
 
     @relations = Hash.new { |h, k| h[k] = [] }
     relations = TreeTree.active

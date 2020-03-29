@@ -24,16 +24,15 @@ namespace :seed_turkey_v02a do
       sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
       curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
-      outcome_depth: 2,
+      outcome_depth: 3,
       version_id: @v02.id,
       working_status: true,
       miscon_dim_type: 'miscon',
       big_ideas_dim_type: 'bigidea',
       ess_q_dim_type: 'essq',
       tree_code_format: 'grade,unit,sub_unit,comp',
-      detail_headers: 'grade,unit,(sub_unit),comp,[subj_big_idea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[subj_big_idea],[ess_q],explain,[miscon],[connect],[refs]'
-
+      detail_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
+      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon],[connect],[refs]'
     }
     if myTreeType.count < 1
       raise 'Missing Tree Type record for tfv v02'
@@ -72,8 +71,6 @@ namespace :seed_turkey_v02a do
       end
     end
     STDOUT.puts 'Done: Outcome records for all tree records at the outcome level have been created.'
-
-    myTreeType.update(:outcome_depth => 3)
 
     # Tree.joins(:outcome).where(:tree_type_id => 2).each do |t|
     #   old_name_key = t.buildNameKey
