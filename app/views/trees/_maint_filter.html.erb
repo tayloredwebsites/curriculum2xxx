@@ -1,17 +1,21 @@
 <%= form_for @tree, url: maint_trees_path, :html => { :method => 'GET' } do |form| %>
   <% param_name = (col == "tree" ? col : "dim_tree" ) %>
+  <!-- Workaround for inconsistently named essq/ess_q -->
+  <% dim_key = col.split("_").join("") %>
+
   <div class='row'>
     <!-- Hidden fields -->
     <!-- Pass setting to stay in edit mode after submitting form, if currently in edit mode -->
     <% if @editing %>
       <input type='hidden' name='editme' value=true></input>
     <% end %>
+    <!-- If @dim_type is defined, we are rendering one of the dimension-specific pages (e.g., the Misconceptions page) -->
     <% if @dim_type %>
       <input type='hidden' name='dim_tree[dim_type]' value="<%= @dim_type%>"></input>
     <% end %>
 
     <!-- If searching for a different set of essential questions, don't forget the current set of misconceptions and big ideas. -->
-    <% if col == @treeTypeRec.ess_q_dim_type
+    <% if dim_key == @treeTypeRec.ess_q_dim_type
          if @dim_subjs['miscon'] && @dim_type != @treeTypeRec.ess_q_dim_type %>
           <input type='hidden' name='dim_tree[miscon_subj_code]' value=<%= @dim_subjs['miscon'] %>></input>
       <% end
@@ -23,7 +27,7 @@
           <input type='hidden' name='dim_tree[miscon_gb_id]' value=<%= @m_gb[:id] || 0 %>></input>
     <% end
        if @bi_gb && @dim_type != @treeTypeRec.ess_q_dim_type %>
-         <input type='hidden' name='dim_tree[bigidea_gb_id]' value=<%= @eq_gb[:id] || 0 %>></input>
+         <input type='hidden' name='dim_tree[bigidea_gb_id]' value=<%= @bi_gb[:id] || 0 %>></input>
     <% end
     end %>
 
@@ -76,7 +80,7 @@
           <% end %>
         <% else # if col != "tree" %>
           <% BaseRec::BASE_SUBJECTS.each do |s| %>
-            <% sel_code = @dim_subjs[col] if @dim_subjs[col]
+            <% sel_code = @dim_subjs[dim_key] if @dim_subjs[dim_key]
                opt_name = @translations["subject.base.#{s}.abbr"]
             %>
             <%- selectedStr = (s == sel_code) ? ' selected = "selected"' : '' %>
@@ -93,6 +97,7 @@
         <% gbc = @grade_band_code
            gbc = @bi_gb[:code] if (@bi_gb && col == "bigidea")
            gbc = @m_gb[:code] if (@m_gb && col == "miscon")
+           gbc = @eq_gb[:code] if (@eq_gb && dim_key == @treeTypeRec.ess_q_dim_type)
         %>
         <%- selectedStr = (gb.code == gbc) ? ' selected = "selected"' : '' %>
         <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
