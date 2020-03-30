@@ -213,6 +213,26 @@ class UploadsController < ApplicationController
       @currentRecs[rec.code] = {updated: false, rec: rec, transl_name: transl_name, transl_id: transl_id}
     end
 
+    #   - Create a hash (at beginning of upload process) of the Dimensions for this subject, and dimension type (not by Tree Type - to prevent dups)
+    @currentDims = Hash.new{ |h, k| h[k] = {} }
+    currentDims = Dimension.where(subject_code: @subjectRec.code, active: true)
+    currentDims.each do |rec|
+      transl_names = Translation.where(locale: @locale_code, key: rec.get_dim_name_key)
+      if transl_names.count > 0
+        transl_name = transl_names.first.value
+        transl_id = transl_names.first.id
+      else
+        transl_name = ''
+        transl_id = nil
+      end
+      if transl_name.present?
+        @currentDims[transl_name] = {updated: false, rec: rec, transl_name: transl_name, transl_id: transl_id}
+      else
+        # Ignoring this condition for now
+      end
+    end
+
+
     # hash to hold the last code used (we are incrementing codes and saving the last in the parent key)
     # hash also holds the last set of values assigned a code, so we get the proper code for previous records.
     # structure of hash = parentCode: { lastSubCode: code ,valuesAssigned: { name: code } }
@@ -283,7 +303,7 @@ class UploadsController < ApplicationController
         # Write the Competency level tree record (create or update)
         compName = rowH['Proposed Student Competences']
         compCode = lookupItemCodeForName(compName, subUnitCodeA.join('.'))
-        Rails.logger.debug("### Sub Unit: #{compCode} #{compName}")
+        Rails.logger.debug("### Competency: #{compCode} #{compName}")
         compCodeA = [@gradeCodeIn, unitCode, subUnitCode, compCode]
         currentRec = @currentRecs[compCodeA.join('.')]
         rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 3, subUnitCodeA, compCodeA, compCode, compName, recordOrder, rowNum, currentRec, rowH['Explanatory Comments'])
@@ -292,6 +312,31 @@ class UploadsController < ApplicationController
           recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
         end
 
+        ######################################################
+        # Write the K-12 Big Idea (aka. Essential Quesitons behind the scenes) (create or update)
+        # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
+
+        compName = rowH['K-12 Big Idea ']
+        if compName.present?
+          dimTypeName = Dimension.get_dim_type_name('essq', @treeTypeRec.code, @versionRec.code, @locale_code)
+          currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
+          createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, compName, 'From Upload')
+          # build report record array of values
+          # codeA3 = compCodeA.clone
+          # rptCodes = codeA3.concat(['','','','']).slice(0,5)
+          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
+        end
+
+        compName = rowH['Specific big idea']
+        if compName.present?
+          dimTypeName = Dimension.get_dim_type_name('bigidea', @treeTypeRec.code, @versionRec.code, @locale_code)
+          currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
+          createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', gradeBandRec.min_grade, gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
+          # build report record array of values
+          # codeA4 = compCodeA.clone
+          # rptCodes = codeA4.concat(['','','','']).slice(0,5)
+          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
+        end
 
       elsif isValidRow == 'blank'
         # # skip this record
@@ -306,8 +351,6 @@ class UploadsController < ApplicationController
       end
 
 
-      # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
-      # Rails.logger.debug("### Specific big idea: #{rowH['Specific big idea']}")
       # Rails.logger.debug("### Explanatory Comments: #{rowH['Explanatory Comments']}")
       # Rails.logger.debug("### Misconceptions: #{rowH['Misconceptions']}")
       # Rails.logger.debug("### Display relations: #{rowH['Display relations']}")
@@ -795,5 +838,77 @@ class UploadsController < ApplicationController
     end
   end
 
+
+  def createOrUpdateDimRecs(treeRec, subject_id, dim_type, min_grade, max_grade, subject_code, dim_name, dim_tree_expl)
+    # be able to update Dimension, DimTree (for the tree passed in), and their Translations
+    # no updates to Tree
+    # note: we are not using dim_desc_key!!!  this is not used.
+    # note: we are not using dim_code!!! this is not used
+    # note: we are defaulting the dim_order field
+
+    # 1 - look up dimension by subject, dim type, and dim_name
+    #   - create or update dimension, dim_name translation, and dim_desc translation
+    #   - Create a hash - @currentDims of the Dimensions for this subject, and dimension type (not by Tree Type - to prevent dups)
+
+    #   - if the dim_name exists already we are going to use that dimension (ignoring dim_desc)
+    #   - otherwise we will create a new dimension
+
+    currentRecH = @currentDims[dim_name]
+    if !currentRecH.present?
+      Rails.logger.debug("$$$ Did NOT find current dimension: #{dim_name}")
+      currentRec = Dimension.create(
+        subject_id: @subjectRec.id,
+        dim_type: dim_type,
+        # dim_name_key: dim_name_key,
+        min_grade: min_grade,
+        max_grade: max_grade,
+        subject_code: @subjectRec.code
+      )
+      currentRec.dim_name_key = currentRec.get_dim_name_key
+      currentRec.save
+
+      transl_rec, text_status, transl_text = Translation.find_or_update_translation(
+        @localeRec.code,
+        currentRec.get_dim_name_key,
+        dim_name
+      )
+      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].base_key, dim_type, currentRec.id)
+      dimTree = DimTree.create(
+        tree_id: treeRec[:rec].id,
+        dimension_id: currentRec.id,
+        dim_explanation_key: dimExplKey
+      )
+      transl_rec, text_status, transl_text = Translation.find_or_update_translation(
+        @localeRec.code,
+        dimExplKey,
+        dim_tree_expl
+      )
+      @currentDims[dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
+    else #existing Dimension record
+      Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
+      currentRec = currentRecH[:rec]
+      Rails.logger.debug("$$$ current dimension record: #{currentRec.inspect}")
+      currentRec.min_grade = min_grade if min_grade < currentRec.min_grade
+      currentRec.max_grade = max_grade if max_grade > currentRec.max_grade
+      currentRec.save
+      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].base_key, dim_type, currentRec.id)
+      dimTrees = DimTree.where(tree_id: treeRec[:rec].id, dimension_id: currentRec.id)
+      if dimTrees.count < 1
+        dimTree = DimTree.create(
+          tree_id: treeRec[:rec].id,
+          dimension_id: currentRec.id,
+          dim_explanation_key: dimExplKey
+        )
+        transl_rec, text_status, transl_text = Translation.find_or_update_translation(
+          @localeRec.code,
+          dimExplKey,
+          dim_tree_expl
+        )
+        @currentDims[dim_name][:updated] = true
+      end
+
+    end
+
+  end
 
 end

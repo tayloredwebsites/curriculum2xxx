@@ -32,6 +32,18 @@ class Dimension < BaseRec
     return "curriculum.#{tree_type}.#{version}.#{dim_type}"
   end
 
+  def self.get_dim_type_name(dimType, treeTypeCode, versionCode, localeCode)
+    dimTypeKey =  Dimension.get_dim_type_key(dimType, treeTypeCode, versionCode)
+    return Translation.find_translation_name(localeCode, dimTypeKey, nil) ||
+      translate('nav_bar.essq.name')
+  end
+
+  # To Do: fill this in
+  def self.createOrUpdateDimensionRecord()
+  end
+
+
+
   ###############################################
 
   private
