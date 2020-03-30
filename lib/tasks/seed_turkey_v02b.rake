@@ -23,6 +23,8 @@ namespace :seed_turkey_v02b do
     end
     @tfv = myTreeTypes.first
 
+    @loc_en = Locale.where(code: 'en').first
+
     ###################################################################################
     # create upload records for .csv format uploads for V02
     Upload.delete_all
@@ -43,81 +45,37 @@ namespace :seed_turkey_v02b do
 
     # using nil gradeband id for all grades
 
+    # create the technology subject:
+    if Subject.where(tree_type_id: @tfv.id, code: 'tech').count < 1
+      tech = Subject.create(
+        tree_type_id: @tfv.id,
+        code: 'tech',
+        base_key: 'subject.tfv.tech',
+        min_grade: 0,
+        max_grade: 12
+      )
+    end
+    Translation.find_or_update_translation(@loc_en.code, 'subject.tfv.tech', 'Tech Engineering')
+    Translation.find_or_update_translation(@loc_en.code, 'subject.base.tech.name', 'Tech Engineering')
+    Translation.find_or_update_translation(@loc_en.code, 'subject.base.tech.abbr', 'tech')
+
     @subjects = []
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
+    @bio.min_grade = 9
+    @bio.max_grade = 12
+    @bio.save
     @che = Subject.where(tree_type_id: @tfv.id, code: 'che').first
     @mat = Subject.where(tree_type_id: @tfv.id, code: 'mat').first
     @sci = Subject.where(tree_type_id: @tfv.id, code: 'sci').first
     @phy = Subject.where(tree_type_id: @tfv.id, code: 'phy').first
     @ear = Subject.where(tree_type_id: @tfv.id, code: 'ear').first
-    @subj_others = [@bio, @che, @mat, @phy, @ear]
-    @subj_math = [@mat]
-    @subj_sci = [@sci]
+    @tech = Subject.where(tree_type_id: @tfv.id, code: 'tech').first
+    @subjects = [@bio, @che, @mat, @sci, @phy, @ear, @tech]
 
     @loc_tr = Locale.where(code: 'tr').first
     @loc_en = Locale.where(code: 'en').first
 
-    @subj_math.each do |s|
-      if Upload.where(tree_type_code: 'tfv',
-        subject_id: s.id,
-        grade_band_id: nil,
-        locale_id: @loc_en.id
-      ).count < 1
-        Upload.create!(
-          tree_type_code: 'tfv',
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_en.id,
-          status: 0,
-          filename: "tfvV02#{s.code.capitalize}AllEng.csv"
-        )
-      end
-      if Upload.where(tree_type_code: 'tfv',
-        subject_id: s.id,
-        grade_band_id: nil,
-        locale_id: @loc_tr.id
-      ).count < 1
-        Upload.create!(
-          tree_type_code: 'tfv',
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_tr.id,
-          status: 0,
-          filename: "tfvV02#{s.code.capitalize}AllTur.csv"
-        )
-      end
-    end
-    @subj_sci.each do |s|
-      if Upload.where(tree_type_code: 'tfv',
-        subject_id: s.id,
-        grade_band_id: nil,
-        locale_id: @loc_en.id
-      ).count < 1
-        Upload.create!(
-          tree_type_code: 'tfv',
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_en.id,
-          status: 0,
-          filename: "tfvV02#{s.code.capitalize}AllEng.csv"
-        )
-      end
-      if Upload.where(tree_type_code: 'tfv',
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_tr.id
-        ).count < 1
-          Upload.create!(
-          tree_type_code: 'tfv',
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_tr.id,
-          status: 0,
-          filename: "tfvV02#{s.code.capitalize}AllTur.csv"
-        )
-      end
-    end
-    @subj_others.each do |s|
+    @subjects.each do |s|
       if Upload.where(tree_type_code: 'tfv',
         subject_id: s.id,
         grade_band_id: nil,
