@@ -15,10 +15,9 @@
           <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
 
         <br/>
-        <span class='pull-left'><strong><%= "#{dim_title.singularize}:" %></strong></span>
+        <span class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong><%= @translations[dim.dim_name_key] %></span>
         <br/>
-        <%= @translations[dim.dim_name_key] %>
-        <br/>
+
         <% if current_user.present? && current_user.is_admin? && @editing%>
           <div class="pull-right">
               <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
