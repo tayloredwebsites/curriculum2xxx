@@ -27,19 +27,21 @@ namespace :seed_turkey_v02b do
     # create upload records for .csv format uploads for V02
     Upload.delete_all
 
-    # Adding grade band 99 for the all gradeband for uploads
-    # set as deactivated, to prevent it from showing up in dropdowns
-    # To Do: consider using Grade Band 99 for All in dropdowns.
-    if GradeBand.where(tree_type_id: @tfv.id, code: '99').count < 1
-      GradeBand.create(
-        tree_type_id: @tfv.id,
-        code: '99',
-        sort_order: '99',
-        active: false
-      )
-    end
+    # # Adding grade band 99 for the all gradeband for uploads
+    # # set as deactivated, to prevent it from showing up in dropdowns
+    # # To Do: consider using Grade Band 99 for All in dropdowns.
+    # if GradeBand.where(tree_type_id: @tfv.id, code: '99').count < 1
+    #   GradeBand.create(
+    #     tree_type_id: @tfv.id,
+    #     code: '99',
+    #     sort_order: '99',
+    #     active: false
+    #   )
+    # end
 
-    @gb_99 = GradeBand.where(tree_type_id: @tfv.id, code: '99').first
+    # @gb_99 = GradeBand.where(tree_type_id: @tfv.id, code: '99').first
+
+    # using nil gradeband id for all grades
 
     @subjects = []
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
@@ -58,90 +60,90 @@ namespace :seed_turkey_v02b do
     @subj_math.each do |s|
       if Upload.where(tree_type_code: 'tfv',
         subject_id: s.id,
-        grade_band_id: @gb_99.id,
+        grade_band_id: nil,
         locale_id: @loc_en.id
       ).count < 1
         Upload.create!(
           tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_en.id,
           status: 0,
-          filename: "tfvV02#{s.code.capitalize}99Eng.csv"
+          filename: "tfvV02#{s.code.capitalize}AllEng.csv"
         )
       end
       if Upload.where(tree_type_code: 'tfv',
         subject_id: s.id,
-        grade_band_id: @gb_99.id,
+        grade_band_id: nil,
         locale_id: @loc_tr.id
       ).count < 1
         Upload.create!(
           tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_tr.id,
           status: 0,
-          filename: "tfvV02#{s.code.capitalize}99Tur.csv"
+          filename: "tfvV02#{s.code.capitalize}AllTur.csv"
         )
       end
     end
     @subj_sci.each do |s|
       if Upload.where(tree_type_code: 'tfv',
         subject_id: s.id,
-        grade_band_id: @gb_99.id,
+        grade_band_id: nil,
         locale_id: @loc_en.id
       ).count < 1
         Upload.create!(
           tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_en.id,
           status: 0,
-          filename: "tfvV02#{s.code.capitalize}99Eng.csv"
+          filename: "tfvV02#{s.code.capitalize}AllEng.csv"
         )
       end
       if Upload.where(tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_tr.id
         ).count < 1
           Upload.create!(
           tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_tr.id,
           status: 0,
-          filename: "tfvV02#{s.code.capitalize}99Tur.csv"
+          filename: "tfvV02#{s.code.capitalize}AllTur.csv"
         )
       end
     end
     @subj_others.each do |s|
       if Upload.where(tree_type_code: 'tfv',
         subject_id: s.id,
-        grade_band_id: @gb_99.id,
+        grade_band_id: nil,
         locale_id: @loc_en.id
       ).count < 1
         Upload.create!(
           tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_en.id,
           status: 0,
-          filename: "tfvV02#{s.code.capitalize}99Eng.csv"
+          filename: "tfvV02#{s.code.capitalize}AllEng.csv"
         )
       end
       if Upload.where(tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_tr.id
         ).count < 1
         Upload.create!(
           tree_type_code: 'tfv',
           subject_id: s.id,
-          grade_band_id: @gb_99.id,
+          grade_band_id: nil,
           locale_id: @loc_tr.id,
           status: 0,
-          filename: "tfvV02#{s.code.capitalize}99Tur.csv"
+          filename: "tfvV02#{s.code.capitalize}AllTur.csv"
         )
       end
     end

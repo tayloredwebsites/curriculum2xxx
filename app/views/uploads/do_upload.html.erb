@@ -3,7 +3,7 @@
 <h2 class='h4'><%= translate('uploads.upload.h2') %></h2>
 <ul class='titleList'>
   <li><%= "#{translate('app.labels.subject')}: #{@upload.subject.code}" %></li>
-  <li><%= "#{translate('app.labels.grade_band')}: #{@upload.grade_band.code}" %></li>
+  <li><%= "#{translate('app.labels.grade_band')}: All Grades" %> <%# @upload.grade_band.code %></li>
   <li><%= "#{translate('app.labels.language')}: #{@upload.locale.name}" %></li>
 </ul>
 <div class="col-lg-8 offset-lg-2 col-sm-10 offset-sm-1 col-xs-12">

@@ -16,7 +16,7 @@
     <% @uploads.each do |u| %>
       <tr id="id_<%= u.id %>">
         <td><%= u.subject.code %></td>
-        <td><%= u.grade_band.code %></td>
+        <td><%= 'All Grades' %> <%# u.grade_band.code %></td>
         <td><%= u.locale.name %></td>
         <td>
           <%= link_to "#{translate('uploads.labels.upload')} #{u.filename}", start_upload_upload_path(id: u.id) %>

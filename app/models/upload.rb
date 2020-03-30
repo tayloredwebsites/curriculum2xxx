@@ -140,17 +140,19 @@ class Upload < BaseRec
   }
 
   belongs_to :subject
-  belongs_to :grade_band
+  # To Do: put this back in for non-full subject uploads?
+  # belongs_to :grade_band
   belongs_to :locale
 
   validates :subject, presence: true
-  validates :grade_band, presence: true
+  # validates :grade_band, presence: true
   validates :locale, presence: true
 
   validates :status, presence: true, allow_blank: false
 
   scope :upload_listing, -> {
-    order('subjects.code', 'grade_bands.code', 'locales.name')
+    # order('subjects.code', 'grade_bands.code', 'locales.name')
+    order('subjects.code', 'locales.name')
     # where(active: true)
   }
 

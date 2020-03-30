@@ -114,7 +114,8 @@ class UploadsController < ApplicationController
 
     if @upload && params['upload']
       @subjectRec = @upload.subject
-      @gradeBandRec = @upload.grade_band
+      # @gradeBandRec = @upload.grade_band
+      @gradeBandRec = GradeBand.new
       @localeRec = @upload.locale
       tree_parent_code = ''
 
@@ -222,6 +223,7 @@ class UploadsController < ApplicationController
       # To Do: make sure that all upload file column headers are correct and accounted for:
       #   - mispellings will cause missing values from the CSV row hash
       #   - maybe pre-read row 1 and confirm the column headers.  Sequence and similarity may help with this.
+      #      - try: firstRow = File.open(filePath, &:readline)
 
       Rails.logger.debug("")
       Rails.logger.debug("##########################################################")
@@ -663,7 +665,8 @@ class UploadsController < ApplicationController
   end
 
   def index_prep
-    @uploads = Upload.order(:id).includes([:subject, :grade_band, :locale]).where(:tree_type_code => @treeTypeRec.code).upload_listing
+    # @uploads = Upload.order(:id).includes([:subject, :grade_band, :locale]).where(:tree_type_code => @treeTypeRec.code).upload_listing
+    @uploads = Upload.order(:id).includes([:subject, :locale]).where(:tree_type_code => @treeTypeRec.code).upload_listing
   end
 
 
