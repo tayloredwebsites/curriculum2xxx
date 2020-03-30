@@ -151,6 +151,16 @@ class ApplicationController < ActionController::Base
       end
       @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
       @essqTitle = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.essq.name')
+      @bigIdeasTitle = Dimension.get_dim_type_name(
+          @treeTypeRec.big_ideas_dim_type,
+          @treeTypeRec.code,
+          @versionRec.code,
+          @locale_code)
+      @misconTitle = Dimension.get_dim_type_name(
+          @treeTypeRec.miscon_dim_type,
+          @treeTypeRec.code,
+          @versionRec.code,
+          @locale_code)
     end
 
     def initTypeCode
