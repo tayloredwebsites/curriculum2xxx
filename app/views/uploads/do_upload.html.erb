@@ -3,7 +3,7 @@
 <h2 class='h4'><%= translate('uploads.upload.h2') %></h2>
 <ul class='titleList'>
   <li><%= "#{translate('app.labels.subject')}: #{@upload.subject.code}" %></li>
-  <li><%= "#{translate('app.labels.grade_band')}: #{@upload.grade_band.code}" %></li>
+  <li><%= "#{translate('app.labels.grade_band')}: All Grades" %> <%# @upload.grade_band.code %></li>
   <li><%= "#{translate('app.labels.language')}: #{@upload.locale.name}" %></li>
 </ul>
 <div class="col-lg-8 offset-lg-2 col-sm-10 offset-sm-1 col-xs-12">
@@ -47,14 +47,14 @@
     <thead>
       <tr>
         <th><%= translate('app.labels.row') %></th>
-        <th><%= translate('app.labels.grade_band') %></th>
-        <th><%= translate('app.labels.area') %></th>
-        <th><%= translate('app.labels.component') %></th>
-        <th><%= translate('app.labels.outcome') %></th>
-        <th><%= translate('app.labels.indicator')  %></th>
+        <th><%= @hierarchies[0] %></th>
+        <th><%= @hierarchies[1] %></th>
+        <th><%= @hierarchies[2] %></th>
+        <th><%= @hierarchies[3] %></th>
+        <th><%= @hierarchies.length > 4 ? @hierarchies[4] : ''  %></th>
         <th><%= translate('app.labels.code') %></th>
-        <th style="width: 30%;"><%= translate('app.labels.description') %></th>
-        <th style="width: 30%;"><%= translate('app.labels.message') %></th>
+        <th style="width: 40%; max-width: 40%;"><%= translate('app.labels.description') %></th>
+        <th style="width: 20%; max-width: 20%"><%= translate('app.labels.message') %></th>
       </tr>
     </thead>
     <tbody>

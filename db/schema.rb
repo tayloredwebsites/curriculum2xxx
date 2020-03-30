@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200326015125) do
+ActiveRecord::Schema.define(version: 20200330141749) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20200326015125) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "base_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 20200326015125) do
 
   create_table "uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "subject_id", null: false
-    t.integer "grade_band_id", null: false
+    t.integer "grade_band_id"
     t.integer "locale_id", null: false
     t.integer "status"
     t.text "status_detail"

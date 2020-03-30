@@ -37,7 +37,7 @@ namespace :seed_turkey_v02a do
     if myTreeType.count < 1
       raise 'Missing Tree Type record for tfv v02'
     else
-      TreeType.update(myTreeType.first.id, myTreeTypeValues)
+      myTreeType = TreeType.update(myTreeType.first.id, myTreeTypeValues)
     end
     throw "Invalid Tree Type Count" if TreeType.where(code: 'tfv').count != 2
     @tfv = TreeType.where(code: 'tfv', version_id: @v02.id).first
@@ -47,7 +47,11 @@ namespace :seed_turkey_v02a do
 
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Dimension.get_dim_type_key(myTreeType.ess_q_dim_type, myTreeType.code, @v02.code), 'K-12 Big Ideas')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    STDOUT.puts 'Create translation record for essential questions as K-12 Big Ideas.'
+    STDOUT.puts 'Create translation record for Essential Questions as K-12 Big Ideas.'
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Dimension.get_dim_type_key(myTreeType.big_ideas_dim_type, myTreeType.code, @v02.code), 'Specific Big Ideas')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    STDOUT.puts 'Create translation record for Big Ideas as Specific big ideas.'
 
     # Create translation(s) for hierarchy codes
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.sub_unit', 'Sub-Unit')
