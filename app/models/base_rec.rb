@@ -45,6 +45,7 @@ class BaseRec < ActiveRecord::Base
     'sci', #Science
     'ear', #Earth Science
     'geo', #Geology
+    'tech', #Technology
   ]
 
 
