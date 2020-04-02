@@ -272,6 +272,9 @@ class UploadsController < ApplicationController
         @rptRecs <<  rptRec if rptRec.present?
         recordOrder += 1
 
+        @subjectRec.update(min_grade: gradeBandRec.min_grade) if @subjectRec.min_grade > gradeBandRec.min_grade
+        @subjectRec.update(max_grade: gradeBandRec.max_grade) if @subjectRec.max_grade < gradeBandRec.max_grade
+
         ######################################################
         # Write the Unit level tree record (create or update)
         unitName = rowH['Unit']

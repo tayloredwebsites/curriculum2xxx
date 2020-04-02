@@ -1329,7 +1329,7 @@ class TreesController < ApplicationController
         is_miscon = dt_dim.dim_type == @treeTypeRec.miscon_dim_type
         # If the dimension will not be captured by the dimension
         # columns displayed on the page.
-        if (is_bigidea && @dim_subjs['bigidea']  && @dim_subjs['bigidea'] != dt_dim.subject_code) || (is_miscon && @dim_subjs['miscon']  && @dim_subjs['miscon'] != dt_dim.subject_code) || (is_ess_q && @dim_subjs[@treeTypeRec.ess_q_dim_type]  && @dim_subjs[@treeTypeRec.ess_q_dim_type] != dt_dim.subject_code)
+        if (is_bigidea && @dim_subjs['bigidea'] && @dim_subjs['bigidea'] != dt_dim.subject_code) || (is_miscon && @dim_subjs['miscon']  && @dim_subjs['miscon'] != dt_dim.subject_code) || (is_ess_q && @dim_subjs[@treeTypeRec.ess_q_dim_type] && @dim_subjs[@treeTypeRec.ess_q_dim_type] != dt_dim.subject_code)
         #@trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
             dimKeys << dt_dim.dim_name_key
             dt_dim_subj = "subject.base.#{dt_dim.subject_code}.name"
