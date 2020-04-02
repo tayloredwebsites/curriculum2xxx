@@ -37,4 +37,28 @@ namespace :dimensions do
 
   end #task set_subject_codes: :environment do
 
+
+  desc "Delete all Dimensions, DimTrees, and their associated Translations"
+  task destroy_all: :environment do
+    dim_trees = DimTree.all
+    dims = Dimension.all
+    dim_trees.each do |dt|
+      t = dt.tree.base_key
+      d = dt.dimension
+      key = DimTree.getDimExplanationKey(t, d.dim_type, d.id)
+      puts "Deleting DimTree Translation: #{key}"
+      Translation.where(:key => key).delete_all
+    end
+    dims.each do |d|
+      puts "Deleting Dim Name Translation: #{d.get_dim_name_key}"
+      Translation.where(:key => d.get_dim_name_key).delete_all
+      puts "Deleting Dim Desc Translation: #{d.get_dim_desc_key}"
+      Translation.where(:key => d.get_dim_desc_key).delete_all
+    end
+     puts "Deleting all DimTree records"
+     dim_trees.delete_all
+     puts "Deleting all Dimension records"
+     dims.delete_all
+  end # task destroy_all
+
 end
