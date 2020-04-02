@@ -2,9 +2,20 @@ class Subject < BaseRec
 
   has_and_belongs_to_many :trees
 
-  def self.name_translation_key(code)
-    "subject.base.#{code}.name"
+  # Translation Field
+
+  # The TreeType-specific Translation key for a Subject
+  def versioned_name_key
+    treeTypeRec = TreeType.find(tree_type_id)
+    return "subject.#{treeTypeRec.code}.#{code}.name"
   end
+
+  # The default Translation key for BaseRec subjects
+  def self.name_translation_key(code)
+    return "subject.base.#{code}.name"
+  end
+
+  ########################################
 
   def abbr(loc)
     Rails.logger.debug("loc: #{loc.inspect}")

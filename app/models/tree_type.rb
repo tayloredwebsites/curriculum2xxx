@@ -1,7 +1,24 @@
 class TreeType < BaseRec
 
+  # Translation Field
+  def hierarchy_name_key(hierarchy_code)
+    return "curriculum.#{code}.hierarchy.#{hierarchy_code}"
+  end
+
+  def sector_set_name_key
+    return "sector.set.#{get_sector_set_code}.name"
+  end
+
+  def title_key
+    return "curriculum.#{code}.title"
+  end
+  #######################################
   def self.get_sector_set_code(code)
     return code.split(",")[0]
+  end
+
+  def get_sector_set_code
+    return sector_set_code.split(",")[0]
   end
 
   def self.versions_hash()

@@ -4,6 +4,7 @@ class SectorTree < BaseRec
 
   scope :active, -> { where(:active => true) }
 
+  # Translation Field
   def self.explanationKey(tree_type_code, version_code, tree_id, sector_id)
     "#{tree_type_code}.#{version_code}.tree.#{tree_id}.sector.#{sector_id}"
   end
@@ -11,5 +12,5 @@ class SectorTree < BaseRec
   def explanationKey(tree_type_code, version_code, tree_id, sector_id)
     "#{tree_type_code}.#{version_code}.tree.#{tree_id}.sector.#{sector_id}"
   end
-
+  #########################################
 end
