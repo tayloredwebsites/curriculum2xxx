@@ -55,6 +55,7 @@ en:
       show: "Show"
       working_version: "Working"
       final_version: "Final"
+      connect_form_title: "Save Connection?"
     roles:
       name: 'Roles'
       admin:
@@ -201,12 +202,12 @@ en:
       how_sectors_related: 'How Sector is Related'
       indicator_connections: 'Connections to Other Explanations:'
       outcome_connections: 'Connections to Other %{outcome}:'
-      relation: 'Relation'
+      relation: 'Connection'
       how_outcome_related: 'How Attainment is Related'
       relation_types:
         applies: 'Applies to:'
         depends: 'Depends on:'
-        akin: 'Akin to:'
+        akin: 'Connects to:'
       current_subject: "This Subject"
       bio: "Biology"
       che: "Chemistry"

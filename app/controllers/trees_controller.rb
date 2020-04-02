@@ -640,7 +640,6 @@ class TreesController < ApplicationController
 
   def edit_dimensions
     errors = []
-    @explanation = ''
     @show_ess_q = true if params[:show_ess_q]
     @show_bigidea = true if params[:show_bigidea]
     @show_miscon = true if params[:show_miscon]
@@ -674,11 +673,6 @@ class TreesController < ApplicationController
       @dim_tree = dim_tree_matches.first
       @method = :patch
       @form_path = :update_dim_tree_trees
-      explanation_translation_matches = Translation.where(
-          :key => @dim_tree[:dim_explanation_key],
-          :locale => @locale_code
-        )
-      @explanation = explanation_translation_matches.first.value if (explanation_translation_matches.length > 0)
     end #no errors
     puts "try to respond with modal popup"
     respond_to do |format|
@@ -695,15 +689,9 @@ class TreesController < ApplicationController
       :tree_id => dim_tree_params[:tree_id],
       :dim_explanation_key => dim_tree_params[:dim_explanation_key]
     )
-    @translation = Translation.new(
-      :key => dim_tree_params[:dim_explanation_key],
-      :value => dim_tree_params[:explanation],
-      :locale => @locale_code
-    )
     ActiveRecord::Base.transaction do
       begin
         @dim_tree.save!
-        @translation.save!
       rescue ActiveRecord::StatementInvalid => e
         errors << e
       end
@@ -721,27 +709,11 @@ class TreesController < ApplicationController
   end
 
   def update_dim_tree
-    puts "ACTIVE DIM TREE? #{dim_tree_params[:active]}"
     @dim_tree = DimTree.find dim_tree_params[:id]
     @dim_tree.active = dim_tree_params[:active]
-    translation_matches = Translation.where(
-      :locale => @locale_code,
-      :key => dim_tree_params[:dim_explanation_key]
-    )
-    if translation_matches.length == 0
-      @translation = Translation.new(
-        :key => dim_tree_params[:dim_explanation_key],
-        :value => dim_tree_params[:explanation],
-        :locale => @locale_code
-      )
-    else
-      @translation = translation_matches.first
-      @translation.value = dim_tree_params[:explanation]
-    end
     ActiveRecord::Base.transaction do
       begin
         @dim_tree.save!
-        @translation.save! if dim_tree_params[:active] != "false"
       rescue ActiveRecord::StatementInvalid => e
         errors << e
       end
@@ -833,11 +805,11 @@ class TreesController < ApplicationController
         if treeKeys
           t.sector_trees.each do |st|
             treeKeys << st.sector.name_key
-            treeKeys << st.explanation_key
+            #treeKeys << st.explanation_key
           end
           t.dim_trees.where(:active => true).each do |dt|
             treeKeys << dt.dimension.dim_name_key
-            treeKeys << dt.dim_explanation_key
+            #treeKeys << dt.dim_explanation_key
           end
         end
         # get translation key for each related item for this item
@@ -848,9 +820,10 @@ class TreesController < ApplicationController
           subCode = @subjById[rTree.subject_id]
           @relatedBySubj[subCode] << {
             code: rTree.code,
-            relationship: ((r.relationship == 'depends') ? r.relationship+' on' : r.relationship+' to'),
+            relationship: I18n.translate("trees.labels.relation_types.#{r.relationship}"),
             tkey: rTree.buildNameKey,
-            explanation: r.explanation_key,
+            subj: rTree.subject.get_name(@locale_code),
+           # explanation: r.explanation_key,
             tid: (rTree.depth < 2) ? 0 : rTree.id,
             ttid: r.id
           } if (!@relatedBySubj[subCode].include?(rTree.code) && r.active)
@@ -920,7 +893,6 @@ class TreesController < ApplicationController
         end
         @rel = DimTree.find(tree_params[:attr_id]) if (@edit_type == "dimtree")
         @attr_id = @rel.id
-        expl_key = @edit_type == "sector" ? @rel.explanation_key : @rel.dim_explanation_key
         name_key = @edit_type == "sector" ? (@rel.id ? @rel.sector.name_key : nil) : @rel.dimension.dim_name_key
         name_matches = Translation.where(
           :locale => @locale_code,
@@ -929,11 +901,6 @@ class TreesController < ApplicationController
         @rel_name = (name_matches.length > 0 ? ": #{name_matches.first.value}" : '')
         @tree_referencee_code = "#{I18n.t('app.labels.sector_num', num: @rel.sector.code)}#{@rel_name}" if (@edit_type == "sector" && @rel.id)
         @tree_referencee_code = "#{I18n.t("trees.#{@rel.dimension.dim_type}.singular")} #{@rel_name}" if @edit_type == "dimtree"
-        translation = Translation.translationsByKeys(
-          @locale_code,
-          expl_key
-        ) if @rel.id
-        @explanation = @rel.id ? translation[expl_key] : ""
       end
     end
     respond_to do |format|

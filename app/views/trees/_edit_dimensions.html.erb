@@ -1,5 +1,5 @@
 <div class="modal-header">
-   <h3 id="myModalLabel"><%= translate('trees.' + @dim.dim_type + '.title') %> Connection</h3>
+   <h3 id="myModalLabel"><%= translate('app.labels.connect_form_title') %> </h3>
  </div>
  <div class="modal-body">
 
@@ -23,6 +23,7 @@
   	<input type="hidden" name="dim_tree[dimension_id]" value='<%= @dim_tree.dimension_id %>'>
     <input type="hidden" name="dim_tree[dim_explanation_key]" value='<%= @dim_tree.dim_explanation_key %>'>
     <input type="hidden" name="dim_tree[dim_type]" value='<%= @dim.dim_type %>'>
+    <input type="hidden" name="dim_tree[active]" value='<%= true %>'>
     <% if @dim_tree.id %>
       <input type="hidden" name="dim_tree[id]" value='<%= @dim_tree.id %>'>
     <% end %>
@@ -30,28 +31,16 @@
 
   <fieldset>
     <div>
-    <div><strong><%= translate('app.labels.outcome') + ": " %></strong><%= @tree_subject_translation + " " + @tree.code %></div>
+    <div><strong><%= @hierarchies[ @tree.depth - 1] + ": " %></strong><%= @tree_subject_translation + " " + @tree.code %></div>
     <div><strong> - <%= translate('trees.bigidea.relates_to') %> - </strong></div>
-    <div><strong><%= translate('trees.' + @dim.dim_type + '.singular') + ": " %></strong><%= @dimension_translation %></div>
+    <div><strong><%= Dimension.get_dim_type_name(@dim.dim_type, @treeTypeRec.code, @versionRec.code, @locale_code) + ": " %></strong><%= @dimension_translation %></div>
     </div>
   </fieldset>
   <br>
-  <fieldset>
 
-    <div>
-    <div><label for='explanation'><%= translate('app.labels.explanation') %></label></div>
-    <%= f.text_area :explanation, name: 'dim_tree[explanation]', id: 'explanation', value: @explanation %>
-    </div>
-  </fieldset>
-
-  <fieldset>
-    <label for="dim_tree[active]">Active?</label>
-      <input name="dim_tree[active]" type="checkbox"
-        <%= @dim_tree.active ? ' checked' : '' %>></input>
-  </fieldset>
 
  <div class="modal-footer">
-   <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-   <button type="submit" class="btn btn-primary">Save changes</button>
+   <button class="btn" data-dismiss="modal" aria-hidden="true"><%= translate('app.labels.cancel') %></button>
+   <button type="submit" class="btn btn-primary"><%= translate('app.labels.save') %></button>
  </div>
 <% end %>
