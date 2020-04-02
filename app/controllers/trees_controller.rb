@@ -16,7 +16,7 @@ class TreesController < ApplicationController
     componentHash = {}
     newHash = {}
     hierarchiesInTrees = []
-
+    puts "TREES: #{@trees.pluck('code')}"
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
       translation = @translations[tree.buildNameKey]
@@ -773,6 +773,7 @@ class TreesController < ApplicationController
       detail_areas = @treeTypeRec.detail_headers.split(",")
       @detail_headers = []
       @detail_areas = []
+      hierarchy_codes = @treeTypeRec.hierarchy_codes.split(",").map { |h| h.split("_").join("") }
       detail_areas.each do |a|
         detail_type = 'header'
         detail = a
@@ -782,9 +783,12 @@ class TreesController < ApplicationController
         elsif a.first == "[" && a.last == "]"
           detail_type = 'multi'
           detail = a[1..a.length - 2]
+        elsif a.first == "(" && a.last == ")"
+          detail_type = 'header'
+          detail = a[1..a.length - 2]
         end
         detail = detail.split("_").join("")
-        @detail_headers << {type: detail_type, name: detail} if detail_type == 'header'
+        @detail_headers << {type: detail_type, name: detail, depth: hierarchy_codes.index(detail) } if detail_type == 'header'
         @detail_areas << {type: detail_type, name: detail} if detail_type != 'header'
       end
     else

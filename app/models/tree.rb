@@ -104,6 +104,19 @@ class Tree < BaseRec
     end
   end
 
+  def parentCode
+    arr = self.codeArray
+    if arr && arr.length > 0
+      arr.pop(1)
+      while arr && arr.length > 0 && arr.last == ""
+        arr.pop(1)
+      end
+      return arr.join('.')
+    else
+      return ''
+    end
+  end
+
   def parentCodes
     arr = self.codeArray
     ret = []
