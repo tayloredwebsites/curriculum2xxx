@@ -214,7 +214,7 @@ class UploadsController < ApplicationController
     end
 
     #   - Create a hash (at beginning of upload process) of the Dimensions for this subject, and dimension type (not by Tree Type - to prevent dups)
-    @currentDims = Hash.new{ |h, k| h[k] = {} }
+    @currentDims = Hash.new{ |h, k| h[k] = Hash.new{ |h, k| h[k] = {} } }
     currentDims = Dimension.where(subject_code: @subjectRec.code, active: true)
     currentDims.each do |rec|
       transl_names = Translation.where(locale: @locale_code, key: rec.get_dim_name_key)
@@ -226,7 +226,7 @@ class UploadsController < ApplicationController
         transl_id = nil
       end
       if transl_name.present?
-        @currentDims[transl_name] = {updated: false, rec: rec, transl_name: transl_name, transl_id: transl_id}
+        @currentDims[rec.dim_type][transl_name] = {updated: false, rec: rec, transl_name: transl_name, transl_id: transl_id}
       else
         # Ignoring this condition for now
       end
@@ -271,6 +271,9 @@ class UploadsController < ApplicationController
         rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 0, [], gradeCodeA, @gradeCodeIn, codeName, recordOrder, rowNum, currentRec, '')
         @rptRecs <<  rptRec if rptRec.present?
         recordOrder += 1
+
+        @subjectRec.update(min_grade: gradeBandRec.min_grade) if @subjectRec.min_grade > gradeBandRec.min_grade
+        @subjectRec.update(max_grade: gradeBandRec.max_grade) if @subjectRec.max_grade < gradeBandRec.max_grade
 
         ######################################################
         # Write the Unit level tree record (create or update)
@@ -853,7 +856,7 @@ class UploadsController < ApplicationController
     #   - if the dim_name exists already we are going to use that dimension (ignoring dim_desc)
     #   - otherwise we will create a new dimension
 
-    currentRecH = @currentDims[dim_name]
+    currentRecH = @currentDims[dim_type][dim_name]
     if !currentRecH.present?
       Rails.logger.debug("$$$ Did NOT find current dimension: #{dim_name}")
       currentRec = Dimension.create(
@@ -883,7 +886,7 @@ class UploadsController < ApplicationController
         dimExplKey,
         dim_tree_expl
       )
-      @currentDims[dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
+      @currentDims[dim_type][dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
     else #existing Dimension record
       Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
       currentRec = currentRecH[:rec]
@@ -904,7 +907,7 @@ class UploadsController < ApplicationController
           dimExplKey,
           dim_tree_expl
         )
-        @currentDims[dim_name][:updated] = true
+        @currentDims[dim_type][dim_name][:updated] = true
       end
 
     end

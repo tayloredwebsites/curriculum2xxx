@@ -31,8 +31,8 @@ namespace :seed_turkey_v02a do
       big_ideas_dim_type: 'bigidea',
       ess_q_dim_type: 'essq',
       tree_code_format: 'grade,unit,sub_unit,comp',
-      detail_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon],[connect],[refs]'
+      detail_headers: 'grade,unit,(sub_unit),comp,[ess_q],[bigidea],{explain},[miscon],[sector],[connect],[refs]',
+      grid_headers: 'grade,unit,(sub_unit),comp,[ess_q],[bigidea],explain,[miscon],[connect],[refs]'
     }
     if myTreeType.count < 1
       raise 'Missing Tree Type record for tfv v02'
@@ -58,23 +58,23 @@ namespace :seed_turkey_v02a do
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     STDOUT.puts 'Create translation record for Sub-Unit.'
 
-    STDOUT.puts 'Create all Outcome records for all tree records at the outcome level.'
-    Tree.all.each do |t|
-      tt = t.tree_type
-      if tt.outcome_depth > 0
-        # Tree model overrides the depth field. Returns the length of the code.
-        if t.depth == tt.outcome_depth + 1 && !t.outcome_id.present?
-          puts "try to save outcome for #{t.code}"
-          out = Outcome.new()
-          out.base_key = out.get_base_key(t.base_key)
-          out.save
-          t.outcome_id = out.id
-          t.save
-          puts "saved outcome for #{t.code}"
-        end
-      end
-    end
-    STDOUT.puts 'Done: Outcome records for all tree records at the outcome level have been created.'
+    # STDOUT.puts 'Create all Outcome records for all tree records at the outcome level.'
+    # Tree.all.each do |t|
+    #   tt = t.tree_type
+    #   if tt.outcome_depth > 0
+    #     # Tree model overrides the depth field. Returns the length of the code.
+    #     if t.depth == tt.outcome_depth + 1 && !t.outcome_id.present?
+    #       puts "try to save outcome for #{t.code}"
+    #       out = Outcome.new()
+    #       out.base_key = out.get_base_key(t.base_key)
+    #       out.save
+    #       t.outcome_id = out.id
+    #       t.save
+    #       puts "saved outcome for #{t.code}"
+    #     end
+    #   end
+    # end
+    # STDOUT.puts 'Done: Outcome records for all tree records at the outcome level have been created.'
 
     # Tree.joins(:outcome).where(:tree_type_id => 2).each do |t|
     #   old_name_key = t.buildNameKey

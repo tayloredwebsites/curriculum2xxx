@@ -12,23 +12,33 @@
   <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
   <% @tree_items_to_display.each do |tree| %>
     <div class='detail-page'>
-      <% tree_parents = tree.getAllParents %>
+      <% parents_by_depth = {}
+        tree.getAllParents.map { |t| parents_by_depth[t.depth - 1] = t if t }
+        parents_by_depth[@treeTypeRec[:outcome_depth]] = tree
+      %>
 
       <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
-      <% @hierarchies.each_with_index do |e, i|
-         if i <= @treeTypeRec[:outcome_depth]
-           rec = (i == @treeTypeRec[:outcome_depth] ? tree : tree_parents[tree_parents.length - 1 - i])
-           if rec
-             label_text = @translations[rec.buildNameKey]
-           %>
-             <div class='row subject-<%= e.downcase %>-row'><div class='col col-lg-6 text-left'><%= "#{"#{@subjectByCode[tree.subject.code][:name]} " if i == 0 && rec}#{e} #{rec.codeArrayAt(i) if i > 0 && rec}" %>: <%= label_text %>
-               <% if i == @treeTypeRec[:outcome_depth] %>
-                 <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
-               <% end %>
-             </div></div>
-      <%  end
-        end
-      end %>
+      <% @detail_headers.each do |h| %>
+        <% rec = parents_by_depth[h[:depth]] %>
+        <% if rec %>
+          <div class='row subject-<%= h[:name] %>-row'>
+            <div class='col col-lg-6 text-left'>
+              <strong>
+              <%= "#{@subjectByCode[tree.subject.code][:name] if h[:depth] == 0 }#{" #{@hierarchies[h[:depth]]} #{rec.codeArray.last}:" if h[:depth] > 0}" %>
+              <% if h[:depth] > 0 %>
+                </strong>
+              <% end %>
+              <%= @translations[rec.buildNameKey] %>
+              <% if h[:depth] == 0 %>
+                </strong>
+              <% end %>
+              <% if h[:depth] == @treeTypeRec[:outcome_depth] %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+              <% end %>
+            </div>
+          </div>
+        <% end #if rec %>
+      <% end #@detail_headers.each_with_index do |h, i| %>
 
       <div class='col col-lg-12 text-right'>
           <% if @editMe %>
