@@ -39,7 +39,7 @@
 <div id="trees" class="dimension-page maint-page">
   <div class="sequence-grid cols-<%= num_cols %>">
 
-    <%= render partial: (@editing ? "competencies_column" : "competency_grids_column") %>
+    <%= render partial: (@editing ? "competencies_column" : "alt_competency_grids_column") %>
     <% if @editing || @dim_type %>
       <%= if @treeTypeRec.ess_q_dim_type != ""
             render partial: "dim_column", locals: {
