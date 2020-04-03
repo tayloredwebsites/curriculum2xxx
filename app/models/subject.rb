@@ -10,9 +10,22 @@ class Subject < BaseRec
     return "subject.#{treeTypeRec.code}.#{code}.name"
   end
 
+  # The TreeType-specific Translation key for a Subject
+  def versioned_abbr_key
+    treeTypeRec = TreeType.find(tree_type_id)
+    return "subject.#{treeTypeRec.code}.#{code}.abbr"
+  end
+
   # The default Translation key for BaseRec subjects
+  # To Do: migrate to use subject.default.#{code}.name
   def self.name_translation_key(code)
     return "subject.base.#{code}.name"
+  end
+
+  # The default Translation key for BaseRec subjects
+  # To Do: migrate to use subject.default.#{code}.name
+  def self.default_abbr_key(code)
+    return "subject.base.#{code}.abbr"
   end
 
   def get_name(locale_code)
@@ -27,6 +40,17 @@ class Subject < BaseRec
       )
   end
 
+  def get_abbr(locale_code)
+    return Translation.find_translation_name(
+        locale_code,
+        versioned_abbr_key,
+        nil
+      ) || Translation.find_translation_name(
+        locale_code,
+        Subject.default_abbr_key(code),
+        ""
+      )
+  end
   ########################################
 
   def abbr(loc)

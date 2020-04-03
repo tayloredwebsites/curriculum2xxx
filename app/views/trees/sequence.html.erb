@@ -102,8 +102,8 @@
                       </a>
                       <% end %>
                       <div class="relationship-color-key spotlight-<%= c.relationship %>"></div>
-                      <strong><%= translate('trees.labels.relation_types.' + c.relationship) %></strong>
-                      <% ref = c.tree_referencee.subject.code + '.' + c.tree_referencee[:code] %>
+                      <strong><%= translate("trees.labels.relation_types.#{c.relationship}") %></strong>
+                      <% ref = c.tree_referencee.format_code(@locale_code) %>
                       <a href="<%= tree_path(c.tree_referencee_id)%>"
                       title= "<%= @translations[c.explanation_key] %>"><%= ref %></a>
                     </div>

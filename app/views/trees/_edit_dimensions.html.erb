@@ -31,7 +31,7 @@
 
   <fieldset>
     <div>
-    <div><strong><%= @hierarchies[ @tree.depth - 1] + ": " %></strong><%= @tree_subject_translation + " " + @tree.code %></div>
+    <div><strong><%= @hierarchies[ @tree.depth - 1] + ": " %></strong><%= @tree.format_code(@locale_code) %></div>
     <div><strong> - <%= translate('trees.bigidea.relates_to') %> - </strong></div>
     <div><strong><%= Dimension.get_dim_type_name(@dim.dim_type, @treeTypeRec.code, @versionRec.code, @locale_code) + ": " %></strong><%= @dimension_translation %></div>
     </div>

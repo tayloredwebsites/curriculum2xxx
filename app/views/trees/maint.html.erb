@@ -56,7 +56,9 @@
              misc_found = 0
            %>
           <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
-            <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>: <%= h[:last_code] %></a>
+            <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
+            <strong><em><%= h[:formatted_code] %></strong>
+            </a>
             <%= h[:text] %>
             <% if h[:dimtrees].length > 0 %>
             <% h[:dimtrees].each do |dt|
@@ -109,7 +111,7 @@
               <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
                 <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
               </a>
-              <%= h[:depth_name] %>: <%= h[:text] %>
+              <%= "#{h[:depth_name]} #{h[:formatted_code]}#{": #{h[:text]}" if h[:depth] > 1}" %>
             </li>
           <% end %>
         <% end %>

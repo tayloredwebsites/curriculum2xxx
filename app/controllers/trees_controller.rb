@@ -234,10 +234,10 @@ class TreesController < ApplicationController
         subj_code: tree.subject.code,
         gb_code: tree.grade_band.code,
         code: tree.code,
-        last_code: tree.codeArrayAt(tree.depth-1),
+        formatted_code: tree.outcome ? tree.format_code(@locale_code) : tree.codeArray.last,
         selectors_by_parent: tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }.join(" "),
         depth_name: @hierarchies[tree.depth-1],
-        text: "#{tree.code}: #{translation}",
+        text: "#{translation}",
         dimtrees: @dimtrees_by_tree_id[tree.id]
         #connections: @relations[tree.id]
       }
@@ -266,7 +266,7 @@ class TreesController < ApplicationController
       # display a success notice about an action performed
       # on a different version of the curriculum.
     end
-    flash[:notice] = I18n.translate("app.notice.saved_relationship", item_type_1: @hierarchies[@treeTypeRec.outcome_depth], item_desc_1: saved_dim_tree.tree.code, item_type_2: translate('nav_bar.'+saved_dim_tree.dimension.dim_type+'.name').singularize, item_desc_2: "\"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"") if saved_dim_tree
+    flash[:notice] = I18n.translate("app.notice.saved_relationship", item_type_1: @hierarchies[@treeTypeRec.outcome_depth], item_desc_1: saved_dim_tree.tree.format_code(@locale_code), item_type_2: translate('nav_bar.'+saved_dim_tree.dimension.dim_type+'.name').singularize, item_desc_2: "\"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"") if saved_dim_tree
 
     respond_to do |format|
       format.html { render 'maint'}
@@ -365,7 +365,7 @@ class TreesController < ApplicationController
         tcode = tree.subject.code + tree.code.split('.').join('')
         newHash = {
           code: tcode,
-          text: "#{tree.code}: #{translation}",
+          text: "#{tree.format_code(@locale_code)}: #{translation}",
           id: "#{tree.id}",
           gb_code: tree.grade_band.code,
           connections: @relations[tree.id]
@@ -618,7 +618,7 @@ class TreesController < ApplicationController
           tcode = tree.subject.code + tree.code.split('.').join('')
           newHash = {
             code: tcode,
-            text: "#{tree.code}: #{translation}",
+            text: "#{tree.format_code(@locale_code)}: #{translation}",
             id: "#{tree.id}",
             gb_code: tree.grade_band.code,
             rel: @relations["tree_id_#{tree.id}"]
@@ -819,7 +819,7 @@ class TreesController < ApplicationController
           treeKeys << r.explanation_key
           subCode = @subjById[rTree.subject_id]
           @relatedBySubj[subCode] << {
-            code: rTree.code,
+            code: rTree.format_code(@locale_code),
             relationship: I18n.translate("trees.labels.relation_types.#{r.relationship}"),
             tkey: rTree.buildNameKey,
             subj: rTree.subject.get_name(@locale_code),

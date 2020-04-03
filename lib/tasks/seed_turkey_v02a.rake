@@ -30,7 +30,7 @@ namespace :seed_turkey_v02a do
       miscon_dim_type: 'miscon',
       big_ideas_dim_type: 'bigidea',
       ess_q_dim_type: 'essq',
-      tree_code_format: 'grade,unit,sub_unit,comp',
+      tree_code_format: 'subject,grade,unit,sub_unit,comp',
       detail_headers: 'grade,unit,(sub_unit),comp,[ess_q],[bigidea],{explain},[miscon],[sector],[connect],[refs]',
       grid_headers: 'grade,unit,(sub_unit),comp,[ess_q],[bigidea],explain,[miscon],[connect],[refs]'
     }
