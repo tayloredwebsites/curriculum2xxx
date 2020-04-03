@@ -57,7 +57,7 @@
            %>
           <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
             <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
-            <strong><em><%= h[:formatted_code] %></strong>
+            <strong><em><%= h[:formatted_code] %></em></strong>
             </a>
             <%= h[:text] %>
             <% if h[:dimtrees].length > 0 %>
