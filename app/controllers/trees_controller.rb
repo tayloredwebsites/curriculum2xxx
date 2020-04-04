@@ -197,6 +197,8 @@ class TreesController < ApplicationController
 
     treePrep
     dimPrep
+    #To Do: Remove Alt Flag when design is finalized
+    @use_alt_partial = params[:alt]
     @editing = params[:editme] && current_user.present? && current_user.is_admin?
     @dim_type = dim_tree_params && dim_tree_params[:dim_type] ? dim_tree_params[:dim_type] : nil
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )

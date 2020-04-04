@@ -16,11 +16,7 @@
          misc_found = 0
        %>
       <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
-        <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
-        <strong><em><%= h[:formatted_code] %></em></strong>
-        </a>
-        <%= h[:text] %>
-        <% if h[:dimtrees].length > 0 %>
+        <% if true %>
           <% h[:dimtrees].each do |dt|
              dim = dt.dimension
              if dim.dim_type == @treeTypeRec.ess_q_dim_type
@@ -37,10 +33,16 @@
                 misc_arr << "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
              end
           end # h[:dimtrees].each do |dt|
-          types_found = 6 - (ess_q_found ? 1 : 0) - (ideas_found ? 1 : 0) - (misc_found ? 1 : 0)
+          types_found = 5 - (ess_q_found ? 1 : 0) - (ideas_found ? 1 : 0) - (misc_found ? 1 : 0)
           %>
           <div class="related-items-table">
             <div class="row">
+              <div class="col col-lg-<%= types_found + 1 %> comp-col">
+                <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
+                <strong><em><%= h[:formatted_code] %></em></strong>
+                </a>
+                <%= h[:text] %>
+              </div>
               <% if ess_q_found > 0 %>
                 <div class="col col-lg-<%= types_found %>">
                   <div class="top-label">
@@ -80,7 +82,7 @@
               <% end %>
             </div>
           </div>
-        <% end #if h[:dimtrees].length > 0 %>
+        <% end #if true %>
       </li>
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
