@@ -127,6 +127,24 @@ $(function() {
       });
   };
 
+
+  show_hide_selection = function(selection, show) {
+    if (show) {
+      $(".top-selector" + " i.accordion").addClass("option-selected");
+      $(".top-selector" + " i.accordion").removeClass("fa-expand");
+      $(".top-selector" + " i.accordion").addClass("fa-compress");
+      $(selection).removeClass("hidden");
+      $(selection + " i.accordion").removeClass("fa-expand");
+      $(selection + " i.accordion").addClass("fa-compress");
+    } else {
+      $(".top-selector" + " i.accordion").removeClass("option-selected");
+      $(".top-selector" + " i.accordion").removeClass("fa-compress");
+      $(".top-selector" + " i.accordion").addClass("fa-expand");
+      $(selection).addClass("hidden");
+      $(selection + " i.accordion").removeClass("fa-compress");
+      $(selection + " i.accordion").addClass("fa-expand");
+    }
+  };
   //###################################
   //# ADD EVENT BINDINGS
 

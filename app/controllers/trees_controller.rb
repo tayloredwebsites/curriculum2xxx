@@ -229,6 +229,8 @@ class TreesController < ApplicationController
       end
       tkeyTrans += Translation.find_translation_name(@locale_code, 'subject.'+tree.tree_type.code+'.'+ tree.subject.code+ '.name', 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, 'grades.'+tree.tree_type.code+'.'+ tree.grade_band.code+ '.name', 'Missing Grade Name')
       @translations[tkey] = tkeyTrans
+      selectors_by_parent = tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
+      selectors_by_parent = selectors_by_parent.length > 1 ? "collapsable " + selectors_by_parent.join(" ") : "top-selector" + selectors_by_parent.join(" ")
       newHash = {
         id: tree.id,
         depth: tree.depth,
@@ -237,7 +239,7 @@ class TreesController < ApplicationController
         gb_code: tree.grade_band.code,
         code: tree.code,
         formatted_code: tree.outcome ? tree.format_code(@locale_code) : tree.codeArray.last,
-        selectors_by_parent: tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }.join(" "),
+        selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],
         text: "#{translation}",
         dimtrees: @dimtrees_by_tree_id[tree.id]
