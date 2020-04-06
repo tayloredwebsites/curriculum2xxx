@@ -1,0 +1,109 @@
+<ul class="list-group maint-column">
+  <li>
+    <%= render partial: "maint_filter", locals: {col: "tree"} %>
+  </li>
+  <%
+   @treeByParents.each do |tkey, codeh| %>
+    <li class="maint-header indent-0"><%= @translations[tkey] %></li>
+    <% codeh.each do |code, h| %>
+      <% if h[:outcome] %>
+      <%
+         ess_q_arr = []
+         ideas_arr = [] #@ideas_title
+         misc_arr = [] #@misc_title
+         ess_q_found = 0
+         ideas_found = 0
+         misc_found = 0
+       %>
+      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
+        <% if true %>
+          <% h[:dimtrees].each do |dt|
+             dim = dt.dimension
+             if dim.dim_type == @treeTypeRec.ess_q_dim_type
+                ess_q_found += 1
+                essqSubjKey = @subj_key_by_dt_id[dt.id] || @ess_q_subj_base_key
+                ess_q_arr << "[#{@translations[essqSubjKey]}] #{@translations[dim.dim_name_key]}"
+             elsif dim.dim_type == "bigidea"
+                ideas_found += 1
+                ideaSubjKey = @subj_key_by_dt_id[dt.id] || @idea_subj_base_key
+                ideas_arr << "[#{@translations[ideaSubjKey]}] #{@translations[dim.dim_name_key]}"
+             else
+                misc_found += 1
+                miscSubjKey = @subj_key_by_dt_id[dt.id] || @misc_subj_base_key
+                misc_arr << "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
+             end
+          end # h[:dimtrees].each do |dt|
+          types_found = 5 - (ess_q_found ? 1 : 0) - (ideas_found ? 1 : 0) - (misc_found ? 1 : 0)
+          %>
+          <div class="related-items-table">
+            <div class="row">
+              <div class="col col-<%= types_found + 1 %> comp-col">
+                <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
+                <strong><em><%= h[:formatted_code] %></em></strong>
+                </a>
+                <%= h[:text] %>
+              </div>
+              <% if ess_q_found > 0 %>
+                <div class="col col-<%= types_found %>">
+                  <div class="top-label">
+                    <%= ess_q_found > 1 ? @ess_q_title : @ess_q_title.singularize %>
+                  </div>
+                  <% ess_q_arr.each_with_index do |dim, i| %>
+                    <div class="dim-item">
+                      <%= dim %>
+                    </div>
+                  <% end #ess_q_arr.each do |dim| %>
+                </div>
+              <% end
+              if ideas_found > 0 %>
+                <div class="col col-<%= types_found %>">
+                  <div class="top-label">
+                    <%= ideas_found > 1 ? @ideas_title : @ideas_title.singularize %>
+                  </div>
+                  <% ideas_arr.each_with_index do |dim, i| %>
+                    <div class="dim-item">
+                      <% if i > 0 %><hr><% end %>
+                      <%= dim %>
+                    </div>
+                  <% end #ess_q_arr.each do |dim| %>
+                </div>
+              <% end
+              if h[:explanation] %>
+               <div class="col col-<%= types_found %>">
+                  <div class="top-label">
+                    <%= I18n.translate('app.labels.comments') %>
+                  </div>
+                  <div class="dim-item">
+                    <%= h[:explanation] %>
+                  </div>
+                </div>
+              <% end #if h[:explanation]
+              if misc_found > 0 %>
+                <div class="col col-<%= types_found %>">
+                  <div class="top-label">
+                    <%= misc_found > 1 ? @miscon_title : @miscon_title.singularize %>
+                  </div>
+                  <% misc_arr.each_with_index do |dim, i| %>
+                    <div class="dim-item">
+                      <%= dim %>
+                    </div>
+                  <% end #ess_q_arr.each do |dim| %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end #if true %>
+      </li>
+      <!-- TO DO: Find a different workaround for hiding indicator-level items -->
+      <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
+      <% else %>
+        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %>">
+          <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
+            <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
+          </a>
+          <%= "#{h[:depth_name]} #{h[:formatted_code]}#{": #{h[:text]}" if h[:depth] > 1}" %>
+        </li>
+      <% end %>
+    <% end %>
+  <% end %>
+</ul>

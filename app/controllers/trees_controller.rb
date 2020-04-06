@@ -197,6 +197,8 @@ class TreesController < ApplicationController
 
     treePrep
     dimPrep
+    #To Do: Remove Alt Flag when design is finalized
+    @use_alt_partial = params[:alt]
     @editing = params[:editme] && current_user.present? && current_user.is_admin?
     @dim_type = dim_tree_params && dim_tree_params[:dim_type] ? dim_tree_params[:dim_type] : nil
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
@@ -227,6 +229,13 @@ class TreesController < ApplicationController
       end
       tkeyTrans += Translation.find_translation_name(@locale_code, 'subject.'+tree.tree_type.code+'.'+ tree.subject.code+ '.name', 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, 'grades.'+tree.tree_type.code+'.'+ tree.grade_band.code+ '.name', 'Missing Grade Name')
       @translations[tkey] = tkeyTrans
+      selectors_by_parent = tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
+      selectors_by_parent = selectors_by_parent.length > 1 ? "collapsable " + selectors_by_parent.join(" ") : "top-selector" + selectors_by_parent.join(" ")
+      explanation = tree.outcome ? Translation.find_translation_name(
+          @locale_code,
+          tree.outcome.get_explain_key,
+          nil
+        ) : nil
       newHash = {
         id: tree.id,
         depth: tree.depth,
@@ -235,9 +244,10 @@ class TreesController < ApplicationController
         gb_code: tree.grade_band.code,
         code: tree.code,
         formatted_code: tree.outcome ? tree.format_code(@locale_code) : tree.codeArray.last,
-        selectors_by_parent: tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }.join(" "),
+        selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],
         text: "#{translation}",
+        explanation: explanation,
         dimtrees: @dimtrees_by_tree_id[tree.id]
         #connections: @relations[tree.id]
       }
@@ -1276,6 +1286,15 @@ class TreesController < ApplicationController
     end
 
     ####################################################
+    # Build arrays for filtering by gradeband
+    ess_q_min_arr = [GradeBand::MIN_GRADE .. @dim_grades[@treeTypeRec.ess_q_dim_type][:max_grade]]
+    ess_q_max_arr = [@dim_grades[@treeTypeRec.ess_q_dim_type][:min_grade] .. GradeBand::MAX_GRADE]
+    bigidea_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['bigidea'][:max_grade]]
+    bigidea_max_arr = [@dim_grades['bigidea'][:min_grade] .. GradeBand::MAX_GRADE]
+    miscon_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['miscon'][:max_grade]]
+    miscon_max_arr = [@dim_grades['miscon'][:min_grade] .. GradeBand::MAX_GRADE]
+
+    ####################################################
     #if @trees is prepared, look for connected dimtrees
     if @trees
       # Get dimensions and dimtrees for displayed curriculum
@@ -1296,7 +1315,7 @@ class TreesController < ApplicationController
         is_miscon = dt_dim.dim_type == @treeTypeRec.miscon_dim_type
         # If the dimension will not be captured by the dimension
         # columns displayed on the page.
-        if (is_bigidea && @dim_subjs['bigidea'] && @dim_subjs['bigidea'] != dt_dim.subject_code) || (is_miscon && @dim_subjs['miscon']  && @dim_subjs['miscon'] != dt_dim.subject_code) || (is_ess_q && @dim_subjs[@treeTypeRec.ess_q_dim_type] && @dim_subjs[@treeTypeRec.ess_q_dim_type] != dt_dim.subject_code)
+        if (translate?('bigidea', is_bigidea, dt_dim, bigidea_min_arr, bigidea_max_arr) || translate?('miscon', is_miscon, dt_dim, miscon_min_arr, miscon_max_arr) || translate?(@treeTypeRec.ess_q_dim_type, is_ess_q, dt_dim, ess_q_min_arr, ess_q_max_arr))
         #@trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
             dimKeys << dt_dim.dim_name_key
             dt_dim_subj = "subject.base.#{dt_dim.subject_code}.name"
@@ -1312,20 +1331,14 @@ class TreesController < ApplicationController
     # BUILD DIMENSIONS COLUMNS
     if @dim_subjs['bigidea'] && @dim_subjs['miscon'] && @dim_subjs[@treeTypeRec.ess_q_dim_type]
 
-      ess_q_min_arr = [GradeBand::MIN_GRADE .. @dim_grades[@treeTypeRec.ess_q_dim_type][:max_grade]]
-      ess_q_max_arr = [@dim_grades[@treeTypeRec.ess_q_dim_type][:min_grade] .. GradeBand::MAX_GRADE]
       @dimensions_ess_q = Dimension.active.where(dim_type: @treeTypeRec.ess_q_dim_type,
         subject_code: @dim_subjs[@treeTypeRec.ess_q_dim_type], min_grade: ess_q_min_arr, max_grade: ess_q_max_arr)
 
       # bigidea_subj_ids = Subject.where(:code => @dim_subjs['bigidea']).pluck(:id)
-      bigidea_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['bigidea'][:max_grade]]
-      bigidea_max_arr = [@dim_grades['bigidea'][:min_grade] .. GradeBand::MAX_GRADE]
       @dimensions_bigideas = Dimension.active.where(dim_type: @treeTypeRec.big_ideas_dim_type,
         subject_code: @dim_subjs['bigidea'], min_grade: bigidea_min_arr, max_grade: bigidea_max_arr)
 
       # miscon_subj_ids = Subject.where(:code => @dim_subjs['miscon'].code).pluck(:id)
-      miscon_min_arr = [GradeBand::MIN_GRADE .. @dim_grades['miscon'][:max_grade]]
-      miscon_max_arr = [@dim_grades['miscon'][:min_grade] .. GradeBand::MAX_GRADE]
       @dimensions_miscons = Dimension.active.where(dim_type: @treeTypeRec.miscon_dim_type,
         subject_code: @dim_subjs['miscon'], min_grade: miscon_min_arr, max_grade: miscon_max_arr)
 
@@ -1349,6 +1362,10 @@ class TreesController < ApplicationController
         @translations[tKey] = tVal
       end
     end #if @translations
+  end
+
+  def translate?(dim_type, is_dimtype, dim, min_arr, max_arr)
+    return (is_dimtype && @dim_subjs[dim_type] && @dim_subjs[dim_type] != dim.subject_code || !(min_arr.include?(dim.min_grade) && max_arr.include?(dim.max_grade)))
   end
 
 end
