@@ -15,6 +15,18 @@ class Subject < BaseRec
     return "subject.base.#{code}.name"
   end
 
+  def get_name(locale_code)
+    return Translation.find_translation_name(
+        locale_code,
+        versioned_name_key,
+        nil
+      ) || Translation.find_translation_name(
+        locale_code,
+        Subject.name_translation_key(code),
+        ""
+      )
+  end
+
   ########################################
 
   def abbr(loc)

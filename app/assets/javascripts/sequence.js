@@ -247,12 +247,12 @@ add_edit_form = function(res) {
   edit_mode = res.tree_tree.id != null;
   if (edit_mode) {
     submit_button =
-      '<button type="button" \
+      '<button class="btn btn-primary" type="button" \
         onclick="patch_from_tree_tree_form(' +
       res.tree_tree.id +
       ')">SAVE</button>';
   } else {
-    submit_button = '<button type="submit">SAVE</button>';
+    submit_button = '<button class="btn btn-primary" type="submit">SAVE</button>';
   }
   return (
     '<div class="modal-header"> \
@@ -273,6 +273,9 @@ add_edit_form = function(res) {
           <input type="hidden" name="tree_tree[tree_referencee_id]" value=' +
     res.tree_tree.tree_referencee_id +
     '> \
+    <input type="hidden" name="tree[active]" value=' +
+    true +
+    '> \
           </div> \
           <fieldset> \
           <label for="relationship">' +
@@ -282,6 +285,11 @@ add_edit_form = function(res) {
     '<br> \
           <select id="relationship" name="tree_tree[relationship]"> \
           <option value="' +
+    res.relation_values.akin +
+    (res.tree_tree.relationship == "akin" ? '" selected>' : '">') +
+    res.translations.akin +
+    "</option> \
+          <option value=" +
     res.relation_values.applies +
     (res.tree_tree.relationship == "applies" ? '" selected>' : '">') +
     res.translations.applies +
@@ -291,32 +299,13 @@ add_edit_form = function(res) {
     (res.tree_tree.relationship == "depends" ? '" selected>' : '">') +
     res.translations.depends +
     '</option> \
-          <option value="' +
-    res.relation_values.akin +
-    (res.tree_tree.relationship == "akin" ? '" selected>' : '">') +
-    res.translations.akin +
-    "</option> \
           </select> \
-          <div>" +
+          <div>' +
     res.referencee_code +
     '</div><br> \
-          </fieldset> \
-          <fieldset> \
-            <label for="explanation">' +
-    res.translations.explanation_label +
-    '<br> \
-            <textarea type="text" name="tree_tree[explanation]">' +
-    (res.translations.explanation != undefined
-      ? res.translations.explanation
-      : "") +
-    '</textarea> \
-          </fieldset> \
-          <fieldset><label for="tree_tree[active]">Active?</label>\
-          <input name="tree_tree[active]" type="checkbox"' +
-    (res.tree_tree.active ? " checked" : "") +
-    "></input></fieldset>" +
+          </fieldset>' +
     submit_button +
-    '<button type="button" type="button" data-dismiss="modal" \
+    '<button type="button" class="btn" type="button" data-dismiss="modal" \
           aria-hidden="true">CANCEL</button> \
           </div> \
           </form>'

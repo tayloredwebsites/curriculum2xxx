@@ -5,6 +5,7 @@
 
 <%= form_for(@tree) do |f| %>
   <div class="hidden_fields">
+    <%= f.hidden_field :code, name: 'tree[active]', value: true %>
     <%= f.hidden_field :code, name: 'tree[edit_type]', value: @edit_type %>
     <%= f.hidden_field :code, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
   </div>
@@ -24,7 +25,7 @@
   <fieldset>
     <label for='relationship'><%= translate('trees.labels.relation') %></label>
     <div>
-    <span class="stack"><%= I18n.t("trees.labels.#{@tree.subject.code}") + " " + @tree.code %></span>
+    <span class="stack"><%= "#{@tree.subject.get_name(@locale_code)} #{@tree.code}" %></span>
     <% if @edit_type == 'treetree' %>
 	    <select id="relationship" name="tree_tree[relationship]" class="stack">
 	      <option value="<%= TreeTree::APPLIES_KEY %>"
@@ -55,19 +56,6 @@
     </span>
     </div>
   </fieldset>
-  <fieldset>
-    <label for='explanation'><%= translate('app.labels.explanation') %></label>
-    <div>
-    <%= f.text_area :explanation, name: 'tree[name_translation]', id: 'explanation', value: @explanation %>
-    </div>
-  </fieldset>
-
-  <fieldset>
-    <label for="<%= @edit_type == 'treetree' ? 'tree' : 'sector' %>_tree[active]">Active?</label>
-      <input name="tree[active]" type="checkbox"
-        <%= @rel.active ? ' checked' : '' %>></input>
-  </fieldset>
-
 
 	<% end #build fieldsets by @edit_type %>
 

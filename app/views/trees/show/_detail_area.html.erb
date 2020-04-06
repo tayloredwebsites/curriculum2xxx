@@ -4,12 +4,6 @@
       <%= detail_title %>
       <%= link_to(fa_icon("plus-square"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: 'new'}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && sector %>
     </div>
-    <div class='col col-lg-6 rel-reason-col center-label'>
-              <%= detail_title.singularize %>
-    </div>
-    <div class='col col-lg-6 rel-reason-col center-label'>
-      <%= expl_header %>
-    </div>
   </div>
   <% details.each do |dt| %>
   <!-- Dimensions Table (e.g., misconceptions, etc) -->
@@ -19,14 +13,10 @@
     if d.dim_type == dim_type
     %>
     <div class='row'>
-      <div class='col col-lg-6 rel-sectors'>
+      <div class='col col-lg-12 rel-sectors'>
         <%= @translations[d.dim_name_key] %>
-      </div>
-      <div class='col col-lg-6 ind-col last-col'>
-        <%= @translations[dt.dim_explanation_key] %>
         <% if @editMe %>
         <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
-        <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
         <% end #if @editMe %>
       </div>
     </div>
@@ -36,7 +26,7 @@
     st = dt
   %>
     <div class='row'>
-    <div class='col col-lg-6 rel-sectors'>
+    <div class='col col-lg-12 rel-sectors'>
       <%= link_to(
         "#{@translations[st.sector.name_key]}",
         sectors_path(
@@ -50,12 +40,8 @@
         ),
         html_options = {data: { :sector => st.sector.id }}
       ) %>
-    </div>
-    <div class='col col-lg-6 rel-reason-col val'>
-      <%= @translations["#{st.explanation_key}"] %>
       <% if @editMe %>
         <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[st.sector.name_key]), method: :patch}) if @editMe %>
-        <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: st[:id]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
       <% end %>
     </div>
   </div>
