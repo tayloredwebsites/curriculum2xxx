@@ -90,24 +90,6 @@
       </li>
     <%
     end
-        if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.big_ideas_dim_type && @treeTypeRec.big_ideas_dim_type %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_bigidea: true, dim_tree: {dim_type: @treeTypeRec.big_ideas_dim_type}) %>><%= @bigIdeasTitle %></a>
-      </li>
-    <% elsif @treeTypeRec.big_ideas_dim_type %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_bigidea: true, dim_tree: {dim_type: @treeTypeRec.big_ideas_dim_type}) %>><%= @bigIdeasTitle %></a>
-      </li>
-    <% end
-    if controller.controller_name == 'trees'  && action_name == 'dimensions' && params[:dim_type] == @treeTypeRec.miscon_dim_type && @treeTypeRec.miscon_dim_type %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_miscon: true, dim_tree: {dim_type: @treeTypeRec.micon_dim_type}) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
-      </li>
-    <% elsif @treeTypeRec.miscon_dim_type %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= maint_trees_path(show_miscon: true, dim_tree: {dim_type: @treeTypeRec.miscon_dim_type}) %>><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
-      </li>
-    <% end
     if controller.controller_name == 'sectors' && action_name == 'index' && !@treeTypeRec.hide_sectors %>
       <li class="nav-item active" aria-selected='true'>
         <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
@@ -145,7 +127,13 @@
       </button>
       <ul class="dropdown-menu">
         <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_ess_q: true, dim_tree: {dim_type: @treeTypeRec.ess_q_dim_type}) %>" ><%= essq_name %></a>
+          <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_ess_q: true, dim_tree: {dim_type: @treeTypeRec.ess_q_dim_type}) %>" ><%= essq_name %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_bigidea: true, dim_tree: {dim_type: @treeTypeRec.big_ideas_dim_type}) %>" ><%= @bigIdeasTitle %></a>
+        </li>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_miscon: true, dim_tree: {dim_type: @treeTypeRec.miscon_dim_type}) %>" ><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
         </li>
         <li class="nav-item" role='menuitem'>
           <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>

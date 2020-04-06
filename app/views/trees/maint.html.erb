@@ -2,7 +2,7 @@
 <% content_for(:page_class, 'trees') %>
 <%
    grades_str = translate('app.labels.grade_band').pluralize
-   num_cols = 1 + (@show_bigidea && @editing ? 1 : 0) + (@show_miscon && @editing ? 1 : 0) + (@show_ess_q && @editing ? 1 :0)
+   num_cols = (@dim_type ? 2 : 1) + (@show_bigidea && @editing ? 1 : 0) + (@show_miscon && @editing ? 1 : 0) + (@show_ess_q && @editing ? 1 :0)
 %>
 <br>
 <div class='text-center dimension-page'>
