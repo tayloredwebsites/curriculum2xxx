@@ -55,6 +55,8 @@ class Tree < BaseRec
   scope :not_blank, -> { where.not(:base_key => ["", nil]) }
   scope :active, -> { not_blank.where(:active => true) }
 
+
+###################################################
   # Field Translations
 
   # overrides of deprecated name_key field
@@ -84,6 +86,27 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
   end
   ####################################################
+  def format_code(localeCode)
+    hierarchies = tree_type.hierarchy_codes.split(",")
+    if tree_type.tree_code_format != ""
+      format_str = tree_type.tree_code_format
+    else
+      format_str = "subject,#{tree_type.hierarchy_codes}"
+    end
+    format_arr = []
+    hierarchic_arr = code.split('.').map {|c| c == "" ? 0 : c }
+    format_str.split(",").each do |c|
+      if c == "subject"
+        format_arr << subject.get_abbr(localeCode).downcase
+      else
+        c_index = hierarchies.index(c)
+        format_arr << hierarchic_arr[c_index] if hierarchic_arr[c_index]
+      end
+    end
+
+    return format_arr.join(".")
+  end
+
   def code_by_ix(ix)
     if depth == 3
       if self.matching_codes.length > ix
