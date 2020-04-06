@@ -231,6 +231,11 @@ class TreesController < ApplicationController
       @translations[tkey] = tkeyTrans
       selectors_by_parent = tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
       selectors_by_parent = selectors_by_parent.length > 1 ? "collapsable " + selectors_by_parent.join(" ") : "top-selector" + selectors_by_parent.join(" ")
+      explanation = tree.outcome ? Translation.find_translation_name(
+          @locale_code,
+          tree.outcome.get_explain_key,
+          nil
+        ) : nil
       newHash = {
         id: tree.id,
         depth: tree.depth,
@@ -242,6 +247,7 @@ class TreesController < ApplicationController
         selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],
         text: "#{translation}",
+        explanation: explanation,
         dimtrees: @dimtrees_by_tree_id[tree.id]
         #connections: @relations[tree.id]
       }

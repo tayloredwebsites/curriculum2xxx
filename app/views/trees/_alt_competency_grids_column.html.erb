@@ -68,6 +68,16 @@
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
               <% end
+              if h[:explanation] %>
+               <div class="col col-<%= types_found %>">
+                  <div class="top-label">
+                    Explanatory Comment
+                  </div>
+                  <div class="dim-item">
+                    <%= h[:explanation] %>
+                  </div>
+                </div>
+              <% end #if h[:explanation]
               if misc_found > 0 %>
                 <div class="col col-<%= types_found %>">
                   <div class="top-label">
