@@ -42,7 +42,7 @@
           <div class="related-items-table">
             <div class="row">
               <% if ess_q_found > 0 %>
-                <div class="col col-lg-<%= types_found %>">
+                <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= ess_q_found > 1 ? @ess_q_title : @ess_q_title.singularize %>
                   </div>
@@ -54,7 +54,7 @@
                 </div>
               <% end
               if ideas_found > 0 %>
-                <div class="col col-lg-<%= types_found %>">
+                <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= ideas_found > 1 ? @ideas_title : @ideas_title.singularize %>
                   </div>
@@ -67,7 +67,7 @@
                 </div>
               <% end
               if misc_found > 0 %>
-                <div class="col col-lg-<%= types_found %>">
+                <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= misc_found > 1 ? @miscon_title : @miscon_title.singularize %>
                   </div>
