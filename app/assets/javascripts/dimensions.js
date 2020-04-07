@@ -33,6 +33,7 @@ $(function() {
     num_cols = num_cols < 2 ? 2 : num_cols;
     $(".sequence-grid").addClass("cols-" + num_cols);
   };
+
   /**
    * Show a subject's dimension and lo column when the corresponding
    * radio button is checked.

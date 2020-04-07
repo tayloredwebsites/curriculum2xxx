@@ -144,6 +144,28 @@ $(function() {
       $(selection + " i.accordion").removeClass("fa-compress");
       $(selection + " i.accordion").addClass("fa-expand");
     }
+    var showing_details = $("#show-details-btn #show-text").hasClass('hidden');
+    if (showing_details) {
+      $(".comp-col").addClass("col-lg-2 col-md-4 col-sm-11");
+      $(".related-items-table .row").removeClass('hide-children');
+    }
+    else {
+      $(".comp-col").removeClass("col-lg-2 col-md-4 col-sm-11");
+      $(".related-items-table .row").addClass('hide-children');
+    }
+  };
+
+  show_maint_details = function () {
+    var showing_details = $("#show-details-btn #show-text").hasClass('hidden');
+    $("#show-details-btn #show-text").toggleClass('hidden');
+    $("#show-details-btn #hide-text").toggleClass('hidden');
+    $(".related-items-table .row").toggleClass('hide-children');
+    if (showing_details) {
+      $(".comp-col").removeClass("col-lg-2 col-md-4 col-sm-11");
+    }
+    else {
+      $(".comp-col").addClass("col-lg-2 col-md-4 col-sm-11");
+    }
   };
   //###################################
   //# ADD EVENT BINDINGS
