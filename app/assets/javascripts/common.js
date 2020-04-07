@@ -155,6 +155,21 @@ $(function() {
     }
   };
 
+  show_hierarchy_level = function (level, maxLevel) {
+    $(".level-" + level).removeClass("hidden");
+    $(".level-" + level + " i.accordion").removeClass("option-selected fa-compress");
+    $(".level-" + level + " i.accordion").addClass("fa-expand");
+    level = parseInt(level);
+    for (var i = 0; i < level; i++ ) {
+      $(".level-" + i).removeClass("hidden");
+      $(".level-" + i + " i.accordion").removeClass("fa-compress option-selected");
+      $(".level-" + i + " i.accordion").addClass("fa-expand");
+    }
+    for (var i = level + 1; i <= maxLevel; i++ ) {
+      $(".level-" + i).addClass("hidden");
+    }
+  }
+
   show_maint_details = function () {
     var showing_details = $("#show-details-btn #show-text").hasClass('hidden');
     $("#show-details-btn #show-text").toggleClass('hidden');

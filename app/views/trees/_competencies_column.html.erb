@@ -15,7 +15,7 @@
          ideas_found = 0
          misc_found = 0
        %>
-      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
+      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-loid="<%= h[:id] %>">
         <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
         <strong><em><%= h[:formatted_code] %></em></strong>
         </a>
@@ -67,7 +67,7 @@
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
       <% else %>
-        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %>">
+        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>">
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>
