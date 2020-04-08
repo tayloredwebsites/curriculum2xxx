@@ -55,6 +55,7 @@ class Subject < BaseRec
   end
   ########################################
 
+  # Deprecated. Use get_abbr(locale_code) instead
   def abbr(loc)
     Rails.logger.debug("loc: #{loc.inspect}")
     Rails.logger.debug("self.base_key: #{self.base_key.inspect}")
