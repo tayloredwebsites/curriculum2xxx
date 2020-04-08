@@ -4,36 +4,6 @@ class Subject < BaseRec
 
   # Translation Field
 
-  # Soon to be deprecated in favor of get_versioned_name_key
-  # The TreeType-specific Translation key for a Subject
-  def versioned_name_key
-    treeTypeRec = TreeType.find(tree_type_id)
-    return "subject.#{treeTypeRec.code}.#{code}.name"
-  end
-
-  # To be deprecated in favor of get_default_name_key
-  # The default Translation key for BaseRec subjects
-  # To Do: migrate to use subject.default.#{code}.name
-  def self.name_translation_key(code)
-    return "subject.base.#{code}.name"
-  end
-
-  # To be deprecated in favor of get_versioned_abbr_key
-  # The TreeType-specific Translation key for a Subject
-  def versioned_abbr_key
-    treeTypeRec = TreeType.find(tree_type_id)
-    return "subject.#{treeTypeRec.code}.#{code}.abbr"
-  end
-
-  # To be deprecated in favor of get_default_abbr_key
-  # The default Translation key for BaseRec subjects
-  # To Do: migrate to use subject.default.#{code}.name
-  def self.default_abbr_key(code)
-    return "subject.base.#{code}.abbr"
-  end
-  # End of deprecated methods
-  ##################
-
   def build_base_key
     treeTypeRec = TreeType.find(tree_type_id)
     versionRec = Version.find(treeTypeRec.version_id)
