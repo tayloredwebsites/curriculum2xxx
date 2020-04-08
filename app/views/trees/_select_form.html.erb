@@ -14,7 +14,7 @@
           <% @subjects.each do |k, s| %>
             <%- selectedStr = (s.code == @subject_code) ? ' selected = "selected"' : '' %>
             <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
-            <option value=<%= s.id%><%= selectedStr %>><%=s.abbr( @locale_code )%></option>
+            <option value=<%= s.id%><%= selectedStr %>><%=s.get_abbr( @locale_code ).downcase %></option>
           <% end %>
         </select></div>
         <div id='gb-container' class='col col-md-4 border-left border-bottom'>

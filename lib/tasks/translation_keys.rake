@@ -24,12 +24,12 @@ namespace :translation_keys do
         puts "missing locale abbr translation for #{s.code} Subject: #{s.id}"
       end
       names.each do |rec|
-        puts "Updating translation #{rec.id}: '#{rec.value}' with key: #{subject.get_versioned_name_key}"
-        rec.update(key: subject.get_versioned_name_key)
+        puts "Updating translation #{rec.id}: '#{rec.value}' with key: #{s.get_versioned_name_key}"
+        rec.update(key: s.get_versioned_name_key)
       end
       abbrs.each do |rec|
-        puts "Updating translation #{rec.id}: '#{rec.value}' with key: #{subject.get_versioned_abbr_key}"
-        rec.update(key: subject.get_versioned_abbr_key)
+        puts "Updating translation #{rec.id}: '#{rec.value}' with key: #{s.get_versioned_abbr_key}"
+        rec.update(key: s.get_versioned_abbr_key)
       end
       puts "[Subject #{s.id}] Updating subject base key from '#{s.base_key}' to #{s.build_base_key}"
       s.update(base_key: s.build_base_key)

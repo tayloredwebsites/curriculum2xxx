@@ -483,7 +483,7 @@ class TreesController < ApplicationController
 
     changes += ", #{{'dimension': dimension.as_json, 'text': dim_translation.as_json}},,,[END OF LINE]"
 
-    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+    open(BaseRec::DIM_CHANGE_LOG_PATH, "a") do |f|
       f.puts changes
     end
 
@@ -523,7 +523,7 @@ class TreesController < ApplicationController
         dimension.get_dim_name_key
       )
 
-    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+    open(BaseRec::DIM_CHANGE_LOG_PATH, "a") do |f|
       f.puts changes
     end
 

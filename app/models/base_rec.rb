@@ -54,5 +54,9 @@ class BaseRec < ActiveRecord::Base
 
   # ALL_SECTORS = ['1','2','3','4','5','6','7','8','9','10']
 
+  #name of the log file where runtime issues with data are logged
+  DATA_COMPLAINTS_PATH = "#{Rails.root}/log/data_complaints.out"
+
+  DIM_CHANGE_LOG_PATH = "#{Rails.root}/log/dimension_changes.out"
 
 end

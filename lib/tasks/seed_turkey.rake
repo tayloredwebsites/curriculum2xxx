@@ -7,6 +7,9 @@ namespace :seed_turkey do
   desc "create the Curriculum Tree Type and Version"
   task create_tree_type: :environment do
 
+    #WARNING: Original tree type code for this curriculum was 'TFV', not 'tfv.'
+    #         Running this task as-is will alter the wrong TreeType record.
+
     # reference version record from seeds.rb
     @v01 = Version.where(code: 'v01').first
     throw "Missing version record" if !@v01
