@@ -129,8 +129,8 @@ class TreesController < ApplicationController
     # convert array of areas into json to put into bootstrap treeview
     @otcJson = otcArrHash.to_json
 
-    @hierarchiesInTrees = []
-    @hierarchies[0 .. 3].each { |h| @hierarchiesInTrees << h if hierarchiesInTrees.include?(h) }
+   # @hierarchiesInTrees = []
+   # @hierarchies[0 .. 3].each { |h| @hierarchiesInTrees << h if hierarchiesInTrees.include?(h) }
 
     respond_to do |format|
       format.html { render 'index'}
@@ -210,7 +210,7 @@ class TreesController < ApplicationController
 
     @miscon_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.miscon_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.miscon.name')
 
-    @ess_q_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.ess_q.name')
+    @ess_q_title = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.essq.name')
 
     puts "ESSENTIAL QUESTION TRANSLATION #{@ess_q_title}"
 
@@ -1209,6 +1209,11 @@ class TreesController < ApplicationController
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
     base_keys= @trees.map { |t| t.buildNameKey }
+
+    hierarchiesInTrees = @trees.pluck('depth').uniq.map {|d| @hierarchies[d] if d <= @treeTypeRec[:outcome_depth] }
+    @hierarchiesInTrees = []
+    @hierarchies[0 .. 3].each { |h| @hierarchiesInTrees << h if hierarchiesInTrees.include?(h) }
+
     tempArray = []
     @subjects.each { |k, v| tempArray << "#{v.base_key}.name" }
     @subjects.each { |s, v| tempArray << "#{v.base_key}.abbr" }

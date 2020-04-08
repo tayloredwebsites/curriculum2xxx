@@ -15,12 +15,8 @@
          ideas_found = 0
          misc_found = 0
        %>
-      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
-        <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
-        <strong><em><%= h[:formatted_code] %></em></strong>
-        </a>
-        <%= h[:text] %>
-        <% if h[:dimtrees].length > 0 %>
+      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-loid="<%= h[:id] %>">
+        <% if true %>
           <% h[:dimtrees].each do |dt|
              dim = dt.dimension
              if dim.dim_type == @treeTypeRec.ess_q_dim_type
@@ -37,12 +33,20 @@
                 misc_arr << "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
              end
           end # h[:dimtrees].each do |dt|
-          types_found = 5 - (ess_q_found ? 1 : 0) - (ideas_found ? 1 : 0) - (misc_found ? 1 : 0)
+          #types_found = 5 - (ess_q_found ? 1 : 0) - (ideas_found ? 1 : 0) - (misc_found ? 1 : 0)
           %>
           <div class="related-items-table">
             <div class="row">
-              <% if ess_q_found > 0 %>
-                <div class="col col-<%= types_found %>">
+              <!-- Build competency column -->
+              <div class="col-lg-2 col-md-4 col-11 col-sm-11 comp-col">
+                <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
+                <strong><em><%= h[:formatted_code] %></em></strong>
+                </a>
+                <%= h[:text] %>
+              </div>
+              <!-- Build essential questions column -->
+              <div class="col-lg-2 col-md-3 col-11 col-sm-11 parent-can-hide">
+                <div class="col">
                   <div class="top-label">
                     <%= ess_q_found > 1 ? @ess_q_title : @ess_q_title.singularize %>
                   </div>
@@ -52,9 +56,10 @@
                     </div>
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
-              <% end
-              if ideas_found > 0 %>
-                <div class="col col-<%= types_found %>">
+              </div>
+              <!-- Build big ideas column -->
+              <div class="col-lg-2 col-md-3 col-11 col-sm-11 parent-can-hide">
+                <div class="col">
                   <div class="top-label">
                     <%= ideas_found > 1 ? @ideas_title : @ideas_title.singularize %>
                   </div>
@@ -65,9 +70,31 @@
                     </div>
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
-              <% end
-              if h[:explanation] %>
-               <div class="col col-<%= types_found %>">
+              </div>
+              <!-- Spacer column -->
+              <div class="col-md-4 spacer hidden-lg parent-can-hide"></div>
+              <!-- Build practices column -->
+              <!-- To Do: fill in -->
+              <div class="col-lg-2 col-md-3 col-11 col-sm-11 parent-can-hide">
+                <div class="col">
+                  <div class="top-label">
+                    <%= "practices_found > 1" ? "Associated Practices" : "@practices_title.singularize" %>
+                  </div>
+                  <% if @practices_arr
+                   practices_arr.each_with_index do |dim, i| %>
+                    <div class="dim-item">
+                      <% if i > 0 %><hr><% end %>
+                      <%= dim %>
+                    </div>
+                  <% end #ess_q_arr.each do |dim|
+                    end #if practices_arr
+                  %>
+                </div>
+              </div>
+
+              <!-- Build explanatory comments column -->
+              <div class="col-lg-2 col-md-3 col-11 col-sm-11 parent-can-hide">
+                <div class="col">
                   <div class="top-label">
                     <%= I18n.translate('app.labels.comments') %>
                   </div>
@@ -75,9 +102,12 @@
                     <%= h[:explanation] %>
                   </div>
                 </div>
-              <% end #if h[:explanation]
-              if misc_found > 0 %>
-                <div class="col col-<%= types_found %>">
+              </div>
+              <!-- Spacer column -->
+              <div class="col-md-4 spacer col-lg-0 parent-can-hide"></div>
+              <!-- Build misconceptions column -->
+              <div class="col-lg-2 col-md-3 col-11 col-sm-11 parent-can-hide">
+                <div class="col">
                   <div class="top-label">
                     <%= misc_found > 1 ? @miscon_title : @miscon_title.singularize %>
                   </div>
@@ -87,15 +117,15 @@
                     </div>
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
-              <% end %>
+              </div> <!-- end of misconceptions column -->
             </div>
           </div>
-        <% end #if h[:dimtrees].length > 0 %>
+        <% end #if true %>
       </li>
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
       <% else %>
-        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %>">
+        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>">
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>

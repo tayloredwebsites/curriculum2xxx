@@ -16,7 +16,11 @@
          misc_found = 0
        %>
       <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item" data-loid="<%= h[:id] %>">
-        <% if true %>
+        <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
+        <strong><em><%= h[:formatted_code] %></em></strong>
+        </a>
+        <%= h[:text] %>
+        <% if h[:dimtrees].length > 0 %>
           <% h[:dimtrees].each do |dt|
              dim = dt.dimension
              if dim.dim_type == @treeTypeRec.ess_q_dim_type
@@ -37,13 +41,7 @@
           %>
           <div class="related-items-table">
             <div class="row">
-              <div class="col col-<%= types_found + 1 %> comp-col">
-                <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
-                <strong><em><%= h[:formatted_code] %></em></strong>
-                </a>
-                <%= h[:text] %>
-              </div>
-              <% if ess_q_found > 0 %>
+                <!-- Build essential questions column -->
                 <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= ess_q_found > 1 ? @ess_q_title : @ess_q_title.singularize %>
@@ -54,8 +52,7 @@
                     </div>
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
-              <% end
-              if ideas_found > 0 %>
+                <!-- Build big ideas column -->
                 <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= ideas_found > 1 ? @ideas_title : @ideas_title.singularize %>
@@ -67,8 +64,7 @@
                     </div>
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
-              <% end
-              if h[:explanation] %>
+                <!-- Build explanatory comments column -->
                <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= I18n.translate('app.labels.comments') %>
@@ -77,8 +73,7 @@
                     <%= h[:explanation] %>
                   </div>
                 </div>
-              <% end #if h[:explanation]
-              if misc_found > 0 %>
+                <!-- Build misconceptions column -->
                 <div class="col col-<%= types_found %>">
                   <div class="top-label">
                     <%= misc_found > 1 ? @miscon_title : @miscon_title.singularize %>
@@ -89,10 +84,9 @@
                     </div>
                   <% end #ess_q_arr.each do |dim| %>
                 </div>
-              <% end %>
-            </div>
-          </div>
-        <% end #if true %>
+            </div> <!-- end row -->
+          </div> <!-- end related items table -->
+        <% end #if h[:dimtrees].length > 0 %>
       </li>
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
