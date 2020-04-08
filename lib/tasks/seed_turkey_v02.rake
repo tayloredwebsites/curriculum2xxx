@@ -132,7 +132,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'bio',
-        base_key: 'subject.tfv.bio'
+        base_key: 'subject.tfv.v02.bio'
       )
     end
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
@@ -140,7 +140,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'che',
-        base_key: 'subject.tfv.che'
+        base_key: 'subject.tfv.v02.che'
       )
     end
     @che = Subject.where(tree_type_id: @tfv.id, code: 'che').first
@@ -148,7 +148,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'mat',
-        base_key: 'subject.tfv.mat'
+        base_key: 'subject.tfv.v02.mat'
       )
     end
     @mat = Subject.where(tree_type_id: @tfv.id, code: 'mat').first
@@ -156,7 +156,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'sci',
-        base_key: 'subject.tfv.sci'
+        base_key: 'subject.tfv.v02.sci'
       )
     end
     @sci = Subject.where(tree_type_id: @tfv.id, code: 'sci').first
@@ -164,7 +164,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'phy',
-        base_key: 'subject.tfv.phy'
+        base_key: 'subject.tfv.v02.phy'
       )
     end
     @phy = Subject.where(tree_type_id: @tfv.id, code: 'phy').first
@@ -172,7 +172,7 @@ namespace :seed_turkey_v02 do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'ear',
-        base_key: 'subject.tfv.ear'
+        base_key: 'subject.tfv.v02.ear'
       )
     end
     @ear = Subject.where(tree_type_id: @tfv.id, code: 'ear').first

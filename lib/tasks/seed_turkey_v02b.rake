@@ -50,15 +50,15 @@ namespace :seed_turkey_v02b do
       tech = Subject.create(
         tree_type_id: @tfv.id,
         code: 'tech',
-        base_key: 'subject.tfv.tech',
+        base_key: 'subject.tfv.v02.tech',
         min_grade: 0,
         max_grade: 12
       )
     end
-    Translation.find_or_update_translation(@loc_en.code, 'subject.tfv.tech.name', 'Tech Engineering')
-    Translation.find_or_update_translation(@loc_en.code, 'subject.tfv.tech.abbr', 'Tech')
-    Translation.find_or_update_translation(@loc_en.code, 'subject.base.tech.name', 'Tech Engineering')
-    Translation.find_or_update_translation(@loc_en.code, 'subject.base.tech.abbr', 'tech')
+    Translation.find_or_update_translation(@loc_en.code, 'subject.tfv.v02.tech.name', 'Tech Engineering')
+    Translation.find_or_update_translation(@loc_en.code, 'subject.tfv.v02.tech.abbr', 'Tech')
+    Translation.find_or_update_translation(@loc_en.code, 'subject.default.tech.name', 'Tech Engineering')
+    Translation.find_or_update_translation(@loc_en.code, 'subject.default.tech.abbr', 'tech')
 
     @subjects = []
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
