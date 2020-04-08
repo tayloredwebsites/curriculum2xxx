@@ -25,7 +25,7 @@
 	<% @s_o_hash.each do |i, j| %>
     <div id="<%=i%>-dim-column" class="dimension-item subject-column <%= 'hidden' if i != subject_visible %>">
       <ul class="list-group">
-        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= @page_title %></li>
+        <li class="dimension-header"><%= @translations[Subject.get_default_name_key(i)] %> - <%= @page_title %></li>
         <% j[:dimensions].each do |k| %>
           <li id="<%= i %>_dim_<%= k[:id] %>" class="dim-item dim-item--collapsable list-group-item" data-dimid="<%= k[:id] %>">
             <span class="truncate-if-collapsed"><%= @translations[k[:dim_name_key]] %></span>
@@ -35,7 +35,7 @@
                 <div>
                   <a class="hide-unless-condition" href='<%= dtree[:tree_id] %>'
                     title='<%= @translations[dtree[:dim_explanation_key]] %>'>
-                    <%= "#{@translations[dtree.tree.subject.base_key + ".abbr"].downcase}.#{dtree.tree[:code]}" %>
+                    <%= "#{@translations[Subject.get_default_abbr_key(dtree.tree.subject.code)].downcase}.#{dtree.tree[:code]}" %>
                   </a>
                 </div>
               <% end #iterate through this dimension's connections to LOs %>
@@ -50,7 +50,7 @@
     </div>
     <div id="<%=i%>-lo-column" class="dimension-item subject-column <%= 'hidden' if i != subject_visible %>">
       <ul class="list-group">
-        <li class="dimension-header"><%= @translations["subject.#{i}.name"] %> - <%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %>
+        <li class="dimension-header"><%= @translations[Subject.get_default_name_key(i)] %> - <%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %>
           <% if @subj_gradebands[i].length > 0 %>
           - <%= translate('app.labels.grade_band_show').pluralize if (@subj_gradebands[i].length > 1) %>
             <%= translate('app.labels.grade_band_show') if (@subj_gradebands[i].length == 1)

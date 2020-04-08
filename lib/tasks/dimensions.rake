@@ -28,9 +28,9 @@ namespace :dimensions do
       geo: 'Geology'
     }
     BaseRec::BASE_SUBJECTS.each do |s|
-        rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.base.#{s}.abbr", "#{s}")
+        rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(s), "#{s}")
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.base.#{s}.name", "#{s_lookup[:"#{s}"]}")
+        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(s), "#{s_lookup[:"#{s}"]}")
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
         puts "Saved Translations for #{s}, #{s_lookup[:"#{s}"]}"
     end

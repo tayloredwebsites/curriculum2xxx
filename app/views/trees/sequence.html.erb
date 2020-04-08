@@ -70,7 +70,7 @@
     <% subj_counter += 1 %>
     <div id="<%=i%>-column" class="sequence-item subject-column<%= subj_counter > subj_default_count ? " hidden" : "" %>">
       <ul class="list-group">
-        <li class="sequence-header"><%= Translation.where(locale: @locale_code, key: @subjects[i].base_key + ".name").first.value %></li>
+        <li class="sequence-header"><%= @subjects[i].get_name(@locale_code) %></li>
         <% j.each do |k| %>
           <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item lo_gb_code_<%= k[:gb_code] %>" data-lo-id="<%= k[:id] %>">
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>

@@ -8,21 +8,21 @@ namespace :add_earth_science do
 	  	@ear = Subject.create(
 		    tree_type_id: @tfv.id,
 		    code: 'ear',
-		    base_key: 'subject.ear'
+		    base_key: 'subject.tfv.v01.ear'
 		    )
       puts "created subject: Earth, Space, and Environmental Science"
       locales = Locale.all
       @loc_en = locales.where(:code => 'en').first
       @loc_tr = locales.where(:code => 'tr').first
       puts "retrieved locales"
-	  	rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.ear.name', 'Earth, Space, & Environmental Science')
+	  	rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.default.ear.name', 'Earth, Space, & Environmental Science')
   		throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-  		rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.ear.abbr', 'Ear')
+  		rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.default.ear.abbr', 'Ear')
   		throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-  		rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.ear.name', '
+  		rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.default.ear.name', '
   		Dünya, Uzay ve Çevre Bilimi')
   		throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-  		rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.ear.abbr', 'Dün')
+  		rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.default.ear.abbr', 'Dün')
   		throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
       puts "created subject translations"
 
