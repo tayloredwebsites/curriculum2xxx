@@ -114,7 +114,7 @@ class SectorsController < ApplicationController
         if @grade_band_id.present? && st.tree.grade_band_id.to_s != @grade_band_id
         elsif @subject_id.present? && st.tree.subject_id.to_s != @subject_id
         else
-          rptRows << [ '', st.tree.codeByLocale(@locale_code), translations[st.tree.name_key], st.tree.id.to_s, translations[st.explanation_key] ]
+          rptRows << [ '', st.tree.format_code(@locale_code), translations[st.tree.name_key], st.tree.id.to_s, translations[st.explanation_key] ]
         end
       end #if st.tree
     end #sector.sector_trees.active.each do |st|
