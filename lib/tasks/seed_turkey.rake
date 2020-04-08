@@ -7,6 +7,9 @@ namespace :seed_turkey do
   desc "create the Curriculum Tree Type and Version"
   task create_tree_type: :environment do
 
+    #WARNING: Original tree type code for this curriculum was 'TFV', not 'tfv.'
+    #         Running this task as-is will alter the wrong TreeType record.
+
     # reference version record from seeds.rb
     @v01 = Version.where(code: 'v01').first
     throw "Missing version record" if !@v01
@@ -169,7 +172,7 @@ namespace :seed_turkey do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'bio',
-        base_key: 'subject.tfv.bio'
+        base_key: 'subject.tfv.v01.bio'
       )
     end
     @bio = Subject.where(tree_type_id: @tfv.id, code: 'bio').first
@@ -177,7 +180,7 @@ namespace :seed_turkey do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'che',
-        base_key: 'subject.tfv.che'
+        base_key: 'subject.tfv.v01.che'
       )
     end
     @che = Subject.where(tree_type_id: @tfv.id, code: 'che').first
@@ -185,7 +188,7 @@ namespace :seed_turkey do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'mat',
-        base_key: 'subject.tfv.mat'
+        base_key: 'subject.tfv.v01.mat'
       )
     end
     @mat = Subject.where(tree_type_id: @tfv.id, code: 'mat').first
@@ -193,7 +196,7 @@ namespace :seed_turkey do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'sci',
-        base_key: 'subject.tfv.sci'
+        base_key: 'subject.tfv.v01.sci'
       )
     end
     @sci = Subject.where(tree_type_id: @tfv.id, code: 'sci').first
@@ -201,7 +204,7 @@ namespace :seed_turkey do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'phy',
-        base_key: 'subject.tfv.phy'
+        base_key: 'subject.tfv.v01.phy'
       )
     end
     @phy = Subject.where(tree_type_id: @tfv.id, code: 'phy').first
@@ -209,7 +212,7 @@ namespace :seed_turkey do
       @subjects << Subject.create(
         tree_type_id: @tfv.id,
         code: 'ear',
-        base_key: 'subject.tfv.ear'
+        base_key: 'subject.tfv.v01.ear'
       )
     end
     @ear = Subject.where(tree_type_id: @tfv.id, code: 'ear').first
@@ -217,59 +220,59 @@ namespace :seed_turkey do
     @subj_math = [@mat]
     @subj_sci = [@sci]
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.bio.name', 'Biology')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.bio.name', 'Biology')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.bio.abbr', 'Bio')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.bio.abbr', 'Bio')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.bio.name', 'Biyoloji')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.bio.name', 'Biyoloji')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.bio.abbr', 'Biy')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.che.name', 'Chemistry')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.che.abbr', 'Chem')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.che.name', 'Kimya')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.che.abbr', 'Kim')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.bio.abbr', 'Biy')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.mat.name', 'Mathematics')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.che.name', 'Chemistry')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.mat.abbr', 'Math')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.che.abbr', 'Chem')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.mat.name', 'Matematik')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.che.name', 'Kimya')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.mat.abbr', 'Mat')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.phy.name', 'Physics')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.phy.abbr', 'Phy')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.phy.name', 'Fizik')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.phy.abbr', 'Fiz')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.che.abbr', 'Kim')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.sci.name', 'Science')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.mat.name', 'Mathematics')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.sci.abbr', 'Sci')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.mat.abbr', 'Math')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.sci.name', 'Bilim')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.mat.name', 'Matematik')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.sci.abbr', 'Bil')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.mat.abbr', 'Mat')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.ear.name', 'Earth, Space, & Environmental Science')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.phy.name', 'Physics')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.ear.abbr', 'Ear')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.phy.abbr', 'Phy')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.ear.name', '
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.phy.name', 'Fizik')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.phy.abbr', 'Fiz')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.sci.name', 'Science')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.sci.abbr', 'Sci')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.sci.name', 'Bilim')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.sci.abbr', 'Bil')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.ear.name', 'Earth, Space, & Environmental Science')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.tfv.v01.ear.abbr', 'Ear')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.ear.name', '
     Dünya, Uzay ve Çevre Bilimi')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.ear.abbr', 'Dün')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'subject.tfv.v01.ear.abbr', 'Dün')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
   end #create_subjects
 

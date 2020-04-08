@@ -82,8 +82,14 @@ class SectorsController < ApplicationController
     # To Do: filter out subjects and grades not diaplayed
     name_keys = [sector.name_key]
     sector.sector_trees.each do |st|
-      name_keys << st.explanation_key
-      name_keys << st.tree.name_key
+      if st.tree
+        name_keys << st.explanation_key
+        name_keys << st.tree.name_key
+      else
+        open(BaseRec::DATA_COMPLAINTS_PATH, "a") do |f|
+          f.puts "[#{DateTime.now}] tree record is nil in sector_tree with id: #{st.id}"
+        end
+      end
     end
     return name_keys
   end
@@ -104,12 +110,14 @@ class SectorsController < ApplicationController
     # filter out records when pulling from the join
     # To Do: put grade band and subject into sector_trees join record to efficiently filter out selected grade or subject
     sector.sector_trees.active.each do |st|
-      if @grade_band_id.present? && st.tree.grade_band_id.to_s != @grade_band_id
-      elsif @subject_id.present? && st.tree.subject_id.to_s != @subject_id
-      else
-        rptRows << [ '', st.tree.codeByLocale(@locale_code), translations[st.tree.name_key], st.tree.id.to_s, translations[st.explanation_key] ]
-      end
-    end
+      if st.tree
+        if @grade_band_id.present? && st.tree.grade_band_id.to_s != @grade_band_id
+        elsif @subject_id.present? && st.tree.subject_id.to_s != @subject_id
+        else
+          rptRows << [ '', st.tree.format_code(@locale_code), translations[st.tree.name_key], st.tree.id.to_s, translations[st.explanation_key] ]
+        end
+      end #if st.tree
+    end #sector.sector_trees.active.each do |st|
     return  rptRows
   end
 

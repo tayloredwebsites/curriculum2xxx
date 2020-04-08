@@ -211,8 +211,8 @@ class ApplicationController < ActionController::Base
         subjects.each do |subj|
           h = {
             rec: subj,
-            abbr: Translation.find_translation_name(@locale_code, "subject.#{@treeTypeRec.code}.#{subj.code}.abbr", ''),
-            name: Translation.find_translation_name(@locale_code, "subject.#{@treeTypeRec.code}.#{subj.code}.name", ''),
+            abbr: subj.get_abbr(@locale_code).downcase,
+            name: subj.get_name(@locale_code),
           }
           @subjectByCode[subj.code] = h
           @subjectById[subj.id] = h

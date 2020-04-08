@@ -4,38 +4,40 @@ class Subject < BaseRec
 
   # Translation Field
 
-  # The TreeType-specific Translation key for a Subject
-  def versioned_name_key
+  def build_base_key
     treeTypeRec = TreeType.find(tree_type_id)
-    return "subject.#{treeTypeRec.code}.#{code}.name"
+    versionRec = Version.find(treeTypeRec.version_id)
+    return "subject.#{treeTypeRec.code}.#{versionRec.code}.#{code}"
   end
 
-  # The TreeType-specific Translation key for a Subject
-  def versioned_abbr_key
-    treeTypeRec = TreeType.find(tree_type_id)
-    return "subject.#{treeTypeRec.code}.#{code}.abbr"
+  # Returns curriculum-specific translation key for a subject name.
+  def get_versioned_name_key
+    return "#{build_base_key}.name"
   end
 
-  # The default Translation key for BaseRec subjects
-  # To Do: migrate to use subject.default.#{code}.name
-  def self.name_translation_key(code)
-    return "subject.base.#{code}.name"
+  # Returns curriculum-specific translation key for a subject abbreviation.
+  def get_versioned_abbr_key
+    return "#{build_base_key}.abbr"
   end
 
-  # The default Translation key for BaseRec subjects
-  # To Do: migrate to use subject.default.#{code}.name
-  def self.default_abbr_key(code)
-    return "subject.base.#{code}.abbr"
+  # The default Translation key for BaseRec subject names
+  def self.get_default_name_key(code)
+    return "subject.default.#{code}.name"
+  end
+
+  # The default Translation key for BaseRec subject abbreviations
+  def self.get_default_abbr_key(code)
+    return "subject.default.#{code}.abbr"
   end
 
   def get_name(locale_code)
     return Translation.find_translation_name(
         locale_code,
-        versioned_name_key,
+        get_versioned_name_key,
         nil
       ) || Translation.find_translation_name(
         locale_code,
-        Subject.name_translation_key(code),
+        Subject.get_default_name_key(code),
         ""
       )
   end
@@ -43,16 +45,17 @@ class Subject < BaseRec
   def get_abbr(locale_code)
     return Translation.find_translation_name(
         locale_code,
-        versioned_abbr_key,
+        get_versioned_abbr_key,
         nil
       ) || Translation.find_translation_name(
         locale_code,
-        Subject.default_abbr_key(code),
+        Subject.get_default_abbr_key(code),
         ""
       )
   end
   ########################################
 
+  # Deprecated. Use get_abbr(locale_code) instead
   def abbr(loc)
     Rails.logger.debug("loc: #{loc.inspect}")
     Rails.logger.debug("self.base_key: #{self.base_key.inspect}")

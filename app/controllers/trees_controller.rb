@@ -227,7 +227,7 @@ class TreesController < ApplicationController
       if (false) # when current curriculum and version are known, check if current column is not the current one
         tkeyTrans += Translation.find_translation_name(@locale_code, 'curriculum.'+tree.tree_type.code+'.title', 'Missing Curriculum Name') + ' - ' + tree.version.code + ' - '
       end
-      tkeyTrans += Translation.find_translation_name(@locale_code, 'subject.'+tree.tree_type.code+'.'+ tree.subject.code+ '.name', 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, 'grades.'+tree.tree_type.code+'.'+ tree.grade_band.code+ '.name', 'Missing Grade Name')
+      tkeyTrans += Translation.find_translation_name(@locale_code, tree.subject.get_versioned_name_key, 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, tree.grade_band.get_name_key, 'Missing Grade Name')
       @translations[tkey] = tkeyTrans
       selectors_by_parent = tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
       selectors_by_parent = selectors_by_parent.length > 1 ? "collapsable " + selectors_by_parent.join(" ") : "top-selector" + selectors_by_parent.join(" ")
@@ -437,14 +437,14 @@ class TreesController < ApplicationController
     subjects.each do |subj_code|
       @dimension_subject_opts << {code: subj_code, name: Translation.find_translation_name(
           @locale_code,
-          Subject.name_translation_key(subj_code),
+          Subject.get_default_name_key(subj_code),
           subj_code)
       }
     end
 
     @dimension_subject = Translation.find_translation_name(
       @locale_code,
-      Subject.name_translation_key(@dimension.subject_code),
+      Subject.get_default_name_key(@dimension.subject_code),
       @dimension.subject_code) if @dimension.subject_code
     @dimension_text = Translation.find_translation_name(
         @locale_code,
@@ -483,7 +483,7 @@ class TreesController < ApplicationController
 
     changes += ", #{{'dimension': dimension.as_json, 'text': dim_translation.as_json}},,,[END OF LINE]"
 
-    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+    open(BaseRec::DIM_CHANGE_LOG_PATH, "a") do |f|
       f.puts changes
     end
 
@@ -523,7 +523,7 @@ class TreesController < ApplicationController
         dimension.get_dim_name_key
       )
 
-    open("#{Rails.root}/log/dimension_changes.out", "a") do |f|
+    open(BaseRec::DIM_CHANGE_LOG_PATH, "a") do |f|
       f.puts changes
     end
 
@@ -574,8 +574,8 @@ class TreesController < ApplicationController
       }
       @subj_gradebands[s.code] = listing.joins(:subject).where('subjects.code' => s.code).joins(:grade_band).pluck('grade_bands.code').uniq
       @subj_gradebands[s.code] << "All" if @subj_gradebands[s.code].length > 1
-      transl_keys << s.base_key+'.name'
-      transl_keys << s.base_key+'.abbr'
+      transl_keys << Subject.get_default_name_key(s.code)
+      transl_keys << Subject.get_default_abbr_key(s.code)
     end
 
     Rails.logger.debug("*** @subjects: #{@subjects.inspect}")
@@ -887,7 +887,7 @@ class TreesController < ApplicationController
         @attr_id = @rel.id
         expl_key = @rel.explanation_key
         @tree_referencee = @rel.tree_referencee
-        @tree_referencee_code = I18n.t("trees.labels.#{@tree_referencee.subject.code}") + " #{@tree_referencee.code}"
+        @tree_referencee_code = @tree_referencee.format_code(@locale_code)
         translation = Translation.translationsByKeys(
           @locale_code,
           expl_key
@@ -910,7 +910,7 @@ class TreesController < ApplicationController
           )
         @rel_name = (name_matches.length > 0 ? ": #{name_matches.first.value}" : '')
         @tree_referencee_code = "#{I18n.t('app.labels.sector_num', num: @rel.sector.code)}#{@rel_name}" if (@edit_type == "sector" && @rel.id)
-        @tree_referencee_code = "#{I18n.t("trees.#{@rel.dimension.dim_type}.singular")} #{@rel_name}" if @edit_type == "dimtree"
+        @tree_referencee_code = "#{Dimension.get_dim_type_name(@rel.dimension.dim_type, @treeTypeRec.code, @versionRec.code, @locale_code).singularize} #{@rel_name}" if @edit_type == "dimtree"
       end
     end
     respond_to do |format|
@@ -1305,9 +1305,9 @@ class TreesController < ApplicationController
       # Get dimensions and dimtrees for displayed curriculum
       @dimtrees = DimTree.active.joins(:dimension).where(:tree_id => @trees.pluck("id"))
       dimKeys = @dimtrees.pluck('dim_explanation_key')
-      @ess_q_subj_base_key = Subject.name_translation_key(@dim_subjs[@treeTypeRec.ess_q_dim_type]) if @dim_subjs[@treeTypeRec.ess_q_dim_type]
-      @idea_subj_base_key = Subject.name_translation_key(@dim_subjs['bigidea']) if @dim_subjs['bigidea']
-      @misc_subj_base_key = Subject.name_translation_key(@dim_subjs['miscon']) if @dim_subjs['miscon']
+      @ess_q_subj_base_key = Subject.get_default_name_key(@dim_subjs[@treeTypeRec.ess_q_dim_type]) if @dim_subjs[@treeTypeRec.ess_q_dim_type]
+      @idea_subj_base_key = Subject.get_default_name_key(@dim_subjs['bigidea']) if @dim_subjs['bigidea']
+      @misc_subj_base_key = Subject.get_default_name_key(@dim_subjs['miscon']) if @dim_subjs['miscon']
       dimKeys << @idea_subj_base_key if @idea_subj_base_key
       dimKeys << @ess_q_subj_base_key if @ess_q_subj_base_key
       dimKeys << @misc_subj_base_key if @misc_subj_base_key
@@ -1323,7 +1323,7 @@ class TreesController < ApplicationController
         if (translate?('bigidea', is_bigidea, dt_dim, bigidea_min_arr, bigidea_max_arr) || translate?('miscon', is_miscon, dt_dim, miscon_min_arr, miscon_max_arr) || translate?(@treeTypeRec.ess_q_dim_type, is_ess_q, dt_dim, ess_q_min_arr, ess_q_max_arr))
         #@trees.first.present? && dt_dim.subject_id != @trees.first.subject_id
             dimKeys << dt_dim.dim_name_key
-            dt_dim_subj = "subject.base.#{dt_dim.subject_code}.name"
+            dt_dim_subj = Subject.get_default_name_key(dt_dim.subject_code)
             dimKeys << dt_dim_subj if !dimKeys.include?(dt_dim_subj)
         end
         @subj_key_by_dt_id[dt.id] = dt_dim_subj
@@ -1355,9 +1355,10 @@ class TreesController < ApplicationController
     end
     if @translations
       BaseRec::BASE_SUBJECTS.each do |s|
-        subjKey = "subject.base.#{s}"
-        dimKeys << "#{subjKey}.name" if !dimKeys.include?("#{subjKey}.name")
-        dimKeys << "#{subjKey}.abbr" if !dimKeys.include?("#{subjKey}.abbr")
+        subjNameKey = Subject.get_default_name_key(s)
+        subjAbbrKey = Subject.get_default_abbr_key(s)
+        dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
+        dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
       end
       dim_translations = Translation.translationsByKeys(
         @locale_code,

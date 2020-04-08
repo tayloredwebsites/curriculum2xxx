@@ -160,119 +160,119 @@ namespace :seed_eg_stem do
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'bio',
-        base_key: 'subject.egstemuniv.bio'
+        base_key: 'subject.egstemuniv.v01.bio'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'cap').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'cap',
-        base_key: 'subject.egstemuniv.cap'
+        base_key: 'subject.egstemuniv.v01.cap'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'che').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'che',
-        base_key: 'subject.egstemuniv.che'
+        base_key: 'subject.egstemuniv.v01.che'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'engl').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'engl',
-        base_key: 'subject.egstemuniv.engl'
+        base_key: 'subject.egstemuniv.v01.engl'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'edu').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'edu',
-        base_key: 'subject.egstemuniv.edu'
+        base_key: 'subject.egstemuniv.v01.edu'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'geo').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'geo',
-        base_key: 'subject.egstemuniv.geo'
+        base_key: 'subject.egstemuniv.v01.geo'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'mat').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'mat',
-        base_key: 'subject.egstemuniv.mat'
+        base_key: 'subject.egstemuniv.v01.mat'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'mec').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'mec',
-        base_key: 'subject.egstemuniv.mec'
+        base_key: 'subject.egstemuniv.v01.mec'
       )
     end
     if Subject.where(tree_type_id: @egstem.id, code: 'phy').count < 1
       @subjects << Subject.create(
         tree_type_id: @egstem.id,
         code: 'phy',
-        base_key: 'subject.egstemuniv.phy'
+        base_key: 'subject.egstemuniv.v01.phy'
       )
     end
     puts "Subjects are created for EGSTEM"
 
     #bio
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.bio.name', 'Biology')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.bio.name', 'Biology')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.bio.abbr', 'Bio')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.bio.abbr', 'Bio')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #cap
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.cap.name', 'Capstones')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.cap.name', 'Capstones')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.cap.abbr', 'Cap')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.cap.abbr', 'Cap')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #che
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.che.name', 'Chemistry')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.che.name', 'Chemistry')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.che.abbr', 'Chem')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.che.abbr', 'Chem')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #engl
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.engl.name', 'English')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.engl.name', 'English')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.engl.abbr', 'Engl')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.engl.abbr', 'Engl')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #edu
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.edu.name', 'Education')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.edu.name', 'Education')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.edu.abbr', 'Edu')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.edu.abbr', 'Edu')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #geo
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.geo.name', 'Geology')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.geo.name', 'Geology')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.geo.abbr', 'Geo')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.geo.abbr', 'Geo')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #mat
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.mat.name', 'Mathematics')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mat.name', 'Mathematics')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.mat.abbr', 'Math')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mat.abbr', 'Math')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #mec
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.mec.name', 'Mechanics')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mec.name', 'Mechanics')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.mec.abbr', 'Mec')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mec.abbr', 'Mec')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #phy
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.phy.name', 'Physics')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.phy.name', 'Physics')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.phy.abbr', 'Phy')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.phy.abbr', 'Phy')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     puts "subject translations are created for EGSTEM"
