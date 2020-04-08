@@ -136,13 +136,12 @@ $(function() {
       $(selection).removeClass("hidden");
       $(selection + " i.accordion").removeClass("fa-expand");
       $(selection + " i.accordion").addClass("fa-compress");
+      $(selection + " i.accordion").addClass("option-selected");
     } else {
       $(".top-selector" + " i.accordion").removeClass("option-selected");
       $(".top-selector" + " i.accordion").removeClass("fa-compress");
       $(".top-selector" + " i.accordion").addClass("fa-expand");
       $(selection).addClass("hidden");
-      $(selection + " i.accordion").removeClass("fa-compress");
-      $(selection + " i.accordion").addClass("fa-expand");
     }
     var showing_details = $("#show-details-btn #show-text").hasClass('hidden');
     if (showing_details) {
@@ -157,13 +156,15 @@ $(function() {
 
   show_hierarchy_level = function (level, maxLevel) {
     $(".level-" + level).removeClass("hidden");
-    $(".level-" + level + " i.accordion").removeClass("option-selected fa-compress");
-    $(".level-" + level + " i.accordion").addClass("fa-expand");
+    var removeClass = (level == maxLevel ? "fa-expand" : "option-selected fa-compress");
+    var addClass = (level == maxLevel ? "option-selected fa-compress" : "fa-expand")
+    $(".level-" + level + " i.accordion").removeClass(removeClass);
+    $(".level-" + level + " i.accordion").addClass(addClass);
     level = parseInt(level);
     for (var i = 0; i < level; i++ ) {
       $(".level-" + i).removeClass("hidden");
-      $(".level-" + i + " i.accordion").removeClass("fa-compress option-selected");
-      $(".level-" + i + " i.accordion").addClass("fa-expand");
+      $(".level-" + i + " i.accordion").removeClass(removeClass);
+      $(".level-" + i + " i.accordion").addClass(addClass);
     }
     for (var i = level + 1; i <= maxLevel; i++ ) {
       $(".level-" + i).addClass("hidden");

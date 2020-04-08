@@ -104,6 +104,7 @@ $(function() {
       }
       $(selector + " i.accordion").removeClass("fa-expand");
       $(selector + " i.accordion").addClass("fa-compress");
+      $(selector + " i.accordion").addClass("option-selected");
     } else {
       $(selector).addClass("hidden");
       if ($(trigger).hasClass("accordion")) {
