@@ -28,13 +28,13 @@ class Dimension < BaseRec
     return ret
   end
 
-  def self.get_dim_type_key(dim_type, tree_type, version)
-    return "curriculum.#{tree_type}.#{version}.#{dim_type}"
+  def self.get_dim_type_key(dimCode, tree_type, version)
+    return "curriculum.#{tree_type}.#{version}.#{dimCode}"
   end
 
-  def self.get_dim_type_name(dimType, treeTypeCode, versionCode, localeCode)
-    dimTypeKey =  Dimension.get_dim_type_key(dimType, treeTypeCode, versionCode)
-    return Translation.find_translation_name(localeCode, dimTypeKey, nil) ||
+  def self.get_dim_type_name(dimCode, treeTypeCode, versionCode, localeCode)
+    dimCodeKey =  Dimension.get_dim_type_key(dimCode, treeTypeCode, versionCode)
+    return Translation.find_translation_name(localeCode, dimCodeKey, nil) ||
       I18n.t("nav_bar.#{dimType.split("_").join("")}.name")
   end
 
