@@ -1049,14 +1049,6 @@ class TreesController < ApplicationController
         :dimension_id,
         :dim_type,
         :active,
-        :dim_filters, #"subj_miscon_sci,gb_miscon_21,subj_bigidea_ear,..."
-        # Deprecating:
-        # :bigidea_subj_code,
-        # :bigidea_gb_id,
-        # :miscon_subj_code,
-        # :miscon_gb_id,
-        # :ess_q_subj_code,
-        # :ess_q_gb_id,
       )
     rescue
       nil
@@ -1241,7 +1233,6 @@ class TreesController < ApplicationController
     @dim_type = dim_tree_params && dim_tree_params[:dim_type] ? dim_tree_params[:dim_type] : nil
     @dim_filters_str = cookies[:dim_filters].split(" ").join(",") if cookies[:dim_filters]
 
-
     # dim_filters = {
     #   "bigidea" : {
     #     :subj => "sci",
@@ -1306,8 +1297,6 @@ class TreesController < ApplicationController
         @subj_key_by_dt_id[dt.id] = dt_dim_subj
       end
     end #if @trees is prepared, look for connected dimtrees
-
-
 
     ###################################################
     # BUILD TRANSLATIONS
