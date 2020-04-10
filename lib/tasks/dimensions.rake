@@ -75,7 +75,7 @@ namespace :dimensions do
     puts "Updating dim_code field for all dimensions"
     # Set dim_code for all dimensions.
     dimensions.each do |dim|
-      dim.dim_code = dim.dim_type
+      dim.dim_code = dim.dim_type if dim[:dim_type] && dim.dim_type != ""
       dim.save
     end
 
@@ -120,6 +120,8 @@ namespace :dimensions do
       puts "Set dim_codes string for TreeType rec: #{@tfvV02.id}"
       @v02_code = Version.find(@tfvV02.version_id).code
       @tfvV02.dim_codes = "essq,bigidea,pract,miscon"
+      @tfvV02.detail_headers = 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon],[sector],[connect],[refs]'
+      @tfvV02.grid_headers ='grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],explain,[miscon]'
       @tfvV02.save
 
       ###########################################
