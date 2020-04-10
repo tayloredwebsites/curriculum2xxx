@@ -6,7 +6,6 @@
   -->
   <% dim_key = col.split("_").join("") %>
 
-  <div class='row'>
     <!-- Hidden fields -->
     <!-- Pass setting to stay in edit mode after submitting form, if currently in edit mode -->
     <% if @editing %>
@@ -22,13 +21,13 @@
       If searching for a different set of one dim type, don't forget the current settings for other dimension types. -->
 
     <!-- Labels -->
-    <div class='col col-lg-1 col-md-<%= @editing ? 3 : 2 %>'><label for='<%= col %>_subject'><%= translate('app.labels.subject') %></label></div>
-    <div class='col col-lg-<%= @editing ? 5 : 1 %> col-md-<%= @editing ? 5 : 2 %>'><label for='<%= col %>_grade_band'><%= translate('app.labels.grade_band') %></label></div>
-  </div>
+
 
   <!-- Form input options -->
-  <div class='row'>
-    <div class='col col-lg-1 col-md-2'><select id='<%= col %>_subject' class='maint_filter_dropdown' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_code"%>]'>
+  <div class='row margin-bottom indent-1'>
+    <div class='right-margin'>
+      <label for='<%= col %>_subject' class="block"><%= translate('app.labels.subject') %></label>
+      <select id='<%= col %>_subject' class='maint_filter_dropdown' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_code"%>]'>
         <% if col == "tree" %>
           <% @subjects.each do |k, s| %>
             <% sel_code = @subject_code %>
@@ -48,44 +47,42 @@
           <% end %>
         <% end # if col == "tree" %>
     </select></div>
-    <div id='<%= param_name %>-gb-container' class='col col-lg-<%= @editing ? 5 : 1 %> col-md-<%= @editing ? 5 : 2 %>'>
+    <div id='<%= param_name %>-gb-container' class='indent-2 right-margin'>
+      <label for='<%= col %>_grade_band' class="block"><%= translate('app.labels.grade_band') %></label>
       <span id='<%= param_name %>-all-gbs-select'>
       <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
-      <select id='<%= col %>_grade_band' class='maint_filter_dropdown' name='<%= param_name %>[<%= param_name == "tree" ? "grade_band_id" : "#{col}_gb_id" %>]'>
-        <option value='0'><%= I18n.t('app.labels.all') %></option>
-      <% @gbs.each do |gb| %>
-        <% gbc = @grade_band_code
-           gbc = @dim_filters[col][:gb][:code] if col != "tree" && @dim_filters[col][:gb][:code]
-        %>
-        <%- selectedStr = (gb.code == gbc) ? ' selected = "selected"' : '' %>
-        <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
-        <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
-      <% end %>
-    </select>
+        <select id='<%= col %>_grade_band' class='maint_filter_dropdown' name='<%= param_name %>[<%= param_name == "tree" ? "grade_band_id" : "#{col}_gb_id" %>]'>
+          <option value='0'><%= I18n.t('app.labels.all') %></option>
+        <% @gbs.each do |gb| %>
+          <% gbc = @grade_band_code
+             gbc = @dim_filters[col][:gb][:code] if col != "tree" && @dim_filters[col][:gb][:code]
+          %>
+          <%- selectedStr = (gb.code == gbc) ? ' selected = "selected"' : '' %>
+          <%= Rails.logger.debug("gb index match: #{gb.code} == #{@grade_band_code} output: #{selectedStr}") %>
+          <option value=<%= gb.id%><%= selectedStr %>><%=gb.code%></option>
+        <% end %>
+        </select>
       </span>
     </div>
 
-    <div class='col col-lg-1 col-md-3 margin-bottom'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary' %></div>
+    <div class='right-margin indent-2'><%= form.submit translate('app.labels.gen_list'), :class => 'btn-primary margin-top' %></div>
   </div>
 <% end #form %>
 <% if col == "tree" %>
   <div>
-    <button class="btn btn-link btn-sm pull-left right-margin" onclick="show_hide_selection('.collapsable', true)"><%= I18n.translate("app.labels.expand_all") %></button>
-    <button class="btn btn-link btn-sm pull-left" onclick="show_hide_selection('.collapsable', false)"><%= I18n.translate("app.labels.collapse_all") %></button>
     <%
     @hierarchiesInTrees.each_with_index do |h, ix|
-      if ix > 0 && ix <= @treeTypeRec.outcome_depth
+      if ix <= @treeTypeRec.outcome_depth
       hierarchy_depth = @hierarchies.index(@hierarchiesInTrees[ix])
     %>
-        <button class='btn btn-info btn-sm pull-left right-margin' onclick="show_hierarchy_level('<%= hierarchy_depth %>', '<%= @treeTypeRec[:outcome_depth] %>')"><%= I18n.t('app.labels.show') %> <%= @hierarchiesInTrees[ix].pluralize if @hierarchiesInTrees.length > ix %></button>
+        <button class='btn btn-info btn-sm pull-left right-margin margin-bottom btn-hierarchies'  data-hierarchy_depth="<%= hierarchy_depth %>" data-outcome_depth="<%= @treeTypeRec[:outcome_depth] %>"><%= I18n.t('app.labels.show') %> <%= @hierarchiesInTrees[ix].pluralize if @hierarchiesInTrees.length > ix %></button>
     <%
       end
     end
     %>
     <% if !@editing %>
-      <button id="show-details-btn" class="btn btn-link btn-sm pull-left right-margin" onclick="show_maint_details()">
-        <span id="show-text" class="hidden">Show Details</span>
-        <span id="hide-text">Hide Details</span>
+      <button id="show-details-btn" class="btn btn-info btn-sm pull-left right-margin margin-bottom" data-hierarchy_depth="<%= @hierarchies.length - 1 %>" data-outcome_depth="<%= @treeTypeRec[:outcome_depth] %>">
+        <span id="show-text"><%= I18n.translate("app.labels.show_details") %></span>
       </button>
     <% end %>
   </div>

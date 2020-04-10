@@ -56,8 +56,7 @@ en:
       working_version: "Working"
       final_version: "Final"
       connect_form_title: "Save Connection?"
-      expand_all: "Expand All"
-      collapse_all: "Collapse All"
+      show_details: "Show Details"
     roles:
       name: 'Roles'
       admin:

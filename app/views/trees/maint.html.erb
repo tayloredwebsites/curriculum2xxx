@@ -2,7 +2,7 @@
 <% content_for(:page_class, 'trees') %>
 <%
    grades_str = translate('app.labels.grade_band').pluralize
-   num_cols = (@dim_type ? 2 : 1) + (@editing ? @visible_dim_codes_arr.length : 0)
+   num_cols = (@dim_type ? 2 : 1) + (@editing ? (@visible_dim_codes_arr.length > 0 ? @visible_dim_codes_arr.length : 1) : 0)
 %>
 <% if @editing || @dim_type %>
   <div id="valid_dims" class="hidden">

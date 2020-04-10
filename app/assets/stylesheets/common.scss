@@ -82,6 +82,10 @@ body {
     margin-bottom: 10px;
   }
 
+  .margin-top {
+    margin-top: 20px;
+  }
+
   .left-justify {
     text-align: left;
   }
@@ -89,6 +93,7 @@ body {
   .right-margin {
     margin-right: 5px;
   }
+
 }
 
 // use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)
@@ -152,6 +157,7 @@ form {
   .ui-error {
     color: red;
   }
+
 }
 
 .sub-menu a.btn {
