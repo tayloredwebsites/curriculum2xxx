@@ -71,7 +71,7 @@ class Dimension < BaseRec
       info = f.split("_")
       if valid_dims.include?(info[1])
         if info[0] == "subj"
-          if BaseRec::BASE_SUBJECTS.include?(info[2])
+          if BaseRec::BASE_SUBJECTS.include?(info[2]) || BaseRec::BASE_PRACTICES.include?(info[2])
             ret[info[1]][:subj] = info[2]
           end #BaseRec::BASE_SUBJECTS.include(info[3])
         elsif info[0] == "gb"

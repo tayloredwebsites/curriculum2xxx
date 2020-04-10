@@ -32,7 +32,7 @@
   <div class="sequence-grid cols-<%= num_cols %>">
 
     <% competencies_partial = @use_alt_partial ? "alt_competency_grids_column" : "competency_grids_column" %>
-    <%= render partial: (@editing ? "competencies_column" : competencies_partial) %>
+    <%= render partial: (@editing ? "competencies_column" : "competency_grids_column") %>
     <% if @editing || @dim_type %>
 
       <% @dimsArray.each do |dim| %>

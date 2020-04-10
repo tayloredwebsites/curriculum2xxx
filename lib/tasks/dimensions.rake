@@ -19,20 +19,33 @@ namespace :dimensions do
       cap: 'Capstones',
       che: 'Chemistry',
       edu: 'Education',
-      eng: 'English',
+      engl: 'English',
+      eng: 'Engineering',
       mat: 'Math',
       mec: 'Mechanics',
       phy: 'Physics',
       sci: 'Science',
       ear: 'Earth Science',
-      geo: 'Geology'
+      geo: 'Geology',
+      stem: 'Science And Engineering Practices',
+      spec: 'Specific Practices',
+      tech: 'Tech Engineering'
     }
+
     BaseRec::BASE_SUBJECTS.each do |s|
         rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(s), "#{s}")
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
         rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(s), "#{s_lookup[:"#{s}"]}")
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
         puts "Saved Translations for #{s}, #{s_lookup[:"#{s}"]}"
+    end
+
+    BaseRec::BASE_PRACTICES.each do |p|
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(p), "#{p.upcase}")
+        throw "ERROR updating practice translation: #{message}" if status == BaseRec::REC_ERROR
+        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(p), "#{s_lookup[:"#{p}"]}")
+        throw "ERROR updating practice translation: #{message}" if status == BaseRec::REC_ERROR
+        puts "Saved Translations for #{p}, #{s_lookup[:"#{p}"]}"
     end
 
   end #task set_subject_codes: :environment do
@@ -44,11 +57,15 @@ namespace :dimensions do
     dim_trees = DimTree.all
     dims = Dimension.all
     dim_trees.each do |dt|
-      t = dt.tree.base_key
-      d = dt.dimension
-      key = DimTree.getDimExplanationKey(t, d.dim_type, d.id)
-      puts "Deleting DimTree Translation: #{key}"
-      Translation.where(:key => key).delete_all
+      if dt.tree
+        t = dt.tree.base_key
+        d = dt.dimension
+        key = DimTree.getDimExplanationKey(t, d.dim_type, d.id)
+        puts "Deleting DimTree Translation: #{key}"
+        Translation.where(:key => key).delete_all
+      else
+        puts "Could not delete DimTree Translation because Tree record was missing"
+      end
     end
     dims.each do |d|
       puts "Deleting Dim Name Translation: #{d.get_dim_name_key}"
@@ -62,6 +79,38 @@ namespace :dimensions do
      dims.delete_all
   end # task destroy_all
 
+
+  desc "Delete all outcome-level Trees, Outcomes, TreeTrees, SectorTrees, and related Translations"
+  task destroy_v02_outcomes: :environment do
+    trees = Tree.joins(:outcome).where(:tree_type_id => 2)
+    trees.each do |t|
+      #delete tree translations
+      puts "Deleting Tree: #{t.format_code("en")}"
+      puts "Deleting Tree translation"
+      Translation.where(:key => t.name_key).delete_all
+      if t.outcome
+        puts "Deleting Tree outcome"
+        Translation.where(:key => t.outcome.get_explain_key).delete_all
+        t.outcome.delete
+      end #if t.outcome
+      #No need to get TreeTrees by both referencer and referencee id,
+      #because TreeTree connections across curriculum versions are not
+      #possible yet
+      puts "Deleting TreeTree connections"
+      TreeTree.where(:tree_referencer_id => t.id).each do |tt|
+        Translation.where(:key => tt.explanation_key).delete_all
+        tt.delete
+      end #delete TreeTrees
+
+      puts "Deleting SectorTrees"
+      SectorTree.where(:tree_id => t.id).each do |tt|
+        Translation.where(:key => tt.explanation_key).delete_all
+        tt.delete
+      end #delete TreeTrees
+      t.delete
+      puts "Deleted Tree"
+    end
+  end #destroy_v02_outcomes
 
   ###################################################
   desc "Set TreeType::dim_codes string for tfv v01 & v02, and egstemuniv v01. Set Dimension::dim_code from dim_type."
