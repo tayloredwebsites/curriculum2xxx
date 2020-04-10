@@ -85,7 +85,8 @@ class Dimension < BaseRec
           rescue
             ret[info[1]][:gb] = {
               min_grade: GradeBand::MIN_GRADE,
-              max_grade: GradeBand::MAX_GRADE
+              max_grade: GradeBand::MAX_GRADE,
+              code: 'All'
             }
           end
         end #if info[0]
