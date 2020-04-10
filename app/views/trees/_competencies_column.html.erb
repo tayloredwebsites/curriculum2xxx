@@ -8,12 +8,13 @@
     <% codeh.each do |code, h| %>
       <% if h[:outcome] %>
       <%
-         ess_q_str = ''
-         ideas_str = '' #@ideas_title
-         misc_str = '' #@misc_title
-         ess_q_found = 0
-         ideas_found = 0
-         misc_found = 0
+         dimsInfo = {}
+         @dimsArray.each do |dim|
+           dimsInfo[dim[:code]] = {
+            found: 0,
+            str: ""
+           }
+         end
        %>
       <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-loid="<%= h[:id] %>">
         <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
@@ -23,38 +24,19 @@
         <% if h[:dimtrees].length > 0 %>
         <% h[:dimtrees].each do |dt|
              dim = dt.dimension
-             if dim.dim_type == @treeTypeRec.ess_q_dim_type
-                ess_q_found += 1
-                essqSubjKey = @subj_key_by_dt_id[dt.id] || @ess_q_subj_base_key
-                ess_q_str += "<br/>______________<br/>"
-                ess_q_str += "[#{@translations[essqSubjKey]}] #{@translations[dim.dim_name_key]}"
-             elsif dim.dim_type == "bigidea"
-                ideas_found += 1
-                ideaSubjKey = @subj_key_by_dt_id[dt.id] || @idea_subj_base_key
-                ideas_str += "<br/>______________<br/>"
-                ideas_str += "[#{@translations[ideaSubjKey]}] #{@translations[dim.dim_name_key]}"
-             else
-                misc_found += 1
-                miscSubjKey = @subj_key_by_dt_id[dt.id] || @misc_subj_base_key
-                misc_str += "<br/>______________<br/>"
-                misc_str += "[#{@translations[miscSubjKey]}] #{@translations[dim.dim_name_key]}"
-             end
-           end
-           ess_q_str = "<strong>#{(ess_q_found > 1 ? @ess_q_title : @ess_q_title.singularize)}:</strong>#{ess_q_str}"
-           ideas_str = "<strong>#{(ideas_found > 1 ? @ideas_title : @ideas_title.singularize)}:</strong>#{ideas_str}"
-           misc_str = "<strong>#{(misc_found > 1 ? @misc_title : @miscon_title.singularize)}:</strong>#{misc_str}"
+             dimsInfo[dim.dim_code][:found] += 1
+             dimSubjKey = Subject.get_default_name_key(dim.subject_code)
+             dimsInfo[dim.dim_code][:str] += "<br/>______________<br/>"
+             dimsInfo[dim.dim_code][:str] += "[#{@translations[dimSubjKey]}] #{@translations[dim.dim_name_key]}"
+          end #h[:dimtrees].each do |dt|
+          @dimsArray.each do |dim|
+            dimsInfo[dim[:code]][:str] = "<strong>#{(dimsInfo[dim[:code]][:found] > 1 ? dim[:name] : dim[:name].singularize)}:</strong>#{dimsInfo[dim[:code]][:str]}"
+            if dimsInfo[dim[:code]][:found] > 0 %>
+              <i class="letter-icon link-blue" data-toggle="tooltip" title="<%= dimsInfo[dim[:code]][:str] %>"><%= dim[:name][0 .. 0].upcase %></i>
+         <% end #if dimsInfo[dim[:code]][:found] > 0
+          end #@dimsArray.each do |dim|
         %>
-        <% if ess_q_found > 0 %>
-            <i class="fa fa-question" data-toggle="tooltip" title="<%= ess_q_str %>"></i>
-        <% end
-           if ideas_found > 0 %>
-            <i class="fa fa-lightbulb-o" data-toggle="tooltip" title="<%= ideas_str %>"></i>
-        <% end
-          if misc_found > 0
-        %>
-            <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="<%= misc_str %>"></i>
-        <% end %>
-        <% end %>
+        <% end #if h[:dimtrees].length > 0 %>
         <% if @editing %>
         <div class="pull-right">
           <!-- TO DO: Implement working resequence button and deactivate button -->

@@ -150,17 +150,19 @@ class ApplicationController < ActionController::Base
         raise I18n.translate('app.errors.missing_version_code')
       end
       @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
-      @essqTitle = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.essq.name')
-      @bigIdeasTitle = Dimension.get_dim_type_name(
-          @treeTypeRec.big_ideas_dim_type,
+
+      # e.g., [{code: "bigidea", name: "Big Ideas"}, {...}, ...]
+      @dimsArray = []
+      @dimTypeTitleByCode = {}
+      @treeTypeRec.dim_codes.split(",").each do |dim_code|
+        dim_name = Dimension.get_dim_type_name(
+          dim_code,
           @treeTypeRec.code,
           @versionRec.code,
           @locale_code)
-      @misconTitle = Dimension.get_dim_type_name(
-          @treeTypeRec.miscon_dim_type,
-          @treeTypeRec.code,
-          @versionRec.code,
-          @locale_code)
+        @dimsArray << {code: dim_code, name: dim_name}
+        @dimTypeTitleByCode[dim_code] = dim_name
+      end
     end
 
     def initTypeCode
@@ -196,14 +198,7 @@ class ApplicationController < ActionController::Base
           Rails.logger.debug("*** @hierarchy: #{Translation.find_translation_name(@locale_code, "curriculum.#{@treeTypeRec.code}.hierarchy.#{c}", '')}")
         end
         Rails.logger.debug("*** @hierarchies: #{@hierarchies.inspect}")
-        @misconCode = @treeTypeRec.miscon_dim_type
-        @misconTitle = Translation.find_translation_name(@locale_code, @misconCode, 'Misconceptions')
-        @bigIdeasCode = @treeTypeRec.big_ideas_dim_type
-        @bigIdeasTitle = Translation.find_translation_name(@locale_code, @bigIdeasCode, 'Big Ideas')
-        @dimTypeTitleByCode = {
-          @misconCode => @misconTitle,
-          @bigIdeasCode => @bigIdeasTitle
-        }
+
         # To Do - is this needed anywhere else?
         @subjectByCode = {}
         @subjectById = {}

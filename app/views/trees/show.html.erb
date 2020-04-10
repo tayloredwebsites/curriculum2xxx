@@ -7,10 +7,25 @@
   component = outcome.present? ? outcome.getParentRec : nil
   area = component.present? ? component.getParentRec : nil
 %>
-
 <div class='container'>
   <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
   <% @tree_items_to_display.each do |tree| %>
+    <%
+      detail_lookup = {
+        "explanation": {tree: tree, indicator: true}, #indicator
+        "explain": {tree: tree, comment: true}, #explanatory comment
+        "sector": {title: @sectorName, expl: I18n.t('trees.labels.how_sectors_related'), details: tree.sector_trees.active, sector: true },
+        "connect": {title: I18n.t('trees.labels.outcome_connections', outcome: (@hierarchies[tree.depth - 1].pluralize if @hierarchies.length > tree.depth - 1)), outcomes: true }
+      }
+      @dimsArray.each do |dim|
+        detail_lookup[:"#{dim[:code]}"] = {
+          title: dim[:name],
+          details: tree.dim_trees.where(:active => true),
+          dim_code: dim[:code],
+          dim: true
+        }
+      end
+    %>
     <div class='detail-page'>
       <% parents_by_depth = {}
         tree.getAllParents.map { |t| parents_by_depth[t.depth - 1] = t if t }
@@ -51,15 +66,6 @@
 
       <!-- Dynamically Ordered Tables -->
       <% @detail_areas.each do |area|
-          detail_lookup = {
-            "explanation": {tree: tree, indicator: true}, #indicator
-            "explain": {tree: tree, comment: true}, #explanatory comment
-            "bigidea": {title: @bigIdeasTitle, expl: I18n.t('app.labels.explanation'), details: tree.dim_trees.where(:active => true), dim_type: @treeTypeRec.big_ideas_dim_type, dim: true},
-            "miscon": {title: @misconTitle, expl: I18n.t('app.labels.explanation'), details: tree.dim_trees.where(:active => true), dim_type: @treeTypeRec.miscon_dim_type, dim: true},
-            "essq": {title: @essqTitle, expl: I18n.t('app.labels.explanation'), details: tree.dim_trees.where(:active => true), dim_type: @treeTypeRec.ess_q_dim_type, dim: true},
-            "sector": {title: @sectorName, expl: I18n.t('trees.labels.how_sectors_related'), details: tree.sector_trees.active, sector: true },
-             "connect": {title: I18n.t('trees.labels.outcome_connections', outcome: (@hierarchies[tree.depth - 1].pluralize if @hierarchies.length > tree.depth - 1)), outcomes: true }
-          }
           detail = detail_lookup[:"#{area[:name]}"]
           %>
           <%
@@ -67,10 +73,9 @@
           <%=
           render partial: "trees/show/detail_area", locals: {
               detail_title: detail[:title],
-              expl_header: detail[:expl],
               details: detail[:details],
               dim: detail[:dim],
-              dim_type: detail[:dim_type],
+              dim_code: detail[:dim_code],
               outcomes: detail[:outcome],
               sector: detail[:sector]
              }

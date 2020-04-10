@@ -10,7 +10,7 @@
   <%
   if dim
     d = dt.dimension
-    if d.dim_type == dim_type
+    if d.dim_code == dim_code
     %>
     <div class='row'>
       <div class='col col-lg-12 rel-sectors'>
@@ -21,7 +21,7 @@
       </div>
     </div>
   <%
-    end #if d.dim_type == @treeTypeRec.big_ideas_dim_type
+    end #if d.dim_code == dim_code
   elsif sector
     st = dt
   %>

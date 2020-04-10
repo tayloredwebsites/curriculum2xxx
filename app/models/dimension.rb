@@ -46,6 +46,50 @@ class Dimension < BaseRec
 
   ###############################################
 
+  # function parse_filters
+  # interpret dimension filters from param
+  # e.g.: filters = "subj_miscon_sci,gb_miscon_21,subj_bigidea_ear,..."
+  # @param filters {String}
+  # @param valid_dims {Array<String>}
+  #
+  # @returns hash in the form:
+    # {
+    #   "bigidea" : {
+    #     :subj => "sci",
+    #     :gb => {
+    #       min_grade: 0,
+    #       max_grade: 12,
+    #       id: 5 #(optional)
+    #     }
+    #   },
+    #   "miscon" : {...},
+    #   ...
+    # }
+  def self.parse_filters(filters, valid_dims)
+    ret = Hash.new { |hash, key| hash[key] = {} }
+    filters.split(",").each do |f|
+      info = f.split("_")
+      if valid_dims.include?(info[1])
+        if info[0] == "subj"
+          if BaseRec::BASE_SUBJECTS.include?(info[2])
+            ret[info[1]][:subj] = info[2]
+          end #BaseRec::BASE_SUBJECTS.include(info[3])
+        elsif info[0] == "gb"
+          begin
+            gb = GradeBand.find(info[2])
+            ret[info[1]][:gb] = {
+              min_grade: gb.min_grade,
+              max_grade: gb.max_grade,
+              code: gb.code
+            }
+          rescue
+          end
+        end #if info[0]
+      end #if info[1]
+    end #filters.split(",").each do
+    return ret
+  end
+
   private
 
   def valid_dim_type

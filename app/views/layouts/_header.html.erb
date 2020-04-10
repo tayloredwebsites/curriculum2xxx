@@ -1,6 +1,3 @@
-<%
-  essq_name = Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@treeTypeRec.ess_q_dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.questions.name')
-%>
 <header id='pageHeader' class='d-flex flex-row justify-content-between'>
   <a id='pageHeaderLogo' class='' href='#'>
     <div class='logoImage'></div>
@@ -126,15 +123,12 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_ess_q: true, dim_tree: {dim_type: @treeTypeRec.ess_q_dim_type}) %>" ><%= essq_name %></a>
-        </li>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_bigidea: true, dim_tree: {dim_type: @treeTypeRec.big_ideas_dim_type}) %>" ><%= @bigIdeasTitle %></a>
-        </li>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_miscon: true, dim_tree: {dim_type: @treeTypeRec.miscon_dim_type}) %>" ><%= translate('nav_bar.'+@treeTypeRec.miscon_dim_type+'.name') %></a>
-        </li>
+        <% @dimsArray.each do |dim| %>
+          <li class="nav-item" role='menuitem'>
+            <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_ess_q: true, dim_tree: {dim_type: dim[:code]}) %>" >
+              <%= dim[:name] %></a>
+          </li>
+        <% end %>
         <li class="nav-item" role='menuitem'>
           <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
         </li>
