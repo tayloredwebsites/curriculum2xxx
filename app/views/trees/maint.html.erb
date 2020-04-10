@@ -2,8 +2,13 @@
 <% content_for(:page_class, 'trees') %>
 <%
    grades_str = translate('app.labels.grade_band').pluralize
-   num_cols = (@dim_type ? 2 : 1) + @visible_dim_codes_arr.length
+   num_cols = (@dim_type ? 2 : 1) + (@editing ? @visible_dim_codes_arr.length : 0)
 %>
+<% if @editing || @dim_type %>
+  <div id="valid_dims" class="hidden">
+    <%= @dimsArray.map {|d| d[:code] }.join(",") %>
+  </div>
+<% end %>
 <br>
 <div class='text-center dimension-page'>
   <h2><%= @page_title %></h2>
@@ -36,7 +41,9 @@
             dim_type: dim[:code],
             show_dim: @visible_dim_codes_arr.include?(dim[:code]),
             dim_gb: @dim_filters[dim[:code]][:gb],
-            dim_subj_name: @dim_filters[dim[:code]][:subj_name],
+            dim_subj_name: @translations[
+              Subject.get_default_name_key(@dim_filters[dim[:code]][:subj])
+            ],
             dim_title: @dimTypeTitleByCode[dim[:code]],
             dims: @dimensions[dim[:code]],
             grades_str: grades_str

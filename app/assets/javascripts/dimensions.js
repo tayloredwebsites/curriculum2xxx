@@ -174,7 +174,30 @@ initializeDrag = function() {
   });
 };
 
+set_filter_cookies = function() {
+  var valid_dims = $("#valid_dims").text().split(",");
+  var filters = [];
+  for (var key in valid_dims) {
+    var dim = valid_dims[key].trim();
+    var subj = $("#"+dim+"_subject").val();
+    var gb = $("#"+dim+"_grade_band").val();
+    filters.push("subj_"+dim+"_"+subj);
+    filters.push("gb_"+dim+"_"+gb);
+  }
+  console.log("filters:", filters)
+  document.cookie = 'dim_filters=' + filters.join(" ");
+};
+
+init_filter_cookies = function () {
+  $(".maint_filter_dropdown").on("change", set_filter_cookies);
+  if ($("#valid_dims").length > 0) {
+    set_filter_cookies();
+  }
+};
+
 $(document).on("turbolinks:load", function(event, state) {
   initializeDrag();
+  init_filter_cookies();
 });
 initializeDrag();
+init_filter_cookies();

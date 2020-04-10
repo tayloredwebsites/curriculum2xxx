@@ -21,17 +21,14 @@
       TO DO: REPLACE LOGIC
       If searching for a different set of one dim type, don't forget the current settings for other dimension types. -->
 
-
-
-
     <!-- Labels -->
-    <div class='col col-lg-1 col-md-<%= @editing ? 3 : 2 %>'><label for='<%= param_name %>_subject'><%= translate('app.labels.subject') %></label></div>
-    <div class='col col-lg-<%= @editing ? 5 : 1 %> col-md-<%= @editing ? 5 : 2 %>'><label for='<%= param_name %>_grade_band'><%= translate('app.labels.grade_band') %></label></div>
+    <div class='col col-lg-1 col-md-<%= @editing ? 3 : 2 %>'><label for='<%= col %>_subject'><%= translate('app.labels.subject') %></label></div>
+    <div class='col col-lg-<%= @editing ? 5 : 1 %> col-md-<%= @editing ? 5 : 2 %>'><label for='<%= col %>_grade_band'><%= translate('app.labels.grade_band') %></label></div>
   </div>
 
   <!-- Form input options -->
   <div class='row'>
-    <div class='col col-lg-1 col-md-2 subject-with-gb'><select id='<%= param_name %>_subject_id' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_code"%>]'>
+    <div class='col col-lg-1 col-md-2'><select id='<%= col %>_subject' class='maint_filter_dropdown' name='<%= param_name %>[<%= param_name == "tree" ? "subject_id" : "#{col}_subj_code"%>]'>
         <% if col == "tree" %>
           <% @subjects.each do |k, s| %>
             <% sel_code = @subject_code %>
@@ -52,7 +49,7 @@
     <div id='<%= param_name %>-gb-container' class='col col-lg-<%= @editing ? 5 : 1 %> col-md-<%= @editing ? 5 : 2 %>'>
       <span id='<%= param_name %>-all-gbs-select'>
       <!-- %= collection_select(:tree, :grade_band_id, @gbs, :id, :code, include_blank: I18n.t('app.labels.all') ) % -->
-      <select id='<%= param_name %>_grade_band_id' name='<%= param_name %>[<%= param_name == "tree" ? "grade_band_id" : "#{col}_gb_id" %>]'>
+      <select id='<%= col %>_grade_band' class='maint_filter_dropdown' name='<%= param_name %>[<%= param_name == "tree" ? "grade_band_id" : "#{col}_gb_id" %>]'>
         <option value='0'><%= I18n.t('app.labels.all') %></option>
       <% @gbs.each do |gb| %>
         <% gbc = @grade_band_code

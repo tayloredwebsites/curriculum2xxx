@@ -266,7 +266,7 @@ class TreesController < ApplicationController
       # display a success notice about an action performed
       # on a different version of the curriculum.
     end
-    flash[:notice] = I18n.translate("app.notice.saved_relationship", item_type_1: @hierarchies[@treeTypeRec.outcome_depth], item_desc_1: saved_dim_tree.tree.format_code(@locale_code), item_type_2: translate('nav_bar.'+saved_dim_tree.dimension.dim_type+'.name').singularize, item_desc_2: "\"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"") if saved_dim_tree
+    flash[:notice] = I18n.translate("app.notice.saved_relationship", item_type_1: @hierarchies[@treeTypeRec.outcome_depth], item_desc_1: saved_dim_tree.tree.format_code(@locale_code), item_type_2: @dimTypeTitleByCode[saved_dim_tree.dimension.dim_code].singularize, item_desc_2: "\"#{@translations[saved_dim_tree.dimension.dim_name_key]}\"") if saved_dim_tree
 
     respond_to do |format|
       format.html { render 'maint'}
@@ -458,6 +458,7 @@ class TreesController < ApplicationController
         :subject_code => dimension_params[:subject_code],
         :subject_id => subject_id,
         :dim_type => dimension_params[:dim_type],
+        :dim_code => dimension_params[:dim_type],
         :min_grade => dimension_params[:min_grade],
         :max_grade => dimension_params[:max_grade]
       )
@@ -477,7 +478,7 @@ class TreesController < ApplicationController
       f.puts changes
     end
 
-    flash[:notice] = I18n.translate("app.notice.saved_item", item: dim_translation.value, item_type: dimension.dim_type)
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: dim_translation.value, item_type: @dimTypeTitleByCode[dimension.dim_code])
     redirect_to maint_trees_path(editme: true)
   end
 
@@ -517,7 +518,7 @@ class TreesController < ApplicationController
       f.puts changes
     end
 
-    flash[:notice] = I18n.translate("app.notice.saved_item", item: translation, item_type: dimension.dim_type)
+    flash[:notice] = I18n.translate("app.notice.saved_item", item: translation, item_type: @dimTypeTitleByCode[dimension.dim_code])
 
     redirect_to maint_trees_path(editme: true)
   end
@@ -1229,6 +1230,8 @@ class TreesController < ApplicationController
     default_subj_code = @trees && @trees.first.present? ? @trees.first.subject.code : Subject.where(:tree_type_id => @treeTypeRec.id).order("min_grade asc").first.code
     default_gb = { min_grade: GradeBand::MIN_GRADE, max_grade: GradeBand::MAX_GRADE}
     @dim_type = dim_tree_params && dim_tree_params[:dim_type] ? dim_tree_params[:dim_type] : nil
+    @dim_filters_str = cookies[:dim_filters].split(" ").join(",") if cookies[:dim_filters]
+
 
     # dim_filters = {
     #   "bigidea" : {
@@ -1243,10 +1246,8 @@ class TreesController < ApplicationController
     #   ...
     # }
     @dim_filters = Dimension.parse_filters(
-      (dim_tree_params && dim_tree_params[:dim_filters] ? dim_tree_params[:dim_filters] : ""),
+      (@dim_filters_str ? @dim_filters_str : ""),
       @treeTypeRec.dim_codes.split(","))
-
-    @dim_filters_str = dim_tree_params ? dim_tree_params[:dim_filters] : ""
 
     #####################################################
     # Set Subject Code and GradeBand to Display for Dimension Columns
@@ -1254,7 +1255,6 @@ class TreesController < ApplicationController
 
     @dimsArray.each do |dimObj|
       dim = dimObj[:code]
-      @dim_filters[dim][:subj_name] = dimObj[:name]
       if !@dim_filters[dim][:subj]
         @dim_filters[dim][:subj] = default_subj_code
       end
