@@ -202,6 +202,14 @@ class TreesController < ApplicationController
     @editing = params[:editme] && current_user.present? && current_user.is_admin?
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
 
+    @competency_details = []
+
+    @treeTypeRec.grid_headers.split(',').each do |detail|
+      if (detail[0 .. 0] == "{" && detail[detail.length - 1 .. detail.length - 1] == "}") || (detail[0 .. 0] == "[" && detail[detail.length - 1 .. detail.length - 1] == "]")
+        @competency_details << detail[1 .. detail.length - 2 ]
+      end
+    end
+
     puts "ESSENTIAL QUESTION TRANSLATION #{@ess_q_title}"
 
     @treeByParents = Hash.new{ |h, k| h[k] = {} }

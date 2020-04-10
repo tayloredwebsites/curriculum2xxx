@@ -84,6 +84,8 @@ namespace :dimensions do
       puts "Set dim_codes string for TreeType rec: #{@tfvV01.id}"
       @v01_code = Version.find(@tfvV01.version_id).code
       @tfvV01.dim_codes = "bigidea,miscon"
+      @tfvV01.detail_headers = 'grade,unit,chapt,attain,[explanation],[bigidea],{explain},[miscon],[sector],[connect],[refs]'
+      @tfvV01.grid_headers = 'grade,unit,chapt,attain,[bigidea],{explain},[miscon]'
       @tfvV01.save
       ###########################################
       # English translations for dimension codes
@@ -121,7 +123,7 @@ namespace :dimensions do
       @v02_code = Version.find(@tfvV02.version_id).code
       @tfvV02.dim_codes = "essq,bigidea,pract,miscon"
       @tfvV02.detail_headers = 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon],[sector],[connect],[refs]'
-      @tfvV02.grid_headers ='grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],explain,[miscon]'
+      @tfvV02.grid_headers ='grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
       @tfvV02.save
 
       ###########################################
@@ -183,6 +185,8 @@ namespace :dimensions do
       puts "Set dim_codes string for TreeType rec: #{@egstemuniv.id}"
       @eg_v01_code = Version.find(@egstemuniv.version_id).code
       @egstemuniv.dim_codes = "bigidea,miscon"
+      @egstemuniv.detail_headers = 'grade,sem,unit,lo,indicator,[bigidea],{explain},[miscon],[sector],[connect],[refs]'
+      @egstemuniv.grid_headers = 'grade,sem,unit,lo,indicator,[bigidea],{explain},[miscon]'
       @egstemuniv.save
 
       ###########################################

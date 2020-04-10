@@ -34,8 +34,10 @@
                 </a>
                 <%= h[:text] %>
               </div>
-              <!--TO DO: draw this array from the grid_headers field in TreeType-->
-              <% ['essq','bigidea','pract','expl','miscon'].each do |area| %>
+              <!--TO DO: draw this array from the grid_headers field in TreeType
+                ['essq','bigidea','pract','expl','miscon']
+              -->
+              <% @competency_details.each do |area| %>
                 <% if dimsInfo[area] %>
                   <div class="col-lg-2 col-11 col-sm-11 parent-can-hide">
                     <div class="col">

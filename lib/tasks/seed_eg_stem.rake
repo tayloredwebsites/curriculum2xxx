@@ -32,8 +32,8 @@ namespace :seed_eg_stem do
       # ess_q_dim_type: 'essq',
       dim_codes: 'bigidea,miscon',
       tree_code_format: 'grade,unit,lo',
-      detail_headers: 'grade,sem,unit,lo,indicator,[subj_big_idea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[subj_big_idea],[ess_q],explain,[miscon],[connect],[refs]'
+      detail_headers: 'grade,sem,unit,lo,indicator,[bigidea],{explain},[miscon],[sector],[connect],[refs]',
+      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],{explain},[miscon]'
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
