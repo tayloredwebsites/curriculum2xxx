@@ -12,3 +12,8 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
+
+# CKEditor is a WYSIWYG text editor designed to simplify web
+# content creation. It brings common word processing features
+# directly to your web pages.
+Rails.application.config.assets.precompile += %w( ckeditor/*)

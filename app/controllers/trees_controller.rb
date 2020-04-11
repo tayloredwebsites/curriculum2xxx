@@ -881,6 +881,14 @@ class TreesController < ApplicationController
         @translation = translation[name_key]
       elsif @edit_type == "comment"
          @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
+      elsif Outcome::REF_TYPES.include?(@edit_type)
+        @ref = Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(@edit_type),
+            ""
+          )
+        #To Do: normalize these translations
+        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::REF_TYPES.index(@edit_type) + 1}")
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
@@ -937,6 +945,14 @@ class TreesController < ApplicationController
       elsif update == 'indicator'
         @indicator = Tree.find(tree_params[:attr_id])
         name_key = @indicator.buildNameKey
+      elsif Outcome::REF_TYPES.include?(update)
+        save_translation = false
+        puts "RESOURCE: #{tree_params[:resource]}"
+        Translation.find_or_update_translation(
+            @locale_code,
+            @tree.outcome.get_ref_key(update),
+            tree_params[:resource].split("<script>").join("").split("</script>").join("")
+          )
       elsif update == 'treetree'
         @tree_tree = TreeTree.find(tree_params[:attr_id])
         @reciprocal_tree_tree = TreeTree.where(
@@ -1035,7 +1051,8 @@ class TreesController < ApplicationController
       :name_translation,
       :active,
       :editing,
-      :comment
+      :comment,
+      :resource,
     )
   end
 

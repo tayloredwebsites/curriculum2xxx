@@ -20,6 +20,12 @@
     <label for="comment" class="pull-left"><%= I18n.translate('app.labels.comments') %></label>
     <%= f.text_area :comment, name: 'tree[comment]', id: 'comment', style: {className: "pull-left"}, value: @comment %>
   </fieldset>
+  <!--build field for rich text Reference/Resources-->
+  <% elsif @ref %>
+    <fieldset>
+      <label for="resource_input" class="pull-left"><%= @ref_label %></label>
+      <%= f.cktext_area :resource, name: 'tree[resource]', value: @ref, id: 'resource_input', ckeditor: {toolbar: 'mailedit'} %>
+    </fieldset>
   <!--build fields for editing treetree and sector relationships-->
   <% elsif @edit_type == 'treetree' || @edit_type == 'sector' || @edit_type == 'dimtree' %>
   <fieldset>
