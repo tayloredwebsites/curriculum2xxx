@@ -267,7 +267,7 @@ DEPENDENCIES
   capistrano-rails
   capybara (~> 2.13)
   chromedriver-helper
-  ckeditor
+  ckeditor (= 5.1.0)
   coffee-rails (~> 4.2)
   devise (~> 4.7.1)
   devise-i18n
