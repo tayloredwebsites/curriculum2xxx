@@ -215,7 +215,7 @@ class UploadsController < ApplicationController
 
     #   - Create a hash (at beginning of upload process) of the Dimensions for this subject, and dimension type (not by Tree Type - to prevent dups)
     @currentDims = Hash.new{ |h, k| h[k] = Hash.new{ |h, k| h[k] = {} } }
-    currentDims = Dimension.where(subject_code: @subjectRec.code, active: true)
+    currentDims = Dimension.where(subject_code: @subjectRec.code, active: true).or(Dimension.where(dim_code: 'pract', active:true))
     currentDims.each do |rec|
       transl_names = Translation.where(locale: @locale_code, key: rec.get_dim_name_key)
       if transl_names.count > 0
