@@ -171,18 +171,34 @@ $(function() {
     }
   }
 
-  show_maint_details = function () {
-    var showing_details = $("#show-details-btn #show-text").hasClass('hidden');
-    $("#show-details-btn #show-text").toggleClass('hidden');
-    $("#show-details-btn #hide-text").toggleClass('hidden');
-    $(".related-items-table .row").toggleClass('hide-children');
-    if (showing_details) {
-      $(".comp-col").removeClass("col-lg-2 col-md-4 col-sm-11");
-    }
-    else {
+  show_maint_details = function (show_details) {
+   // var showing_details = $("#show-details-btn #show-text").hasClass('hidden');
+   // $("#show-details-btn #show-text").toggleClass('hidden');
+   // $("#show-details-btn #hide-text").toggleClass('hidden');
+    if (show_details) {
+      $(".related-items-table .row").removeClass('hide-children');
       $(".comp-col").addClass("col-lg-2 col-md-4 col-sm-11");
     }
+    else {
+      $(".related-items-table .row").addClass('hide-children');
+      $(".comp-col").removeClass("col-lg-2 col-md-4 col-sm-11");
+    }
   };
+
+  init_hierarchy_show = function () {
+    $(".btn-hierarchies").on("click", function () {
+      show_hierarchy_level(
+        $(this).data("hierarchy_depth"),
+        $(this).data("outcome_depth"));
+      show_maint_details(false);
+    });
+    $("#show-details-btn").on("click", function() {
+      show_hierarchy_level(
+        $(this).data("hierarchy_depth"),
+        $(this).data("outcome_depth"));
+      show_maint_details(true);
+    })
+  }
   //###################################
   //# ADD EVENT BINDINGS
 
@@ -193,8 +209,10 @@ $(function() {
       track: true
     });
     readyFontSizes();
+    init_hierarchy_show();
   });
   readyFontSizes();
+  init_hierarchy_show();
 
   $(".fa-bars").on("click", function(event, state) {
     toggleTopNav(this, event);
@@ -207,4 +225,16 @@ $(function() {
     html: true,
     track: true
   });
+
+  $.fn.modal.Constructor.prototype._enforceFocus = function() {
+  modal_this = this
+  $(document).on('focusin.modal', function (e) {
+    if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+    && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+    && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+      modal_this.$element.focus()
+    }
+  })
+  };
+
 });

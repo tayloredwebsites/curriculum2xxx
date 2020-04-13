@@ -35,7 +35,7 @@ class Dimension < BaseRec
   def self.get_dim_type_name(dimCode, treeTypeCode, versionCode, localeCode)
     dimCodeKey =  Dimension.get_dim_type_key(dimCode, treeTypeCode, versionCode)
     return Translation.find_translation_name(localeCode, dimCodeKey, nil) ||
-      I18n.t("nav_bar.#{dimType.split("_").join("")}.name")
+      I18n.t("nav_bar.#{dimCode.split("_").join("")}.name")
   end
 
   # To Do: fill this in

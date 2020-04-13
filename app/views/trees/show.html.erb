@@ -1,3 +1,4 @@
+<%= javascript_include_tag Ckeditor.cdn_url %>
 <% content_for(:title_code, 'trees.show.name') %>
 <% content_for(:page_class, 'trees') %>
 
@@ -113,31 +114,79 @@
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= I18n.t('trees.labels.teacher_field_1') %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[0] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+          <div class="rel-sectors text-left padding-left">
+            <%= Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(Outcome::REF_TYPES[0]),
+            ""
+            ).html_safe %>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= I18n.t('trees.labels.teacher_field_2') %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[1] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+          <div class="rel-sectors text-left padding-left">
+            <%= Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(Outcome::REF_TYPES[1]),
+            ""
+            ).html_safe %>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= I18n.t('trees.labels.teacher_field_3') %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[2] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+          <div class="rel-sectors text-left padding-left">
+            <%= Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(Outcome::REF_TYPES[2]),
+            ""
+            ).html_safe %>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= I18n.t('trees.labels.teacher_field_4') %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[3] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+          <div class="rel-sectors text-left padding-left">
+            <%= Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(Outcome::REF_TYPES[3]),
+            ""
+            ).html_safe %>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= I18n.t('trees.labels.teacher_field_5') %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[4] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+          <div class="rel-sectors text-left padding-left">
+            <%= Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(Outcome::REF_TYPES[4]),
+            ""
+            ).html_safe %>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= I18n.t('trees.labels.teacher_field_6') %>
+            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[5] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+          </div>
+          <div class="rel-sectors text-left padding-left">
+            <%= Translation.find_translation_name(
+            @locale_code,
+            @tree.outcome.get_ref_key(Outcome::REF_TYPES[5]),
+            ""
+            ).html_safe %>
           </div>
         </div>
       </div>
