@@ -113,7 +113,7 @@
       <div class='teacher-grid'>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
-            <%= I18n.t('trees.labels.teacher_field_1') %>
+            <%= I18n.t('trees.labels.teacher_field_1', sector_set: @sectorName) %>
             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[0] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
           </div>
           <div class="rel-sectors text-left padding-left">

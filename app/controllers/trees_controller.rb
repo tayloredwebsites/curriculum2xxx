@@ -888,7 +888,7 @@ class TreesController < ApplicationController
             ""
           )
         #To Do: normalize these translations
-        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::REF_TYPES.index(@edit_type) + 1}")
+        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::REF_TYPES.index(@edit_type) + 1}", sector_set: @sectorName)
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id

@@ -24,7 +24,7 @@
   <% elsif @ref %>
     <fieldset>
       <label for="resource_input" class="center-label" style="width:100%;display:block;"><%= @ref_label %></label>
-      <%= f.cktext_area :resource, name: 'tree[resource]', value: @ref, id: 'resource_input', ckeditor: {language: @locale_code, uiColor: '#b0e0e6'} %>
+      <%= f.cktext_area :resource, name: 'tree[resource]', value: @ref, id: 'resource_input', ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'} %>
     </fieldset>
   <!--build fields for editing treetree and sector relationships-->
   <% elsif @edit_type == 'treetree' || @edit_type == 'sector' || @edit_type == 'dimtree' %>
