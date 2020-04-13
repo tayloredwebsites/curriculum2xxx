@@ -1,16 +1,16 @@
-<ul id="<%= dim_type %>-col" class="list-group maint-column <%= dim_type %>-col<%= show_dim ? '' : ' hidden' %>" data-subjcode="<%= @dim_subjs[dim_type] %>" data-gbid="<%= dim_gb ? (dim_gb[:id] || 0) : 0 %>">
+<ul id="<%= dim_type %>-col" class="list-group maint-column <%= dim_type %>-col<%= show_dim ? '' : ' hidden' %>" data-subjcode="<%= @dim_filters[dim_type][:subj] %>" data-gbid="<%= dim_gb ? (dim_gb[:id] || 0) : 0 %>">
   <li>
-    <%= render partial: "maint_filter", locals: {col: (dim_type == @treeTypeRec.ess_q_dim_type ? "ess_q" : dim_type)} %>
+    <%= render partial: "maint_filter", locals: {col: dim_type } %>
   </li>
-  <li class="maint-header"><%= "#{@translations[dim_subj_base_key]} - #{dim_title} (#{grades_str}: #{@dim_grades[dim_type][:min_grade]} - #{@dim_grades[dim_type][:max_grade]})" %>
+  <li class="maint-header"><%= "#{dim_subj_name} - #{dim_title} (#{grades_str}: #{@dim_filters[dim_type][:gb][:min_grade]} - #{@dim_filters[dim_type][:gb][:max_grade]})" %>
     <% if @editing %>
       <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
     <% end %>
   </li>
   <% if dims && dims.count > 0 %>
     <% dims.each do |dim| %>
-      <li id="<%= "#{@translations[dim_subj_base_key]}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
-        <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{@translations[dim_subj_base_key]}" %></span>
+      <li id="<%= "#{dim_subj_name}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+        <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{dim_subj_name}" %></span>
           <br/>
           <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
 

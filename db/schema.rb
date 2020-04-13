@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200330141749) do
+ActiveRecord::Schema.define(version: 20200409163739) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20200330141749) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "base_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -135,14 +135,12 @@ ActiveRecord::Schema.define(version: 20200330141749) do
     t.string "sector_set_name_key", default: "", null: false
     t.string "curriculum_title_key", default: "", null: false
     t.integer "outcome_depth", default: 0, null: false
-    t.string "miscon_dim_type", default: "miscon", null: false
-    t.string "big_ideas_dim_type", default: "bigidea", null: false
     t.integer "version_id", default: 0, null: false
     t.boolean "working_status", default: true
-    t.string "ess_q_dim_type", default: "", null: false
     t.string "tree_code_format", default: "", null: false
     t.string "detail_headers", default: "", null: false
     t.string "grid_headers", default: "", null: false
+    t.string "dim_codes", default: "bigidea,miscon", null: false
     t.index ["code", "version_id"], name: "index_tree_types_on_code_and_version_id", unique: true
   end
 

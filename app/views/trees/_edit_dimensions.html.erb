@@ -11,18 +11,10 @@
     <% if @show_miscon %>
       <input type="hidden" name="show_miscon" value=true>
     <% end %>
-    <% if @bi_gb && @bi_gb[:id] %>
-      <input type="hidden" name="dim_tree[bigidea_gb_id]" value=<%= @bi_gb[:id] %>>
-    <% end %>
-    <% if @m_gb && @m_gb[:id] %>
-      <input type="hidden" name="dim_tree[miscon_gb_id]" value=<%= @m_gb[:id] %>>
-    <% end %>
-    <input type="hidden" name="dim_tree[bigidea_subj_code]" value='<%= @dim_subjs['bigidea'] %>'>
-    <input type="hidden" name="dim_tree[miscon_subj_code]" value='<%= @dim_subjs['miscon'] %>'>
+    <input type="hidden" name="dim_tree[dim_filters]" value='<%= @dim_filters_str %>'>
   	<input type="hidden" name="dim_tree[tree_id]" value='<%= @dim_tree.tree_id %>'>
   	<input type="hidden" name="dim_tree[dimension_id]" value='<%= @dim_tree.dimension_id %>'>
-    <input type="hidden" name="dim_tree[dim_explanation_key]" value='<%= @dim_tree.dim_explanation_key %>'>
-    <input type="hidden" name="dim_tree[dim_type]" value='<%= @dim.dim_type %>'>
+    <input type="hidden" name="dim_tree[dim_type]" value='<%= @dim.dim_code %>'>
     <input type="hidden" name="dim_tree[active]" value='<%= true %>'>
     <% if @dim_tree.id %>
       <input type="hidden" name="dim_tree[id]" value='<%= @dim_tree.id %>'>

@@ -38,7 +38,8 @@ class BaseRec < ActiveRecord::Base
     'cap', #Capstones
     'che', #Chemistry
     'edu', #Education
-    'eng', #English
+    'engl', #English
+    'eng', #Engineering
     'mat', #Math
     'mec', #Mechanics
     'phy', #Physics
@@ -48,6 +49,10 @@ class BaseRec < ActiveRecord::Base
     'tech', #Technology
   ]
 
+  BASE_PRACTICES = [
+    'stem', #Science And Engineering Practices
+    'spec', #Specific Practices
+  ]
 
   # only used in uploads
   UPLOAD_RPT_COL = ['Row', 'Unit', 'Chapter', 'Outcome', 'Indicator', 'Code','Desc','StatusMsg']

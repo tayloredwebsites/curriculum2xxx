@@ -341,6 +341,25 @@ class UploadsController < ApplicationController
           @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
         end
 
+        compName = rowH['Associated Practices']
+        if compName.present?
+          dimTypeName = Dimension.get_dim_type_name('pract', @treeTypeRec.code, @versionRec.code, @locale_code)
+          currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
+          #Separate practices
+          compArr = compName.split(":")
+          if compArr.length > 2
+            compArr = [compArr[0], compArr[1 .. compArr.length - 1 ].join(":")]
+          end
+          compArr.each_with_index do |cn, i|
+            pract_type = (i == 0 ? "stem" : "spec")
+            createOrUpdateDimRecs(currentRec, nil, 'pract', gradeBandRec.min_grade, gradeBandRec.max_grade, pract_type, cn, 'From Upload')
+          # build report record array of values
+          # codeA4 = compCodeA.clone
+          # rptCodes = codeA4.concat(['','','','']).slice(0,5)
+          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{cn}", ''])
+          end
+        end
+
       elsif isValidRow == 'blank'
         # # skip this record
       else
@@ -417,6 +436,7 @@ class UploadsController < ApplicationController
         rowH['Proposed Student Competences'].blank? &&
         rowH['K-12 Big Idea '].blank? &&
         rowH['Specific big idea'].blank? &&
+        rowH['Associated Practices'].blank? &&
         rowH['Explanatory Comments'].blank? &&
         rowH['Misconceptions'].blank? &&
         rowH['Display relations'].blank? &&
@@ -860,12 +880,13 @@ class UploadsController < ApplicationController
     if !currentRecH.present?
       Rails.logger.debug("$$$ Did NOT find current dimension: #{dim_name}")
       currentRec = Dimension.create(
-        subject_id: @subjectRec.id,
+        subject_id: subject_id,
         dim_type: dim_type,
+        dim_code: dim_type,
         # dim_name_key: dim_name_key,
         min_grade: min_grade,
         max_grade: max_grade,
-        subject_code: @subjectRec.code
+        subject_code: subject_code
       )
       currentRec.dim_name_key = currentRec.get_dim_name_key
       currentRec.save

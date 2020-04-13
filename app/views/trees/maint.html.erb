@@ -2,84 +2,55 @@
 <% content_for(:page_class, 'trees') %>
 <%
    grades_str = translate('app.labels.grade_band').pluralize
-   num_cols = (@dim_type ? 2 : 1) + (@show_bigidea && @editing ? 1 : 0) + (@show_miscon && @editing ? 1 : 0) + (@show_ess_q && @editing ? 1 :0)
+   num_cols = (@dim_type ? 2 : 1) + (@editing ? @visible_dim_codes_arr.length : 0)
 %>
+<% if @editing || @dim_type %>
+  <div id="valid_dims" class="hidden">
+    <%= @dimsArray.map {|d| d[:code] }.join(",") %>
+  </div>
+<% end %>
 <br>
 <div class='text-center dimension-page'>
   <h2><%= @page_title %></h2>
 </div>
-<% if @editing && @treeTypeRec.ess_q_dim_type != ""  %>
-  <%=
+<% if @editing
+  @dimsArray.each do |dimObj|
+    dim = dimObj[:code] %>
+    <%=
       render partial: "show_maint_col_buttons", locals: {
-      dim_type: @treeTypeRec.ess_q_dim_type,
-      show_dim: @show_ess_q,
-      dim_title: @ess_q_title
+      dim_type: dim,
+      show_dim: @visible_dim_codes_arr.include?(dim),
+      dim_title: dimObj[:name]
       }
   %>
-<% end %>
-<% if @editing && @treeTypeRec.big_ideas_dim_type != "" %>
-  <%=
-      render partial: "show_maint_col_buttons", locals: {
-      dim_type: @treeTypeRec.big_ideas_dim_type,
-      show_dim: @show_bigidea,
-      dim_title: @ideas_title
-      }
-  %>
-<% end %>
-<% if @editing && @treeTypeRec.miscon_dim_type != ""  %>
-  <%=
-      render partial: "show_maint_col_buttons", locals: {
-      dim_type: @treeTypeRec.miscon_dim_type,
-      show_dim: @show_miscon,
-      dim_title: @miscon_title
-      }
-  %>
-<% end %>
+<% end #@dimsArray.each do |dimObj|
+   end #if @editing
+%>
+
 <% subj_counter = 0 %>
 <div id="trees" class="dimension-page maint-page">
   <div class="sequence-grid cols-<%= num_cols %>">
 
     <% competencies_partial = @use_alt_partial ? "alt_competency_grids_column" : "competency_grids_column" %>
-    <%= render partial: (@editing ? "competencies_column" : competencies_partial) %>
+    <%= render partial: (@editing ? "competencies_column" : "competency_grids_column") %>
     <% if @editing || @dim_type %>
-      <%= if @treeTypeRec.ess_q_dim_type != ""
-            render partial: "dim_column", locals: {
-            dim_type: @treeTypeRec.ess_q_dim_type,
-            show_dim: @show_ess_q,
-            dim_gb: @eq_gb,
-            dim_subj_base_key: @ess_q_subj_base_key,
-            dim_title: @ess_q_title,
-            dims: @dimensions_ess_q,
-            grades_str: grades_str
-            }
-          end
-      %>
 
-      <%= if @treeTypeRec.big_ideas_dim_type != ""
+      <% @dimsArray.each do |dim| %>
+        <%=
             render partial: "dim_column", locals: {
-            dim_type: @treeTypeRec.big_ideas_dim_type,
-            show_dim: @show_bigidea,
-            dim_gb: @bi_gb,
-            dim_subj_base_key: @idea_subj_base_key,
-            dim_title: @ideas_title,
-            dims: @dimensions_bigideas,
+            dim_type: dim[:code],
+            show_dim: @visible_dim_codes_arr.include?(dim[:code]),
+            dim_gb: @dim_filters[dim[:code]][:gb],
+            dim_subj_name: @translations[
+              Subject.get_default_name_key(@dim_filters[dim[:code]][:subj])
+            ],
+            dim_title: @dimTypeTitleByCode[dim[:code]],
+            dims: @dimensions[dim[:code]],
             grades_str: grades_str
             }
-          end
-      %>
+        %>
+      <% end #for @dimsArray.each do |dim| %>
 
-      <%= if @treeTypeRec.miscon_dim_type != ""
-            render partial: "dim_column", locals: {
-            dim_type: @treeTypeRec.miscon_dim_type,
-            show_dim: @show_miscon,
-            dim_gb: @m_gb,
-            dim_subj_base_key: @misc_subj_base_key,
-            dim_title: @miscon_title,
-            dims: @dimensions_miscons,
-            grades_str: grades_str
-            }
-          end
-      %>
 
     <% end # if @editing || @dim_type %>
 

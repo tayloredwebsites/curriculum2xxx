@@ -28,13 +28,13 @@ class Dimension < BaseRec
     return ret
   end
 
-  def self.get_dim_type_key(dim_type, tree_type, version)
-    return "curriculum.#{tree_type}.#{version}.#{dim_type}"
+  def self.get_dim_type_key(dimCode, tree_type, version)
+    return "curriculum.#{tree_type}.#{version}.#{dimCode}"
   end
 
-  def self.get_dim_type_name(dimType, treeTypeCode, versionCode, localeCode)
-    dimTypeKey =  Dimension.get_dim_type_key(dimType, treeTypeCode, versionCode)
-    return Translation.find_translation_name(localeCode, dimTypeKey, nil) ||
+  def self.get_dim_type_name(dimCode, treeTypeCode, versionCode, localeCode)
+    dimCodeKey =  Dimension.get_dim_type_key(dimCode, treeTypeCode, versionCode)
+    return Translation.find_translation_name(localeCode, dimCodeKey, nil) ||
       I18n.t("nav_bar.#{dimType.split("_").join("")}.name")
   end
 
@@ -45,6 +45,55 @@ class Dimension < BaseRec
 
 
   ###############################################
+
+  # function parse_filters
+  # interpret dimension filters from param
+  # e.g.: filters = "subj_miscon_sci,gb_miscon_21,subj_bigidea_ear,..."
+  # @param filters {String}
+  # @param valid_dims {Array<String>}
+  #
+  # @returns hash in the form:
+    # {
+    #   "bigidea" : {
+    #     :subj => "sci",
+    #     :gb => {
+    #       min_grade: 0,
+    #       max_grade: 12,
+    #       id: 5 #(optional)
+    #     }
+    #   },
+    #   "miscon" : {...},
+    #   ...
+    # }
+  def self.parse_filters(filters, valid_dims)
+    ret = Hash.new { |hash, key| hash[key] = {} }
+    filters.split(",").each do |f|
+      info = f.split("_")
+      if valid_dims.include?(info[1])
+        if info[0] == "subj"
+          if BaseRec::BASE_SUBJECTS.include?(info[2]) || BaseRec::BASE_PRACTICES.include?(info[2])
+            ret[info[1]][:subj] = info[2]
+          end #BaseRec::BASE_SUBJECTS.include(info[3])
+        elsif info[0] == "gb"
+          begin
+            gb = GradeBand.find(info[2])
+            ret[info[1]][:gb] = {
+              min_grade: gb.min_grade,
+              max_grade: gb.max_grade,
+              code: gb.code
+            }
+          rescue
+            ret[info[1]][:gb] = {
+              min_grade: GradeBand::MIN_GRADE,
+              max_grade: GradeBand::MAX_GRADE,
+              code: 'All'
+            }
+          end
+        end #if info[0]
+      end #if info[1]
+    end #filters.split(",").each do
+    return ret
+  end
 
   private
 

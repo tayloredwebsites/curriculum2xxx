@@ -30,9 +30,11 @@ namespace :seed_turkey_v02 do
       outcome_depth: 3,
       version_id: @v02.id,
       working_status: true,
-      miscon_dim_type: 'miscon',
-      big_ideas_dim_type: 'bigidea',
-      ess_q_dim_type: 'essq',
+      # [dim code]_dim_type fields deprecated in favor of dim_codes
+      # miscon_dim_type: 'miscon',
+      # big_ideas_dim_type: 'bigidea',
+      # ess_q_dim_type: 'essq',
+      dim_codes: 'essq,bigidea,miscon',
       tree_code_format: 'grade,unit,sub_unit,comp',
       detail_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
       grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon],[connect],[refs]'
