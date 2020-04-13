@@ -30,7 +30,8 @@ class UsersController < ApplicationController
   ADMIN_USER_PARAMS = [
     :role_admin,
     :role_teacher,
-    :role_public
+    :role_public,
+    :home_page_text
   ]
 
   # update the the locale (language), and return to current page
@@ -47,6 +48,12 @@ class UsersController < ApplicationController
   end
 
   def home
+    @editing = params[:editMe] && current_user && user_is_admin?(current_user)
+    @home_page_text = Translation.find_translation_name(
+        @locale_code,
+        @treeTypeRec.home_page_key,
+        ""
+      ).html_safe
     @user = current_user
     @users = get_auth_users_list(true)
     if params[:locale].present?
@@ -144,6 +151,14 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json {render json: { refresh: refresh}}
     end
+  end
+
+  def update_home_page
+    Translation.find_or_update_translation(
+      @locale_code,
+      @treeTypeRec.home_page_key,
+      admin_user_params[:home_page_text])
+    redirect_to home_users_url
   end
 
   private

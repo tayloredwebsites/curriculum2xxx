@@ -76,6 +76,7 @@ scope "(:locale)", locale: /tr|en/ do
       get 'index'
       get 'home'
       patch 'set_curriculum'
+      patch 'update_home_page'
     end
     member do
       get 'configuration'
@@ -83,8 +84,8 @@ scope "(:locale)", locale: /tr|en/ do
   end
 
 
-  root to: 'trees#index'
-  # root to: 'users#home'
+  #root to: 'trees#index'
+   root to: 'users#home'
 
 end # end routes scope
 
