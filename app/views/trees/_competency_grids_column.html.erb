@@ -21,8 +21,8 @@
           <% h[:dimtrees].each do |dt|
              dim = dt.dimension
              dimsInfo[dim.dim_code][:found] += 1
-             dimSubjKey = Subject.get_default_name_key(dim.subject_code)
-             dimsInfo[dim.dim_code][:arr] << "[#{@translations[dimSubjKey]}] #{@translations[dim.dim_name_key]}"
+             #dimSubjKey = Subject.get_default_name_key(dim.subject_code)
+             dimsInfo[dim.dim_code][:arr] << "#{@translations[dim.dim_name_key]}"
           end # h[:dimtrees].each do |dt|
           %>
           <div class="related-items-table">

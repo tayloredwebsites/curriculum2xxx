@@ -27,8 +27,8 @@ namespace :dimensions do
       sci: 'Science',
       ear: 'Earth Science',
       geo: 'Geology',
-      stem: 'Science And Engineering Practices',
-      spec: 'Specific Practices',
+      # stem: 'Science And Engineering Practices',
+      # spec: 'Specific Practices',
       tech: 'Tech Engineering'
     }
 
@@ -40,13 +40,13 @@ namespace :dimensions do
         puts "Saved Translations for #{s}, #{s_lookup[:"#{s}"]}"
     end
 
-    BaseRec::BASE_PRACTICES.each do |p|
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(p), "#{p.upcase}")
-        throw "ERROR updating practice translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(p), "#{s_lookup[:"#{p}"]}")
-        throw "ERROR updating practice translation: #{message}" if status == BaseRec::REC_ERROR
-        puts "Saved Translations for #{p}, #{s_lookup[:"#{p}"]}"
-    end
+    # BaseRec::BASE_PRACTICES.each do |p|
+    #   rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(p), "#{p.upcase}")
+    #     throw "ERROR updating practice translation: #{message}" if status == BaseRec::REC_ERROR
+    #     rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(p), "#{s_lookup[:"#{p}"]}")
+    #     throw "ERROR updating practice translation: #{message}" if status == BaseRec::REC_ERROR
+    #     puts "Saved Translations for #{p}, #{s_lookup[:"#{p}"]}"
+    # end
 
   end #task set_subject_codes: :environment do
 

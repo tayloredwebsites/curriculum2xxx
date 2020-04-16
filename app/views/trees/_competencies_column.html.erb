@@ -25,9 +25,9 @@
         <% h[:dimtrees].each do |dt|
              dim = dt.dimension
              dimsInfo[dim.dim_code][:found] += 1
-             dimSubjKey = Subject.get_default_name_key(dim.subject_code)
+             #dimSubjKey = Subject.get_default_name_key(dim.subject_code)
              dimsInfo[dim.dim_code][:str] += "<br/>______________<br/>"
-             dimsInfo[dim.dim_code][:str] += "[#{@translations[dimSubjKey]}] #{@translations[dim.dim_name_key]}"
+             dimsInfo[dim.dim_code][:str] += "#{@translations[dim.dim_name_key]}"
           end #h[:dimtrees].each do |dt|
           @dimsArray.each do |dim|
             dimsInfo[dim[:code]][:str] = "<strong>#{(dimsInfo[dim[:code]][:found] > 1 ? dim[:name] : dim[:name].singularize)}:</strong>#{dimsInfo[dim[:code]][:str]}"

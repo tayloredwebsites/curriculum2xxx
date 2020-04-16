@@ -1321,12 +1321,12 @@ class TreesController < ApplicationController
         dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
         dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
       end
-      BaseRec::BASE_PRACTICES.each do |s|
-        subjNameKey = Subject.get_default_name_key(s)
-        subjAbbrKey = Subject.get_default_abbr_key(s)
-        dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
-        dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
-      end
+      # BaseRec::BASE_PRACTICES.each do |s|
+      #   subjNameKey = Subject.get_default_name_key(s)
+      #   subjAbbrKey = Subject.get_default_abbr_key(s)
+      #   dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
+      #   dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
+      # end
       @dimKeys = dimKeys
       dim_translations = Translation.translationsByKeys(
         @locale_code,
