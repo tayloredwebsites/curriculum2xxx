@@ -3,7 +3,7 @@
         <div class='row subject-relations center-label-bold top-label'>
           <div class='col col-lg-12'>
             <%= detail_title %>
-              <% if @editMe && false %>
+              <% if @editMe && can_edit && false %>
                 <a href="#"><span class="pull-right">
                   <i class="fa fa-plus-square fa-lg"></i>
                 </span></a>
@@ -50,9 +50,9 @@
                 <% else %>
                   <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
                 <% end %>
-                <% if @editMe %>
-                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe %>
-                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe %>
+                <% if @editMe && can_edit %>
+                  <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe && can_edit %>
+                  <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
                 <% end %>
               </div>
             <% end %>

@@ -93,7 +93,7 @@
                 <% k[:connections].each do |c| %>
                   <% if c.active %>
                     <div class="hide-unless-condition block">
-                      <% if current_user.present? && current_user.is_admin? %>
+                      <% if current_user.present? && can_edit_type?('connect') %>
                       <a class="icon-link lo-handle negative-margin-left" title="<%= translate('app.labels.deactivate') %>" onclick="patch_tree_tree_activation(<%= c.id %>, 'false')">
                         <i class="fa fa-close"></i>
                       </a>
@@ -115,7 +115,7 @@
             <% else %>
             <div class="pull-right">
             <% end %>
-              <% if current_user.present? && current_user.is_admin? %>
+              <% if current_user.present? && can_edit_type?('connect') %>
                 <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection between this LO and another"></i></a>
                 <a class="sort-handle lo-handle" onclick=""><i class="fa fa-thumb-tack pull-right" title="resequence this LO within its subject"></i></a>
               <% end %>

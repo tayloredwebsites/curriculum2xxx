@@ -199,7 +199,7 @@ class TreesController < ApplicationController
     dimPrep
     #To Do: Remove Alt Flag when design is finalized
     @use_alt_partial = params[:alt]
-    @editing = params[:editme] && current_user.present? && current_user.is_admin?
+    @editing = params[:editme] && can_edit_any_dims?(@treeTypeRec)
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
 
     @competency_details = []
@@ -659,23 +659,19 @@ class TreesController < ApplicationController
     dim_tree_matches = DimTree.where(
       :tree_id => tree_params[:tree_id],
       :dimension_id => tree_params[:dimension_id])
-    subj_translation_matches = Translation.where(
-        :key => @tree.subject[:base_key] + '.name',
-        :locale => @locale_code
-        )
     dimension_translation_matches = Translation.where(
-        :key => @dim[:dim_name_key],
+        :key => @dim.get_dim_name_key,
         :locale => @locale_code
         )
 
     #Might not exist for every locale! Will fail if subject doesn't have
     #a translation.
-    @tree_subject_translation = subj_translation_matches.first.value
+    @tree_subject_translation = @tree.subject.get_name(@locale_code)
     #Might not exist for every locale!
-    @dimension_translation = dimension_translation_matches.first.value
+    @dimension_translation = dimension_translation_matches.first ? dimension_translation_matches.first.value : ""
     if dim_tree_matches.length == 0
       @dim_tree = DimTree.new(tree_params)
-      @dim_tree.dim_explanation_key = "TFV.v01.#{@tree.subject.code}.#{@tree.code}.bigidea.#{@dim.id}.expl"
+      @dim_tree.dim_explanation_key = DimTree.getDimExplanationKey(@tree[:base_key], @dim[:dim_code], @dim[:id])
       @method = :post
       @form_path = :create_dim_tree_trees
     else

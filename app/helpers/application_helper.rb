@@ -4,6 +4,10 @@ module ApplicationHelper
     redirect_to root_path, alert: message
   end
 
+  def current_is_teacher?
+    current_user && current_user.is_teacher?
+  end
+
   def current_is_admin?
     user_is_admin?(current_user)
   end
@@ -48,5 +52,15 @@ module ApplicationHelper
     return ret
   end
 
+  def can_edit_type?(type)
+    teachers_can_edit = ['miscon', 'sector', 'connect', 'refs']
+    return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type))
+  end
+
+  def can_edit_any_dims?(treeTypeRec)
+    treeTypeRec.dim_codes.split(',').each do |dtype|
+      return true if can_edit_type?(dtype)
+    end
+  end
 
 end

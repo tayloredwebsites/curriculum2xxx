@@ -3,7 +3,7 @@
     <%= render partial: "maint_filter", locals: {col: dim_type } %>
   </li>
   <li class="maint-header"><%= "#{dim_subj_name} - #{dim_title} (#{grades_str}: #{@dim_filters[dim_type][:gb][:min_grade]} - #{@dim_filters[dim_type][:gb][:max_grade]})" %>
-    <% if @editing %>
+    <% if @editing && can_edit %>
       <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
     <% end %>
   </li>
@@ -18,7 +18,7 @@
         <span class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong><%= @translations[dim.dim_name_key] %></span>
         <br/>
 
-        <% if current_user.present? && current_user.is_admin? && @editing%>
+        <% if can_edit && @editing%>
           <div class="pull-right">
               <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
               <%= link_to(fa_icon("times", class: "pull-right"), update_dimension_trees_path(dimension: { id: dim.id, active: false}), {'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[dim.dim_name_key]), method: :patch}) %>
