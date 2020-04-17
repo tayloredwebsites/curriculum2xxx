@@ -1,4 +1,4 @@
-<%= form_for @tree, url: maint_trees_path, id: "#{col}-filter", :html => { :method => 'GET' } do |form| %>
+<%= form_for @tree, url: maint_trees_path, :html => { :id => "#{col}-filter", :method => 'GET' } do |form| %>
   <% param_name = (col == "tree" ? col : "dim_tree" ) %>
   <!-- Workaround for inconsistently named essq/ess_q
        dim_key is the column type, whereas @dim_type is

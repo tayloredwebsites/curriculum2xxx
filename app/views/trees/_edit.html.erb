@@ -5,9 +5,9 @@
 
 <%= form_for(@tree) do |f| %>
   <div class="hidden_fields">
-    <%= f.hidden_field :code, name: 'tree[active]', value: true %>
-    <%= f.hidden_field :code, name: 'tree[edit_type]', value: @edit_type %>
-    <%= f.hidden_field :code, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
+    <%= f.hidden_field :active, name: 'tree[active]', value: true %>
+    <%= f.hidden_field :edit_type, name: 'tree[edit_type]', value: @edit_type %>
+    <%= f.hidden_field :attr_id, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
   </div>
   <!--feilds for editing the Outcome and Indicator text-->
 	<% if @edit_type == 'outcome' || @edit_type == 'indicator' %>
