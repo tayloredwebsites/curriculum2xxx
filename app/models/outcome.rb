@@ -38,4 +38,30 @@ class Outcome < BaseRec
     end
   end
 
+  def self.get_ref_name(ref_type, locale_code, sector_set_code)
+    ref_index = REF_TYPES.index(ref_type)
+    name = ''
+    if ref_index
+      name = Translation.find_translation_name(
+          locale_code,
+          "ref_type_name.#{ref_type}",
+          nil
+        ) || I18n.translate("trees.labels.teacher_field_#{ref_index + 1}", sector_set: sector_set_code)
+    end
+    return name
+  end
+
+  def self.get_ref_hash(ref_type, locale_code, sector_set_code)
+    ref_index = REF_TYPES.index(ref_type)
+    name = ''
+    if ref_index
+      name = Translation.find_translation_name(
+          locale_code,
+          "ref_type_name.#{ref_type}",
+          nil
+        ) || I18n.translate("trees.labels.teacher_field_#{ref_index + 1}", sector_set: sector_set_code)
+    end
+    return {key: "ref_type_name.#{ref_type}", name: name}
+  end
+
 end
