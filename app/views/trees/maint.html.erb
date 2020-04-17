@@ -20,7 +20,8 @@
       render partial: "show_maint_col_buttons", locals: {
       dim_type: dim,
       show_dim: @visible_dim_codes_arr.include?(dim),
-      dim_title: dimObj[:name]
+      dim_title: dimObj[:name],
+      can_edit: can_edit_type?(dim)
       }
   %>
 <% end #@dimsArray.each do |dimObj|
@@ -32,7 +33,7 @@
   <div class="sequence-grid cols-<%= num_cols %>">
 
     <% competencies_partial = @use_alt_partial ? "alt_competency_grids_column" : "competency_grids_column" %>
-    <%= render partial: (@editing ? "competencies_column" : "competency_grids_column") %>
+    <%= render partial: (@editing ? "competencies_column" : "competency_grids_column") if !@dim_type %>
     <% if @editing || @dim_type %>
 
       <% @dimsArray.each do |dim| %>
@@ -46,7 +47,8 @@
             ],
             dim_title: @dimTypeTitleByCode[dim[:code]],
             dims: @dimensions[dim[:code]],
-            grades_str: grades_str
+            grades_str: grades_str,
+            can_edit: can_edit_type?(dim[:code]),
             }
         %>
       <% end #for @dimsArray.each do |dim| %>

@@ -294,6 +294,7 @@
     }
     .rel-sectors {
       padding: 0, 10px;
+      min-height: 40px;
     }
     .subject-relations:last-child {
       border-bottom: none;
@@ -312,11 +313,15 @@
       margin-right: -15px;
       border-top: 1px solid black;
       border-right: 1px solid black;
+      border-bottom: 1px solid black;
+      .rel-sectors {
+        border: none;
+      }
     }
     .teacher-item {
-      border-bottom: 1px solid black;
       border-left: 1px solid black;
       padding-bottom: 10px;
+      border-bottom: none;
     }
     .connections-grid {
       display: grid;

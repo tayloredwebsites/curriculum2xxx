@@ -21,14 +21,8 @@ class TreeTreesController < ApplicationController
       Rails.logger.debug('tree_referencee:'+ @referencee.code)
       @explanation = ''
       puts "referencer subject key: #{@referencer.subject[:base_key] + '.abbr'}, locale: #{@locale_code}"
-      referencer_subject_translation = Translation.where(
-        :key => @referencer.subject[:base_key] + '.name',
-        :locale => @locale_code
-        ).first.value
-      referencee_subject_translation = Translation.where(
-        :key => @referencee.subject[:base_key] + '.name',
-        :locale => @locale_code
-        ).first.value
+      referencer_subject_translation = @referencer.subject.get_name(@locale_code)
+      referencee_subject_translation = @referencee.subject.get_name(@locale_code)
     end
     if errors.length == 0 && tree_tree_matches.length == 0
       respond_to do |format|
@@ -65,14 +59,8 @@ class TreeTreesController < ApplicationController
   def edit
     @referencer = @tree_tree.tree_referencer
     @referencee = @tree_tree.tree_referencee
-    referencer_subject_translation = Translation.where(
-      :key => @referencer.subject[:base_key] + '.name',
-      :locale => @locale_code
-      ).first.value
-    referencee_subject_translation = Translation.where(
-      :key => @referencee.subject[:base_key] + '.name',
-      :locale => @locale_code
-      ).first.value
+    referencer_subject_translation = @referencer.subject.get_name(@locale_code)
+    referencee_subject_translation = @referencee.subject.get_name(@locale_code)
     explanation = @explanation_translation.value if @explanation_translation
     respond_to do |format|
         format.json {render json: {
@@ -186,13 +174,13 @@ class TreeTreesController < ApplicationController
     #TreeTree records should be created with an explanation_key, but since this
     #column is not currently reqired, if @tree_tree is lacking an explanation_key for
     #some reason, build it:
-    explanation_key = @treeTypeRec.code + "." + @versionRec.code
-      + "." + @tree_tree.tree_referencer.subject.code + "."
-      + @tree_tree.tree_referencer.code + ".tree."
-      + @tree_tree.tree_referencee.id.to_s if !@tree_tree[:explanation_key]
-    #Otherwise use the explanation_key saved in @tree_tree.
-    #note: @tree_tree and @reciprocal_tree_tree should share an explanation_key
-    explanation_key = @tree_tree[:explanation_key] if @tree_tree[:explanation_key]
+    # explanation_key = @treeTypeRec.code + "." + @versionRec.code
+    #   + "." + @tree_tree.tree_referencer.subject.code + "."
+    #   + @tree_tree.tree_referencer.code + ".tree."
+    #   + @tree_tree.tree_referencee.id.to_s if !@tree_tree[:explanation_key]
+    # #Otherwise use the explanation_key saved in @tree_tree.
+    # #note: @tree_tree and @reciprocal_tree_tree should share an explanation_key
+    # explanation_key = @tree_tree[:explanation_key] if @tree_tree[:explanation_key]
 
   ###################################
   # Set Values to Update in @tree_tree,
@@ -204,7 +192,7 @@ class TreeTreesController < ApplicationController
 
     #active status must be set to @reciprocal_tree_tree as well,
     #once it's existence is ensured
-    @tree_tree.active = tree_tree_params[:active] if (tree_tree_params[:active] != nil)
+    @tree_tree.active = true if (tree_tree_params[:active] != nil)
     puts "+++++++++Should update active" if (tree_tree_params[:active] != nil)
     #find and edit reciprocal TreeTree, if found,
     #or create and edit if not found.
@@ -217,13 +205,13 @@ class TreeTreesController < ApplicationController
         :tree_referencer_id => @tree_tree[:tree_referencee_id],
         :tree_referencee_id => @tree_tree[:tree_referencer_id],
         :relationship => TreeTree.reciprocal_relationship(:"#{tree_tree_params[:relationship]}"),
-        :explanation_key => explanation_key
+        # :explanation_key => explanation_key
       )
       notices >> "Reciprocal connection did not exist. Created one during update."
     end
 
     #active status (true or false) is set for @tree_tree earlier on in the update process
-    @reciprocal_tree_tree.active = tree_tree_params[:active] if (tree_tree_params[:active] != nil)
+    @reciprocal_tree_tree.active = true if (tree_tree_params[:active] != nil)
 
     #Find and set explanation translations in the controller,
     #or create and set a new explanation translation if one is
@@ -232,21 +220,21 @@ class TreeTreesController < ApplicationController
     #existing TreeTree connections:
     #e.g., if the locale for this update does not match
     #the locale in which the TreeTree was originally created.
-    if @explanation_translation
-      @explanation_translation.value = tree_tree_params[:explanation] if tree_tree_params[:explanation]
-    else
-      @explanation_translation = Translation.new(
-          :key => explanation_key,
-          :locale => @locale_code,
-          :value => tree_tree_params[:explanation])
-      notices >> "Explanation translation for this locale did not exist. Created one during update."
-    end
+    # if @explanation_translation
+    #   @explanation_translation.value = tree_tree_params[:explanation] if tree_tree_params[:explanation]
+    # else
+    #   @explanation_translation = Translation.new(
+    #       :key => explanation_key,
+    #       :locale => @locale_code,
+    #       :value => tree_tree_params[:explanation])
+    #   notices >> "Explanation translation for this locale did not exist. Created one during update."
+    # end
 
     ActiveRecord::Base.transaction do
       begin
         @tree_tree.save!
         @reciprocal_tree_tree.save!
-        @explanation_translation.save!
+        # @explanation_translation.save!
       rescue ActiveRecord::StatementInvalid => e
         errors << e
       end

@@ -274,7 +274,7 @@ add_edit_form = function(res) {
           <input type="hidden" name="tree_tree[tree_referencee_id]" value=' +
     res.tree_tree.tree_referencee_id +
     '> \
-    <input type="hidden" name="tree[active]" value=' +
+    <input type="hidden" name="tree_tree[active]" value=' +
     true +
     '> \
           </div> \

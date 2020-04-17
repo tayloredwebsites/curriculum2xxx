@@ -215,7 +215,7 @@ class UploadsController < ApplicationController
 
     #   - Create a hash (at beginning of upload process) of the Dimensions for this subject, and dimension type (not by Tree Type - to prevent dups)
     @currentDims = Hash.new{ |h, k| h[k] = Hash.new{ |h, k| h[k] = {} } }
-    currentDims = Dimension.where(subject_code: @subjectRec.code, active: true).or(Dimension.where(dim_code: 'pract', active:true))
+    currentDims = Dimension.where(subject_code: @subjectRec.code, active: true)
     currentDims.each do |rec|
       transl_names = Translation.where(locale: @locale_code, key: rec.get_dim_name_key)
       if transl_names.count > 0
@@ -345,19 +345,8 @@ class UploadsController < ApplicationController
         if compName.present?
           dimTypeName = Dimension.get_dim_type_name('pract', @treeTypeRec.code, @versionRec.code, @locale_code)
           currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-          #Separate practices
-          compArr = compName.split(":")
-          if compArr.length > 2
-            compArr = [compArr[0], compArr[1 .. compArr.length - 1 ].join(":")]
-          end
-          compArr.each_with_index do |cn, i|
-            pract_type = (i == 0 ? "stem" : "spec")
-            createOrUpdateDimRecs(currentRec, nil, 'pract', gradeBandRec.min_grade, gradeBandRec.max_grade, pract_type, cn, 'From Upload')
-          # build report record array of values
-          # codeA4 = compCodeA.clone
-          # rptCodes = codeA4.concat(['','','','']).slice(0,5)
-          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{cn}", ''])
-          end
+          createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', gradeBandRec.min_grade, gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
+          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
         end
 
       elsif isValidRow == 'blank'

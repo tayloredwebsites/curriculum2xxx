@@ -52,7 +52,7 @@ namespace :seed_turkey_v02 do
     STDOUT.puts 'Create translation record for essential questions as K-12 Big Ideas.'
 
     # Create translation(s) for hierarchy codes
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.comp', 'Competency')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.comp', 'Competence')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.sub_unit', 'Sub-Unit')

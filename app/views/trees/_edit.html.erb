@@ -5,9 +5,9 @@
 
 <%= form_for(@tree) do |f| %>
   <div class="hidden_fields">
-    <%= f.hidden_field :code, name: 'tree[active]', value: true %>
-    <%= f.hidden_field :code, name: 'tree[edit_type]', value: @edit_type %>
-    <%= f.hidden_field :code, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
+    <%= f.hidden_field :active, name: 'tree[active]', value: true %>
+    <%= f.hidden_field :edit_type, name: 'tree[edit_type]', value: @edit_type %>
+    <%= f.hidden_field :attr_id, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
   </div>
   <!--feilds for editing the Outcome and Indicator text-->
 	<% if @edit_type == 'outcome' || @edit_type == 'indicator' %>
@@ -26,6 +26,11 @@
       <label for="resource_input" class="center-label" style="width:100%;display:block;"><%= @ref_label %></label>
       <%= f.cktext_area :resource, name: 'tree[resource]', value: @ref, id: 'resource_input', ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'} %>
     </fieldset>
+  <% elsif @ref_titles %>
+    <% @ref_titles.each do |title| %>
+      <%= f.hidden_field :resource_key, multiple: true, value: title[:key] %>
+      <%= f.text_area :resource_name, multiple: true, value: title[:name] %>
+    <% end %>
   <!--build fields for editing treetree and sector relationships-->
   <% elsif @edit_type == 'treetree' || @edit_type == 'sector' || @edit_type == 'dimtree' %>
   <fieldset>

@@ -1,4 +1,4 @@
-<%= form_for @tree, url: maint_trees_path, :html => { :method => 'GET' } do |form| %>
+<%= form_for @tree, url: maint_trees_path, :html => { :id => "#{col}-filter", :method => 'GET' } do |form| %>
   <% param_name = (col == "tree" ? col : "dim_tree" ) %>
   <!-- Workaround for inconsistently named essq/ess_q
        dim_key is the column type, whereas @dim_type is
@@ -36,9 +36,7 @@
             <option value=<%= s.id %><%= selectedStr %>><%= @translations[Subject.get_default_abbr_key(s.code)] %></option>
           <% end %>
         <% else # if col != "tree"
-             subjects = (col == "pract" ? BaseRec::BASE_PRACTICES : BaseRec::BASE_SUBJECTS)
-        %>
-          <% subjects.each do |s| %>
+           BaseRec::BASE_SUBJECTS.each do |s| %>
             <% sel_code = @dim_filters[dim_key][:subj]
                opt_name = @translations[Subject.get_default_abbr_key(s)]
             %>
@@ -75,13 +73,13 @@
       if ix <= @treeTypeRec.outcome_depth
       hierarchy_depth = @hierarchies.index(@hierarchiesInTrees[ix])
     %>
-        <button class='btn btn-info btn-sm pull-left right-margin margin-bottom btn-hierarchies'  data-hierarchy_depth="<%= hierarchy_depth %>" data-outcome_depth="<%= @treeTypeRec[:outcome_depth] %>"><%= I18n.t('app.labels.show') %> <%= @hierarchiesInTrees[ix].pluralize if @hierarchiesInTrees.length > ix %></button>
+        <button class='btn btn-info btn-sm pull-left right-margin margin-bottom btn-hierarchies'  data-hierarchy_depth="<%= hierarchy_depth %>" data-outcome_depth="<%= @treeTypeRec[:outcome_depth] %>" data-resize="<%= !@editing %>"><%= I18n.t('app.labels.show') %> <%= @hierarchiesInTrees[ix].pluralize if @hierarchiesInTrees.length > ix %></button>
     <%
       end
     end
     %>
     <% if !@editing %>
-      <button id="show-details-btn" class="btn btn-info btn-sm pull-left right-margin margin-bottom" data-hierarchy_depth="<%= @hierarchies.length - 1 %>" data-outcome_depth="<%= @treeTypeRec[:outcome_depth] %>">
+      <button id="show-details-btn" class="btn btn-info btn-sm pull-left right-margin margin-bottom" data-hierarchy_depth="<%= @hierarchies.length - 1 %>" data-outcome_depth="<%= @treeTypeRec[:outcome_depth] %>" data-resize=true>
         <span id="show-text"><%= I18n.translate("app.labels.show_details") %></span>
       </button>
     <% end %>

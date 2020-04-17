@@ -49,10 +49,10 @@ class BaseRec < ActiveRecord::Base
     'tech', #Technology
   ]
 
-  BASE_PRACTICES = [
-    'stem', #Science And Engineering Practices
-    'spec', #Specific Practices
-  ]
+  # BASE_PRACTICES = [
+  #   'stem', #Science And Engineering Practices
+  #   'spec', #Specific Practices
+  # ]
 
   # only used in uploads
   UPLOAD_RPT_COL = ['Row', 'Unit', 'Chapter', 'Outcome', 'Indicator', 'Code','Desc','StatusMsg']

@@ -199,7 +199,7 @@ class TreesController < ApplicationController
     dimPrep
     #To Do: Remove Alt Flag when design is finalized
     @use_alt_partial = params[:alt]
-    @editing = params[:editme] && current_user.present? && current_user.is_admin?
+    @editing = params[:editme] && can_edit_any_dims?(@treeTypeRec)
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
 
     @competency_details = []
@@ -659,23 +659,19 @@ class TreesController < ApplicationController
     dim_tree_matches = DimTree.where(
       :tree_id => tree_params[:tree_id],
       :dimension_id => tree_params[:dimension_id])
-    subj_translation_matches = Translation.where(
-        :key => @tree.subject[:base_key] + '.name',
-        :locale => @locale_code
-        )
     dimension_translation_matches = Translation.where(
-        :key => @dim[:dim_name_key],
+        :key => @dim.get_dim_name_key,
         :locale => @locale_code
         )
 
     #Might not exist for every locale! Will fail if subject doesn't have
     #a translation.
-    @tree_subject_translation = subj_translation_matches.first.value
+    @tree_subject_translation = @tree.subject.get_name(@locale_code)
     #Might not exist for every locale!
-    @dimension_translation = dimension_translation_matches.first.value
+    @dimension_translation = dimension_translation_matches.first ? dimension_translation_matches.first.value : ""
     if dim_tree_matches.length == 0
       @dim_tree = DimTree.new(tree_params)
-      @dim_tree.dim_explanation_key = "TFV.v01.#{@tree.subject.code}.#{@tree.code}.bigidea.#{@dim.id}.expl"
+      @dim_tree.dim_explanation_key = DimTree.getDimExplanationKey(@tree[:base_key], @dim[:dim_code], @dim[:id])
       @method = :post
       @form_path = :create_dim_tree_trees
     else
@@ -889,6 +885,8 @@ class TreesController < ApplicationController
           )
         #To Do: normalize these translations
         @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::REF_TYPES.index(@edit_type) + 1}", sector_set: @sectorName)
+      elsif @edit_type == "ref_settings"
+        @ref_titles = Outcome::REF_TYPES.map { |t| Outcome.get_ref_hash(t, @locale_code, @sectorName) }
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
@@ -953,6 +951,14 @@ class TreesController < ApplicationController
             @tree.outcome.get_ref_key(update),
             tree_params[:resource].split("<script>").join("").split("</script>").join("")
           )
+      elsif tree_params[:resource_name]
+        tree_params[:resource_name].each_with_index do |name, i|
+          Translation.find_or_update_translation(
+            @locale_code,
+            tree_params[:resource_key][i],
+            name
+            )
+        end
       elsif update == 'treetree'
         @tree_tree = TreeTree.find(tree_params[:attr_id])
         @reciprocal_tree_tree = TreeTree.where(
@@ -1053,6 +1059,8 @@ class TreesController < ApplicationController
       :editing,
       :comment,
       :resource,
+      :resource_name => [],
+      :resource_key => [],
     )
   end
 
@@ -1325,12 +1333,12 @@ class TreesController < ApplicationController
         dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
         dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
       end
-      BaseRec::BASE_PRACTICES.each do |s|
-        subjNameKey = Subject.get_default_name_key(s)
-        subjAbbrKey = Subject.get_default_abbr_key(s)
-        dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
-        dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
-      end
+      # BaseRec::BASE_PRACTICES.each do |s|
+      #   subjNameKey = Subject.get_default_name_key(s)
+      #   subjAbbrKey = Subject.get_default_abbr_key(s)
+      #   dimKeys << subjNameKey if !dimKeys.include?(subjNameKey)
+      #   dimKeys << subjAbbrKey if !dimKeys.include?(subjAbbrKey)
+      # end
       @dimKeys = dimKeys
       dim_translations = Translation.translationsByKeys(
         @locale_code,
