@@ -33,8 +33,11 @@
           </div>
         </div>
         <div class='connections-grid'>
+          <% connectionsFound = 0 %>
           <% @relatedBySubj.each do |subj, rel|%>
-            <% rel.each do |r| %>
+            <% rel.each do |r|
+               connectionsFound += 1
+            %>
               <div class='connections-item'>
                 <%= r[:relationship] %>
               </div>
@@ -56,6 +59,16 @@
                 <% end %>
               </div>
             <% end %>
+          <% end %>
+          <% if connectionsFound == 0 %>
+              <div class='connections-item rel-sectors'>
+              </div>
+              <div class='connections-item rel-sectors'>
+              </div>
+              <div class='connections-item rel-sectors'>
+              </div>
+              <div class='connections-item rel-sectors'>
+              </div>
           <% end %>
         </div>
       </div>

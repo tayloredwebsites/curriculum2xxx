@@ -5,12 +5,14 @@
       <%= link_to(fa_icon("plus-square"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: 'new'}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && sector && can_edit %>
     </div>
   </div>
+  <% detailsFound = 0 %>
   <% details.each do |dt| %>
   <!-- Dimensions Table (e.g., misconceptions, etc) -->
   <%
   if dim
     d = dt.dimension
     if d.dim_code == dim_code
+      detailsFound += 1
     %>
     <div class='row'>
       <div class='col col-lg-12 rel-sectors'>
@@ -24,6 +26,7 @@
     end #if d.dim_code == dim_code
   elsif sector
     st = dt
+    detailsFound += 1
   %>
     <div class='row'>
     <div class='col col-lg-12 rel-sectors'>
@@ -49,4 +52,9 @@
 <% end #if dim, elsif sector
 end #details.each do |dt|
 %>
+<% if detailsFound == 0 %>
+  <div class="row">
+    <div class="col rel-sectors"></div>
+  </div>
+<% end %>
 </div>
