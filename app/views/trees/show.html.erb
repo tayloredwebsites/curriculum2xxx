@@ -67,11 +67,15 @@
       <!-- Dynamically Ordered Tables -->
       <% @detail_areas.each do |area|
           detail = detail_lookup[:"#{area[:name]}"]
+          if area[:type] == "left-col"
           %>
+            <div class='related-items-table grid-2'>
           <%
-          if detail && (detail[:dim] || detail[:sector])%>
+          end #if detail && detail[:dim_code] == 'essq'
+          if detail && (detail[:dim] || detail[:sector])
+          %>
           <%=
-          render partial: "trees/show/detail_area", locals: {
+            render partial: "trees/show/detail_area", locals: {
               detail_title: detail[:title],
               details: detail[:details],
               dim: detail[:dim],
@@ -104,6 +108,9 @@
           <%
           end #detail && (detail[:dim] || detail[:sector]
           %>
+          <% if area[:type] == "right-col" %>
+            </div>
+          <% end #if detail && detail[:dim_code] == 'bigidea' %>
       <% end #@detail_areas.each do |area| %>
 
 
