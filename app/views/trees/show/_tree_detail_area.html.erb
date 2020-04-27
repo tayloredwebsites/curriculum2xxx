@@ -7,10 +7,10 @@
     </div>
     <% tree.getAllChildren.each do |c| %>
     <div class='row'>
-      <div class='col col-lg-2 ind-col'>
+      <div class='col col-lg-2 rel-sector ind-col'>
         <%= c.code %>
       </div>
-      <div class='col col-lg-10 ind-col last-col'>
+      <div class='col col-lg-10 rel-sector ind-col last-col'>
         <%= @translations[c.buildNameKey] %>
         <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'indicator', attr_id: c.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
       </div>
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class='row'>
-      <div class='col col-lg-12 ind-col'>
+      <div class='col col-lg-12 rel-sector ind-col'>
         <%= Translation.find_translation_name(@locale_code,tree.outcome.get_explain_key, "") %>
       </div>
     </div>
