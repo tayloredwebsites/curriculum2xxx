@@ -67,11 +67,15 @@
       <!-- Dynamically Ordered Tables -->
       <% @detail_areas.each do |area|
           detail = detail_lookup[:"#{area[:name]}"]
+          if area[:type] == "left-col"
           %>
+            <div class='related-items-table grid-2'>
           <%
-          if detail && (detail[:dim] || detail[:sector])%>
+          end #if detail && detail[:dim_code] == 'essq'
+          if detail && (detail[:dim] || detail[:sector])
+          %>
           <%=
-          render partial: "trees/show/detail_area", locals: {
+            render partial: "trees/show/detail_area", locals: {
               detail_title: detail[:title],
               details: detail[:details],
               dim: detail[:dim],
@@ -104,6 +108,9 @@
           <%
           end #detail && (detail[:dim] || detail[:sector]
           %>
+          <% if area[:type] == "right-col" %>
+            </div>
+          <% end #if detail && detail[:dim_code] == 'bigidea' %>
       <% end #@detail_areas.each do |area| %>
 
 
@@ -120,78 +127,102 @@
           <div class='center-label sub-header-margin'>
             <%= Outcome.get_ref_name(Outcome::REF_TYPES[0], @locale_code, @sectorName) %>
           </div>
-          <div class="rel-sectors text-left padding-left">
-            <%= Translation.find_translation_name(
-            @locale_code,
-            @tree.outcome.get_ref_key(Outcome::REF_TYPES[0]),
-            ""
-            ).html_safe %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[0] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+          <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
+            <div class="col col-11">
+              <%= Translation.find_translation_name(
+              @locale_code,
+              @tree.outcome.get_ref_key(Outcome::REF_TYPES[0]),
+              ""
+              ).html_safe %>
+            </div>
+            <div class="col col-1">
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[0] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+            </div>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= Outcome.get_ref_name(Outcome::REF_TYPES[1], @locale_code, @sectorName) %>
           </div>
-          <div class="rel-sectors text-left padding-left">
-            <%= Translation.find_translation_name(
-            @locale_code,
-            @tree.outcome.get_ref_key(Outcome::REF_TYPES[1]),
-            ""
-            ).html_safe %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[1] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+          <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
+            <div class="col col-11">
+              <%= Translation.find_translation_name(
+              @locale_code,
+              @tree.outcome.get_ref_key(Outcome::REF_TYPES[1]),
+              ""
+              ).html_safe %>
+            </div>
+            <div class="col col-1">
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[1] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+            </div>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= Outcome.get_ref_name(Outcome::REF_TYPES[2], @locale_code, @sectorName) %>
           </div>
-          <div class="rel-sectors text-left padding-left">
-            <%= Translation.find_translation_name(
-            @locale_code,
-            @tree.outcome.get_ref_key(Outcome::REF_TYPES[2]),
-            ""
-            ).html_safe %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[2] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+          <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
+            <div class="col col-11">
+              <%= Translation.find_translation_name(
+              @locale_code,
+              @tree.outcome.get_ref_key(Outcome::REF_TYPES[2]),
+              ""
+              ).html_safe %>
+            </div>
+            <div class="col col-1">
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[2] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+            </div>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= Outcome.get_ref_name(Outcome::REF_TYPES[3], @locale_code, @sectorName) %>
           </div>
-          <div class="rel-sectors text-left padding-left">
-            <%= Translation.find_translation_name(
-            @locale_code,
-            @tree.outcome.get_ref_key(Outcome::REF_TYPES[3]),
-            ""
-            ).html_safe %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[3] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+          <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
+            <div class="col col-11">
+              <%= Translation.find_translation_name(
+              @locale_code,
+              @tree.outcome.get_ref_key(Outcome::REF_TYPES[3]),
+              ""
+              ).html_safe %>
+            </div>
+            <div class="col col-1">
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[3] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+            </div>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= Outcome.get_ref_name(Outcome::REF_TYPES[4], @locale_code, @sectorName) %>
           </div>
-          <div class="rel-sectors text-left padding-left">
-           <%= Translation.find_translation_name(
-            @locale_code,
-            @tree.outcome.get_ref_key(Outcome::REF_TYPES[4]),
-            ""
-            ).html_safe %>
-           <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[4] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+          <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
+            <div class="col col-11">
+              <%= Translation.find_translation_name(
+              @locale_code,
+              @tree.outcome.get_ref_key(Outcome::REF_TYPES[4]),
+              ""
+              ).html_safe %>
+            </div>
+            <div class="col col-1">
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[4] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+            </div>
           </div>
         </div>
         <div class='teacher-item'>
           <div class='center-label sub-header-margin'>
             <%= Outcome.get_ref_name(Outcome::REF_TYPES[5], @locale_code, @sectorName) %>
           </div>
-          <div class="rel-sectors text-left padding-left">
-            <%= Translation.find_translation_name(
-            @locale_code,
-            @tree.outcome.get_ref_key(Outcome::REF_TYPES[5]),
-            ""
-            ).html_safe %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[5] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+          <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
+            <div class="col col-11">
+              <%= Translation.find_translation_name(
+              @locale_code,
+              @tree.outcome.get_ref_key(Outcome::REF_TYPES[5]),
+              ""
+              ).html_safe %>
+            </div>
+            <div class="col col-1">
+             <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: Outcome::REF_TYPES[5] }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('refs') %>
+            </div>
           </div>
         </div>
       </div>

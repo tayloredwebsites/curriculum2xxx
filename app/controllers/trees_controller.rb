@@ -763,6 +763,12 @@ class TreesController < ApplicationController
         elsif a.first == "(" && a.last == ")"
           detail_type = 'header'
           detail = a[1..a.length - 2]
+        elsif a.first == "<" && a.last == "<"
+          detail_type = 'left-col'
+          detail = a[1..a.length - 2]
+        elsif a.first == ">" && a.last == ">"
+          detail_type = 'right-col'
+          detail = a[1..a.length - 2]
         end
         detail = detail.split("_").join("")
         @detail_headers << {type: detail_type, name: detail, depth: hierarchy_codes.index(detail) } if detail_type == 'header'
