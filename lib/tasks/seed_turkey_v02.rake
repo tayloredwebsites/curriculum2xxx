@@ -37,7 +37,7 @@ namespace :seed_turkey_v02 do
       dim_codes: 'essq,bigidea,miscon',
       tree_code_format: 'grade,unit,sub_unit,comp',
       detail_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon],[connect],[refs]'
+      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon]'
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
