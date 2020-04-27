@@ -31,10 +31,10 @@ namespace :seed_turkey_v02a do
       # miscon_dim_type: 'miscon',
       # big_ideas_dim_type: 'bigidea',
       # ess_q_dim_type: 'essq',
-      dim_codes: 'essq,bigidea,miscon',
+      dim_codes: 'essq,bigidea,pract,miscon',
       tree_code_format: 'subject,grade,unit,sub_unit,comp',
       detail_headers: 'grade,unit,(sub_unit),comp,<essq<,>bigidea>,[pract],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],explain,[miscon],[connect],[refs]'
+      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
     }
     if myTreeType.count < 1
       raise 'Missing Tree Type record for tfv v02'
