@@ -31,7 +31,8 @@ class UsersController < ApplicationController
     :role_admin,
     :role_teacher,
     :role_public,
-    :home_page_text
+    :home_page_text,
+    :resources_text,
   ]
 
   # update the the locale (language), and return to current page
@@ -49,11 +50,17 @@ class UsersController < ApplicationController
 
   def home
     @editing = params[:editMe] && current_user && user_is_admin?(current_user)
+    @show_resources = params[:showResources]
     @home_page_text = Translation.find_translation_name(
         @locale_code,
         @treeTypeRec.home_page_key,
         ""
-      ).html_safe
+      ).html_safe if !@show_resources
+    @resources_text = Translation.find_translation_name(
+        @locale_code,
+        @treeTypeRec.resources_page_key,
+        ""
+      ).html_safe if @show_resources
     @user = current_user
     @users = get_auth_users_list(true)
     if params[:locale].present?
@@ -154,11 +161,20 @@ class UsersController < ApplicationController
   end
 
   def update_home_page
+    @showResources = admin_user_params[:resources_text]
+    translation_key = @showResources ?
+      @treeTypeRec.resources_page_key :
+      @treeTypeRec.home_page_key
+
+    translation_text = @showResources ?
+      admin_user_params[:resources_text] :
+      admin_user_params[:home_page_text]
+
     Translation.find_or_update_translation(
       @locale_code,
-      @treeTypeRec.home_page_key,
-      admin_user_params[:home_page_text])
-    redirect_to home_users_url
+      translation_key,
+      translation_text)
+    redirect_to home_users_url(showResources: @showResources)
   end
 
   private
