@@ -1,27 +1,8 @@
 <% content_for(:title_code, 'home.title') %>
 <% content_for(:page_class, 'users') %>
 
-<% if @home_page_text.length == 0 %>
-  <h2><%= I18n.translate('home.title') %></h2>
+<% if @show_resources %>
+  <%= render partial: "users/home/curriculum_resources" %>
+<% else %>
+  <%= render partial: "users/home/front_page" %>
 <% end %>
-<div id='home'>
-  <div class="row">
-    <div class="col-1"></div>
-    <div class='col-10'>
-      <% if @editing %>
-        <%= form_for @treeTypeRec, url: update_home_page_users_path do |form| %>
-           <%= form.cktext_area :preamble, name: 'user[home_page_text]',
-           value: @home_page_text,
-          id: 'homepage_field', ckeditor: {language: @locale_code, uiColor: '#b0e0e6'}
-          %>
-          <%= form.submit translate('app.labels.save'), :class => 'btn-primary' %>
-        <% end %>
-      <% else %>
-        <div class="left-justify">
-        <%= link_to(fa_icon("edit"), home_users_path(editMe: true), {:class => "fa-lg pull-right"}) if current_user && user_is_admin?(current_user) %>
-       	<%= @home_page_text %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>

@@ -16,6 +16,10 @@ class TreeType < BaseRec
   def home_page_key
     return "curriculum.#{code}.#{Version.find(version_id).code}.home_page"
   end
+
+  def resources_page_key
+    return "curriculum.#{code}.#{Version.find(version_id).code}.rsrc_page"
+  end
   #######################################
   def self.get_sector_set_code(code)
     return code.split(",")[0]

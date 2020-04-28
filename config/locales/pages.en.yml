@@ -91,6 +91,7 @@ en:
   home:
     name: "Curriculum Home Page"
     title: "Curriculum Home Page"
+    additional_ref: "Additional Resources"
   nav_bar:
     home:
       name: "Home"

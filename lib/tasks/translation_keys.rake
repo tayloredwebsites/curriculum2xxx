@@ -62,4 +62,27 @@ namespace :translation_keys do
     end
 
   end # task fix_subjects
+
+  desc "Add versioned name translations for tfv.v02 subjects"
+  task subject_names_v02: :environment do
+    subject_lookup_en = {
+      bio: "Biology",
+      che: "Chemistry",
+      mat: "Mathematics",
+      sci: "Science",
+      phy: "Physics",
+      ear: "Earth Science",
+      tech: "Tech Engineering",
+    }
+    Subject.where(tree_type_id: 2).each do |s|
+      key = s.get_versioned_name_key
+      s_name = subject_lookup_en[:"#{s.code}"]
+      puts "Updating versioned translation, #{key}: #{s_name}"
+      Translation.find_or_update_translation(
+        "en",
+        key,
+        s_name
+      )
+    end
+  end #task subject_names_v02: :environment do
 end
