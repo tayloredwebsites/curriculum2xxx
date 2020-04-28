@@ -161,7 +161,13 @@ class UsersController < ApplicationController
   end
 
   def update_home_page
-    @showResources = admin_user_params[:resources_text]
+    # admin_user_params[:resources_text] is a long html encoded
+    # string.
+    # Double bang is to avoid including the entire
+    # :resources_text string in the params of the
+    # redirect at the end of this method
+    @showResources = !!admin_user_params[:resources_text]
+
     translation_key = @showResources ?
       @treeTypeRec.resources_page_key :
       @treeTypeRec.home_page_key
