@@ -1,116 +1,115 @@
-
-en:
+ar_EG:
   subjects:
-    Bio: "Biology"
-    Phy: "Physics"
-    Che: "Chemistry"
-    Mat: "Mathematics"
+    Bio: "مادة الاحياء"
+    Phy: "الفيزياء"
+    Che: "كيمياء"
+    Mat: "الرياضيات"
   app:
-    title: "Curriculum Website"
+    title: "موقع المناهج"
     labels:
-      all: "All"
-      save: "Save"
-      cancel: "Cancel"
-      submit: "Submit"
-      edit: "Edit"
-      leave_edit_mode: "Leave Edit Mode"
-      deactivate: "Deactivate"
-      confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
-      create: "Create"
-      subject: "Subject"
-      grade_band: "Grade"
-      min_grade: "Minimum Grade"
-      max_grade: "Maximum Grade"
-      grade_band_show: "Show Grade"
-      grade_band_num: "Grade %{num}"
-      show_indicators: "Show %{name}"
-      hide_indicators: "Hide %{name}"
-      action: "Action"
-      actions: "Actions"
-      language: "Language"
-      row: "Row Number"
-      row_num: "Row: %{num} - "
-      area: "Unit"
+      all: "الكل"
+      save: "حفظ"
+      cancel: "إلغاء"
+      submit: "إرسال"
+      edit: "تعديل"
+      leave_edit_mode: "غادر وضع التحرير"
+      deactivate: "إبطال"
+      confirm_deactivate: "هل أنت متأكد من أنك تريد إلغاء تنشيط الاتصال بالعنصر التالي:\n%{item}"
+      create: "خلق"
+      subject: "موضوع"
+      grade_band: "درجة"
+      min_grade: "الدرجة الدنيا"
+      max_grade: "الدرجة القصوى"
+      grade_band_show: "إظهار الدرجة"
+      grade_band_num: "درجة %{num}"
+      show_indicators: "تبين %{name}"
+      hide_indicators: "إخفاء %{name}"
+      action: "عمل"
+      actions: "أجراءات"
+      language: "لغة"
+      row: "رقم الصف"
+      row_num: "صف: %{num} - "
+      area: "وحدة"
       component: "Chapter"
       outcome: "Attainment"
       outcomes: "Attainments"
       indicator: "Explanation"
       indicators: "Explanations"
-      comments: "Teacher Support"
-      code: "Code"
-      description: 'Description'
-      message: "Message"
-      gen_list: "Generate List"
-      sector: "Sector"
-      upload_summary: 'Uploads Summary Report'
-      upload_file: "Upload File"
-      upload_status_errors: "Upload Status / Errors"
-      related_to_sectors: "Related to sectors: %{sectors}"
-      new_sector_relations: "Newly related sectors: %{sectors}"
-      future_vision: "Knowledge Based Education (KBE) Sectors"
-      sector_related_explain: "Sectors Related Explanation"
-      subject_related_explain: "Subjects Related Explanation"
-      explanation: "Reason for Relation"
-      sector_num: "Sector %{num}"
-      show: "Show"
-      working_version: "Working"
-      final_version: "Final"
-      connect_form_title: "Save Connection?"
-      show_details: "Show Details"
+      comments: "تعليق"
+      code: "الشفرة"
+      description: 'وصف'
+      message: "رسالة"
+      gen_list: "إنشاء قائمة"
+      sector: "التحدي الكبير"
+      upload_summary: 'تحميل تقرير ملخص'
+      upload_file: "رفع ملف"
+      upload_status_errors: "حالة / أخطاء التحميل"
+      related_to_sectors: "المتعلقة بالقطاعات: %{sectors}"
+      new_sector_relations: "القطاعات ذات الصلة حديثا: %{sectors}"
+      future_vision: "قطاعات التعليم القائم على المعرفة (KBE)"
+      sector_related_explain: "شرح القطاعات ذات الصلة"
+      subject_related_explain: "شرح موضوعات ذات صلة"
+      explanation: "سبب العلاقة"
+      sector_num: "قطاع %{num}"
+      show: "تبين"
+      working_version: "العمل"
+      final_version: "نهائي"
+      connect_form_title: "حفظ الاتصال؟"
+      show_details: "اظهر التفاصيل"
     roles:
-      name: 'Roles'
+      name: 'الأدوار'
       admin:
-        abbrev: 'Admin.'
-        name: 'Administrator'
+        abbrev: 'مشرف.'
+        name: 'مدير'
       teacher:
-        abbrev: 'Teacher'
-        name: 'Teacher'
+        abbrev: 'مدرس'
+        name: 'مدرس'
       public:
-        abbrev: 'Public'
-        name: 'Public Access'
+        abbrev: 'عامة'
+        name: 'الوصول العام'
     errors:
-      too_many_matched_key: "Too many matches for %{key}"
-      invalid_grade_band: "Invalid grade band %{grade_band}"
-      invalid_code: "invalid code: %{code}"
-      invalid_indicator: "invalid explanation: %{indicator}"
-      skipped_code: "Warning - skipped this indicator"
-      unsaved_rec: "cannot update unsaved record"
-      missing_base_key: "cannot update translation without base key"
-      invalid_lang: "Invalid language %{lang}"
-      unauthorized: "You are not authorized to access requested page."
-      invalid_sheetID: "Row number does not match sheetID"
-      missing_req_field: "Row is missing required field"
-      missing_tree_type_record: "error - missing Tree Type Record"
-      missing_tree_type_code: "error - invalid Tree Type Code"
-      missing_version_record: "error - missing Version Record"
-      missing_version_code: "error - invalid Version Code"
-      max_subj_display_count: "A maximum of %{num} subjects can be displayed at once."
+      too_many_matched_key: "الكثير من المباريات لـ %{key}"
+      invalid_grade_band: "نطاق الدرجات غير صالح %{grade_band}"
+      invalid_code: "الرمز غير صحيح: %{code}"
+      invalid_indicator: "شرح غير صحيح: %{indicator}"
+      skipped_code: "تحذير - تخطي هذا المؤشر"
+      unsaved_rec: "لا يمكن تحديث السجل غير المحفوظ"
+      missing_base_key: "لا يمكن تحديث الترجمة بدون مفتاح أساسي"
+      invalid_lang: "لغة غير صالحة %{lang}"
+      unauthorized: "إنك غير مخول للوصول إلى الصفحة المطلوبة."
+      invalid_sheetID: "رقم الصف لا يتطابق مع sheetID"
+      missing_req_field: "الصف يفتقد الحقل المطلوب"
+      missing_tree_type_record: "خطأ - سجل شجرة نوع مفقود"
+      missing_tree_type_code: "خطأ - رمز نوع الشجرة غير صالح"
+      missing_version_record: "خطأ - فقد سجل الإصدار"
+      missing_version_code: "خطأ - رمز الإصدار غير صالح"
+      max_subj_display_count: "يمكن عرض %{num} موضوع كحد أقصى مرة واحدة."
     notice:
-      saved_relationship: "Saved relationship: %{item_type_1} [%{item_desc_1}] is related to the %{item_type_2} [%{item_desc_2}]"
-      saved_item: "Saved %{item_type}: %{item}"
+      saved_relationship: "العلاقة المحفوظة: %{item_type_1} [%{item_desc_1}] مرتبطة بـ %{item_type_2} [%{item_desc_2}]"
+      saved_item: "تم حفظ %{item_type}: %{item}"
   home:
-    name: "Curriculum Home Page"
-    title: "Curriculum Home Page"
-    additional_ref: "Additional Resources"
+    name: "الصفحة الرئيسية للمنهج"
+    title: "الصفحة الرئيسية للمنهج"
+    additional_ref: "مصادر إضافية"
   nav_bar:
     home:
-      name: "Home"
-      hover: "Turkey STEM Home Page"
+      name: "الصفحة الرئيسية"
+      hover: "الصفحة الرئيسية STEM في مصر"
     curriculum:
-      name: "Curriculum Tree"
-      hover: "Displays the Curriculum Tree"
+      name: "شجرة المناهج"
+      hover: "يعرض شجرة المناهج"
     sectors:
-      name: "Sectors"
-      hover: "Displays the Curriculum by Sectors"
+      name: "التحديات الكبرى"
+      hover: "يعرض المنهج من خلال التحديات الكبرى"
     relations:
-      name: "Relations"
-      hover: "Display the Relations between Curriculum Items"
+      name: "علاقات"
+      hover: "عرض العلاقات بين عناصر المنهاج"
     maint:
-      name: "Editing"
-      hover: "Page for Editing of Curriculum Items"
+      name: "التحرير"
+      hover: "صفحة تحرير عناصر المناهج"
     connections:
-      name: "Other"
-      hover: "Other Connections"
+      name: "آخر"
+      hover: "اتصالات أخرى"
     bigidea:
       name: "Big Ideas"
       hover: "Big Ideas"
@@ -136,42 +135,42 @@ en:
       name: "Standards"
       hover: "Displays Standards"
     documents:
-      name: "Documents"
-      hover: "Documents Management for Administrators"
+      name: "مستندات"
+      hover: "إدارة المستندات للمسؤولين"
     uploads:
-      name: "Uploads"
-      hover: "Curriculum Spreadsheet Uploads"
+      name: "التحميلات"
+      hover: "تحميل جدول بيانات المناهج"
     translations:
-      name: "Translations"
-      hover: "Translations Management for Administrators"
+      name: "الترجمات"
+      hover: "إدارة الترجمات للمسؤولين"
     users:
-      name: "Users"
-      hover: "User Management"
+      name: "المستخدمون"
+      hover: "إدارةالمستخدم"
     my_account:
-      name: "My Account"
-      hover: "Change my account information"
+      name: "حسابي"
+      hover: "تغيير معلومات حسابي"
     signin:
-      name: "Sign In"
-      hover: "Sign in to Curriculum Web App"
+      name: "تسجيل الدخول"
+      hover: "تسجيل الدخول إلى تطبيق الويب الخاص بالمنهج الدراسي"
     signout:
-      name: "Sign Out"
-      hover: "Sign in to Curritulum Web App"
+      name: "خروج"
+      hover: "تسجيل الدخول إلى تطبيق الويب الخاص بالمنهج الدراسي"
   translations:
     index:
-      name: "Translations Listing"
+      name: "قائمة الترجمات"
     index_by_code:
-      name: "Translations Listing by Code"
+      name: "قائمة الترجمات حسب الكود"
     edit:
-      name: "Edit Translation"
+      name: "تحرير الترجمة"
     create:
-      name: "Create Translation"
+      name: "إنشاء الترجمة"
     labels:
-      save_translation: 'Save Translation'
-      listing: "Translation Listing"
-      listing_by_key: "Translation Listing by Key"
-      locale: "Locale"
-      key: "Key"
-      value: "Value"
+      save_translation: 'حفظ الترجمة'
+      listing: "قائمة الترجمة"
+      listing_by_key: "قائمة الترجمة حسب المفتاح"
+      locale: "لغة"
+      key: "مفتاح"
+      value: "القيمة"
     errors:
       missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
       too_many_translations_locale_code: "too many translations for locale: %{locale}, code: %{code}"

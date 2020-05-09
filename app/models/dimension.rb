@@ -28,6 +28,10 @@ class Dimension < BaseRec
     return ret
   end
 
+  def get_dim_ref_key
+    return "dimension.#{id}.ref"
+  end
+
   def self.get_dim_type_key(dimCode, tree_type, version)
     return "curriculum.#{tree_type}.#{version}.#{dimCode}"
   end

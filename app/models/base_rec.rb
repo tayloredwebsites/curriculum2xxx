@@ -30,8 +30,9 @@ class BaseRec < ActiveRecord::Base
   LOCALE_SR = 'sr'
   LOCALE_EN = 'en'
   LOCALE_TR = 'tr'
+  LOCALE_AR_EG = 'ar_EG'
   LOCALE_TR_TR = 'tr_TR'
-  VALID_LOCALES = [LOCALE_TR, LOCALE_EN]
+  VALID_LOCALES = [LOCALE_TR, LOCALE_EN, LOCALE_AR_EG]
   DEFAULT_LOCALE = LOCALE_EN
   BASE_SUBJECTS = [
     'bio', #Biology

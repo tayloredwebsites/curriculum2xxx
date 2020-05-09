@@ -59,7 +59,7 @@ class Subject < BaseRec
   def abbr(loc)
     Rails.logger.debug("loc: #{loc.inspect}")
     Rails.logger.debug("self.base_key: #{self.base_key.inspect}")
-    recs = Translation.where(locale: loc, key: self.base_key+'.abbr')
+    recs = Translation.where(locale: loc, key: "#{self.base_key}.abbr")
     Rails.logger.debug("abbr recs count: #{recs.count}")
     recs.each do |r|
       Rails.logger.debug("abbr rec: #{r.inspect}")
