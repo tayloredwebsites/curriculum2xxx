@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-scope "(:locale)", locale: /tr|en/ do
+scope "(:locale)", locale: /tr|en|ar_EG/ do
 
   get 'new_layout', to: 'translations#new_layout'
   resources :translations,

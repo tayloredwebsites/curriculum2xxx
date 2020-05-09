@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_action :initTypeCode
   before_action :getLocaleCode
+  before_action :initTypeCode
   before_action :getSubjectCode
   before_action :getGradeBandCode
   before_action :set_type_and_version
@@ -181,8 +181,10 @@ class ApplicationController < ActionController::Base
       if @treeTypeRec
         Rails.logger.debug("*** @treeTypeRec.curriculum_title_key: #{@treeTypeRec.curriculum_title_key}")
         @locale_codes = @treeTypeRec.valid_locales.split(',')
-        @locale_code = (@locale_codes.length >0) ? @locale_codes.first : BaseRec::LOCALE_EN
-        Rails.logger.debug("*** @locale_code: #{@locale_code}")
+        if !@locale_code
+          @locale_code = (@locale_codes.length >0) ? @locale_codes.first : BaseRec::LOCALE_EN
+          Rails.logger.debug("*** @locale_code: #{@locale_code}")
+        end
         @locale = Locale.where(code: @locale_code)
         Rails.logger.debug("*** @locale: #{@locale.inspect}")
         default_title = Translation.find_translation_name(

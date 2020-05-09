@@ -49,6 +49,17 @@
             </li>
           <% end %>
         <% end %>
+        <% if lc == 'ar_EG'%>
+          <% if @locale_code == 'ar_EG' %>
+            <li class='cur-locale'>
+              <span>عربي مصري</span>
+            </li>
+          <% else %>
+            <li class='locale-opt'>
+              <a href='/users/lang/ar_EG<%= "?dim_type=#{@dim_type}" if @dim_type %>'>عربي مصري</a>
+            </li>
+          <% end %>
+        <% end %>
       <% end %>
     </ul>
   </div>
