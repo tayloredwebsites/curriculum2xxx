@@ -185,11 +185,16 @@ class ApplicationController < ActionController::Base
         Rails.logger.debug("*** @locale_code: #{@locale_code}")
         @locale = Locale.where(code: @locale_code)
         Rails.logger.debug("*** @locale: #{@locale.inspect}")
+        default_title = Translation.find_translation_name(
+          @locale_code,
+          'app.title',
+          'Curriculum'
+        )
         # To Do - create new translate method to return value with a default value of some kind
         @appTitle = Translation.find_translation_name(
           @locale_code,
           @treeTypeRec.curriculum_title_key,
-          Translation.where(key: 'app.title', locale: @locale_code)
+          default_title
         )
         @sectorName = Translation.find_translation_name(@locale_code, @treeTypeRec.sector_set_name_key, '')
         @hierarchies = []
@@ -214,7 +219,11 @@ class ApplicationController < ActionController::Base
         end
       else
         # To Do - fill in defaults here?
-        @appTitle = Translation.where(key: 'app.title', locale: @locale_code)
+        @appTitle = Translation.find_translation_name(
+          @locale_code,
+          'app.title',
+          'Curriculum'
+        )
       end
 
       # Rails.logger.debug("*** application controller.set_type_and_version - @treeTypeRec: #{@treeTypeRec.inspect}")

@@ -120,6 +120,9 @@ en:
     essq:
       name: "Essential Questions"
       hover: "Displays Essential Questions"
+    pract:
+      name: "Practices"
+      hover: "Displays Practices"
     questions:
       name: "Essential Questions"
       hover: "Displays Essential Questions"
