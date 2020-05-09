@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   def home
     @editing = params[:editMe] && current_user && user_is_admin?(current_user)
-    @show_resources = params[:showResources]
+    @show_resources = params[:showResources] == "true"
     @home_page_text = Translation.find_translation_name(
         @locale_code,
         @treeTypeRec.home_page_key,
