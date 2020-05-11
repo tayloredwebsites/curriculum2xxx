@@ -1,4 +1,6 @@
 # translation_keys.rake
+# This was used to migrate the data to a new standardized translation key
+#     which now comes from the model.
 namespace :translation_keys do
   desc "Fix subject name and abbr translation keys in both Subject and Translation Records"
   task fix_subjects: :environment do
