@@ -2,7 +2,7 @@ class Outcome < BaseRec
 
   has_one :tree
 
-  REF_TYPES = [
+  RESOURCE_TYPES = [
     "proj_ref",
     "learn_prog",
     "class_text",
@@ -31,7 +31,7 @@ class Outcome < BaseRec
   ######
   # Field Translations: Reference/Resources
   def get_ref_key(ref_type)
-    if REF_TYPES.include?(ref_type)
+    if RESOURCE_TYPES.include?(ref_type)
       return "#{base_key}.#{ref_type}"
     else
       return nil
@@ -39,7 +39,7 @@ class Outcome < BaseRec
   end
 
   def self.get_ref_name(ref_type, locale_code, sector_set_code)
-    ref_index = REF_TYPES.index(ref_type)
+    ref_index = RESOURCE_TYPES.index(ref_type)
     name = ''
     if ref_index
       name = Translation.find_translation_name(
@@ -52,7 +52,7 @@ class Outcome < BaseRec
   end
 
   def self.get_ref_hash(ref_type, locale_code, sector_set_code)
-    ref_index = REF_TYPES.index(ref_type)
+    ref_index = RESOURCE_TYPES.index(ref_type)
     name = ''
     if ref_index
       name = Translation.find_translation_name(

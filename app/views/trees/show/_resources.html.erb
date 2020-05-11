@@ -1,0 +1,16 @@
+<!-- Supporting Resources Table -->
+<div class='row teacher-label top-label'>
+  <div class='col col-lg-12'>
+    <%= I18n.t('trees.labels.teacher_header') %>
+    <%= link_to(fa_icon("gear"), edit_tree_path(@tree.id, tree: {edit_type: "ref_settings"}), {:class => "fa-lg", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('resource_titles') %>
+  </div>
+</div>
+<div class='teacher-grid'>
+<% resource_codes.each do |c| %>
+  <% code = c.to_i %>
+  <%= render partial: "/trees/show/resource_category", locals: {
+          code: code,
+        }
+  %>
+<% end %>
+</div>

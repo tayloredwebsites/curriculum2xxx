@@ -770,9 +770,16 @@ class TreesController < ApplicationController
           detail_type = 'right-col'
           detail = a[1..a.length - 2]
         end
+        category_codes = detail.split("#")
+        if category_codes.length > 1
+          detail = category_codes[0]
+          category_codes = category_codes[1..category_codes.length]
+        else
+          category_codes = nil
+        end
         detail = detail.split("_").join("")
         @detail_headers << {type: detail_type, name: detail, depth: hierarchy_codes.index(detail) } if detail_type == 'header'
-        @detail_areas << {type: detail_type, name: detail} if detail_type != 'header'
+        @detail_areas << {type: detail_type, name: detail, codes: category_codes} if detail_type != 'header'
       end
     else
       # not a detail page, go back to index page
@@ -883,16 +890,16 @@ class TreesController < ApplicationController
         @translation = translation[name_key]
       elsif @edit_type == "comment"
          @comment = Translation.find_translation_name(@locale_code,@tree.outcome.get_explain_key, "")
-      elsif Outcome::REF_TYPES.include?(@edit_type)
+      elsif Outcome::RESOURCE_TYPES.include?(@edit_type)
         @ref = Translation.find_translation_name(
             @locale_code,
             @tree.outcome.get_ref_key(@edit_type),
             ""
           )
         #To Do: normalize these translations
-        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::REF_TYPES.index(@edit_type) + 1}", sector_set: @sectorName)
+        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::RESOURCE_TYPES.index(@edit_type) + 1}", sector_set: @sectorName)
       elsif @edit_type == "ref_settings"
-        @ref_titles = Outcome::REF_TYPES.map { |t| Outcome.get_ref_hash(t, @locale_code, @sectorName) }
+        @ref_titles = Outcome::RESOURCE_TYPES.map { |t| Outcome.get_ref_hash(t, @locale_code, @sectorName) }
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
@@ -949,7 +956,7 @@ class TreesController < ApplicationController
       elsif update == 'indicator'
         @indicator = Tree.find(tree_params[:attr_id])
         name_key = @indicator.buildNameKey
-      elsif Outcome::REF_TYPES.include?(update)
+      elsif Outcome::RESOURCE_TYPES.include?(update)
         save_translation = false
         puts "RESOURCE: #{tree_params[:resource]}"
         Translation.find_or_update_translation(

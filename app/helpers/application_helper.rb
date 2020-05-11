@@ -53,7 +53,7 @@ module ApplicationHelper
   end
 
   def can_edit_type?(type)
-    teachers_can_edit = ['miscon', 'sector', 'connect', 'refs']
+    teachers_can_edit = ['miscon', 'sector', 'connect', 'resource']
     return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type))
   end
 

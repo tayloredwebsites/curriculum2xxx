@@ -38,8 +38,17 @@ namespace :seed_turkey_v02 do
       working_status: true,
       dim_codes: 'essq,bigidea,pract,miscon',
       tree_code_format: 'subject,grade,unit,sub_unit,comp',
-      detail_headers: 'grade,unit,(sub_unit),comp,<essq<,>bigidea>,[pract],{explain},[miscon],[sector],[connect],[refs]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
+      # Detail headers notation key:
+      #   item - HEADER
+      #   (item) - optional HEADER item
+      #   [item] - TABLE item, full width of table, may be multiple connected items of this type
+      #   {item} - TABLE item, full width of table
+      #   <item< - TABLE item, left side column (of two), must be followed by >item>
+      #   >item> - TABLE item, right side column (of two), must follow <item<
+      #   <item> - TABLE item, full width of table with two cols: item | item resources
+      #   [item#n#n#n] - TABLE item, full width of table, with numeric codes identifying which categories of this item to display
+      detail_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],{explain},[miscon],[sector],[connect],[resource#0#1#2#3#4#5]',
+      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon]'
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)

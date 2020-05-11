@@ -39,10 +39,27 @@ namespace :seed_stessa_2 do
       working_status: true,
       dim_codes: 'bigidea,essq,concept,skill,miscon',
       tree_code_format: 'subject,grade,lo',
-      # To Do: Write documentation on headers formatting
       # To Do: Write documentation on obtaining translation keys
-      #  - for dimension translation use dim.get_dim_ref_key
-      detail_headers: 'grade,unit,lo,<bigidea<,>essq>,<concept<,>skill>,[miscon],[sector],[connect],[refs]',
+      # - for dimension translation use dim.get_dim_ref_key
+      #
+      # Detail headers notation key:
+      #   item - HEADER
+      #   (item) - optional HEADER item
+      #   [item] - TABLE item, full width of table,
+      #            may be multiple connected items of this type.
+      #   {item} - TABLE item, full width of table
+      #   <item< - TABLE item, left side column (of two),
+      #            must be followed by >item>
+      #   >item> - TABLE item, right side column (of two),
+      #            must follow <item<
+      #   <item> - TABLE item, full width of table with two cols:
+      #          item | item resources
+      #   [item#n#...] - TABLE item, full width of table,
+      #                  with numeric codes identifying which
+      #                  categories of this item to display.
+      #                  e.g., may use indexes in the
+      #                  Outcome::RESOURCE_TYPES array.
+      detail_headers: 'grade,unit,lo,<bigidea<,>essq>,<concept<,>skill>,[miscon],[sector],[connect],[resource#1#3#2]',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]'
     }
     if myTreeType.count < 1
@@ -187,19 +204,19 @@ namespace :seed_stessa_2 do
     @subjectsHash = {
 
       # note if a subject is in the Library, it must be in this hash
-      bio: {abbr: 'bio', inCurric: true, engName: 'Biology', locAbbr: '', locName: 'مادة الاحياء'},
-      cap: {abbr: 'cap', inCurric: false, engName: 'Capstones', locAbbr: '', locName: 'كابستون'},
-      che: {abbr: 'Chem', inCurric: true, engName: 'Chemistry', locAbbr: '', locName: 'كيمياء'},
-      edu: {abbr: 'edu', inCurric: false, engName: 'Education', locAbbr: '', locName: 'التعليم'},
-      engl: {abbr: 'engl', inCurric: false, engName: 'English', locAbbr: '', locName: 'الإنجليزية'},
-      eng: {abbr: 'eng', inCurric: false, engName: 'Engineering', locAbbr: '', locName: 'هندسة'},
-      mat: {abbr: 'Math', inCurric: true, engName: 'Mathematics', locAbbr: '', locName: 'الرياضيات'},
-      mec: {abbr: 'mec', inCurric: false, engName: 'Mechanics', locAbbr: '', locName: 'علم الميكانيكا'},
-      phy: {abbr: 'phy', inCurric: false, engName: 'Physics', locAbbr: '', locName: 'الفيزياء'},
-      sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: '', locName: 'علم'},
-      ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: '', locName: 'علوم الأرض'},
-      geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: '', locName: 'جيولوجيا'},
-      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: '', locName: 'هندسة التكنولوجيا'}
+      bio: {abbr: 'bio', inCurric: true, engName: 'Biology', locAbbr: 'مادة الاحياء', locName: 'مادة الاحياء'},
+      cap: {abbr: 'cap', inCurric: false, engName: 'Capstones', locAbbr: 'كابستون', locName: 'كابستون'},
+      che: {abbr: 'Chem', inCurric: true, engName: 'Chemistry', locAbbr: 'كيمياء', locName: 'كيمياء'},
+      edu: {abbr: 'edu', inCurric: false, engName: 'Education', locAbbr: 'التعليم', locName: 'التعليم'},
+      engl: {abbr: 'engl', inCurric: false, engName: 'English', locAbbr: 'الإنجليزية', locName: 'الإنجليزية'},
+      eng: {abbr: 'eng', inCurric: false, engName: 'Engineering', locAbbr: 'هندسة', locName: 'هندسة'},
+      mat: {abbr: 'Math', inCurric: true, engName: 'Mathematics', locAbbr: 'الرياضيات', locName: 'الرياضيات'},
+      mec: {abbr: 'mec', inCurric: false, engName: 'Mechanics', locAbbr: 'علم الميكانيكا', locName: 'علم الميكانيكا'},
+      phy: {abbr: 'phy', inCurric: false, engName: 'Physics', locAbbr: 'الفيزياء', locName: 'الفيزياء'},
+      sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: 'علم', locName: 'علم'},
+      ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: 'علوم الأرض', locName: 'علوم الأرض'},
+      geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: 'جيولوجيا', locName: 'جيولوجيا'},
+      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'}
     }
 
     @subjectsHash.each do |key, subjHash|
