@@ -950,102 +950,28 @@ class TreesController < ApplicationController
   end
 
   def update
-    Rails.logger.debug "+++++UPDATE PARAMS: #{params.inspect}"
     errors = []
-    # if @tree.update(tree_params)
-    #   flash[:notice] = "Tree  updated."
-    #   # I18n.backend.reload!
-    #   redirect_to trees_path
-    # else
-    #   render :edit
-    # end
-    update = tree_params[:edit_type]
-    if update
-      save_translation = true
-      Translation.find_or_update_translation(@locale_code, @tree.outcome.get_explain_key, tree_params[:comment]) if tree_params[:comment]
-      if update == 'outcome'
-        name_key = @tree.buildNameKey
-      elsif update == 'weeks'
-        @tree.outcome.update(duration_weeks: tree_params[:weeks].to_i)
-      elsif update == 'hours'
-        @tree.outcome.update(hours_per_week: tree_params[:hours].to_i)
-      elsif update == 'indicator'
-        @indicator = Tree.find(tree_params[:attr_id])
-        name_key = @indicator.buildNameKey
-      elsif Outcome::RESOURCE_TYPES.include?(update)
-        save_translation = false
-        puts "RESOURCE: #{tree_params[:resource]}"
-        Translation.find_or_update_translation(
-            @locale_code,
-            @tree.outcome.get_ref_key(update),
-            tree_params[:resource].split("<script>").join("").split("</script>").join("")
-          )
-      elsif tree_params[:resource_name]
-        tree_params[:resource_name].each_with_index do |name, i|
-          Translation.find_or_update_translation(
-            @locale_code,
-            tree_params[:resource_key][i],
-            name
-            )
-        end
-      elsif update == 'treetree'
-        @tree_tree = TreeTree.find(tree_params[:attr_id])
-        @reciprocal_tree_tree = TreeTree.where(
-            :tree_referencee_id => @tree_tree.tree_referencer_id,
-            :tree_referencer_id => @tree_tree.tree_referencee_id
-          ).first
-        name_key = @tree_tree.explanation_key
-        @tree_tree.relationship = tree_tree_params[:relationship] if tree_tree_params[:relationship]
-        @tree_tree.active = tree_params[:active]
-        @reciprocal_tree_tree.active = tree_params[:active]
-        save_translation = false if (tree_tree_params[:active].to_s == 'false')
-      elsif update == 'sector' || update == 'dimtree'
-        if tree_params[:attr_id].length > 0
-          @rel = update == 'sector' ? SectorTree.find(tree_params[:attr_id]) : DimTree.find(tree_params[:attr_id])
-        else
-          @rel = SectorTree.where(:explanation_key => SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.id, tree_params[:sector_id]))
-          if @rel.length <= 0
-            @rel = SectorTree.new
-            @rel.tree_id = @tree.id
-            @rel.sector_id = tree_params[:sector_id]
-            @rel.explanation_key = SectorTree.explanationKey(@treeTypeRec.code, @versionRec.code, @tree.id, tree_params[:sector_id])
-          else
-            @rel = @rel.first
-          end
-        end
-        name_key = update == 'sector' ? @rel.explanation_key : @rel.dim_explanation_key
-        @rel.active = tree_params[:active] #if (update == 'sector')
-        save_translation = false if (tree_params[:active].to_s == 'false')
-      end #if update type is 'outcome', 'indicator', etc
-
-      translation_matches = Translation.where(
-        :locale => @locale_code,
-        :key => name_key
-      )
-      if translation_matches.length > 0
-        @translation = translation_matches.first
-        @translation.value = tree_params[:name_translation]
-      else
-        @translation = Translation.new(
-          :locale => @locale_code,
-          :key => name_key,
-          :value => tree_params[:name_translation]
-        )
-      end #record translation in new or existing record
-        ActiveRecord::Base.transaction do
-         begin
-           @translation.save! if save_translation
-           @tree_tree.save! if @tree_tree
-           @reciprocal_tree_tree.save! if @reciprocal_tree_tree
-           @rel.save! if @rel
-         rescue ActiveRecord::StatementInvalid => e
-           errors << e
-         end
-      end
-    else
-      errors << "Did not attempt update"
-    end #if there is an update type
-    flash[:alert] = "Errors prevented the LO from being updated: #{errors}" if (errors.length > 0)
+    update_type = tree_params[:edit_type]
+    tree_to_update = update_type == "indicator" ? Tree.find(tree_params[:attr_id]) : @tree
+    message = tree_to_update.update_fields(
+      update_type,
+      locale_code: @locale_code,
+      name_translation: tree_params[:name_translation],
+      comment: tree_params[:comment],
+      weeks: tree_params[:weeks],
+      hours: tree_params[:hours],
+      resource: tree_params[:resource],
+      resource_name_arr: tree_params[:resource_name],
+      resource_name_keys: tree_params[:resource_key],
+      tree_tree_id: update_type == 'treetree' ? tree_params[:attr_id] : nil,
+      tree_tree_rel: tree_tree_params[:relationship],
+      tree_tree_active: tree_params[:active] != 'false',
+      sector_id: tree_params[:sector_id],
+      x_sector_tree_id: update_type == 'sector' && tree_params[:active] == 'false' ? tree_params[:attr_id] : nil,
+      x_dim_tree_id: update_type == 'dimtree' && tree_params[:active] == 'false' ? tree_params[:attr_id] : nil
+    )
+    errors << message if message != "success"
+    flash[:alert] = "Errors may have prevented the LO from being updated: #{errors}" if (errors.length > 0)
     redirect_to tree_path(@tree.id, editme: @tree.id)
   end
 
@@ -1129,14 +1055,18 @@ class TreesController < ApplicationController
   end
 
   def tree_tree_params
-    params.require(:tree_tree).permit(
-      :id,
-      :explanation_key,
-      :tree_referencer_id,
-      :tree_referencee_id,
-      :relationship,
-      :active
-    )
+    begin
+      params.require(:tree_tree).permit(
+        :id,
+        :explanation_key,
+        :tree_referencer_id,
+        :tree_referencee_id,
+        :relationship,
+        :active
+      )
+    rescue
+      ActionController::Parameters.new
+    end
   end
 
   def reorder_params
