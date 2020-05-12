@@ -119,8 +119,8 @@ class UploadsController < ApplicationController
       @localeRec = @upload.locale
       tree_parent_code = ''
 
-      # check filename
-      if upload_params['file'].original_filename != @upload.filename
+      # check filename (allow for capitalization differences)
+      if upload_params['file'].original_filename.downcase != @upload.filename.downcase
         flash[:alert] = I18n.translate('uploads.errors.incorrect_filename', filename: @upload.filename)
         abortRun = true
         Rails.logger.debug("*** seed filename: #{@upload.filename.inspect}")

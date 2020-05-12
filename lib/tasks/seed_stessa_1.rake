@@ -1,4 +1,4 @@
-# seed_eg_stem.rake
+# seed_eg_stessa_1rake
 namespace :seed_eg_stem do
 
   task populate: [:create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors]
@@ -15,27 +15,23 @@ namespace :seed_eg_stem do
     throw "Missing version record" if !@v01
 
     # create Tree Type record for the Curriculum
-    myTreeType = TreeType.where(code: 'egstemuniv')
+    myTreeTypes = TreeType.where(code: 'egstemuniv')
     myTreeTypeValues = {
       code: 'egstemuniv',
       hierarchy_codes: 'grade,sem,unit,lo,indicator',
-      valid_locales: BaseRec::LOCALE_EN,
+      valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
       sector_set_code: 'gr_chall',
       sector_set_name_key: 'sector.set.gr.chal.name',
       curriculum_title_key: 'curriculum.egstemuniv.title', #'Egypt STEM Teacher Prep Curriculum'
       outcome_depth: 3,
       version_id: @v01.id,
       working_status: true,
-      # [dim code]_dim_type fields deprecated in favor of dim_codes
-      # miscon_dim_type: 'miscon',
-      # big_ideas_dim_type: 'bigidea',
-      # ess_q_dim_type: 'essq',
       dim_codes: 'bigidea,miscon',
       tree_code_format: 'grade,unit,lo',
       detail_headers: 'grade,sem,unit,lo,indicator,[bigidea],{explain},[miscon],[sector],[connect],[refs]',
       grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],{explain},[miscon]'
     }
-    if myTreeType.count < 1
+    if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)
     else
       TreeType.update(myTreeType.first.id, myTreeTypeValues)
@@ -71,10 +67,9 @@ namespace :seed_eg_stem do
   ###################################################################################
   desc "load up the locales (created in seeds.rb seed file)"
   task load_locales: :environment do
-    @loc_tr = Locale.first
-    @loc_en = Locale.second
-    @loc_ar_EG = Locale.third
-    puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_tr.code}: #{@loc_tr.name}, #{@loc_ar_EG.code}: #{@loc_ar_EG.name}"
+    @loc_en = Locale.where(code: 'en').first
+    @loc_ar_EG = Locale.where(code: 'ar_EG').first
+    puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_ar_EG.code}: #{@loc_ar_EG.name}"
   end #load_locales
 
 
@@ -84,9 +79,9 @@ namespace :seed_eg_stem do
     # create an initial admin user to get things going.
     # Note: the Curriculum to display by default is EGSTEM tree type
     # to do - turn off admin flag for production.
-    if User.where(email: 'egstemuniv@sample.com').count < 1
+    if User.where(email: 'admin@sample.com').count < 1
       User.create(
-        email: 'egstemuniv@sample.com',
+        email: 'admin@sample.com',
         password: 'password',
         password_confirmation: 'password',
         given_name: 'Admin of',
@@ -109,8 +104,8 @@ namespace :seed_eg_stem do
         last_tree_type_id: @egstem
       )
     end
-    @user = User.where(email: 'egstemuniv@sample.com').first
-    puts "admin user is created for egstemuniv"
+    @user = User.where(email: 'admin@sample.com').first
+    puts "admin user is created for stessa 1 curriculum"
   end #create_admin_user
 
 

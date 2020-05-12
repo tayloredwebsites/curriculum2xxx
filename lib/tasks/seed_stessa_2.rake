@@ -1,7 +1,7 @@
-# seed_turkey.rake
+# seed_stessa_2.rake
 namespace :seed_stessa_2 do
 
-  task populate: [:create_tree_type, :load_locales, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :ensure_default_translations]
+  task populate: [:create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :ensure_default_translations]
 
   ###################################################################################
   desc "create the Curriculum Tree Type and Version for STEM Egypt High School Curriculum"
@@ -9,10 +9,10 @@ namespace :seed_stessa_2 do
 
     # reference version record from seeds.rb
     @v01 = Version.where(code: 'v01').first
-    throw "Missing version record" if !@v01
+    throw "Missing version record - see seeds.rb" if !@v01
 
     # create Tree Type record for the Curriculum
-    myTreeType = TreeType.where(code: 'egstem')
+    myTreeType = TreeType.where(code: 'egstem', version_id: @v01.id)
     myTreeTypeValues = {
       code: 'egstem',
       hierarchy_codes: 'grade,sem,unit,lo',
@@ -25,9 +25,9 @@ namespace :seed_stessa_2 do
       working_status: true,
       dim_codes: 'bigidea,essq,concept,skill,miscon',
       tree_code_format: 'subject,grade,lo',
-      #To Do: if detail has a ref translation, list as <detail>
-      #e.g., <miscon> means one row with two cols: miscon | miscon ref translation
-      # for dimension translation use dim.get_dim_ref_key
+      # To Do: Write documentation on headers formatting
+      # To Do: Write documentation on obtaining translation keys
+      #  - for dimension translation use dim.get_dim_ref_key
       detail_headers: 'grade,unit,lo,<bigidea<,>essq>,<concept<,>skill>,[miscon],[sector],[connect],[refs]',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]'
 
@@ -37,8 +37,8 @@ namespace :seed_stessa_2 do
     else
       TreeType.update(myTreeType.first.id, myTreeTypeValues)
     end
-    throw "Invalid Tree Type Count" if TreeType.where(code: 'egstem').count != 1
-    @egstem = TreeType.where(code: 'egstem').first
+    throw "Invalid Tree Type Count" if TreeType.where(code: 'egstem', version_id: @v01.id).count != 1
+    @egstem = TreeType.where(code: 'egstem', version_id: @v01.id).first
 
     # Create ENGLISH translation(s) for hierarchy codes
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.hierarchy_name_key('grade'), 'Grade')
@@ -87,10 +87,45 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "load up the locales (created in seeds.rb seed file)"
   task load_locales: :environment do
-    @loc_en = Locale.second
-    @loc_ar_EG = Locale.third
+    @loc_en = Locale.where(code: 'en').first
+    @loc_ar_EG = Locale.where(code: 'ar_EG').first
     puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_ar_EG.code}: #{@loc_ar_EG.name}"
   end #load_locales
+
+  ###################################################################################
+  desc "create the admin user(s)"
+  task create_admin_user: :environment do
+    # create an initial admin user to get things going.
+    # Note: the Curriculum to display by default is EGSTEM tree type
+    # to do - turn off admin flag for production.
+    if User.where(email: 'admin@sample.com').count < 1
+      User.create(
+        email: 'admin@sample.com',
+        password: 'password',
+        password_confirmation: 'password',
+        given_name: 'Admin of',
+        family_name: 'Curriculum App',
+        roles: 'admin',
+        govt_level: "1",
+        govt_level_name: "govt_level_name",
+        municipality: "municipality",
+        institute_type: "1",
+        institute_name_loc: "institute_name_loc",
+        position_type: "1",
+        subject1: "subject1",
+        subject2: "subject2",
+        gender: "2",
+        education_level: "1",
+        work_phone: "work_phone",
+        work_address: "work_address",
+        terms_accepted: true,
+        confirmed_at: DateTime.now,
+        last_tree_type_id: @egstem
+      )
+    end
+    @user = User.where(email: 'admin@sample.com').first
+    puts "admin user is created for stessa 2 curriculum"
+  end #create_admin_user
 
 
   ###################################################################################
@@ -126,6 +161,21 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "create the subjects for this tree type (curriculum)"
   task create_subjects: :environment do
+    default_subject_translations = [
+      ['bio', 'Biology', 'مادة الاحياء'],
+      ['cap', 'Capstones', 'كابستون'],
+      ['che', 'Chemistry', 'كيمياء'],
+      ['edu', 'Education', 'التعليم'],
+      ['engl', 'English', 'الإنجليزية'],
+      ['eng', 'Engineering', 'هندسة'],
+      ['mat', 'Math', 'الرياضيات'],
+      ['mec', 'Mechanics', 'علم الميكانيكا'],
+      ['phy', 'Physics', 'الفيزياء'],
+      ['sci', 'Science', 'علم'],
+      ['ear', 'Earth Science', 'علوم الأرض'],
+      ['geo', 'Geology', 'جيولوجيا'],
+      ['tech', 'Tech Engineering', 'هندسة التكنولوجيا'],
+    ]
     @subjects = []
     if Subject.where(tree_type_id: @egstem.id, code: 'cap').count < 1
       @subjects << Subject.create(
@@ -383,21 +433,21 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "Ensure default subject translations exist"
   task ensure_default_translations: :environment do
-    default_subject_translations = [
-      ['bio', 'Biology', 'مادة الاحياء'],
-      ['cap', 'Capstones', 'كابستون'],
-      ['che', 'Chemistry', 'كيمياء'],
-      ['edu', 'Education', 'التعليم'],
-      ['engl', 'English', 'الإنجليزية'],
-      ['eng', 'Engineering', 'هندسة'],
-      ['mat', 'Math', 'الرياضيات'],
-      ['mec', 'Mechanics', 'علم الميكانيكا'],
-      ['phy', 'Physics', 'الفيزياء'],
-      ['sci', 'Science', 'علم'],
-      ['ear', 'Earth Science', 'علوم الأرض'],
-      ['geo', 'Geology', 'جيولوجيا'],
-      ['tech', 'Tech Engineering', 'هندسة التكنولوجيا'],
-    ]
+    # default_subject_translations = [
+    #   ['bio', 'Biology', 'مادة الاحياء'],
+    #   ['cap', 'Capstones', 'كابستون'],
+    #   ['che', 'Chemistry', 'كيمياء'],
+    #   ['edu', 'Education', 'التعليم'],
+    #   ['engl', 'English', 'الإنجليزية'],
+    #   ['eng', 'Engineering', 'هندسة'],
+    #   ['mat', 'Math', 'الرياضيات'],
+    #   ['mec', 'Mechanics', 'علم الميكانيكا'],
+    #   ['phy', 'Physics', 'الفيزياء'],
+    #   ['sci', 'Science', 'علم'],
+    #   ['ear', 'Earth Science', 'علوم الأرض'],
+    #   ['geo', 'Geology', 'جيولوجيا'],
+    #   ['tech', 'Tech Engineering', 'هندسة التكنولوجيا'],
+    # ]
 
     default_subject_translations.each do |s|
       name_key = Subject.get_default_name_key(s[0])
