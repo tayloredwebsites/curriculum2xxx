@@ -81,6 +81,7 @@
               dim_code: detail[:dim_code],
               outcomes: detail[:outcome],
               sector: detail[:sector],
+              resources: (area[:type] == 'resource-col'),
               can_edit: can_edit_type?(area[:name]),
              }
           %>

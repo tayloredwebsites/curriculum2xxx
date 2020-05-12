@@ -1,9 +1,14 @@
 <div class='related-items-table'>
   <div class='row center-label-bold top-label'>
-    <div class='col col-lg-12'>
+    <div class='col col-<%= resources ? 6 : 12 %>'>
       <%= detail_title %>
       <%= link_to(fa_icon("plus-square"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: 'new'}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && sector && can_edit %>
     </div>
+    <% if resources %>
+        <div class='col col-6'>
+          <%= I18n.translate('trees.labels.dimension_resources', dim_name: detail_title.singularize) %>
+        </div>
+    <% end %>
   </div>
   <% detailsFound = 0 %>
   <% details.each do |dt| %>
@@ -15,12 +20,17 @@
       detailsFound += 1
     %>
     <div class='row'>
-      <div class='col col-lg-12 rel-sectors padding-left padding-right'>
+      <div class='col col-<%= resources ? 6 : 12 %> rel-sectors padding-left padding-right'>
         <%= @translations[d.dim_name_key] %>
         <% if @editMe && can_edit %>
         <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
         <% end #if @editMe %>
       </div>
+      <% if resources %>
+        <div class="col col-6 rel-sectors padding-left padding-right">
+          <!-- To Do: populate with resources list -->
+        </div>
+      <% end %>
     </div>
   <%
     end #if d.dim_code == dim_code

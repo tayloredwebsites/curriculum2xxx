@@ -769,6 +769,9 @@ class TreesController < ApplicationController
         elsif a.first == ">" && a.last == ">"
           detail_type = 'right-col'
           detail = a[1..a.length - 2]
+        elsif a.first == "<" && a.last == ">"
+          detail_type = 'resource-col'
+          detail = a[1..a.length - 2]
         end
         category_codes = detail.split("#")
         if category_codes.length > 1
