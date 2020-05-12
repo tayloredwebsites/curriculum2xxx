@@ -52,7 +52,7 @@
               <% end %>
             </div>
           </div>
-        <% else %>
+        <% elsif h[:name] == 'weeks' || h[:name] == 'hours' %>
           <div class='row subject-<%= h[:name] %>-row'>
             <div class='col col-6 text-left'>
               <%
