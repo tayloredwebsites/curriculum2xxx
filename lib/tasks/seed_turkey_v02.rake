@@ -1,31 +1,33 @@
-# seed_turkey.rake
+# seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  VERSION_NUM = 'v02'
-  VERSION_CODE = 'tfv'
-  SECTOR_SET_CODE = 'future'
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors]
 
-  task populate: [:create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors]
+  task setup: :environment do
+    @versionNum = 'v02'
+    @curriculumCode = 'tfv'
+    @sectorCode = 'future'
+  end
 
   ###################################################################################
-  desc "create the Curriculum Tree Type and Version - Is Rerunnable (right?) !"
+  desc "create the Curriculum Tree Type and Version - Is Rerunnable!"
   task create_tree_type: :environment do
 
     # reference version record from seeds.rb
-    myVersion = Version.where(:code => VERSION_NUM)
+    myVersion = Version.where(:code => @versionNum)
     if myVersion.count > 0
       @ver = myVersion.first
     else
       @ver = Version.new
-      @ver.code = VERSION_NUM
+      @ver.code = @versionNum
       @ver.save
       @ver.reload
     end
 
     # create Tree Type record for the Curriculum
-    myTreeTypes = TreeType.where(code: VERSION_CODE, version_id: @ver.id)
+    myTreeTypes = TreeType.where(code: @curriculumCode, version_id: @ver.id)
     myTreeTypeValues = {
-      code: VERSION_CODE,
+      code: @curriculumCode,
       hierarchy_codes: 'grade,unit,sub_unit,comp',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
       sector_set_code: 'future,hide',
@@ -40,11 +42,11 @@ namespace :seed_turkey_v02 do
       grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
     }
     if myTreeTypes.count < 1
-      myTreeType = TreeType.create(myTreeTypeValues)
+      TreeType.create(myTreeTypeValues)
     else
-      myTreeType = TreeType.update(myTreeTypes.first.id, myTreeTypeValues)
+      TreeType.update(myTreeTypes.first.id, myTreeTypeValues)
     end
-    treeTypes = TreeType.where(code: VERSION_CODE, version_id: @ver.id)
+    treeTypes = TreeType.where(code: @curriculumCode, version_id: @ver.id)
     throw "ERROR: Missing tfv tree type" if treeTypes.count < 1
     @tt = treeTypes.first
 
@@ -103,7 +105,7 @@ namespace :seed_turkey_v02 do
         password: 'password',
         password_confirmation: 'password',
         given_name: 'Admin of',
-        family_name: 'Curriculum App',
+        family_name: 'Curriculum',
         roles: 'admin',
         govt_level: "1",
         govt_level_name: "govt_level_name",
@@ -123,6 +125,8 @@ namespace :seed_turkey_v02 do
       )
     end
     @user = User.where(email: 'admin@sample.com').first
+    puts "admin user is created for #{@curriculumCode} curriculum"
+
   end #create_admin_user
 
 
@@ -199,48 +203,49 @@ namespace :seed_turkey_v02 do
       # create the subject for this tree type
       # note: using default start and end grade
       # - need to be set: set_min_max_grades:run rake task after uploads are done
-      puts "find subject tree_type_id: #{@tt.id}, code: #{subjHash[:abbr]}"
-      subjs = Subject.where(tree_type_id: @tt.id, code: subjHash[:abbr])
+      puts "find subject tree_type_id: #{@tt.id}, code: #{key}"
+      subjs = Subject.where(tree_type_id: @tt.id, code: key)
       if subjs.count < 1
+        puts "Creating Subject for #{key}"
         subj = Subject.create(
           tree_type_id: @tt.id,
           code: key,
-          base_key: "subject.#{@tt.code}.#{@ver}.#{subjHash[:abbr]}"
+          base_key: "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}"
         )
       else
         subj = subjs.first
       end
 
       # create english translation for subject name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver}.#{subjHash[:abbr]}.name", subjHash[:engName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:engName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create english translation for subject abbreviation
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver}.#{subjHash[:abbr]}.abbr", subjHash[:abbr])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:abbr])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       if subjHash[:inCurric]
 
         if subjHash[:locName].present?
           # create locale's translation for subject name
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver}.#{subjHash[:abbr]}.name", subjHash[:locName])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
         if subjHash[:locAbbr].present?
           # create locale's translation for subject abbreviation
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
-        puts "create upload for subject: #{subj.id} #{subj.code}"
-        if Upload.where(tree_type_code: VERSION_CODE,
+        if Upload.where(tree_type_code: @curriculumCode,
           subject_id: subj.id,
           grade_band_id: nil,
           locale_id: @loc_en.id
         ).count < 1
+        puts "create Eng upload for subject: #{subj.id} #{subj.code}"
           Upload.create!(
-            tree_type_code: VERSION_CODE,
+            tree_type_code: @curriculumCode,
             subject_id: subj.id,
             grade_band_id: nil,
             locale_id: @loc_en.id,
@@ -248,13 +253,14 @@ namespace :seed_turkey_v02 do
             filename: "#{@tt.code}#{@ver.code}#{subj.code.capitalize}AllEng.csv"
           )
         end
-        if Upload.where(tree_type_code: VERSION_CODE,
-            subject_id: subj.id,
-            grade_band_id: nil,
-            locale_id: @loc_tr.id
-          ).count < 1
+        if Upload.where(tree_type_code: @curriculumCode,
+          subject_id: subj.id,
+          grade_band_id: nil,
+          locale_id: @loc_tr.id
+        ).count < 1
+          puts "create Tur upload for subject: #{subj.id} #{subj.code}"
           Upload.create!(
-            tree_type_code: VERSION_CODE,
+            tree_type_code: @curriculumCode,
             subject_id: subj.id,
             grade_band_id: nil,
             locale_id: @loc_tr.id,
@@ -309,29 +315,29 @@ namespace :seed_turkey_v02 do
     @sectorsHash.each do |key, sectHash|
 
       # create the sector
-      puts "create the sector: #{SECTOR_SET_CODE}, #{sectHash[:code]}"
-      sectors = Sector.where(sector_set_code: SECTOR_SET_CODE, code: sectHash[:code])
+      puts "create the sector: #{@sectorCode}, #{sectHash[:code]}"
+      sectors = Sector.where(sector_set_code: @sectorCode, code: sectHash[:code])
       if sectors.count < 1
         sector = Sector.create(
-          sector_set_code: SECTOR_SET_CODE,
+          sector_set_code: @sectorCode,
           code: sectHash[:code],
-          name_key: "sector.#{SECTOR_SET_CODE}.#{sectHash[:code]}.name",
-          base_key: "sector.#{SECTOR_SET_CODE}.#{sectHash[:code]}"
+          name_key: "sector.#{@sectorCode}.#{sectHash[:code]}.name",
+          base_key: "sector.#{@sectorCode}.#{sectHash[:code]}"
         )
       else
         sector = sectors.first
       end
 
       # create the English translation for the Sector Name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "sector.#{SECTOR_SET_CODE}.#{sectHash[:code]}.name", sectHash[:engName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "sector.#{@sectorCode}.#{sectHash[:code]}.name", sectHash[:engName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create the Locale's translation for the Sector Name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "sector.#{SECTOR_SET_CODE}.#{sectHash[:code]}.name", sectHash[:locName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "sector.#{@sectorCode}.#{sectHash[:code]}.name", sectHash[:locName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     end
-    puts "Sector translations are created for sector set: #{SECTOR_SET_CODE}"
+    puts "Sector translations are created for sector set: #{@sectorCode}"
   end
 
 end
