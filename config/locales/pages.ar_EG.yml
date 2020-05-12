@@ -227,6 +227,7 @@ ar_EG:
       teacher_field_4: "Suggested Assessment Resources and Activities"
       teacher_field_5: "Additional Background and Resource Materials for the Teacher"
       teacher_field_6: "Goal behaviour (What students will do, Practical learning targets)"
+      duration_weeks: "Duration: %{weeks} Weeks"
     errors:
       missing_grade_in_tree: "error: missing grade in report tree."
       missing_area_in_tree: "error: missing area in report tree."

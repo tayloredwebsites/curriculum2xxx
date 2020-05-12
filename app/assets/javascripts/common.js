@@ -232,6 +232,10 @@ $(function() {
     track: true
   });
 
+  /**
+   * Allows focus to shift to the 'edit link' popup in the ckeditor
+   * when the ckeditor itself is contained by a modal window.
+   */
   $.fn.modal.Constructor.prototype._enforceFocus = function() {
   modal_this = this
   $(document).on('focusin.modal', function (e) {

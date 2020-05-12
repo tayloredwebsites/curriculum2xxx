@@ -238,6 +238,7 @@ class TreesController < ApplicationController
         id: tree.id,
         depth: tree.depth,
         outcome: tree.outcome,
+        weeks: tree.outcome ? tree.outcome.duration_weeks : nil,
         subj_code: tree.subject.code,
         gb_code: tree.grade_band.code,
         code: tree.code,
