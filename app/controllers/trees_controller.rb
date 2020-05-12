@@ -883,6 +883,10 @@ class TreesController < ApplicationController
           name_key
         )
         @translation = translation[name_key]
+      elsif @edit_type == "weeks"
+        @weeks = @tree.outcome.duration_weeks
+      elsif @edit_type == "hours"
+        @hours = @tree.outcome.hours_per_week
       elsif @edit_type == "indicator"
         @indicator = Tree.find(tree_params[:attr_id])
         @attr_id = @indicator.id
@@ -961,6 +965,10 @@ class TreesController < ApplicationController
       Translation.find_or_update_translation(@locale_code, @tree.outcome.get_explain_key, tree_params[:comment]) if tree_params[:comment]
       if update == 'outcome'
         name_key = @tree.buildNameKey
+      elsif update == 'weeks'
+        @tree.outcome.update(duration_weeks: tree_params[:weeks].to_i)
+      elsif update == 'hours'
+        @tree.outcome.update(hours_per_week: tree_params[:hours].to_i)
       elsif update == 'indicator'
         @indicator = Tree.find(tree_params[:attr_id])
         name_key = @indicator.buildNameKey
@@ -1080,6 +1088,8 @@ class TreesController < ApplicationController
       :editing,
       :comment,
       :resource,
+      :weeks,
+      :hours,
       :resource_name => [],
       :resource_key => [],
     )

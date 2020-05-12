@@ -62,6 +62,7 @@
                 }
               %>
               <%= durations[:"#{h[:name]}"] %>
+              <%= link_to(fa_icon("edit"), edit_tree_path(tree.id, tree: { edit_type: h[:name]}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(h[:name]) %>
             </div>
           </div>
         <% end #if rec %>
