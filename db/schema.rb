@@ -10,18 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200410232556) do
-
-  create_table "ckeditor_assets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.string "data_file_name", null: false
-    t.string "data_content_type"
-    t.integer "data_file_size"
-    t.string "data_fingerprint"
-    t.string "type", limit: 30
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["type"], name: "index_ckeditor_assets_on_type"
-  end
+ActiveRecord::Schema.define(version: 20200512140804) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -75,6 +64,8 @@ ActiveRecord::Schema.define(version: 20200410232556) do
     t.string "base_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration_weeks", default: 0, null: false
+    t.integer "hours_per_week", default: 0, null: false
   end
 
   create_table "sector_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
