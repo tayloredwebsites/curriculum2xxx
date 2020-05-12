@@ -37,7 +37,7 @@
         <% rec = parents_by_depth[h[:depth]] %>
         <% if rec %>
           <div class='row subject-<%= h[:name] %>-row'>
-            <div class='col col-lg-6 text-left'>
+            <div class='col col-6 text-left'>
               <strong>
               <%= "#{@subjectByCode[tree.subject.code][:name] if h[:depth] == 0 }#{" #{@hierarchies[h[:depth]]} #{rec.codeArray.last}:" if h[:depth] > 0}" %>
               <% if h[:depth] > 0 %>
@@ -50,6 +50,18 @@
               <% if h[:depth] == @treeTypeRec[:outcome_depth] %>
                 <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(h[:name]) %>
               <% end %>
+            </div>
+          </div>
+        <% else %>
+          <div class='row subject-<%= h[:name] %>-row'>
+            <div class='col col-6 text-left'>
+              <%
+                durations = {
+                  weeks: tree.outcome.duration_weeks == 1 ? I18n.translate('trees.labels.duration_weeks_html', weeks: tree.outcome.duration_weeks).singularize.html_safe : I18n.translate('trees.labels.duration_weeks_html', weeks: tree.outcome.duration_weeks).html_safe,
+                  hours: tree.outcome.hours_per_week == 1 ? I18n.translate('trees.labels.hours_per_week_html', hours: tree.outcome.hours_per_week).singularize.html_safe : I18n.translate('trees.labels.hours_per_week_html', hours: tree.outcome.hours_per_week).html_safe,
+                }
+              %>
+              <%= durations[:"#{h[:name]}"] %>
             </div>
           </div>
         <% end #if rec %>
