@@ -119,8 +119,8 @@ class UploadsController < ApplicationController
       @localeRec = @upload.locale
       tree_parent_code = ''
 
-      # check filename
-      if upload_params['file'].original_filename != @upload.filename
+      # check filename (allow for capitalization differences)
+      if upload_params['file'].original_filename.downcase != @upload.filename.downcase
         flash[:alert] = I18n.translate('uploads.errors.incorrect_filename', filename: @upload.filename)
         abortRun = true
         Rails.logger.debug("*** seed filename: #{@upload.filename.inspect}")
@@ -151,6 +151,7 @@ class UploadsController < ApplicationController
         else
           v1FileUpload(filePath, separator)
         end
+        abortRun = true if @abortRun
       end # check filename and then process file
     else
       Rails.logger.error("ERROR:  invalid params: #{params}")
@@ -187,10 +188,10 @@ class UploadsController < ApplicationController
   def v2FileUpload(filePath, separator)
 
     if @treeTypeRec.hierarchy_codes != "grade,unit,sub_unit,comp"
-      abortWithMessage("ERROR - cannot upload this format tree hierarchy yet.")
+      @abortRun = abortWithMessage("ERROR - cannot upload this format tree hierarchy yet. #{@treeTypeRec.hierarchy_codes}")
     end
-    if @treeTypeRec.tree_code_format != "grade,unit,sub_unit,comp"
-      abortWithMessage("ERROR - cannot upload this format tree code yet.")
+    if @treeTypeRec.tree_code_format != "subject,grade,unit,sub_unit,comp"
+      @abortRun = abortWithMessage("ERROR - cannot upload this format tree code yet. #{@treeTypeRec.tree_code_format}")
     end
 
     rowNum = 2
@@ -245,6 +246,8 @@ class UploadsController < ApplicationController
       #   - maybe pre-read row 1 and confirm the column headers.  Sequence and similarity may help with this.
       #      - try: firstRow = File.open(filePath, &:readline)
 
+      break if @abortRun
+
       Rails.logger.debug("")
       Rails.logger.debug("##########################################################")
       Rails.logger.debug("### row iy: #{iy}, rowNum: #{rowNum}")
@@ -258,7 +261,8 @@ class UploadsController < ApplicationController
         Rails.logger.debug("### @gradeCodeIn: #{@gradeCodeIn}")
         Rails.logger.debug("### @treeTypeRec.id: #{@treeTypeRec.id}")
         gradeBandRec = GradeBand.where(tree_type_id: @treeTypeRec.id, code: @gradeCodeIn).first
-        abortWithMessage("ERROR - missing grade band: #{@gradeCodeIn}") if !gradeBandRec
+        @abortRun = abortWithMessage("ERROR - missing grade band: #{@gradeCodeIn}") if !gradeBandRec
+        break if @abortRun
 
         Rails.logger.debug("### gradeBandRec: #{gradeBandRec.inspect}")
         Rails.logger.debug("### Proposed Grade: #{@gradeCodeIn} - found '#{gradeBandRec.code}'")
@@ -348,7 +352,7 @@ class UploadsController < ApplicationController
           createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', gradeBandRec.min_grade, gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
           @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
         end
-
+        @processedCount += 1
       elsif isValidRow == 'blank'
         # # skip this record
       else
@@ -368,6 +372,7 @@ class UploadsController < ApplicationController
       # Rails.logger.debug("### Resourcs: #{rowH['Resourcs']}")
 
       rowNum += 1
+      break if @abortRun
     end
 
     # To Do: remove records in @currentRecs that were not updated.
@@ -415,7 +420,7 @@ class UploadsController < ApplicationController
   def abortWithMessage(msg)
     Rails.logger.error(msg)
     flash[:alert] = msg
-    @abortRun = true
+    return @abortRun = true
   end
 
   def checkRecord(rowH)
@@ -834,6 +839,7 @@ class UploadsController < ApplicationController
 
   # Use when new curriculum has been uploaded for a
   # Subject to update the Subject's max_grade and min_grade
+  # seems to be not working.  Look at set_min_max_grades.rake
   def updateSubjectGrades(s)
     subj_gbs = GradeBand.where(:id => Tree.where(:subject_id => s.id).pluck("grade_band_id").uniq)
     min_grades = subj_gbs.order("min_grade asc").pluck("min_grade").uniq

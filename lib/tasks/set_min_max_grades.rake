@@ -1,3 +1,4 @@
+# Sets Min and Max grades for the subject records for pre-existing subjects, grade bands and dimensions
 namespace :set_min_max_grades do
 
   desc "set the min_grade and max_grade field for Dimensions, Subjects, and Gradebands with min and max grades set to 999"

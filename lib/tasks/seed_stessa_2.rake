@@ -1,96 +1,152 @@
-# seed_turkey.rake
+# seed_stessa_2.rake
 namespace :seed_stessa_2 do
 
-  task populate: [:create_tree_type, :load_locales, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :ensure_default_translations]
+
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :ensure_default_translations]
+
+  task setup: :environment do
+    @versionNum = 'v01'
+    @curriculumCode = 'egstem'
+    @sectorCode = 'gr_chall'
+  end
 
   ###################################################################################
-  desc "create the Curriculum Tree Type and Version for STEM Egypt High School Curriculum"
+  desc "create the Curriculum Tree Type and Version for STEM Egypt High School Curriculum - Is Rerunnable!"
   task create_tree_type: :environment do
 
     # reference version record from seeds.rb
-    @v01 = Version.where(code: 'v01').first
-    throw "Missing version record" if !@v01
+    myVersion = Version.where(:code => @versionNum)
+    if myVersion.count > 0
+      @ver = myVersion.first
+    else
+      @ver = Version.new
+      @ver.code = @versionNum
+      @ver.save
+      @ver.reload
+    end
 
     # create Tree Type record for the Curriculum
-    myTreeType = TreeType.where(code: 'egstem')
+    myTreeType = TreeType.where(code: @curriculumCode, version_id: @ver.id)
     myTreeTypeValues = {
-      code: 'egstem',
+      code: @curriculumCode,
       hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
       sector_set_code: 'gr_chall',
       sector_set_name_key: 'sector.set.gr_chal.name',
-      curriculum_title_key: 'curriculum.egstem.title', # 'Egypt STEM Curriculum'
+      curriculum_title_key: 'curriculum.egstem.title', # 'Egypt STEM Curriculum - deprecated - see treeType.title_key'
       outcome_depth: 3,
-      version_id: @v01.id,
+      version_id: @ver.id,
       working_status: true,
       dim_codes: 'bigidea,essq,concept,skill,miscon',
       tree_code_format: 'subject,grade,lo',
-      #To Do: if detail has a ref translation, list as <detail>
-      #e.g., <miscon> means one row with two cols: miscon | miscon ref translation
-      # for dimension translation use dim.get_dim_ref_key
+      # To Do: Write documentation on headers formatting
+      # To Do: Write documentation on obtaining translation keys
+      #  - for dimension translation use dim.get_dim_ref_key
       detail_headers: 'grade,unit,lo,<bigidea<,>essq>,<concept<,>skill>,[miscon],[sector],[connect],[refs]',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]'
-
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
     else
       TreeType.update(myTreeType.first.id, myTreeTypeValues)
     end
-    throw "Invalid Tree Type Count" if TreeType.where(code: 'egstem').count != 1
-    @egstem = TreeType.where(code: 'egstem').first
+    treeTypes = TreeType.where(code: @curriculumCode, version_id: @ver.id)
+    throw "ERROR: Missing tfv tree type" if treeTypes.count < 1
+    @tt = treeTypes.first
+
+    puts "Create Default app title translations in English and Arabic"
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Curriculum')
+    throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهاج دراسي')
+    throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
 
     # Create ENGLISH translation(s) for hierarchy codes
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.hierarchy_name_key('grade'), 'Grade')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.hierarchy_name_key('grade'), 'Grade')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.hierarchy_name_key('sem'), 'Semester')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.hierarchy_name_key('sem'), 'Semester')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.hierarchy_name_key('unit'), 'Unit')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.hierarchy_name_key('unit'), 'Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.hierarchy_name_key('lo'), 'Learning Outcome')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.hierarchy_name_key('lo'), 'Learning Outcome')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
 
     # Enter ENGLISH translations for sector_set_name_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.sector_set_name_key, 'Grand Challenges')
-    throw "ERROR updating #{@egstem.sector_set_name_key}: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.sector_set_name_key, 'Grand Challenges')
+    throw "ERROR updating #{@tt.sector_set_name_key}: #{message}" if status == BaseRec::REC_ERROR
 
     # Enter ENGLISH translations for curriculum_title_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @egstem.title_key, 'Egypt STEM Curriculum')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.title_key, 'Egypt STEM Curriculum')
     throw "ERROR updating curriculum.egstem.title translation: #{message}" if status == BaseRec::REC_ERROR
 
     # Create ARABIC translation(s) for hierarchy codes
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @egstem.hierarchy_name_key('grade'), 'درجة')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.hierarchy_name_key('grade'), 'درجة')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @egstem.hierarchy_name_key('sem'), 'نصف السنة')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.hierarchy_name_key('sem'), 'نصف السنة')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @egstem.hierarchy_name_key('unit'), 'وحدة')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.hierarchy_name_key('unit'), 'وحدة')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @egstem.hierarchy_name_key('lo'), 'نتائج التعلم')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.hierarchy_name_key('lo'), 'نتائج التعلم')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
 
     # Enter ARABIC translations for sector_set_name_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @egstem.sector_set_name_key, 'التحديات الكبرى')
-    throw "ERROR updating #{@egstem.sector_set_name_key}: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.sector_set_name_key, 'التحديات الكبرى')
+    throw "ERROR updating #{@tt.sector_set_name_key}: #{message}" if status == BaseRec::REC_ERROR
 
     # Enter ARABIC translations for curriculum_title_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @egstem.title_key, 'منهاج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.title_key, 'منهاج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
     throw "ERROR updating curriculum.egstem.title translation: #{message}" if status == BaseRec::REC_ERROR
 
 
-    puts "Curriculum (Tree Type) is created for egstem (high school)"
-    puts "  Created Curriculum: #{@egstem.code} with Hierarchy: #{@egstem.hierarchy_codes}"
+    puts "Curriculum (Tree Type) is created for #{@curriculumCode}"
+    puts "  Created Curriculum: #{@tt.code} with Hierarchy: #{@tt.hierarchy_codes}"
   end #create_tree_type
 
 
   ###################################################################################
   desc "load up the locales (created in seeds.rb seed file)"
   task load_locales: :environment do
-    @loc_en = Locale.second
-    @loc_ar_EG = Locale.third
+    @loc_en = Locale.where(code: 'en').first
+    @loc_ar_EG = Locale.where(code: 'ar_EG').first
     puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_ar_EG.code}: #{@loc_ar_EG.name}"
+    @loc_other = @loc_ar_EG
   end #load_locales
+
+  ###################################################################################
+  desc "create the admin user(s)"
+  task create_admin_user: :environment do
+    # create an initial admin user to get things going.
+    # Note: the Curriculum to display by default is EGSTEM tree type
+    # to do - turn off admin flag for production.
+    if User.where(email: 'admin@sample.com').count < 1
+      User.create(
+        email: 'admin@sample.com',
+        password: 'password',
+        password_confirmation: 'password',
+        given_name: 'Admin of',
+        family_name: 'Curriculum',
+        roles: 'admin',
+        govt_level: "1",
+        govt_level_name: "govt_level_name",
+        municipality: "municipality",
+        institute_type: "1",
+        institute_name_loc: "institute_name_loc",
+        position_type: "1",
+        subject1: "subject1",
+        subject2: "subject2",
+        gender: "2",
+        education_level: "1",
+        work_phone: "work_phone",
+        work_address: "work_address",
+        terms_accepted: true,
+        confirmed_at: DateTime.now,
+        last_tree_type_id: @tt
+      )
+    end
+    @user = User.where(email: 'admin@sample.com').first
+    puts "admin user is created for  #{@curriculumCode}  curriculum"
+  end #create_admin_user
 
 
   ###################################################################################
@@ -100,9 +156,9 @@ namespace :seed_stessa_2 do
     %w(1 2 3).each do |g|
       begin
         gf = (g == 'k') ? 0 : sort_counter
-        if GradeBand.where(tree_type_id: @egstem.id, code: g).count < 1
+        if GradeBand.where(tree_type_id: @tt.id, code: g).count < 1
           GradeBand.create(
-            tree_type_id: @egstem.id,
+            tree_type_id: @tt.id,
             code: g,
             sort_order: gf
           )
@@ -115,9 +171,9 @@ namespace :seed_stessa_2 do
     puts "grade bands are created for egstem"
     # put in translations for Grade Names
     [1..3].each do |g|
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, GradeBand.build_name_key(@egstem.code, "#{g}"), "Grade #{g}")
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, GradeBand.build_name_key(@tt.code, "#{g}"), "Grade #{g}")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, GradeBand.build_name_key(@egstem.code, "#{g}"), "#{g} الصف")
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, GradeBand.build_name_key(@tt.code, "#{g}"), "#{g} الصف")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_grade_bands
@@ -126,94 +182,116 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "create the subjects for this tree type (curriculum)"
   task create_subjects: :environment do
-    @subjects = []
-    if Subject.where(tree_type_id: @egstem.id, code: 'cap').count < 1
-      @subjects << Subject.create(
-        tree_type_id: @egstem.id,
-        code: 'cap',
-        base_key: 'subject.egstem.v01.cap'
-      )
+    default_subject_translations = [
+    ]
+    @subjectsHash = {
+
+      # note if a subject is in the Library, it must be in this hash
+      bio: {abbr: 'bio', inCurric: true, engName: 'Biology', locAbbr: '', locName: 'مادة الاحياء'},
+      cap: {abbr: 'cap', inCurric: false, engName: 'Capstones', locAbbr: '', locName: 'كابستون'},
+      che: {abbr: 'Chem', inCurric: true, engName: 'Chemistry', locAbbr: '', locName: 'كيمياء'},
+      edu: {abbr: 'edu', inCurric: false, engName: 'Education', locAbbr: '', locName: 'التعليم'},
+      engl: {abbr: 'engl', inCurric: false, engName: 'English', locAbbr: '', locName: 'الإنجليزية'},
+      eng: {abbr: 'eng', inCurric: false, engName: 'Engineering', locAbbr: '', locName: 'هندسة'},
+      mat: {abbr: 'Math', inCurric: true, engName: 'Mathematics', locAbbr: '', locName: 'الرياضيات'},
+      mec: {abbr: 'mec', inCurric: false, engName: 'Mechanics', locAbbr: '', locName: 'علم الميكانيكا'},
+      phy: {abbr: 'phy', inCurric: false, engName: 'Physics', locAbbr: '', locName: 'الفيزياء'},
+      sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: '', locName: 'علم'},
+      ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: '', locName: 'علوم الأرض'},
+      geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: '', locName: 'جيولوجيا'},
+      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: '', locName: 'هندسة التكنولوجيا'}
+    }
+
+    @subjectsHash.each do |key, subjHash|
+
+      # create the subject for this tree type
+      # note: using default start and end grade
+      # - need to be set: set_min_max_grades:run rake task after uploads are done
+      puts "find subject tree_type_id: #{@tt.id}, code: #{subjHash[:abbr]}"
+      subjs = Subject.where(tree_type_id: @tt.id, code: key)
+      if subjs.count < 1
+        puts "Creating Subject for #{key}"
+        subj = Subject.create(
+          tree_type_id: @tt.id,
+          code: key,
+          base_key: "subject.#{@tt.code}.#{@ver.code}.#{key}"
+        )
+      else
+        subj = subjs.first
+      end
+
+      # create english translation for subject name
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:engName])
+      throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+      # create english translation for subject abbreviation
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:abbr])
+      throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+      if subjHash[:inCurric]
+
+        if subjHash[:locName].present?
+          # create locale's translation for subject name
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
+          throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+        end
+
+        if subjHash[:locAbbr].present?
+          # create locale's translation for subject abbreviation
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
+          throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+        end
+
+        puts "create upload for subject: #{subj.id} #{subj.code}"
+        if Upload.where(tree_type_code: @curriculumCode,
+          subject_id: subj.id,
+          grade_band_id: nil,
+          locale_id: @loc_en.id
+        ).count < 1
+          Upload.create!(
+            tree_type_code: @curriculumCode,
+            subject_id: subj.id,
+            grade_band_id: nil,
+            locale_id: @loc_en.id,
+            status: 0,
+            filename: "#{@tt.code}#{@ver.code}#{subj.code.capitalize}All#{@loc_en.code}.csv"
+          )
+        end
+
+        if Upload.where(tree_type_code: @curriculumCode,
+            subject_id: subj.id,
+            grade_band_id: nil,
+            locale_id: @loc_other.id
+          ).count < 1
+          Upload.create!(
+            tree_type_code: @curriculumCode,
+            subject_id: subj.id,
+            grade_band_id: nil,
+            locale_id: @loc_other.id,
+            status: 0,
+            filename: "#{@tt.code}#{@ver.code}#{subj.code.capitalize}All#{@loc_other.code}.csv"
+          )
+        end
+
+      end
+
     end
-    @cap = Subject.where(tree_type_id: @egstem.id, code: 'cap').first
-    if Subject.where(tree_type_id: @egstem.id, code: 'bio').count < 1
-      @subjects << Subject.create(
-        tree_type_id: @egstem.id,
-        code: 'bio',
-        base_key: 'subject.egstem.v01.bio'
-      )
+
+    ##################################################################
+    BaseRec::BASE_SUBJECTS.each do |subjCode|
+      puts "set up library subject for #{subjCode}"
+      # Create the English name and abbreviation for the Subjects in the Library.
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:abbr])
+        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:engName])
+        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+
+      # Create the Locale's name and abbreviation for the Subjects in the Library.
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:locAbbr])
+        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:locName])
+        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
     end
-    @bio = Subject.where(tree_type_id: @egstem.id, code: 'bio').first
-    if Subject.where(tree_type_id: @egstem.id, code: 'che').count < 1
-      @subjects << Subject.create(
-        tree_type_id: @egstem.id,
-        code: 'che',
-        base_key: 'subject.egstem.v01.che'
-      )
-    end
-    @che = Subject.where(tree_type_id: @egstem.id, code: 'che').first
-    if Subject.where(tree_type_id: @egstem.id, code: 'mat').count < 1
-      @subjects << Subject.create(
-        tree_type_id: @egstem.id,
-        code: 'mat',
-        base_key: 'subject.egstem.v01.mat'
-      )
-    end
-    @mat = Subject.where(tree_type_id: @egstem.id, code: 'mat').first
-    if Subject.where(tree_type_id: @egstem.id, code: 'phy').count < 1
-      @subjects << Subject.create(
-        tree_type_id: @egstem.id,
-        code: 'phy',
-        base_key: 'subject.egstem.v01.phy'
-      )
-    end
-    @phy = Subject.where(tree_type_id: @egstem.id, code: 'phy').first
-
-    @subjs = [@cap, @bio, @che, @mat, @phy]
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @cap.get_versioned_name_key, 'Capstone')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @cap.get_versioned_abbr_key, 'Cap')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @cap.get_versioned_name_key, 'كابستون')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @cap.get_versioned_abbr_key, 'كابستون')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @bio.get_versioned_name_key, 'Biology')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @bio.get_versioned_abbr_key, 'Bio')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @bio.get_versioned_name_key, 'مادة الاحياء')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @bio.get_versioned_abbr_key, 'مادة الاحياء')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @che.get_versioned_name_key, 'Chemistry')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @che.get_versioned_abbr_key, 'Chem')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @che.get_versioned_name_key, 'كيمياء')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @che.get_versioned_abbr_key, 'كيمياء')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @mat.get_versioned_name_key, 'Mathematics')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @mat.get_versioned_abbr_key, 'Math')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @mat.get_versioned_name_key, 'الرياضيات')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @mat.get_versioned_abbr_key, 'الرياضيات')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @phy.get_versioned_name_key, 'Physics')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @phy.get_versioned_abbr_key, 'Phy')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @phy.get_versioned_name_key, 'الفيزياء')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @phy.get_versioned_abbr_key, 'الفيزياء')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
   end #create_subjects
 
@@ -221,36 +299,6 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "create the upload control files"
   task create_uploads: :environment do
-    @subjs.each do |s|
-      if Upload.where(tree_type_code: @egstem.code,
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_en.id
-      ).count < 1
-        Upload.create(
-          tree_type_code: @egstem.code,
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_en.id,
-          status: 0,
-          filename: "egstemV01#{s.code.capitalize}AllEng.txt"
-        )
-      end
-      if Upload.where(tree_type_code: @egstem.code,
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_ar_EG.id
-      ).count < 1
-        Upload.create(
-          tree_type_code: @egstem.code,
-          subject_id: s.id,
-          grade_band_id: nil,
-          locale_id: @loc_ar_EG.id,
-          status: 0,
-          filename: "egstemV01#{s.code.capitalize}AllAra.txt"
-        )
-      end
-    end # @subjs.each do |s|
 
   end #create_uploads
 
@@ -258,103 +306,46 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "create the sectors (e.g. Grand Challenges, Future Sectors, ...)"
   task create_sectors: :environment do
-    # Populate the Sector table and its translations for all  languages
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '1').count < 1
-    Sector.create(sector_set_code: @egstem.sector_set_code, code: '1', name_key: 'sector.gr_chall.1.name', base_key: 'sector.gr_chall.1')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '2').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '2', name_key: 'sector.gr_chall.2.name', base_key: 'sector.gr_chall.2')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '3').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '3', name_key: 'sector.gr_chall.3.name', base_key: 'sector.gr_chall.3')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '4').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '4', name_key: 'sector.gr_chall.4.name', base_key: 'sector.gr_chall.4')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '5').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '5', name_key: 'sector.gr_chall.5.name', base_key: 'sector.gr_chall.5')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '6').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '6', name_key: 'sector.gr_chall.6.name', base_key: 'sector.gr_chall.6')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '7').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '7', name_key: 'sector.gr_chall.7.name', base_key: 'sector.gr_chall.7')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '8').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '8', name_key: 'sector.gr_chall.8.name', base_key: 'sector.gr_chall.8')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '9').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '9', name_key: 'sector.gr_chall.9.name', base_key: 'sector.gr_chall.9')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '10').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '10', name_key: 'sector.gr_chall.10.name', base_key: 'sector.gr_chall.10')
-    end
-    if Sector.where(sector_set_code: @egstem.sector_set_code, code: '11').count < 1
-      Sector.create(sector_set_code: @egstem.sector_set_code, code: '11', name_key: 'sector.gr_chall.11.name', base_key: 'sector.gr_chall.11')
-    end
-    puts "Sectors are created for EGSTEM"
 
-    @sector1 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '1').first
-    @sector2 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '2').first
-    @sector3 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '3').first
-    @sector4 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '4').first
-    @sector5 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '5').first
-    @sector6 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '6').first
-    @sector7 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '7').first
-    @sector8 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '8').first
-    @sector9 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '9').first
-    @sector10 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '10').first
-    @sector11 = Sector.where(sector_set_code: @egstem.sector_set_code, code: '11').first
+    @sectorsHash = {
+      '1': {code: '1', engName: 'Deal with population growth and its consequences.',locName: 'التعامل مع النمو السكاني وعواقبه.'},
+      '2': {code: '2', engName: 'Improve the use of alternative energies.', locName: 'تحسين استخدام الطاقات البديلة.'},
+      '3': {code: '3', engName: 'Deal with urban congestion and its consequences.', locName: 'التعامل مع الازدحام الحضري وعواقبه.'},
+      '4': {code: '4', engName: 'Improve the scientific and technological environment for all.', locName: 'تحسين البيئة العلمية والتكنولوجية للجميع.'},
+      '5': {code: '5', engName: 'Work to eradicate public health issues/disease.', locName: 'العمل على القضاء على قضايا / أمراض الصحة العامة.'},
+      '6': {code: '6', engName: 'Improve uses of arid areas.', locName: 'تحسين استخدامات المناطق الجافة.'},
+      '7': {code: '7', engName: 'Manage and increase the sources of clean water.', locName: 'إدارة وزيادة مصادر المياه النظيفة.'},
+      '8': {code: '8', engName: 'Increase the industrial and agricultural bases of Egypt.', locName: 'زيادة القواعد الصناعية والزراعية لمصر.'},
+      '9': {code: '9', engName: 'Address and reduce pollution fouling our air, water and soil.', locName: 'معالجة وتقليل التلوث الناتج عن الهواء والماء والتربة.'},
+      '10': {code: '10', engName: 'Recycle garbage and waste for economic and environmental purposes.', locName: 'إعادة تدوير القمامة والنفايات للأغراض الاقتصادية والبيئية.'},
+      '11': {code: '11', engName: 'Reduce and adapt to the effect of climate change.', locName: 'الحد من تأثير تغير المناخ والتكيف معه.'}
+    }
+    @sectorsHash.each do |key, sectHash|
 
-    # English Translations of Grand Challenges
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector1.get_name_key, 'Deal with population growth and its consequences.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector2.get_name_key, 'Improve the use of alternative energies.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector3.get_name_key, 'Deal with urban congestion and its consequences.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector4.get_name_key, 'Improve the scientific and technological environment for all.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector5.get_name_key, 'Work to eradicate public health issues/disease.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector6.get_name_key, 'Improve uses of arid areas.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector7.get_name_key, 'Manage and increase the sources of clean water.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector8.get_name_key, 'Increase the industrial and agricultural bases of Egypt.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector9.get_name_key, 'Address and reduce pollution fouling our air, water and soil.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector10.get_name_key, 'Recycle garbage and waste for economic and environmental purposes.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @sector11.get_name_key, 'Reduce and adapt to the effect of climate change.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+      # create the sector
+      puts "create the sector: #{@sectorCode}, #{sectHash[:code]}"
+      sectors = Sector.where(sector_set_code: @sectorCode, code: sectHash[:code])
+      if sectors.count < 1
+        sector = Sector.create(
+          sector_set_code: @sectorCode,
+          code: sectHash[:code],
+          name_key: "sector.#{@sectorCode}.#{sectHash[:code]}.name",
+          base_key: "sector.#{@sectorCode}.#{sectHash[:code]}"
+        )
+      else
+        sector = sectors.first
+      end
 
-    # Arabic Translations of Grand Challenges
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector1.get_name_key, 'التعامل مع النمو السكاني وعواقبه.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector2.get_name_key, 'تحسين استخدام الطاقات البديلة.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector3.get_name_key, 'التعامل مع الازدحام الحضري وعواقبه.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector4.get_name_key, 'تحسين البيئة العلمية والتكنولوجية للجميع.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector5.get_name_key, 'العمل على القضاء على قضايا / أمراض الصحة العامة.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector6.get_name_key, 'تحسين استخدامات المناطق الجافة.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector7.get_name_key, 'إدارة وزيادة مصادر المياه النظيفة.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector8.get_name_key, 'زيادة القواعد الصناعية والزراعية لمصر.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector9.get_name_key, 'معالجة وتقليل التلوث الناتج عن الهواء والماء والتربة.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector10.get_name_key, 'إعادة تدوير القمامة والنفايات للأغراض الاقتصادية والبيئية.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @sector11.get_name_key, 'الحد من تأثير تغير المناخ والتكيف معه.')
-    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+      # create the English translation for the Sector Name
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "sector.#{@sectorCode}.#{sectHash[:code]}.name", sectHash[:engName])
+      throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
-    puts "Sector translations are created for EGSTEM"
+      # create the Locale's translation for the Sector Name
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "sector.#{@sectorCode}.#{sectHash[:code]}.name", sectHash[:locName])
+      throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+
+    end
+    puts "Sector translations are created for sector set: #{@sectorCode}"
 
   end
 
@@ -368,11 +359,11 @@ namespace :seed_stessa_2 do
       ['skill', 'Skill', 'مهارة'],
       ['miscon', 'Misconception', 'اعتقاد خاطئ'],
     ]
-    @egstem.dim_codes.split(',').each do |dim|
+    @tt.dim_codes.split(',').each do |dim|
       dim_name_key = Dimension.get_dim_type_key(
         dim[0],
-        @egstem.code,
-        @v01.code
+        @tt.code,
+        @ver.code
       )
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, dim_name_key, dim[1])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
@@ -383,42 +374,6 @@ namespace :seed_stessa_2 do
   ###################################################################################
   desc "Ensure default subject translations exist"
   task ensure_default_translations: :environment do
-    default_subject_translations = [
-      ['bio', 'Biology', 'مادة الاحياء'],
-      ['cap', 'Capstones', 'كابستون'],
-      ['che', 'Chemistry', 'كيمياء'],
-      ['edu', 'Education', 'التعليم'],
-      ['engl', 'English', 'الإنجليزية'],
-      ['eng', 'Engineering', 'هندسة'],
-      ['mat', 'Math', 'الرياضيات'],
-      ['mec', 'Mechanics', 'علم الميكانيكا'],
-      ['phy', 'Physics', 'الفيزياء'],
-      ['sci', 'Science', 'علم'],
-      ['ear', 'Earth Science', 'علوم الأرض'],
-      ['geo', 'Geology', 'جيولوجيا'],
-      ['tech', 'Tech Engineering', 'هندسة التكنولوجيا'],
-    ]
 
-    default_subject_translations.each do |s|
-      name_key = Subject.get_default_name_key(s[0])
-      abbr_key = Subject.get_default_abbr_key(s[0])
-        rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, name_key, s[1])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, abbr_key, s[0])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        puts "Saved Default English Translations for #{s[0]}"
-
-        rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, name_key, s[2])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, abbr_key, s[2])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        puts "Saved Default Arabic Translations for #{s[0]}"
-    end
-
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Curriculum')
-    throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهاج دراسي')
-    throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
-    puts "Saved Default app title translations in English and Arabic"
   end #task
 end
