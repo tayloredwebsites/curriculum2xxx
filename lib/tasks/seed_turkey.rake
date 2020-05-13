@@ -34,7 +34,6 @@ namespace :seed_turkey do
       tree_code_format: 'grade,unit,sub_unit,comp',
       detail_headers: 'grade,unit,chapt,attain,[explanation],[bigidea],{explain},[miscon],[sector],[connect],[resource#0#1#2#3#4#5]',
       grid_headers: 'grade,unit,chapt,attain,[bigidea],{explain},[miscon]'
-
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)

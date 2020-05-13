@@ -59,7 +59,7 @@ namespace :seed_stessa_2 do
       #                  categories of this item to display.
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
-      detail_headers: 'grade,unit,lo,<bigidea<,>essq>,<concept<,>skill>,[miscon],[sector],[connect],[resource#1#3#2]',
+      detail_headers: 'grade,unit,lo,<bigidea<,>essq>,<concept<,>skill>,<miscon>,[sector],[connect],[resource#1#3#2]',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]'
     }
     if myTreeType.count < 1
