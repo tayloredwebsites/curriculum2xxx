@@ -334,10 +334,14 @@
       }
     }
     .teacher-item {
-      border-left: 1px solid black;
       padding-bottom: 10px;
       border-bottom: none;
     }
+    .teacher-item:nth-child(odd) {
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+    }
+
     .connections-grid {
       display: grid;
       grid-template-columns: 10% 10% 13% 67%;
