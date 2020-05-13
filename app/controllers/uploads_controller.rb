@@ -187,16 +187,16 @@ class UploadsController < ApplicationController
 
   def v2FileUpload(filePath, separator)
 
-    if @treeTypeRec.hierarchy_codes != "grade,unit,sub_unit,comp"
-      @abortRun = abortWithMessage("ERROR - cannot upload this format tree hierarchy yet. #{@treeTypeRec.hierarchy_codes}")
-    end
-    if @treeTypeRec.tree_code_format != "subject,grade,unit,sub_unit,comp"
-      @abortRun = abortWithMessage("ERROR - cannot upload this format tree code yet. #{@treeTypeRec.tree_code_format}")
-    end
+    # if @treeTypeRec.hierarchy_codes != "grade,unit,sub_unit,comp"
+    #   @abortRun = abortWithMessage("ERROR - cannot upload this format tree hierarchy yet. #{@treeTypeRec.hierarchy_codes}")
+    # end
+    # if @treeTypeRec.tree_code_format != "subject,grade,unit,sub_unit,comp"
+    #   @abortRun = abortWithMessage("ERROR - cannot upload this format tree code yet. #{@treeTypeRec.tree_code_format}")
+    # end
 
-    rowNum = 2
-    recordOrder = 0
-    baseKeyRoot = "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}"
+    @rowNum = 2
+    @recordOrder = 0
+    @baseKeyRoot = "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}"
 
     # hash of the existing records for this TreeType (curriculum) and subject
     #
@@ -212,6 +212,8 @@ class UploadsController < ApplicationController
         transl_id = nil
       end
       @currentRecs[rec.code] = {updated: false, rec: rec, transl_name: transl_name, transl_id: transl_id}
+      Rails.logger.debug("*** Initial currentRec: #{rec.inspect}")
+
     end
 
     #   - Create a hash (at beginning of upload process) of the Dimensions for this subject, and dimension type (not by Tree Type - to prevent dups)
@@ -250,114 +252,160 @@ class UploadsController < ApplicationController
 
       Rails.logger.debug("")
       Rails.logger.debug("##########################################################")
-      Rails.logger.debug("### row iy: #{iy}, rowNum: #{rowNum}")
+      Rails.logger.debug("### row iy: #{iy}, @rowNum: #{@rowNum}")
       rowH = row.to_hash.with_indifferent_access
       Rails.logger.debug("### tree type rec: #{@treeTypeRec.inspect}")
       Rails.logger.debug("### tree code format: #{@treeTypeRec.tree_code_format}")
 
       isValidRow = checkRecord(rowH)
+
+      ttRecArray = @treeTypeRec.tree_code_format.split(',')
+      ttRecArray.each_with_index do |ix|
+
+      end
+
       if isValidRow == 'valid'
-        @gradeCodeIn = rowH['Proposed Grade']
+
+        # confirm we have a valid grade before starting
+        @gradeCodeIn = rowH['Grade'] || rowH['Proposed Grade']
         Rails.logger.debug("### @gradeCodeIn: #{@gradeCodeIn}")
         Rails.logger.debug("### @treeTypeRec.id: #{@treeTypeRec.id}")
-        gradeBandRec = GradeBand.where(tree_type_id: @treeTypeRec.id, code: @gradeCodeIn).first
-        @abortRun = abortWithMessage("ERROR - missing grade band: #{@gradeCodeIn}") if !gradeBandRec
+        @gradeBandRec = GradeBand.where(tree_type_id: @treeTypeRec.id, code: @gradeCodeIn).first
+        @abortRun = abortWithMessage("ERROR - missing grade band: #{@gradeCodeIn}") if !@gradeBandRec
         break if @abortRun
 
-        Rails.logger.debug("### gradeBandRec: #{gradeBandRec.inspect}")
-        Rails.logger.debug("### Proposed Grade: #{@gradeCodeIn} - found '#{gradeBandRec.code}'")
+        Rails.logger.debug("### @gradeBandRec: #{@gradeBandRec.inspect}")
+        Rails.logger.debug("### Proposed Grade: #{@gradeCodeIn} - found '#{@gradeBandRec.code}'")
 
-        ######################################################
-        # Write the Grade level tree record (create or update)
-        gradeCodeA = [@gradeCodeIn]
-        currentRec = @currentRecs[gradeCodeA.join('.')]
-        codeName = "#{I18n.translate('app.labels.grade_band')} #{@gradeCodeIn}"
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 0, [], gradeCodeA, @gradeCodeIn, codeName, recordOrder, rowNum, currentRec, '')
-        @rptRecs <<  rptRec if rptRec.present?
-        recordOrder += 1
+        # process the record in hierarchy order
+        hierarchyCodeArray = [] # the array that gets built with the record codes in hierarchy order
 
-        @subjectRec.update(min_grade: gradeBandRec.min_grade) if @subjectRec.min_grade > gradeBandRec.min_grade
-        @subjectRec.update(max_grade: gradeBandRec.max_grade) if @subjectRec.max_grade < gradeBandRec.max_grade
+        # If LO code supplied, us it to set the codes in the hierarchy
+        colLoFullCode = rowH['LO Code:']
+        colLoFullCodeA = colLoFullCode.split('.')
+        colLoFullCodeA.each_with_index do |loCodeItem, ix|
 
-        ######################################################
-        # Write the Unit level tree record (create or update)
-        unitName = rowH['Unit']
-        unitCode = lookupItemCodeForName(unitName, gradeCodeA.join('.'))
-        Rails.logger.debug("### Sub Unit: #{unitCode} #{unitName}")
-        unitCodeA = [@gradeCodeIn, unitCode]
-        currentRec = @currentRecs[unitCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 1, gradeCodeA, unitCodeA, unitCode, unitName, recordOrder, rowNum, currentRec, '')
-
-        if rptRec.present?
-          @rptRecs << rptRec
-          recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
         end
 
-        ######################################################
-        # Write the SubUnit level tree record (create or update)
-        subUnitName = rowH[' Sub unit']
-        subUnitCode = lookupItemCodeForName(subUnitName, unitCodeA.join('.'))
-        Rails.logger.debug("### Sub Unit: #{subUnitCode} #{subUnitName}")
-        subUnitCodeA = [@gradeCodeIn, unitCode, subUnitCode]
-        currentRec = @currentRecs[subUnitCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 2, unitCodeA, subUnitCodeA, subUnitCode, subUnitName, recordOrder, rowNum, currentRec, '')
-        if rptRec.present?
-          @rptRecs << rptRec
-          recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
+        @treeTypeRec.hierarchy_codes.split(',').each_with_index do |hCode, ix|
+          Rails.logger.debug("*** Hierarchy was: #{hierarchyCodeArray.join(',')}, code at: #{ix} = #{hCode}")
+          Rails.logger.debug("*** colLoFullCode was: #{colLoFullCode}")
+          Rails.logger.debug("*** hierarchyCodeArray was: #{hierarchyCodeArray.join('.')}")
+
+          colGradeCode = rowH['Grade'] || rowH['Proposed Grade']
+          # colGradeName = "#{I18n.translate('app.labels.grade')} #{colGrade}"
+          colSemesterCode = rowH['Semester']
+          # colSemesterName = "#{I18n.translate('app.labels.semester')} #{colSemester}"
+          colUnitName = rowH['Unit'] || rowH['Unit Name']
+          colFullLoCode = rowH['LO Code:']
+          colLoCode = colFullLoCode.split('.').last
+          colLoDesc = rowH['Learning Outcome'] || rowH['Proposed Student Competences']
+          if hCode == 'grade' && colGradeCode
+            Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{colGradeCode}")
+            gradeCode = lookupItemCodeForName(colGradeCode, hierarchyCodeArray.join('.'))
+            hierarchyCodeArray = processField(hierarchyCodeArray, gradeCode, colGradeCode, ix)
+          elsif hCode == 'sem' && colSemesterCode
+            semCode = lookupItemCodeForName(colSemesterCode, hierarchyCodeArray.join('.'))
+            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, colSemesterCode, ix)
+            Rails.logger.debug("*** Process Semester field: #{hierarchyCodeArray.join('.')} - #{colSemesterCode}")
+          elsif hCode == 'unit' && colUnitName
+            unitCode = lookupItemCodeForName(colUnitName, hierarchyCodeArray.join('.'))
+            hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix)
+            Rails.logger.debug("*** Process Unit field: #{hierarchyCodeArray.join('.')} - #{colUnitName}")
+          elsif hCode == 'lo' && colLoDesc
+            hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix)
+            Rails.logger.debug("*** To Do - Process LO field: #{hierarchyCodeArray.join('.')} - #{colLoDesc}")
+          else
+            Rails.logger.debug("*** skip this code")
+          end
+
+          #  need to map csv column headers to hierarchy code
+          #   - option 1 - add functions to match all column headers for this hierarchy code
+          #   - option 2 - add get upload key to curriculum.egstem.v01.uploadHeader.grade = 'Grade'
+          #       - these go into the seed file, and are looked up in the upload.
+
         end
 
-        ######################################################
-        # Write the Competency level tree record (create or update)
-        compName = rowH['Proposed Student Competences']
-        compCode = lookupItemCodeForName(compName, subUnitCodeA.join('.'))
-        Rails.logger.debug("### Competency: #{compCode} #{compName}")
-        compCodeA = [@gradeCodeIn, unitCode, subUnitCode, compCode]
-        currentRec = @currentRecs[compCodeA.join('.')]
-        rptRec = writeTreeRecord(baseKeyRoot, gradeBandRec, 3, subUnitCodeA, compCodeA, compCode, compName, recordOrder, rowNum, currentRec, rowH['Explanatory Comments'])
-        if rptRec.present?
-          @rptRecs << rptRec
-          recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
-        end
 
-        ######################################################
-        # Write the K-12 Big Idea (aka. Essential Quesitons behind the scenes) (create or update)
-        # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
+        # ######################################################
+        # # Write the Unit level tree record (create or update)
+        # unitName = rowH['Unit'] || rowH['Unit Name']
+        # unitCode = lookupItemCodeForName(unitName, gradeCodeA.join('.'))
+        # Rails.logger.debug("### Sub Unit: #{unitCode} #{unitName}")
+        # unitCodeA = [@gradeCodeIn, unitCode]
+        # currentRec = @currentRecs[unitCodeA.join('.')]
+        # rptRec = writeTreeRecord(1, gradeCodeA, unitCodeA, unitCode, unitName, currentRec, '')
 
-        compName = rowH['K-12 Big Idea ']
-        if compName.present?
-          dimTypeName = Dimension.get_dim_type_name('essq', @treeTypeRec.code, @versionRec.code, @locale_code)
-          currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-          createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, compName, 'From Upload')
-          # build report record array of values
-          # codeA3 = compCodeA.clone
-          # rptCodes = codeA3.concat(['','','','']).slice(0,5)
-          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
-        end
+        # if rptRec.present?
+        #   @rptRecs << rptRec
+        #   @recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
+        # end
 
-        compName = rowH['Specific big idea']
-        if compName.present?
-          dimTypeName = Dimension.get_dim_type_name('bigidea', @treeTypeRec.code, @versionRec.code, @locale_code)
-          currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-          createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', gradeBandRec.min_grade, gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
-          # build report record array of values
-          # codeA4 = compCodeA.clone
-          # rptCodes = codeA4.concat(['','','','']).slice(0,5)
-          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
-        end
+        # ######################################################
+        # # Write the SubUnit level tree record (create or update)
+        # subUnitName = rowH[' Sub unit']
+        # subUnitCode = lookupItemCodeForName(subUnitName, unitCodeA.join('.'))
+        # Rails.logger.debug("### Sub Unit: #{subUnitCode} #{subUnitName}")
+        # subUnitCodeA = [@gradeCodeIn, unitCode, subUnitCode]
+        # currentRec = @currentRecs[subUnitCodeA.join('.')]
+        # rptRec = writeTreeRecord(2, unitCodeA, subUnitCodeA, subUnitCode, subUnitName, currentRec, '')
+        # if rptRec.present?
+        #   @rptRecs << rptRec
+        #   @recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
+        # end
 
-        compName = rowH['Associated Practices']
-        if compName.present?
-          dimTypeName = Dimension.get_dim_type_name('pract', @treeTypeRec.code, @versionRec.code, @locale_code)
-          currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-          createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', gradeBandRec.min_grade, gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
-          @rptRecs << [rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
-        end
-        @processedCount += 1
+        # ######################################################
+        # # Write the Competency level tree record (create or update)
+        # compName = rowH['Proposed Student Competences']
+        # compCode = lookupItemCodeForName(compName, subUnitCodeA.join('.'))
+        # Rails.logger.debug("### Competency: #{compCode} #{compName}")
+        # compCodeA = [@gradeCodeIn, unitCode, subUnitCode, compCode]
+        # currentRec = @currentRecs[compCodeA.join('.')]
+        # rptRec = writeTreeRecord(3, subUnitCodeA, compCodeA, compCode, compName, currentRec, rowH['Explanatory Comments'])
+        # if rptRec.present?
+        #   @rptRecs << rptRec
+        #   @recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
+        # end
+
+        # ######################################################
+        # # Write the K-12 Big Idea (aka. Essential Quesitons behind the scenes) (create or update)
+        # # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
+
+        # compName = rowH['K-12 Big Idea ']
+        # if compName.present?
+        #   dimTypeName = Dimension.get_dim_type_name('essq', @treeTypeRec.code, @versionRec.code, @locale_code)
+        #   currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
+        #   createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, compName, 'From Upload')
+        #   # build report record array of values
+        #   # codeA3 = compCodeA.clone
+        #   # rptCodes = codeA3.concat(['','','','']).slice(0,5)
+        #   @rptRecs << [@rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
+        # end
+
+        # compName = rowH['Specific big idea']
+        # if compName.present?
+        #   dimTypeName = Dimension.get_dim_type_name('bigidea', @treeTypeRec.code, @versionRec.code, @locale_code)
+        #   currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
+        #   createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', @gradeBandRec.min_grade, @gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
+        #   # build report record array of values
+        #   # codeA4 = compCodeA.clone
+        #   # rptCodes = codeA4.concat(['','','','']).slice(0,5)
+        #   @rptRecs << [@rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
+        # end
+
+        # compName = rowH['Associated Practices']
+        # if compName.present?
+        #   dimTypeName = Dimension.get_dim_type_name('pract', @treeTypeRec.code, @versionRec.code, @locale_code)
+        #   currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
+        #   createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', @gradeBandRec.min_grade, @gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
+        #   @rptRecs << [@rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
+        # end
+        # @processedCount += 1
       elsif isValidRow == 'blank'
         # # skip this record
       else
         # build a report with an error
-        rptRec = [rowNum.to_s]
+        rptRec = [@rowNum.to_s]
         rptRec.concat(['','','','','']) # get exactly 5 codes to output
         rptRec.concat(['', '', "Missing required fields"])
         Rails.logger.debug("+++ final rptRec: #{rptRec.inspect}")
@@ -371,7 +419,7 @@ class UploadsController < ApplicationController
       # Rails.logger.debug("### Display relations: #{rowH['Display relations']}")
       # Rails.logger.debug("### Resourcs: #{rowH['Resourcs']}")
 
-      rowNum += 1
+      @rowNum += 1
       break if @abortRun
     end
 
@@ -379,6 +427,26 @@ class UploadsController < ApplicationController
     #    Otherwise, old uploads for this curriculum/subject will remain.
 
     @rptRecs << ['','','','','','','','','End of Report']
+  end
+
+  def processField(parentCodeArray, code, codeName, ix)
+    ######################################################
+    # Write the Grade level tree record (create or update)
+    # gradeCodeA = [@gradeCodeIn]
+    hierarchyCodeArray = parentCodeArray.clone()
+    hierarchyCodeArray << code
+    Rails.logger.debug("*** parentCodeArray: #{parentCodeArray.inspect}, code: #{code}")
+    Rails.logger.debug("*** hierarchyCodeArray: #{hierarchyCodeArray.inspect}")
+    currentRec = @currentRecs[hierarchyCodeArray.join('.')]
+    Rails.logger.debug("*** currentRec: #{currentRec.inspect}")
+    rptRec = writeTreeRecord(ix, parentCodeArray, hierarchyCodeArray, code, codeName, currentRec, '')
+    @rptRecs <<  rptRec if rptRec.present?
+    @recordOrder += 1
+
+    # refactor this, so it is only run at the end of the upload
+    @subjectRec.update(min_grade: @gradeBandRec.min_grade) if @subjectRec.min_grade > @gradeBandRec.min_grade
+    @subjectRec.update(max_grade: @gradeBandRec.max_grade) if @subjectRec.max_grade < @gradeBandRec.max_grade
+    return hierarchyCodeArray
   end
 
   def lookupItemCodeForName(itemName, parentCode)
@@ -424,10 +492,14 @@ class UploadsController < ApplicationController
   end
 
   def checkRecord(rowH)
-    if rowH['Proposed Grade'].blank? &&
+    Rails.logger.debug("*** Grade: #{rowH['Grade']}, blank?: #{rowH['Grade'].blank?}")
+    if rowH['Grade'].blank? &&
+        rowH['Proposed Grade'].blank? &&
         rowH['Unit'].blank? &&
+        rowH['Unit Name'].blank? &&
         rowH[' Sub unit'].blank? &&
         rowH['Proposed Student Competences'].blank? &&
+        rowH['LO Code:'].blank? &&
         rowH['K-12 Big Idea '].blank? &&
         rowH['Specific big idea'].blank? &&
         rowH['Associated Practices'].blank? &&
@@ -439,9 +511,9 @@ class UploadsController < ApplicationController
       return 'blank'
     else
       Rails.logger.debug("*** NON BLANK rowH: #{rowH.inspect}")
-      if rowH['Proposed Grade'].blank? ||
-          rowH['Unit'].blank? ||
-          rowH['Proposed Student Competences'].blank?
+      if (rowH['Grade'].blank? && rowH['Proposed Grade'].blank?) ||
+          (rowH['Unit'].blank? && rowH['Unit Name'].blank?) ||
+          (rowH['Proposed Student Competences'].blank? && rowH['LO Code:'].blank?)
         return 'invalid'
       else
         return 'valid'
@@ -449,8 +521,9 @@ class UploadsController < ApplicationController
     end
   end
 
-  def writeTreeRecord(baseKeyRoot, gradeBandRec, depth, parentCodeA, codeA, thisCode, thisCodeTransl, order, fileRow, currentRec, explainText)
+  def writeTreeRecord(depth, parentCodeA, codeA, thisCode, thisCodeTransl, currentRec, explainText)
     codeStr = codeA.join('.')
+    Rails.logger.debug("*** writeTreeRecord codeStr: #{codeStr}")
     codeA2 = codeA.clone
     reportRecord = true
     wroteRecord = true
@@ -460,7 +533,7 @@ class UploadsController < ApplicationController
       reportRecord = false
       # wroteRecord = true # for clarity
     else
-      baseKeyStr = baseKeyRoot + '.' + codeStr
+      baseKeyStr = @baseKeyRoot + '.' + codeStr
     end
     if currentRec.blank?
       outRecId = updateOutcome(depth, baseKeyStr, explainText, nil)
@@ -468,12 +541,12 @@ class UploadsController < ApplicationController
         tree_type_id: @treeTypeRec.id,
         version_id: @treeTypeRec.version_id,
         subject_id: @subjectRec.id,
-        grade_band_id: gradeBandRec.id,
-        code: codeA.join('.'),
+        grade_band_id: @gradeBandRec.id,
+        code: codeStr,
         base_key: baseKeyStr,
         depth: depth,
-        sort_order: order,
-        sequence_order: order,
+        sort_order: @recordOrder,
+        sequence_order: @recordOrder,
         outcome_id: outRecId
       )
       rptErrorMsg = ''
@@ -498,12 +571,12 @@ class UploadsController < ApplicationController
         tree_type_id: @treeTypeRec.id,
         version_id: @treeTypeRec.version_id,
         subject_id: @subjectRec.id,
-        grade_band_id: gradeBandRec.id,
+        grade_band_id: @gradeBandRec.id,
         code: codeStr,
         base_key: baseKeyStr,
         depth: depth,
-        sort_order: order,
-        sequence_order: order,
+        sort_order: @recordOrder,
+        sequence_order: @recordOrder,
         outcome_id: outRecId
       )
       rptErrorMsg = ''
@@ -519,7 +592,7 @@ class UploadsController < ApplicationController
       # output the translation record if any changes
       transl_rec, text_status, transl_text = Translation.find_or_update_translation(
         @localeRec.code,
-        "#{baseKeyRoot}.#{codeA.join('.')}.name",
+        "#{@baseKeyRoot}.#{codeA.join('.')}.name",
         thisCodeTransl
       )
       # update hashes
@@ -530,7 +603,7 @@ class UploadsController < ApplicationController
     end
     if reportRecord
       # build report record array of values
-      rptRec = [fileRow.to_s]
+      rptRec = [@rowNum.to_s]
       rptRec.concat(codeA2.concat(['','','','']).slice(0,5)) # get exactly 5 codes to output
       rptRec.concat([codeA.join('.'), "#{@hierarchies[depth]}: #{thisCodeTransl}", rptErrorMsg])
       Rails.logger.debug("+++ final rptRec: #{rptRec.inspect}")
