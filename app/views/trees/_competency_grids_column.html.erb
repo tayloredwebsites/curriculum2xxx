@@ -32,6 +32,12 @@
                 <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
                 <strong><em><%= h[:formatted_code] %></em></strong>
                 </a>
+                <% if h[:weeks] > 0 %>
+                  <% duration_str = h[:weeks] == 1 ? I18n.translate('trees.labels.duration_weeks_html', weeks: h[:weeks]).singularize.html_safe : I18n.translate('trees.labels.duration_weeks_html', weeks: h[:weeks]).html_safe %>
+                  <div class="parent-can-hide block">
+                  <em><%= duration_str %></em>
+                  </div>
+                <% end %>
                 <%= h[:text] %>
               </div>
               <!--TO DO: draw this array from the grid_headers field in TreeType

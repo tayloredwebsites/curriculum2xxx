@@ -86,6 +86,75 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
   end
   ####################################################
+  def update_fields(
+    update_type,
+    locale_code: 'en',
+    name_translation: nil,
+    comment: nil,
+    weeks: nil,
+    hours: nil,
+    resource: nil,
+    resource_name_arr: nil,
+    resource_name_keys: nil,
+    tree_tree_id: nil,
+    tree_tree_rel: nil,
+    tree_tree_active: false,
+    sector_id: nil,
+    x_sector_tree_id: nil,
+    x_dim_tree_id: nil
+  )
+    begin
+      Translation.find_or_update_translation(
+        locale_code,
+        buildNameKey,
+        name_translation
+      ) if name_translation
+      Translation.find_or_update_translation(
+        locale_code,
+        outcome.get_explain_key,
+        comment
+      ) if comment
+      outcome.update(duration_weeks: weeks.to_i) if weeks
+      outcome.update(hours_per_week: hours.to_i) if hours
+      Translation.find_or_update_translation(
+        locale_code,
+        outcome.get_ref_key(update_type),
+        resource.split("<script>").join("").split("</script>").join("")
+      ) if resource
+      if (resource_name_arr && resource_name_keys)
+        resource_name_arr.each_with_index do |res_name, i|
+          Translation.find_or_update_translation(
+            locale_code,
+            resource_name_keys[i],
+            res_name
+          )
+        end
+      end
+      if tree_tree_id
+        tree_tree = TreeTree.find(tree_tree_id)
+        reciprocal_tree_tree = TreeTree.where(
+          :tree_referencee_id => tree_tree.tree_referencer_id,
+          :tree_referencer_id => tree_tree.tree_referencee_id
+            ).first
+        tree_tree.relationship = tree_tree_rel if tree_tree_rel
+        tree_tree.active = tree_tree_active
+        reciprocal_tree_tree.relationship = TreeTree.reciprocal_relationship(tree_tree_rel)
+        reciprocal_tree_tree.active = tree_tree_active
+        tree_tree.save
+        reciprocal_tree_tree.save
+      end
+      SectorTree.create(
+        tree_id: id,
+        sector_id: sector_id
+      ) if sector_id
+      SectorTree.find(x_sector_tree_id).update(active: false) if x_sector_tree_id
+      DimTree.find(x_dim_tree_id).update(active: false) if x_dim_tree_id
+      return "success"
+    rescue => e
+      return e
+    end
+  end # def update_fields
+
   def format_code(localeCode)
     hierarchies = tree_type.hierarchy_codes.split(",")
     if tree_type.tree_code_format != ""

@@ -28,7 +28,7 @@ namespace :seed_eg_stem do
       working_status: true,
       dim_codes: 'bigidea,miscon',
       tree_code_format: 'grade,unit,lo',
-      detail_headers: 'grade,sem,unit,lo,indicator,[bigidea],{explain},[miscon],[sector],[connect],[refs]',
+      detail_headers: 'grade,sem,unit,lo,indicator,[bigidea],{explain},[miscon],[sector],[connect],[resource]',
       grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],{explain},[miscon]'
     }
     if myTreeTypes.count < 1

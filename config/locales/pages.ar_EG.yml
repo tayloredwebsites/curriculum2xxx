@@ -111,29 +111,29 @@ ar_EG:
       name: "آخر"
       hover: "اتصالات أخرى"
     bigidea:
-      name: "Big Ideas"
-      hover: "Big Ideas"
+      name: "أفكار كبيرة"
+      hover: "أفكار كبيرة"
     miscon:
-      name: "Misconceptions"
-      hover: "Displays Misconceptions"
+      name: "المفاهيم الخاطئة"
+      hover: "يعرض المفاهيم الخاطئة"
     essq:
-      name: "Essential Questions"
-      hover: "Displays Essential Questions"
+      name: "أسئلة أساسية"
+      hover: "يعرض الأسئلة الأساسية"
     pract:
-      name: "Practices"
-      hover: "Displays Practices"
+      name: "الممارسات"
+      hover: "يعرض الممارسات"
     questions:
-      name: "Essential Questions"
-      hover: "Displays Essential Questions"
+      name: "أسئلة أساسية"
+      hover: "يعرض الأسئلة الأساسية"
     concepts:
-      name: "Concepts"
-      hover: "Displays Concepts"
+      name: "مفاهيم"
+      hover: "يعرض المفاهيم"
     competencies:
-      name: "Competencies"
-      hover: "Displays Competencies"
+      name: "الكفاءات"
+      hover: "يعرض الكفاءات"
     standards:
-      name: "Standards"
-      hover: "Displays Standards"
+      name: "المعايير"
+      hover: "يعرض المعايير"
     documents:
       name: "مستندات"
       hover: "إدارة المستندات للمسؤولين"
@@ -172,77 +172,80 @@ ar_EG:
       key: "مفتاح"
       value: "القيمة"
     errors:
-      missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
-      too_many_translations_locale_code: "too many translations for locale: %{locale}, code: %{code}"
-      creating_translations_locale_code: "error creating translation for locale: %{locale}, code: %{code}"
-      creating_translations_locale_code: "error updating translation for locale: %{locale}, code: %{code}"
-      is_same_as_default: "Your new translation is the same as the default."
-      updated_key: "Translation for %{key} updated."
-      error_creating_code_val: "error creating translation #{code} to: #{val}"
+      missing_translations_locale_code: "ترجمات مفقودة للغة: %{locale}، الرمز: %{code}"
+      too_many_translations_locale_code: "ترجمات كثيرة جدًا للغة: %{locale} ، الرمز: %{code}"
+      creating_translations_locale_code: "خطأ في إنشاء الترجمة للغة: %{locale} ، الرمز: %{code}"
+      creating_translations_locale_code: "خطأ في تحديث الترجمة للغة: %{locale} ، الكود: %{code}"
+      is_same_as_default: "ترجمتك الجديدة هي نفس الترجمة الافتراضية."
+      updated_key: "تم تحديث ترجمة %{key}."
+      error_creating_code_val: "خطأ في إنشاء الترجمة %{code} إلى: %{val}"
   trees:
     index:
-      name: "Turkey STEM Curriculum"
-      title: "Turkey STEM Curriculum"
+      name: "منهاج مصر للعلوم والتكنولوجيا والهندسة والرياضيات"
+      title: "منهاج مصر للعلوم والتكنولوجيا والهندسة والرياضيات"
     sequencing:
-      title: "Relations"
+      title: "علاقات"
     maint:
-      title: "Editing"
+      title: "التحرير"
     dimension:
-      textlabel: "%{dim_name} Text"
+      textlabel: "%{dim_name} النص"
     miscon:
-      title: "Misconceptions"
-      singular: "Misconception"
+      title: "المفاهيم الخاطئة"
+      singular: "اعتقاد خاطئ"
     bigidea:
-      title: "Big Ideas"
-      singular: "Big Idea"
-      relates_to: "relates to"
+      title: "أفكار كبيرة"
+      singular: "فكرة هامة"
+      relates_to: "متعلق ب"
     show:
-      name: "Curriculum Detail Page"
+      name: "صفحة تفاصيل المناهج"
     labels:
-      filter_by_subject_grade: "Filter by Subject & Grade"
-      future_vision: "Future Vision"
-      future_vision_hover: "Future Vision"
-      related_sectors: 'Related Sectors'
-      how_sectors_related: 'How Sector is Related'
-      indicator_connections: 'Connections to Other Explanations:'
-      outcome_connections: 'Connections to Other %{outcome}:'
-      relation: 'Connection'
-      how_outcome_related: 'How Attainment is Related'
+      filter_by_subject_grade: "تصفية حسب الموضوع والدرجة"
+      future_vision: "التحديات الكبرى"
+      future_vision_hover: "التحديات الكبرى"
+      related_sectors: 'التحديات ذات الصلة'
+      how_sectors_related: 'كيف يرتبط التحدي الكبير'
+      indicator_connections: 'اتصالات بتفسيرات أخرى:'
+      outcome_connections: 'اتصالات بـ %{result} أخرى:'
+      relation: 'الإتصال'
+      how_outcome_related: 'كيف يرتبط الإنجاز'
       relation_types:
-        applies: 'Applies to:'
-        depends: 'Depends on:'
-        akin: 'Connects to:'
-      current_subject: "This Subject"
-      bio: "Biology"
-      che: "Chemistry"
-      mat: "Mathematics"
-      phy: "Physics"
-      sci: "Science"
-      ear: "Earth, Space, & Environmental Science"
-      teacher_header: "Supporting Resources"
-      teacher_field_1: "Multi, inter or trans disciplinary %{sector_set} based projects"
-      teacher_field_2: "Rough Learning Progression - When to teach"
-      teacher_field_3: "Textbook and Resource Materials to Use in Class"
-      teacher_field_4: "Suggested Assessment Resources and Activities"
-      teacher_field_5: "Additional Background and Resource Materials for the Teacher"
-      teacher_field_6: "Goal behaviour (What students will do, Practical learning targets)"
+        applies: 'ينطبق على:'
+        depends: 'يعتمد على:'
+        akin: 'يتصل بـ:'
+      current_subject: "هذا الموضوع"
+      bio: "مادة الاحياء"
+      che: "كيمياء"
+      mat: "الرياضيات"
+      phy: "الفيزياء"
+      sci: "علم"
+      ear: "علوم الأرض والفضاء والبيئة"
+      dimension_resources: "%{dim_name} الموارد"
+      teacher_header: "دعم الموارد"
+      teacher_field_1: "مشاريع متعددة التخصصات أو متعددة التخصصات عبر %{sector_set}"
+      teacher_field_2: "تقدم التعلم الخام - متى يتم التدريس"
+      teacher_field_3: "الكتب المدرسية والمواد للاستخدام في الفصل"
+      teacher_field_4: "موارد وأنشطة التقييم المقترحة"
+      teacher_field_5: "معلومات أساسية وموارد إضافية للمعلم"
+      teacher_field_6: "سلوك الهدف (ما سيفعله الطلاب ، أهداف التعلم العملية)"
+      duration_weeks_html: "<strong>المدة:</strong> %{weeks} أسابيع"
+      hours_per_week_html: "<strong>ساعات في الأسبوع</strong>: %{hours} ساعات"
     errors:
-      missing_grade_in_tree: "error: missing grade in report tree."
-      missing_area_in_tree: "error: missing area in report tree."
-      missing_component_in_tree: "error: missing component in report tree."
-      missing_outcome_in_tree: "error: missing attainment in report tree."
+      missing_grade_in_tree: "خطأ: درجة مفقودة في شجرة التقرير."
+      missing_area_in_tree: "خطأ: منطقة مفقودة في شجرة التقرير."
+      missing_component_in_tree: "خطأ: مكون مفقود في شجرة التقرير."
+      missing_outcome_in_tree: "خطأ: فقد التحصيل في شجرة التقرير."
       tree_too_deep_id: "error: treeview depth > 4 at id: %{id}"
       save_curriculum_code_error: "saving Curriculum code %{code} returned errors: "
       too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"
   tree_trees:
       labels:
-        explanation: "Reason for Relation"
+        explanation: "سبب العلاقة"
   sectors:
     index:
-      name: "Turkey STEM Curriculum for Future Competencies"
-      title: "Turkey STEM Curriculum for Future Competencies"
+      name: "منهج العلوم والتكنولوجيا والهندسة والرياضيات في مصر للتحديات الكبرى"
+      title: "منهج العلوم والتكنولوجيا والهندسة والرياضيات في مصر للتحديات الكبرى"
     labels:
-      future_vision_filter: "Turkey STEM Curriculum for Future Competencies"
+      future_vision_filter: "منهج العلوم والتكنولوجيا والهندسة والرياضيات في مصر للتحديات الكبرى"
   uploads:
     index:
       name: "Uploads Listing"
@@ -258,9 +261,9 @@ ar_EG:
       num_added_sector_of_numall: "%{num} relations added to "
       saved_code: 'Saved code: %{code}'
     errors:
-      invalid_sector_code_for_sector: "Invalid Future Vision code %{code} for Future Vision %{sector}"
-      no_matching_sector: "No matching Future Vision found for %{sector}"
-      exception_relating_sector_to_tree: "Exception occurred relating sector to tree: %{e}"
+      invalid_sector_code_for_sector: "Invalid Grand Challenge code %{code} for Future Vision %{sector}"
+      no_matching_sector: "No matching Grand Challenge found for %{sector}"
+      exception_relating_sector_to_tree: "Exception occurred relating challenge to tree: %{e}"
       incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
     warnings:
       already_completed: "The upload for  %{filename} has already been completed."

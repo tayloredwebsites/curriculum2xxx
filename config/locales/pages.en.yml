@@ -220,6 +220,7 @@ en:
       phy: "Physics"
       sci: "Science"
       ear: "Earth, Space, & Environmental Science"
+      dimension_resources: "%{dim_name} Resources"
       teacher_header: "Supporting Resources"
       teacher_field_1: "Multi, inter or trans disciplinary %{sector_set} based projects"
       teacher_field_2: "Rough Learning Progression - When to teach"
@@ -227,6 +228,10 @@ en:
       teacher_field_4: "Suggested Assessment Resources and Activities"
       teacher_field_5: "Additional Background and Resource Materials for the Teacher"
       teacher_field_6: "Goal behaviour (What students will do, Practical learning targets)"
+      duration_weeks_html: "<strong>Duration:</strong> %{weeks} weeks"
+      duration_weeks: "Duration in weeks"
+      hours_per_week_html: "<strong>Hours Per Week</strong>: %{hours} hours"
+      hours_per_week: "Hours per week"
     errors:
       missing_grade_in_tree: "error: missing grade in report tree."
       missing_area_in_tree: "error: missing area in report tree."

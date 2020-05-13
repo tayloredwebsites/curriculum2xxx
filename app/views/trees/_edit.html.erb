@@ -21,6 +21,16 @@
     <%= f.text_area :comment, name: 'tree[comment]', id: 'comment', style: {className: "pull-left"}, value: @comment %>
   </fieldset>
   <!--build field for rich text Reference/Resources-->
+  <% elsif @weeks %>
+    <fieldset>
+      <label for="weeks" class="pull-left"><%= I18n.translate('trees.labels.duration_weeks') %>:</label>
+      <%= f.number_field :weeks, name: 'tree[weeks]', id: 'weeks', style: {className: "pull-left"}, value: @weeks %>
+    </fieldset>
+  <% elsif @hours %>
+    <fieldset>
+      <label for="hours" class="pull-left"><%= I18n.translate('trees.labels.hours_per_week') %>:</label>
+      <%= f.number_field :hours, name: 'tree[hours]', id: 'hours', style: {className: "pull-left"}, value: @hours %>
+    </fieldset>
   <% elsif @ref %>
     <fieldset>
       <label for="resource_input" class="center-label" style="width:100%;display:block;"><%= @ref_label %></label>
