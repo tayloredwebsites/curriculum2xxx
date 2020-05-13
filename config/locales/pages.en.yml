@@ -30,6 +30,7 @@ en:
       language: "Language"
       row: "Row Number"
       row_num: "Row: %{num} - "
+      semester: "Semester"
       area: "Unit"
       component: "Chapter"
       outcome: "Attainment"
