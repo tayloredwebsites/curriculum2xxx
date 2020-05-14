@@ -33,40 +33,43 @@ class Outcome < BaseRec
 
   ######
   # Field Translations: Reference/Resources
-  def get_ref_key(ref_type)
-    if RESOURCE_TYPES.include?(ref_type)
-      return "#{base_key}.#{ref_type}"
+  def get_resource_key(resource_type)
+    if RESOURCE_TYPES.include?(resource_type)
+      return "#{base_key}.#{resource_type}"
     else
       return nil
     end
   end
 
 # TO DO: take out sector_set_code. Not needed anymore.
-  def self.get_ref_name(ref_type, locale_code, sector_set_code)
-    ref_index = RESOURCE_TYPES.index(ref_type)
+  def self.get_resource_name(resource_type, tree_type_code, version_code, locale_code)
+    resource_index = RESOURCE_TYPES.index(resource_type)
     name = ''
-    if ref_index
+    if resource_index
       name = Translation.find_translation_name(
           locale_code,
-          "ref_type_name.#{ref_type}",
+          "curriculum.#{tree_type_code}.#{version_code}.ref_type_name.#{resource_type}",
           nil
-        ) || I18n.translate("trees.labels.teacher_field_#{ref_index + 1}", sector_set: sector_set_code)
+        ) || I18n.translate("trees.labels.teacher_field_#{resource_index + 1}")
     end
     return name
   end
 
 # TO DO: take out sector_set_code. Not needed anymore.
-  def self.get_ref_hash(ref_type, locale_code, sector_set_code)
-    ref_index = RESOURCE_TYPES.index(ref_type)
+  def self.get_resource_hash(resource_type, tree_type_code, version_code, locale_code)
+    resource_index = RESOURCE_TYPES.index(resource_type)
     name = ''
-    if ref_index
+    if resource_index
       name = Translation.find_translation_name(
           locale_code,
-          "ref_type_name.#{ref_type}",
+          "curriculum.#{tree_type_code}.#{version_code}.ref_type_name.#{resource_type}",
           nil
-        ) || I18n.translate("trees.labels.teacher_field_#{ref_index + 1}", sector_set: sector_set_code)
+        ) || I18n.translate("trees.labels.teacher_field_#{resource_index + 1}")
     end
-    return {key: "ref_type_name.#{ref_type}", name: name}
+    return {
+      key: "curriculum.#{tree_type_code}.#{version_code}.ref_type_name.#{resource_type}",
+      name: name
+    }
   end
 
 end

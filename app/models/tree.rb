@@ -118,7 +118,7 @@ class Tree < BaseRec
       outcome.update(hours_per_week: hours.to_i) if hours
       Translation.find_or_update_translation(
         locale_code,
-        outcome.get_ref_key(update_type),
+        outcome.get_resource_key(update_type),
         resource.split("<script>").join("").split("</script>").join("")
       ) if resource
       if (resource_name_arr && resource_name_keys)
