@@ -235,6 +235,14 @@ class UploadsController < ApplicationController
       end
     end
 
+    # Dimension names used in dimension upload reporting
+    bigideaDimTypeName = Dimension.get_dim_type_name('bigidea', @treeTypeRec.code, @versionRec.code, @locale_code)
+    essqDimTypeName = Dimension.get_dim_type_name('essq', @treeTypeRec.code, @versionRec.code, @locale_code)
+    conceptsDimTypeName = Dimension.get_dim_type_name('concept', @treeTypeRec.code, @versionRec.code, @locale_code)
+    skillDimTypeName = Dimension.get_dim_type_name('skill', @treeTypeRec.code, @versionRec.code, @locale_code)
+    misconDimTypeName = Dimension.get_dim_type_name('miscon', @treeTypeRec.code, @versionRec.code, @locale_code)
+    practDimTypeName = Dimension.get_dim_type_name('pract', @treeTypeRec.code, @versionRec.code, @locale_code)
+
 
     # hash to hold the last code used (we are incrementing codes and saving the last in the parent key)
     # hash also holds the last set of values assigned a code, so we get the proper code for previous records.
@@ -319,6 +327,48 @@ class UploadsController < ApplicationController
             Rails.logger.debug("*** skip this code")
           end
 
+          # save the code array for the Learning Outcome tree record.
+          loCodeArray = hierarchyCodeArray.clone()
+          loCodeString = loCodeArray.join('.')
+          Rails.logger.debug("*** loCodeArray: #{loCodeArray.inspect}, loCodeString: #{loCodeString}")
+
+          # Create the Dimension records and map it to the Learning Outcome.
+          @treeTypeRec.dim_codes.split(',').each_with_index do |dCode, ix|
+            'bigidea,essq,concept,skill,miscon,pract'
+            Rails.logger.debug("*** dimension code at: #{ix} = #{dCode}")
+            colBigIdea = rowH['Big Idea'] || rowH['Specific big idea']
+            colEssq = rowH['Essential Questions'] || rowH['K-12 Big Idea ']
+            colConcepts = rowH['Concepts']
+            colSkills = rowH['Skills']
+            colMiscon = nil # rowH['No Misconceptions Column']
+            colPractice = rowH['Associated Practices']
+
+            currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
+
+            if dCode == 'bigidea' && colBigIdea
+              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload')
+              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", ''])
+            elsif dCode == 'essq' && colEssq
+              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload')
+              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", ''])
+            elsif dCode == 'concept' && colConcepts
+              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload')
+              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", ''])
+            elsif dCode == 'skill' && colSkills
+              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload')
+              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", ''])
+            elsif dCode == 'miscon' && colMiscon
+              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload')
+              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", ''])
+            elsif dCode == 'pract' && colPractice
+              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload')
+              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", ''])
+            else
+              Rails.logger.debug("*** skip the '#{dCode}' dimension")
+            end
+          end # dim_codes each_with_index
+
+
           #  need to map csv column headers to hierarchy code
           #   - option 1 - add functions to match all column headers for this hierarchy code
           #   - option 2 - add get upload key to curriculum.egstem.v01.uploadHeader.grade = 'Grade'
@@ -326,81 +376,6 @@ class UploadsController < ApplicationController
 
         end
 
-
-        # ######################################################
-        # # Write the Unit level tree record (create or update)
-        # unitName = rowH['Unit'] || rowH['Unit Name']
-        # unitCode = lookupItemCodeForName(unitName, gradeCodeA.join('.'))
-        # Rails.logger.debug("### Sub Unit: #{unitCode} #{unitName}")
-        # unitCodeA = [@gradeCodeIn, unitCode]
-        # currentRec = @currentRecs[unitCodeA.join('.')]
-        # rptRec = writeTreeRecord(1, gradeCodeA, unitCodeA, unitCode, unitName, currentRec, '')
-
-        # if rptRec.present?
-        #   @rptRecs << rptRec
-        #   @recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
-        # end
-
-        # ######################################################
-        # # Write the SubUnit level tree record (create or update)
-        # subUnitName = rowH[' Sub unit']
-        # subUnitCode = lookupItemCodeForName(subUnitName, unitCodeA.join('.'))
-        # Rails.logger.debug("### Sub Unit: #{subUnitCode} #{subUnitName}")
-        # subUnitCodeA = [@gradeCodeIn, unitCode, subUnitCode]
-        # currentRec = @currentRecs[subUnitCodeA.join('.')]
-        # rptRec = writeTreeRecord(2, unitCodeA, subUnitCodeA, subUnitCode, subUnitName, currentRec, '')
-        # if rptRec.present?
-        #   @rptRecs << rptRec
-        #   @recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
-        # end
-
-        # ######################################################
-        # # Write the Competency level tree record (create or update)
-        # compName = rowH['Proposed Student Competences']
-        # compCode = lookupItemCodeForName(compName, subUnitCodeA.join('.'))
-        # Rails.logger.debug("### Competency: #{compCode} #{compName}")
-        # compCodeA = [@gradeCodeIn, unitCode, subUnitCode, compCode]
-        # currentRec = @currentRecs[compCodeA.join('.')]
-        # rptRec = writeTreeRecord(3, subUnitCodeA, compCodeA, compCode, compName, currentRec, rowH['Explanatory Comments'])
-        # if rptRec.present?
-        #   @rptRecs << rptRec
-        #   @recordOrder += 1 # To Do: confirm this correctly set the sort and sequence order
-        # end
-
-        # ######################################################
-        # # Write the K-12 Big Idea (aka. Essential Quesitons behind the scenes) (create or update)
-        # # Rails.logger.debug("### K-12 Big Idea: #{rowH['K-12 Big Idea ']}")
-
-        # compName = rowH['K-12 Big Idea ']
-        # if compName.present?
-        #   dimTypeName = Dimension.get_dim_type_name('essq', @treeTypeRec.code, @versionRec.code, @locale_code)
-        #   currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-        #   createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, compName, 'From Upload')
-        #   # build report record array of values
-        #   # codeA3 = compCodeA.clone
-        #   # rptCodes = codeA3.concat(['','','','']).slice(0,5)
-        #   @rptRecs << [@rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
-        # end
-
-        # compName = rowH['Specific big idea']
-        # if compName.present?
-        #   dimTypeName = Dimension.get_dim_type_name('bigidea', @treeTypeRec.code, @versionRec.code, @locale_code)
-        #   currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-        #   createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', @gradeBandRec.min_grade, @gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
-        #   # build report record array of values
-        #   # codeA4 = compCodeA.clone
-        #   # rptCodes = codeA4.concat(['','','','']).slice(0,5)
-        #   @rptRecs << [@rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
-        # end
-
-        # compName = rowH['Associated Practices']
-        # if compName.present?
-        #   dimTypeName = Dimension.get_dim_type_name('pract', @treeTypeRec.code, @versionRec.code, @locale_code)
-        #   currentRec = @currentRecs[compCodeA.join('.')] # tree rec for the competency
-        #   createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', @gradeBandRec.min_grade, @gradeBandRec.max_grade, @subjectRec.code, compName, 'From Upload')
-        #   @rptRecs << [@rowNum.to_s,'','','','',''].concat([compCodeA.join('.'), "#{dimTypeName}: #{compName}", ''])
-        # end
-        # @processedCount += 1
       elsif isValidRow == 'blank'
         # # skip this record
       else
