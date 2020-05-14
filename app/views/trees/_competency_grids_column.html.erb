@@ -48,7 +48,7 @@
                   <div class="col-lg-2 col-11 col-sm-11 parent-can-hide">
                     <div class="col">
                       <div class="top-label">
-                        <%= dimsInfo[area][:found] > 1 ? @dimTypeTitleByCode[area] : @dimTypeTitleByCode[area].singularize %>
+                        <%= dimsInfo[area][:found] != 1 ? @dimTypeTitleByCode[area].pluralize : @dimTypeTitleByCode[area].singularize %>
                       </div>
                       <% dimsInfo[area][:arr].each do |dim| %>
                         <div class="dim-item">
