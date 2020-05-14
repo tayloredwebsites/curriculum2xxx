@@ -48,7 +48,11 @@ namespace :seed_turkey_v02 do
       #   <item> - TABLE item, full width of table with two cols: item | item resources
       #   [item#n#n#n] - TABLE item, full width of table, with numeric codes identifying which categories of this item to display
       detail_headers: 'grade,unit,(sub_unit),comp,<bigidea<,>ess_q>,{explain},[miscon],[sector],[connect],[resource#0#1#2#3#4#5]',
-      grid_headers: 'grade,unit,(sub_unit),comp,[bigidea],[ess_q],explain,[miscon]'
+      # Grid headers notation key:
+      # item or (item) - Ignored for now
+      # [item] - grid column, may have multiple connected items
+      # {item} - grid column, single item
+      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)

@@ -2,6 +2,9 @@ class Outcome < BaseRec
 
   has_one :tree
 
+  # Do not change existing sequence of
+  # RESOURCES_TYPES.
+  # Only add new resource types to end.
   RESOURCE_TYPES = [
     "proj_ref",
     "learn_prog",
@@ -38,6 +41,7 @@ class Outcome < BaseRec
     end
   end
 
+# TO DO: take out sector_set_code. Not needed anymore.
   def self.get_ref_name(ref_type, locale_code, sector_set_code)
     ref_index = RESOURCE_TYPES.index(ref_type)
     name = ''
@@ -51,6 +55,7 @@ class Outcome < BaseRec
     return name
   end
 
+# TO DO: take out sector_set_code. Not needed anymore.
   def self.get_ref_hash(ref_type, locale_code, sector_set_code)
     ref_index = RESOURCE_TYPES.index(ref_type)
     name = ''
