@@ -32,7 +32,7 @@ class Outcome < BaseRec
   end
 
   ######
-  # Field Translations: Reference/Resources
+  # Field Translations: Outcome Resources
   def get_resource_key(resource_type)
     if RESOURCE_TYPES.include?(resource_type)
       return "#{base_key}.#{resource_type}"
@@ -41,7 +41,6 @@ class Outcome < BaseRec
     end
   end
 
-# TO DO: take out sector_set_code. Not needed anymore.
   def self.get_resource_name(resource_type, tree_type_code, version_code, locale_code)
     resource_index = RESOURCE_TYPES.index(resource_type)
     name = ''
@@ -55,7 +54,6 @@ class Outcome < BaseRec
     return name
   end
 
-# TO DO: take out sector_set_code. Not needed anymore.
   def self.get_resource_hash(resource_type, tree_type_code, version_code, locale_code)
     resource_index = RESOURCE_TYPES.index(resource_type)
     name = ''
