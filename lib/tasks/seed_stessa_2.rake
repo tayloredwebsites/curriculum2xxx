@@ -187,7 +187,8 @@ namespace :seed_stessa_2 do
     end
     puts "grade bands are created for egstem"
     # put in translations for Grade Names
-    [1..3].each do |g|
+    (1..3).each do |g|
+      puts "Create Grade Band translation #{GradeBand.build_name_key(@tt.code, g.to_s)} for Grade #{g}"
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, GradeBand.build_name_key(@tt.code, "#{g}"), "Grade #{g}")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, GradeBand.build_name_key(@tt.code, "#{g}"), "#{g} الصف")
@@ -249,13 +250,13 @@ namespace :seed_stessa_2 do
 
         if subjHash[:locName].present?
           # create locale's translation for subject name
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
         if subjHash[:locAbbr].present?
           # create locale's translation for subject abbreviation
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
@@ -304,9 +305,9 @@ namespace :seed_stessa_2 do
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
 
       # Create the Locale's name and abbreviation for the Subjects in the Library.
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:locAbbr])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:locAbbr])
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:locName])
+        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:locName])
         throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
     end
 
@@ -358,7 +359,7 @@ namespace :seed_stessa_2 do
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create the Locale's translation for the Sector Name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "sector.#{@sectorCode}.#{sectHash[:code]}.name", sectHash[:locName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "sector.#{@sectorCode}.#{sectHash[:code]}.name", sectHash[:locName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     end

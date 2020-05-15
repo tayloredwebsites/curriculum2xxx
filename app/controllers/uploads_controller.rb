@@ -326,55 +326,51 @@ class UploadsController < ApplicationController
           else
             Rails.logger.debug("*** skip this code")
           end
+        end # hierarchy_codes each_with_index
 
-          # save the code array for the Learning Outcome tree record.
-          loCodeArray = hierarchyCodeArray.clone()
-          loCodeString = loCodeArray.join('.')
-          Rails.logger.debug("*** loCodeArray: #{loCodeArray.inspect}, loCodeString: #{loCodeString}")
+        # save the code array for the Learning Outcome tree record.
+        loCodeArray = hierarchyCodeArray.clone()
+        loCodeString = loCodeArray.join('.')
+        Rails.logger.debug("*** loCodeArray: #{loCodeArray.inspect}, loCodeString: #{loCodeString}")
 
-          # Create the Dimension records and map it to the Learning Outcome.
-          @treeTypeRec.dim_codes.split(',').each_with_index do |dCode, ix|
-            'bigidea,essq,concept,skill,miscon,pract'
-            Rails.logger.debug("*** dimension code at: #{ix} = #{dCode}")
-            colBigIdea = rowH['Big Idea'] || rowH['Specific big idea']
-            colEssq = rowH['Essential Questions'] || rowH['K-12 Big Idea ']
-            colConcepts = rowH['Concepts']
-            colSkills = rowH['Skills']
-            colMiscon = nil # rowH['No Misconceptions Column']
-            colPractice = rowH['Associated Practices']
+        # Create the Dimension records and map it to the Learning Outcome.
+        @treeTypeRec.dim_codes.split(',').each_with_index do |dCode, ix|
+          'bigidea,essq,concept,skill,miscon,pract'
+          Rails.logger.debug("*** dimension code at: #{ix} = #{dCode}")
+          colBigIdea = rowH['Big Idea'] || rowH['Specific big idea']
+          colEssq = rowH['Essential Questions'] || rowH['K-12 Big Idea ']
+          colConcepts = rowH['Concepts']
+          colSkills = rowH['Skills']
+          colMiscon = nil # rowH['No Misconceptions Column']
+          colPractice = rowH['Associated Practices']
 
-            currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
+          currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
 
-            if dCode == 'bigidea' && colBigIdea
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", ''])
-            elsif dCode == 'essq' && colEssq
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", ''])
-            elsif dCode == 'concept' && colConcepts
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", ''])
-            elsif dCode == 'skill' && colSkills
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", ''])
-            elsif dCode == 'miscon' && colMiscon
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", ''])
-            elsif dCode == 'pract' && colPractice
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", ''])
-            else
-              Rails.logger.debug("*** skip the '#{dCode}' dimension")
-            end
-          end # dim_codes each_with_index
+          if dCode == 'bigidea' && colBigIdea
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'essq' && colEssq
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'concept' && colConcepts
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'skill' && colSkills
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'miscon' && colMiscon
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'pract' && colPractice
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", createdOrUpdated]) if createdOrUpdated.present?
+          else
+            Rails.logger.debug("*** skip the '#{dCode}' dimension")
+          end
 
+        end  # dim_codes each_with_index
 
-          #  need to map csv column headers to hierarchy code
-          #   - option 1 - add functions to match all column headers for this hierarchy code
-          #   - option 2 - add get upload key to curriculum.egstem.v01.uploadHeader.grade = 'Grade'
-          #       - these go into the seed file, and are looked up in the upload.
-
-        end
+        @processedCount += 1
 
       elsif isValidRow == 'blank'
         # # skip this record
@@ -920,6 +916,7 @@ class UploadsController < ApplicationController
     #   - otherwise we will create a new dimension
 
     currentRecH = @currentDims[dim_type][dim_name]
+    createdOrUpdated = ''
     if !currentRecH.present?
       Rails.logger.debug("$$$ Did NOT find current dimension: #{dim_name}")
       currentRec = Dimension.create(
@@ -951,6 +948,7 @@ class UploadsController < ApplicationController
         dim_tree_expl
       )
       @currentDims[dim_type][dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
+      createdOrUpdated = 'Created and Mapped'
     else #existing Dimension record
       Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
       currentRec = currentRecH[:rec]
@@ -972,10 +970,10 @@ class UploadsController < ApplicationController
           dim_tree_expl
         )
         @currentDims[dim_type][dim_name][:updated] = true
+        createdOrUpdated = 'Mapped'
       end
-
     end
-
-  end
+    return createdOrUpdated
+  end # end createOrUpdateDimRecs
 
 end
