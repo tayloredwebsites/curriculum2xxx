@@ -1,12 +1,12 @@
 <div class='teacher-item'>
   <div class='center-label sub-header-margin'>
-    <%= Outcome.get_ref_name(Outcome::RESOURCE_TYPES[code], @locale_code, @sectorName) %>
+    <%= Outcome.get_resource_name(Outcome::RESOURCE_TYPES[code], @treeTypeRec.code, @versionRec.code, @locale_code) %>
   </div>
   <div class="rel-sectors text-left padding-left padding-right row margin-top margin-bottom">
     <div class="col col-11">
       <%= Translation.find_translation_name(
       @locale_code,
-      @tree.outcome.get_ref_key(Outcome::RESOURCE_TYPES[code]),
+      @tree.outcome.get_resource_key(Outcome::RESOURCE_TYPES[code]),
       ""
       ).html_safe %>
     </div>

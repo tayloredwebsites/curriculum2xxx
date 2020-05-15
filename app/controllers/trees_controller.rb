@@ -901,17 +901,17 @@ class TreesController < ApplicationController
       elsif Outcome::RESOURCE_TYPES.include?(@edit_type)
         @ref = Translation.find_translation_name(
             @locale_code,
-            @tree.outcome.get_ref_key(@edit_type),
+            @tree.outcome.get_resource_key(@edit_type),
             ""
           )
         #To Do: normalize these translations
-        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::RESOURCE_TYPES.index(@edit_type) + 1}", sector_set: @sectorName)
+        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::RESOURCE_TYPES.index(@edit_type) + 1}")
       elsif @edit_type.split("#")[0] == "ref_settings"
         resource_types = @edit_type.split("#")
         if resource_types.length > 1
           resource_types = resource_types[1..resource_types.length].map { |n| Outcome::RESOURCE_TYPES[n.to_i] }
         end
-        @ref_titles = resource_types.map { |t| Outcome.get_ref_hash(t, @locale_code, @sectorName) }
+        @ref_titles = resource_types.map { |t| Outcome.get_resource_hash(t, @treeTypeRec.code, @versionRec.code, @locale_code) }
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id
