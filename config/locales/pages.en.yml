@@ -96,7 +96,7 @@ en:
   nav_bar:
     home:
       name: "Home"
-      hover: "Turkey STEM Home Page"
+      hover: "Mektebim STEM Home Page"
     curriculum:
       name: "Curriculum Tree"
       hover: "Displays the Curriculum Tree"
@@ -183,8 +183,8 @@ en:
       error_creating_code_val: "error creating translation #{code} to: #{val}"
   trees:
     index:
-      name: "Turkey STEM Curriculum"
-      title: "Turkey STEM Curriculum"
+      name: "Mektebim STEM Curriculum"
+      title: "Mektebim STEM Curriculum"
     sequencing:
       title: "Relations"
     maint:
@@ -246,10 +246,10 @@ en:
         explanation: "Reason for Relation"
   sectors:
     index:
-      name: "Turkey STEM Curriculum for Future Competencies"
-      title: "Turkey STEM Curriculum for Future Competencies"
+      name: "Mektebim STEM Curriculum for Future Competencies"
+      title: "Mektebim STEM Curriculum for Future Competencies"
     labels:
-      future_vision_filter: "Turkey STEM Curriculum for Future Competencies"
+      future_vision_filter: "Mektebim STEM Curriculum for Future Competencies"
   uploads:
     index:
       name: "Uploads Listing"

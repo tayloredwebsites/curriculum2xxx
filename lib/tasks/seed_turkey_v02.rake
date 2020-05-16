@@ -32,7 +32,7 @@ namespace :seed_turkey_v02 do
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
       sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
-      curriculum_title_key: 'curriculum.tfv.title', # 'Turkey STEM Curriculum'
+      curriculum_title_key: 'curriculum.tfv.title', # 'Mektebim STEM Curriculum'
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
@@ -83,7 +83,7 @@ namespace :seed_turkey_v02 do
     throw "ERROR updating sector.set.fut.sect.name: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for curriculum_title_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.title', 'Turkey STEM Curriculum')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.title', 'Mektebim STEM Curriculum')
     throw "ERROR updating curriculum.tfv.title translation: #{message}" if status == BaseRec::REC_ERROR
 
     # # Titles of Turkish Dimension Pages (see seeds.rb for default english)

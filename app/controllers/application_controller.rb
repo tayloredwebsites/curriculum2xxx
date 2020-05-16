@@ -149,7 +149,8 @@ class ApplicationController < ActionController::Base
       elsif !@versionRec.code
         raise I18n.translate('app.errors.missing_version_code')
       end
-      @appTitle += " #{@versionRec.code} [#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
+      @appTitle += TreeType.where(:code => @treeTypeRec.code).count > 1 ? " #{@versionRec.code}" : ""
+      #"[#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
 
       # e.g., [{code: "bigidea", name: "Big Ideas"}, {...}, ...]
       @dimsArray = []

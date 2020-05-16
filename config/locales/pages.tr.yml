@@ -1,7 +1,7 @@
 
 tr:
   app:
-    title: "Türkiye STEM Ana Sayfa"
+    title: "Mektebim STEM Ana Sayfa"
     labels:
       all: "Her Sey"
       save: "Save"
@@ -39,7 +39,7 @@ tr:
   nav_bar:
     home:
       name: "Ev"
-      hover: "Türkiye STEM Ana Sayfa"
+      hover: "Mektebim STEM Ana Sayfa"
     curriculum:
       name: "Gelecek Müfredat"
       hover: "Müfredat Ağacı'nı görüntüler"
@@ -90,8 +90,8 @@ tr:
       hover: "Web Sitesinden Çıkış Yap"
   trees:
     index:
-      name: "Türkiye STEM Müfredatı"
-      title: "Türkiye STEM Müfredatı"
+      name: "Mektebim STEM Müfredatı"
+      title: "Mektebim STEM Müfredatı"
     sequencing:
       title: "Dizileme"
     misconc:
