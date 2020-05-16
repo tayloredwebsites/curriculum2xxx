@@ -288,17 +288,11 @@ class UploadsController < ApplicationController
         # process the record in hierarchy order
         hierarchyCodeArray = [] # the array that gets built with the record codes in hierarchy order
 
-        # If LO code supplied, us it to set the codes in the hierarchy
-        colLoFullCode = rowH['LO Code:']
-        colLoFullCodeA = colLoFullCode.split('.')
-        colLoFullCodeA.each_with_index do |loCodeItem, ix|
 
-        end
-
+        ################################################################
+        # Create the Hierarchy Tree records for this row
         @treeTypeRec.hierarchy_codes.split(',').each_with_index do |hCode, ix|
           Rails.logger.debug("*** Hierarchy was: #{hierarchyCodeArray.join(',')}, code at: #{ix} = #{hCode}")
-          Rails.logger.debug("*** colLoFullCode was: #{colLoFullCode}")
-          Rails.logger.debug("*** hierarchyCodeArray was: #{hierarchyCodeArray.join('.')}")
 
           colGradeCode = rowH['Grade'] || rowH['Proposed Grade']
           # colGradeName = "#{I18n.translate('app.labels.grade')} #{colGrade}"
@@ -306,7 +300,8 @@ class UploadsController < ApplicationController
           # colSemesterName = "#{I18n.translate('app.labels.semester')} #{colSemester}"
           colUnitName = rowH['Unit'] || rowH['Unit Name']
           colFullLoCode = rowH['LO Code:']
-          colLoCode = colFullLoCode.split('.').last
+          # get the LO Code, by splitting the LO Code by periods, getting the last one, and only keeping the digits
+          colLoCode = colFullLoCode.split('.').last.delete('^0-9')
           colLoDesc = rowH['Learning Outcome'] || rowH['Proposed Student Competences']
           if hCode == 'grade' && colGradeCode
             Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{colGradeCode}")
@@ -326,55 +321,163 @@ class UploadsController < ApplicationController
           else
             Rails.logger.debug("*** skip this code")
           end
+        end # hierarchy_codes each_with_index
 
-          # save the code array for the Learning Outcome tree record.
-          loCodeArray = hierarchyCodeArray.clone()
-          loCodeString = loCodeArray.join('.')
-          Rails.logger.debug("*** loCodeArray: #{loCodeArray.inspect}, loCodeString: #{loCodeString}")
-
-          # Create the Dimension records and map it to the Learning Outcome.
-          @treeTypeRec.dim_codes.split(',').each_with_index do |dCode, ix|
-            'bigidea,essq,concept,skill,miscon,pract'
-            Rails.logger.debug("*** dimension code at: #{ix} = #{dCode}")
-            colBigIdea = rowH['Big Idea'] || rowH['Specific big idea']
-            colEssq = rowH['Essential Questions'] || rowH['K-12 Big Idea ']
-            colConcepts = rowH['Concepts']
-            colSkills = rowH['Skills']
-            colMiscon = nil # rowH['No Misconceptions Column']
-            colPractice = rowH['Associated Practices']
-
-            currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
-
-            if dCode == 'bigidea' && colBigIdea
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", ''])
-            elsif dCode == 'essq' && colEssq
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", ''])
-            elsif dCode == 'concept' && colConcepts
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", ''])
-            elsif dCode == 'skill' && colSkills
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", ''])
-            elsif dCode == 'miscon' && colMiscon
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", ''])
-            elsif dCode == 'pract' && colPractice
-              createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload')
-              @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", ''])
-            else
-              Rails.logger.debug("*** skip the '#{dCode}' dimension")
-            end
-          end # dim_codes each_with_index
+        # save the code array for the Learning Outcome tree record.
+        loCodeArray = hierarchyCodeArray.clone()
+        loCodeString = loCodeArray.join('.')
+        Rails.logger.debug("*** loCodeArray: #{loCodeArray.inspect}, loCodeString: #{loCodeString}")
 
 
-          #  need to map csv column headers to hierarchy code
-          #   - option 1 - add functions to match all column headers for this hierarchy code
-          #   - option 2 - add get upload key to curriculum.egstem.v01.uploadHeader.grade = 'Grade'
-          #       - these go into the seed file, and are looked up in the upload.
+        ################################################################
+        # Process all fields to go into the Learning Outcome record, then add/map/update as needed
 
+        priorLoTreeRecH = @currentRecs[loCodeString]
+        currentLoTreeRec = priorLoTreeRecH[:rec]
+        currentOutcomeId = currentLoTreeRec.outcome_id
+        outcomeBaseKey = @baseKeyRoot + '.' + loCodeString + '.outc'
+        Rails.logger.debug("*** currentLoTreeRec.id: #{currentLoTreeRec.id}, currentOutcomeId: #{currentOutcomeId}, outcomeBaseKey: #{outcomeBaseKey}")
+        if currentOutcomeId.present?
+          # load in existing Outcome record
+          outRec = Outcome.find(currentOutcomeId)
+        else
+          # create new Outcome record
+          outRec = Outcome.create(base_key: outcomeBaseKey)
         end
+
+        # To Do : is the learning outcome explanation translation used at all?
+        # outcomeTranslExpl = Translation.find_translation_name(@localeRec.code, outcomeBaseKey+'.explain', 'xxNotFoundxx')
+        # transl, text_status, text_msg = Translation.find_or_update_translation(
+        #   @localeRec.code,
+        #   "#{baseKeyStr}.outc.explain",
+        #   localText
+        # )
+
+        # If LO code supplied, use it as the display of the full lo code (if supplied)
+        ## To Do : add displayLoCode field to Outcome record
+        colLoFullCode = rowH['LO Code:']
+
+
+        # create the duration_weeks field in the LO Record
+        startWeekStr = rowH['Start Week']
+        endWeekStr = rowH['End Week']
+        startWeekNum = endWeekNum = 0
+        durationWeeks = 0
+        if startWeekStr.present? && endWeekStr.present?
+          startWeekNum = Integer(startWeekStr.delete('^0-9')) rescue 0
+          endWeekNum = Integer(endWeekStr.delete('^0-9')) rescue 0
+        end
+        if startWeekNum != 0 && endWeekNum != 0 && endWeekNum >= startWeekNum
+          durationWeeks = endWeekNum - startWeekNum + 1
+        end
+        Rails.logger.debug("+++ durationWeeks: #{durationWeeks}")
+        Rails.logger.debug("+++ outRec.duration_weeks: #{outRec.duration_weeks}")
+        # update duration weeks
+        if outRec.duration_weeks != durationWeeks
+          Rails.logger.debug("+++ Update outcome")
+          outRec.update(duration_weeks: durationWeeks)
+          @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "Duration Weeks", "Updated"])
+          @recordOrder += 1
+        end
+
+
+        # class_text resource field to store the Textbook Materials and Resources field
+        classTextValue = rowH['Textbook Materials and Resources']
+        if classTextValue.present?
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
+            outRec.get_resource_key('class_text'),
+            classTextValue
+          )
+          if text_status == BaseRec::REC_ERROR
+            @rowErrs << text_msg
+            rptMessage = "ERROR: #{text_msg}"
+          elsif text_status == BaseRec::REC_ADDED
+            rptMessage = "Added"
+          elsif text_status == BaseRec::REC_NO_CHANGE
+            rptMessage = ""
+          else
+            rptMessage = "Updated"
+          end
+          if rptMessage.present?
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([
+              loCodeString,
+              "Textbook Materials and Resources: #{classTextValue}",
+              rptMessage]
+            )
+            @recordOrder += 1
+          end
+        end
+        # evidence_of_learning field to store the Evidence of Learning field
+        evidLearningValue = rowH['Evidence of Learning']
+        if evidLearningValue.present?
+          Translation.find_or_update_translation(@localeRec.code, outRec.get_evidence_of_learning_key, evidLearningValue)
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
+            outRec.get_evidence_of_learning_key,
+            evidLearningValue
+          )
+          if text_status == BaseRec::REC_ERROR
+            @rowErrs << text_msg
+            rptMessage = "ERROR: #{text_msg}"
+          elsif text_status == BaseRec::REC_ADDED
+            rptMessage = "Added"
+          elsif text_status == BaseRec::REC_NO_CHANGE
+            rptMessage = ""
+          else
+            rptMessage = "Updated"
+          end
+          if rptMessage.present?
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([
+              loCodeString,
+              "Evidence of Learning: #{classTextValue}",
+              rptMessage]
+            )
+            @recordOrder += 1
+          end
+        end
+
+
+
+        ################################################################
+        # Create the Dimension records and map it to the Learning Outcome.
+        @treeTypeRec.dim_codes.split(',').each_with_index do |dCode, ix|
+          'bigidea,essq,concept,skill,miscon,pract'
+          Rails.logger.debug("*** dimension code at: #{ix} = #{dCode}")
+          colBigIdea = rowH['Big Idea'] || rowH['Specific big idea']
+          colEssq = rowH['Essential Questions'] || rowH['K-12 Big Idea ']
+          colConcepts = rowH['Concepts']
+          colSkills = rowH['Skills']
+          colMiscon = nil # rowH['No Misconceptions Column']
+          colPractice = rowH['Associated Practices']
+
+          currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
+
+          if dCode == 'bigidea' && colBigIdea
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'essq' && colEssq
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'concept' && colConcepts
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'skill' && colSkills
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'miscon' && colMiscon
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'pract' && colPractice
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload')
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", createdOrUpdated]) if createdOrUpdated.present?
+          else
+            Rails.logger.debug("*** skip the '#{dCode}' dimension")
+          end
+
+        end  # dim_codes each_with_index
+
+        @processedCount += 1
 
       elsif isValidRow == 'blank'
         # # skip this record
@@ -511,7 +614,8 @@ class UploadsController < ApplicationController
       baseKeyStr = @baseKeyRoot + '.' + codeStr
     end
     if currentRec.blank?
-      outRecId = updateOutcome(depth, baseKeyStr, explainText, nil)
+      outRecId = getOrCreateOutcome(depth, baseKeyStr)
+      Rails.logger.debug("+++ outRecId: #{outRecId}")
       rec = Tree.create(
         tree_type_id: @treeTypeRec.id,
         version_id: @treeTypeRec.version_id,
@@ -541,7 +645,8 @@ class UploadsController < ApplicationController
       wroteRecord = false
     else
       Rails.logger.debug("+++ currentRec not updated is #{currentRec[:updated]}")
-      outRecId = updateOutcome(depth, baseKeyStr, explainText, currentRec[:rec].outcome_id)
+      outRecId = getOrCreateOutcome(depth, baseKeyStr)
+      Rails.logger.debug("+++ outRecId: #{outRecId}")
       rec = Tree.update(currentRec[:rec].id,
         tree_type_id: @treeTypeRec.id,
         version_id: @treeTypeRec.version_id,
@@ -587,18 +692,16 @@ class UploadsController < ApplicationController
     return rptRec
   end
 
-  def updateOutcome(depth, baseKeyStr, localText, outRecId)
-    if depth == 3 # To Do: fix this for other hierarchies
-      if outRecId.present?
-        outRec = Outcome.find(outRecId)
+  def getOrCreateOutcome(depth, baseKeyStr)
+    if depth == @treeTypeRec.outcome_depth
+      outRecs = Outcome.where(base_key: baseKeyStr+'.outc')
+      if outRecs.count > 0
+        outRec = outRecs.first
+        Rails.logger.debug("*** found outrec: #{outRec.inspect}")
       else
         outRec = Outcome.create(base_key: baseKeyStr+'.outc')
+        Rails.logger.debug("*** created outrec: #{outRec.inspect}")
       end
-      transl, text_status, text_msg = Translation.find_or_update_translation(
-        @localeRec.code,
-        "#{baseKeyStr}.outc.explain",
-        localText
-      )
       outRecId = outRec.id
     else
       outRecId = nil
@@ -920,6 +1023,7 @@ class UploadsController < ApplicationController
     #   - otherwise we will create a new dimension
 
     currentRecH = @currentDims[dim_type][dim_name]
+    createdOrUpdated = ''
     if !currentRecH.present?
       Rails.logger.debug("$$$ Did NOT find current dimension: #{dim_name}")
       currentRec = Dimension.create(
@@ -951,6 +1055,7 @@ class UploadsController < ApplicationController
         dim_tree_expl
       )
       @currentDims[dim_type][dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
+      createdOrUpdated = 'Created and Mapped'
     else #existing Dimension record
       Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
       currentRec = currentRecH[:rec]
@@ -972,10 +1077,10 @@ class UploadsController < ApplicationController
           dim_tree_expl
         )
         @currentDims[dim_type][dim_name][:updated] = true
+        createdOrUpdated = 'Mapped'
       end
-
     end
-
-  end
+    return createdOrUpdated
+  end # end createOrUpdateDimRecs
 
 end

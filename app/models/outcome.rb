@@ -41,6 +41,8 @@ class Outcome < BaseRec
     end
   end
 
+  # To Do: deprecate the Translation Table for Resource Names (ensure seed file provides these)
+  # To Do: provide a default value in call to find_translation_name indicating missing resource name in Seed file
   def self.get_resource_name(resource_type, tree_type_code, version_code, locale_code)
     resource_index = RESOURCE_TYPES.index(resource_type)
     name = ''
@@ -54,6 +56,8 @@ class Outcome < BaseRec
     return name
   end
 
+  # To Do: deprecate the Translation Table for Resource Names (ensure seed file provides these)
+  # To Do: provide a default value in call to find_translation_name indicating missing resource name in Seed file
   def self.get_resource_hash(resource_type, tree_type_code, version_code, locale_code)
     resource_index = RESOURCE_TYPES.index(resource_type)
     name = ''
