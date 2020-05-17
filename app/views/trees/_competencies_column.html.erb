@@ -20,7 +20,7 @@
         <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
         <strong><em><%= h[:formatted_code] %></em></strong>
         </a>
-        <%= h[:text] %>
+        <%= h[:text].html_safe %>
         <% if h[:dimtrees].length > 0 %>
         <% h[:dimtrees].each do |dt|
              dim = dt.dimension

@@ -38,7 +38,7 @@
                   <em><%= duration_str %></em>
                   </div>
                 <% end %>
-                <%= h[:text] %>
+                <%= h[:text].html_safe %>
               </div>
               <!--TO DO: draw this array from the grid_headers field in TreeType
                 ['essq','bigidea','pract','expl','miscon']
@@ -52,7 +52,7 @@
                       </div>
                       <% dimsInfo[area][:arr].each do |dim| %>
                         <div class="dim-item">
-                          <%= dim %>
+                          <%= dim.html_safe %>
                         </div>
                       <% end #ess_q_arr.each do |dim| %>
                     </div>

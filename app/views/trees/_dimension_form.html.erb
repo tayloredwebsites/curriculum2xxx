@@ -55,7 +55,7 @@
   <fieldset>
     <div>
     <div><label for='name'><%= translate('trees.dimension.textlabel', dim_name: dim_type_name) %>:</label></div>
-    <%= f.text_area :name, name: 'dimension[text]', id: 'name', value: @dimension_text %>
+    <%= f.cktext_area :name, name: 'dimension[text]', id: 'name', value: @dimension_text, ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'} %>
     </div>
   </fieldset>
 

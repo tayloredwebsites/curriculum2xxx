@@ -158,6 +158,9 @@
       li.maint-item {
         text-align: left;
       }
+      .dim-item ul, .dim-item li {
+        border: none;
+      }
       .indent-0 { margin-left: 0px; }
       .indent-1 { margin-left: 5px; }
       .indent-2 { margin-left: 10px; }
