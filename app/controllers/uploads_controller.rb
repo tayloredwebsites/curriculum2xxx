@@ -295,27 +295,45 @@ class UploadsController < ApplicationController
           Rails.logger.debug("*** Hierarchy was: #{hierarchyCodeArray.join(',')}, code at: #{ix} = #{hCode}")
 
           colGradeCode = rowH['Grade'] || rowH['Proposed Grade']
-          # colGradeName = "#{I18n.translate('app.labels.grade')} #{colGrade}"
           colSemesterCode = rowH['Semester']
-          # colSemesterName = "#{I18n.translate('app.labels.semester')} #{colSemester}"
           colUnitName = rowH['Unit'] || rowH['Unit Name']
+          colSubUnitName = rowH[' Sub unit']
           colFullLoCode = rowH['LO Code:']
-          # get the LO Code, by splitting the LO Code by periods, getting the last one, and only keeping the digits
-          colLoCode = colFullLoCode.split('.').last.delete('^0-9')
           colLoDesc = rowH['Learning Outcome'] || rowH['Proposed Student Competences']
           if hCode == 'grade' && colGradeCode
             Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{colGradeCode}")
-            gradeCode = lookupItemCodeForName(colGradeCode, hierarchyCodeArray.join('.'))
+            # use the grade number as the code
+            gradeCode = colGradeCode
             hierarchyCodeArray = processField(hierarchyCodeArray, gradeCode, colGradeCode, ix)
           elsif hCode == 'sem' && colSemesterCode
-            semCode = lookupItemCodeForName(colSemesterCode, hierarchyCodeArray.join('.'))
+            # if semester code is numeric, use that for the code
+            if colSemesterCode.delete('^0-9') == colSemesterCode
+              semCode = colSemesterCode
+            else
+              semCode = lookupItemCodeForName(colSemesterCode, hierarchyCodeArray.join('.'))
+            end
             hierarchyCodeArray = processField(hierarchyCodeArray, semCode, colSemesterCode, ix)
             Rails.logger.debug("*** Process Semester field: #{hierarchyCodeArray.join('.')} - #{colSemesterCode}")
           elsif hCode == 'unit' && colUnitName
+            # get a code for the unit name (assigned sequentially as found)
+            Rails.logger.debug("*** Process Unit field: #{hierarchyCodeArray.join('.')} - #{colUnitName}")
             unitCode = lookupItemCodeForName(colUnitName, hierarchyCodeArray.join('.'))
             hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix)
-            Rails.logger.debug("*** Process Unit field: #{hierarchyCodeArray.join('.')} - #{colUnitName}")
-          elsif hCode == 'lo' && colLoDesc
+          elsif hCode == 'sub_unit' #  if no sub_unit value passed in, write a special record to allow attaching competencies below it
+            # get a code for the sub-unit name, if given (assigned sequentially as found)
+            # optional records look like: <code: "<grade>.<unit>.", name_key: nil, base_key: "">
+            Rails.logger.debug("*** Process Sub Unit field: #{hierarchyCodeArray.join('.')} - #{colSubUnitName}")
+            subUnitCode = lookupItemCodeForName(colSubUnitName, hierarchyCodeArray.join('.'))
+            hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix)
+          elsif (hCode == 'lo' || hCode == 'comp') && colLoDesc
+            Rails.logger.debug("*** colLoDesc: #{colLoDesc}, colLoDesc: #{colLoDesc}, colFullLoCode: #{colFullLoCode}")
+            if colFullLoCode.present?
+              # If given the Full LO Code, get the code number by splitting the LO Code by periods, getting the last one, and only keeping the digits
+              colLoCode = colFullLoCode.split('.').last.delete('^0-9')
+            else
+              colLoCode = lookupItemCodeForName(colLoDesc, hierarchyCodeArray.join('.'))
+            end
+            Rails.logger.debug("*** colLoCode: #{colLoCode}")
             hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix)
             Rails.logger.debug("*** To Do - Process LO field: #{hierarchyCodeArray.join('.')} - #{colLoDesc}")
           else
@@ -344,14 +362,6 @@ class UploadsController < ApplicationController
           # create new Outcome record
           outRec = Outcome.create(base_key: outcomeBaseKey)
         end
-
-        # To Do : is the learning outcome explanation translation used at all?
-        # outcomeTranslExpl = Translation.find_translation_name(@localeRec.code, outcomeBaseKey+'.explain', 'xxNotFoundxx')
-        # transl, text_status, text_msg = Translation.find_or_update_translation(
-        #   @localeRec.code,
-        #   "#{baseKeyStr}.outc.explain",
-        #   localText
-        # )
 
         # If LO code supplied, use it as the display of the full lo code (if supplied)
         ## To Do : add displayLoCode field to Outcome record
@@ -383,7 +393,9 @@ class UploadsController < ApplicationController
 
         # class_text resource field to store the Textbook Materials and Resources field
         classTextValue = rowH['Textbook Materials and Resources']
+        Rails.logger.debug("*** classTextValue: #{classTextValue}")
         if classTextValue.present?
+          Rails.logger.debug("*** classTextValue is present: #{classTextValue}")
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
             outRec.get_resource_key('class_text'),
@@ -399,6 +411,7 @@ class UploadsController < ApplicationController
           else
             rptMessage = "Updated"
           end
+          Rails.logger.debug("*** rptMessage: #{rptMessage}")
           if rptMessage.present?
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([
               loCodeString,
@@ -408,9 +421,12 @@ class UploadsController < ApplicationController
             @recordOrder += 1
           end
         end
+
         # evidence_of_learning field to store the Evidence of Learning field
         evidLearningValue = rowH['Evidence of Learning']
+        Rails.logger.debug("*** evidLearningValue: #{evidLearningValue}")
         if evidLearningValue.present?
+          Rails.logger.debug("*** evidLearningValue exists: #{evidLearningValue}")
           Translation.find_or_update_translation(@localeRec.code, outRec.get_evidence_of_learning_key, evidLearningValue)
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
@@ -427,10 +443,43 @@ class UploadsController < ApplicationController
           else
             rptMessage = "Updated"
           end
+          Rails.logger.debug("*** rptMessage: #{rptMessage}")
           if rptMessage.present?
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([
               loCodeString,
-              "Evidence of Learning: #{classTextValue}",
+              "Evidence of Learning: #{evidLearningValue}",
+              rptMessage]
+            )
+            @recordOrder += 1
+          end
+        end
+
+        # To Do: standardize and refactor this
+        # "Teacher Support" is currently hard coded to the "Explanatory Comments" upload field
+        explCommentsValue = rowH['Explanatory Comments']
+        Rails.logger.debug("*** explCommentsValue: #{explCommentsValue}")
+        if explCommentsValue.present?
+          Rails.logger.debug("*** explCommentsValue exists: #{explCommentsValue}")
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
+            outRec.get_explain_key,
+            explCommentsValue
+          )
+          if text_status == BaseRec::REC_ERROR
+            @rowErrs << text_msg
+            rptMessage = "ERROR: #{text_msg}"
+          elsif text_status == BaseRec::REC_ADDED
+            rptMessage = "Added"
+          elsif text_status == BaseRec::REC_NO_CHANGE
+            rptMessage = ""
+          else
+            rptMessage = "Updated"
+          end
+          Rails.logger.debug("*** rptMessage: #{rptMessage}")
+          if rptMessage.present?
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([
+              loCodeString,
+              "Explanatory Comments: #{explCommentsValue}",
               rptMessage]
             )
             @recordOrder += 1

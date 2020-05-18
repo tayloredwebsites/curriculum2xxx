@@ -22,6 +22,7 @@ class Translation < BaseRec
 
 
   # to do - lookup in config.i18n.fallbacks order if not found
+  # To Do - Remove the no change error, this is just a lookup by key, no value comparison
   def self.find_translation(locale, code, checkDefault = true, allow_none = false)
     recs = Translation.where(locale: locale, key: code)
     if recs.count == 1
@@ -88,6 +89,8 @@ class Translation < BaseRec
         return rec, BaseRec::REC_NO_CHANGE, ''
       end # if rec.val != val
     end # rec.present
+    # catch fall through errors
+    return rec, BaseRec::REC_ERROR, errors.to_s
   end
 
   def self.translationsByKeys(locale_code, keys)
