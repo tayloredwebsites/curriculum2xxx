@@ -1,4 +1,5 @@
 class DimensionsController < ApplicationController
+  before_action :authenticate_user!
   before_action :find_dimension, only: [:show, :edit, :update]
 
   def show

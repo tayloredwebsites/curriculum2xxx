@@ -5,21 +5,23 @@
   <div id='pageHeaderTitle' class=''>
     <h1 class='text-center'><%= @appTitle %></h1>
   </div>
-  <div id='pageHeaderCurriculumSelect'>
-    <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum('<%= request.env['PATH_INFO'] %>', <%= current_user.present? ? current_user.id : '' %>)">
-      <% @versionsHash.each_value do |arr| %>
-        <% arr.each do |cur| %>
-          <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>
-          <option value="<%= [cur[:tree_type_id], cur[:version_id]].to_s %>"<%= selected_curriculum ? " selected" : "" %>>
-            <%=
-            "#{cur[:str]}"
-            # "[#{cur[:working] ? translate('app.labels.working_version') : translate('app.labels.final_version')}]"
-            %>
-          </option>
+  <% if current_user.present? %>
+    <div id='pageHeaderCurriculumSelect'>
+      <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum('<%= request.env['PATH_INFO'] %>', <%= current_user.present? ? current_user.id : '' %>)">
+        <% @versionsHash.each_value do |arr| %>
+          <% arr.each do |cur| %>
+            <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>
+            <option value="<%= [cur[:tree_type_id], cur[:version_id]].to_s %>"<%= selected_curriculum ? " selected" : "" %>>
+              <%=
+              "#{cur[:str]}"
+              # "[#{cur[:working] ? translate('app.labels.working_version') : translate('app.labels.final_version')}]"
+              %>
+            </option>
+          <% end %>
         <% end %>
-      <% end %>
-    </select>
-  </div>
+      </select>
+    </div>
+  <% end %>
   <div id='pageHeaderFontSize' class='font-size-select'>
     <span class='smallest-text'>A</span>
     <span class='smaller-text'>A</span>
@@ -67,147 +69,149 @@
     </ul>
   </div>
 </header>
-<nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
-  <ul class="flexContainer navbar-nav mx-auto">
-    <%
-    if controller.controller_name == 'users' && action_name == 'home' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= home_users_path %>><%= translate('nav_bar.home.name') %></a>
-      </li>
-    <% else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= home_users_path %>><%= translate('nav_bar.home.name') %></a>
-      </li>
-    <%
-    end
-    if controller.controller_name == 'trees' && action_name == 'index' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
-      </li>
-    <% else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
-      </li>
-    <%
-    end
-    if controller.controller_name == 'trees' && action_name == 'outcomes' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
-      </li>
-    <%
-    else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
-      </li>
-    <%
-    end
-    if controller.controller_name == 'sectors' && action_name == 'index' && !@treeTypeRec.hide_sectors %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
-      </li>
-    <% elsif !@treeTypeRec.hide_sectors %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
-      </li>
-    <% end
-    if controller.controller_name == 'trees' && action_name == 'sequence' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
-      </li>
-    <%
-    else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
-      </li>
-    <%
-    end
-    if controller.controller_name == 'trees' && action_name == 'maint' && can_edit_any_dims?(@treeTypeRec) %>
+<% if current_user.present? %>
+  <nav id='topNav' class="navbar navbar-expand-sm bg-light text-center">
+    <ul class="flexContainer navbar-nav mx-auto">
+      <%
+      if controller.controller_name == 'users' && action_name == 'home' %>
         <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
+          <a class="nav-link btn btn-primary" href=<%= home_users_path %>><%= translate('nav_bar.home.name') %></a>
         </li>
-  <%
-      elsif can_edit_any_dims?(@treeTypeRec) %>
+      <% else %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
+          <a class="nav-link btn btn-primary" href=<%= home_users_path %>><%= translate('nav_bar.home.name') %></a>
         </li>
-  <% end %>
-  <li class="nav-item" role='menuitem'>
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" title=<%= translate('nav_bar.connections.hover') %>>
-        <%= translate('nav_bar.connections.name') %>
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <% @dimsArray.each do |dim| %>
-          <li class="nav-item" role='menuitem'>
-            <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_ess_q: true, dim_tree: {dim_type: dim[:code]}) %>" >
-              <%= dim[:name] %></a>
-          </li>
-        <% end %>
+      <%
+      end
+      if controller.controller_name == 'trees' && action_name == 'index' %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
+        </li>
+      <% else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
+        </li>
+      <%
+      end
+      if controller.controller_name == 'trees' && action_name == 'outcomes' %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
+        </li>
+      <%
+      else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
+        </li>
+      <%
+      end
+      if controller.controller_name == 'sectors' && action_name == 'index' && !@treeTypeRec.hide_sectors %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
+        </li>
+      <% elsif !@treeTypeRec.hide_sectors %>
         <li class="nav-item" role='menuitem'>
           <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
         </li>
-        <li class="nav-item active" role='menuitem'>
-        <a class="nav-link btn btn-primary" href="#">
-          <%= translate('nav_bar.concepts.name') %></a>
-        </li>
-        <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.standards.name') %></a>
-        </li>
-      </ul>
-  </li>
-  <% if current_user.present? && current_user.is_admin?
-      if controller.controller_name == 'uploads' %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
-      </li>
-    <%
-      else
-    %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
-      </li>
-    <%
-      end
-      if controller.controller_name == 'users' && action_name == 'index'
-    %>
-      <li class="nav-item active" aria-selected='true'>
-        <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
-      </li>
-    <%
-      else
-    %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
-      </li>
-    <%
-      end
-    end
-
-    if current_user.present?
-      if controller.controller_name == 'users' && action_name == 'edit' %>
+      <% end
+      if controller.controller_name == 'trees' && action_name == 'sequence' %>
         <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link btn btn-primary" href=<%= edit_user_path(current_user.id) %>><%= translate('nav_bar.my_account.name') %></a>
+          <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
         </li>
-    <%
+      <%
       else %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= edit_user_path(current_user.id) %>><%= translate('nav_bar.my_account.name') %></a>
+          <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
         </li>
-    <%
+      <%
       end
-    %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= sign_out_path %>><%= translate('nav_bar.signout.name') %></a>
-      </li>
+      if controller.controller_name == 'trees' && action_name == 'maint' && can_edit_any_dims?(@treeTypeRec) %>
+          <li class="nav-item active" aria-selected='true'>
+            <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
+          </li>
     <%
-    else %>
-      <li class="nav-item" role='menuitem'>
-        <a class="nav-link btn btn-primary" href=<%= new_user_session_path %>><%= translate('nav_bar.signin.name') %></a>
-      </li>
-    <%
-    end %>
-  </ul>
-</nav>
-<div id='pageSubHeaderTitle' class=''>
-  <h1 class='text-center'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
-</div>
+        elsif can_edit_any_dims?(@treeTypeRec) %>
+          <li class="nav-item" role='menuitem'>
+            <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
+          </li>
+    <% end %>
+    <li class="nav-item" role='menuitem'>
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" title=<%= translate('nav_bar.connections.hover') %>>
+          <%= translate('nav_bar.connections.name') %>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <% @dimsArray.each do |dim| %>
+            <li class="nav-item" role='menuitem'>
+              <a class="nav-link btn btn-primary" href="<%= maint_trees_path(show_ess_q: true, dim_tree: {dim_type: dim[:code]}) %>" >
+                <%= dim[:name] %></a>
+            </li>
+          <% end %>
+          <li class="nav-item" role='menuitem'>
+            <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
+          </li>
+          <li class="nav-item active" role='menuitem'>
+          <a class="nav-link btn btn-primary" href="#">
+            <%= translate('nav_bar.concepts.name') %></a>
+          </li>
+          <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.standards.name') %></a>
+          </li>
+        </ul>
+    </li>
+    <% if current_user.present? && current_user.is_admin?
+        if controller.controller_name == 'uploads' %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
+        </li>
+      <%
+        else
+      %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= uploads_path %>><%= translate('nav_bar.uploads.name') %></a>
+        </li>
+      <%
+        end
+        if controller.controller_name == 'users' && action_name == 'index'
+      %>
+        <li class="nav-item active" aria-selected='true'>
+          <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
+        </li>
+      <%
+        else
+      %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= users_path %>><%= translate('nav_bar.users.name') %></a>
+        </li>
+      <%
+        end
+      end
+
+      if current_user.present?
+        if controller.controller_name == 'users' && action_name == 'edit' %>
+          <li class="nav-item active" aria-selected='true'>
+            <a class="nav-link btn btn-primary" href=<%= edit_user_path(current_user.id) %>><%= translate('nav_bar.my_account.name') %></a>
+          </li>
+      <%
+        else %>
+          <li class="nav-item" role='menuitem'>
+            <a class="nav-link btn btn-primary" href=<%= edit_user_path(current_user.id) %>><%= translate('nav_bar.my_account.name') %></a>
+          </li>
+      <%
+        end
+      %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= sign_out_path %>><%= translate('nav_bar.signout.name') %></a>
+        </li>
+      <%
+      else %>
+        <li class="nav-item" role='menuitem'>
+          <a class="nav-link btn btn-primary" href=<%= new_user_session_path %>><%= translate('nav_bar.signin.name') %></a>
+        </li>
+      <%
+      end %>
+    </ul>
+  </nav>
+  <div id='pageSubHeaderTitle' class=''>
+    <h1 class='text-center'><%= content_for?(:title_code) ? translate(yield(:title_code)) : translate('app.title') %></h1>
+  </div>
+<% end %>
