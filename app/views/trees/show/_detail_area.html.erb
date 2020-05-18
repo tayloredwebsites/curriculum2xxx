@@ -21,7 +21,14 @@
     %>
     <div class='row'>
       <div class='col col-<%= resources ? 6 : 12 %> rel-sectors padding-left padding-right'>
-        <%= @translations[d.dim_name_key].html_safe %>
+        <% dim_link = dimension_path(d.id) if @dimDisplayHash[d.dim_code] %>
+        <% if dim_link %>
+          <a href="<%= dim_link %>">
+            <%= @translations[d.dim_name_key].html_safe %>
+          </a>
+        <% else %>
+          <%= @translations[d.dim_name_key].html_safe %>
+        <% end %>
         <% if @editMe && can_edit %>
         <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
         <% end #if @editMe %>

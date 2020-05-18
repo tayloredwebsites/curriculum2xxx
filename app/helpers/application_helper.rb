@@ -63,4 +63,21 @@ module ApplicationHelper
     end
   end
 
+  #parse the TreeType.dim_display string and
+  #return a hash of which dimensions should get a
+  #show page, and which resource types should appear
+  #on the page.
+  #example of the dim_display param: 'miscon#1#2,bigidea#8#11'
+  def dim_display_hash(dim_display)
+    ret = {}
+    dim_display.split(",").each do |dim_str|
+      #item 0 in dim_arr is the dim_code
+      #subsequent items are indexes in the
+      #Dimension::RESOURCE_TYPES array
+      dim_arr = dim_str.split("#")
+      ret[dim_arr[0]] = dim_arr[1..dim_arr.length].map { |c| Dimension::RESOURCE_TYPES[c.to_i] }
+    end
+    return ret
+  end
+
 end

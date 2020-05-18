@@ -86,6 +86,14 @@
       }
     }
 
+    .sequence-grid.cols-8, .dimension-grid.cols-8 {
+       grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+    }
+
+    .sequence-grid.cols-7, .dimension-grid.cols-7 {
+       grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+    }
+
     .sequence-grid.cols-6, .dimension-grid.cols-6 {
        grid-template-columns: 16.5% 16.5% 16.5% 16.5% 16.5% 16.5%;
     }

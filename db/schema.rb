@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200512140804) do
+ActiveRecord::Schema.define(version: 20200518000209) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 20200512140804) do
     t.string "detail_headers", default: "", null: false
     t.string "grid_headers", default: "", null: false
     t.string "dim_codes", default: "bigidea,miscon", null: false
+    t.string "dim_display", default: "", null: false
     t.index ["code", "version_id"], name: "index_tree_types_on_code_and_version_id", unique: true
   end
 

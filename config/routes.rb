@@ -59,6 +59,13 @@ scope "(:locale)", locale: /tr|en|ar_EG/ do
     end
   end
 
+  resources :dimensions, only: [:show, :edit, :update] do
+    collection do
+      post 'show'
+      get 'show'
+    end
+  end
+
 
   devise_for :users
   devise_scope :user do

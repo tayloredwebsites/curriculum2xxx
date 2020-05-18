@@ -164,6 +164,7 @@ class ApplicationController < ActionController::Base
         @dimsArray << {code: dim_code, name: dim_name}
         @dimTypeTitleByCode[dim_code] = dim_name
       end
+      @dimDisplayHash = dim_display_hash(@treeTypeRec.dim_display)
     end
 
     def initTypeCode
