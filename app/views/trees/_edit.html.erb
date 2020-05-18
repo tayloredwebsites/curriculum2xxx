@@ -12,8 +12,8 @@
   <!--feilds for editing the Outcome and Indicator text-->
 	<% if @edit_type == 'outcome' || @edit_type == 'indicator' %>
 	<fieldset>
-	  <label for='name_translation' class="pull-left"><%= @edit_type == "outcome"  ? "#{I18n.translate('app.labels.outcome')}:" : "#{I18n.translate('app.labels.indicator')}:" %></label>
-  	<%= f.text_area :name_translation, name: 'tree[name_translation]', id: 'name_translation', style: {className: "pull-left"}, value: @translation  %>
+	  <label for='name_translation' class="center-label"><%= @edit_type == "outcome"  ? "#{I18n.translate('app.labels.outcome')}:" : "#{I18n.translate('app.labels.indicator')}:" %></label>
+  	<%= f.cktext_area :name_translation, name: 'tree[name_translation]', id: 'name_translation', style: {className: "pull-left"}, value: @translation, ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'}  %>
   </fieldset>
   <% elsif @edit_type == 'comment' %>
   <fieldset>

@@ -11,7 +11,10 @@
         <% arr.each do |cur| %>
           <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>
           <option value="<%= [cur[:tree_type_id], cur[:version_id]].to_s %>"<%= selected_curriculum ? " selected" : "" %>>
-            <%= "#{cur[:str]} [#{cur[:working] ? translate('app.labels.working_version') : translate('app.labels.final_version')}]" %>
+            <%=
+            "#{cur[:str]}"
+            # "[#{cur[:working] ? translate('app.labels.working_version') : translate('app.labels.final_version')}]"
+            %>
           </option>
         <% end %>
       <% end %>
@@ -30,11 +33,11 @@
         <% if lc == 'tr'%>
           <% if @locale_code == 'tr' %>
             <li class='cur-locale'>
-              <span>Türk</span>
+              <span>Türkçe</span>
             </li>
           <% else %>
             <li class='locale-opt'>
-              <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türk</a>
+              <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türkçe</a>
             </li>
           <% end %>
         <% end %>

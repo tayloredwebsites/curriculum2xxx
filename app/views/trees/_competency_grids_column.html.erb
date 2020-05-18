@@ -22,7 +22,7 @@
              dim = dt.dimension
              dimsInfo[dim.dim_code][:found] += 1
              #dimSubjKey = Subject.get_default_name_key(dim.subject_code)
-             dimsInfo[dim.dim_code][:arr] << "#{@translations[dim.dim_name_key]}"
+             dimsInfo[dim.dim_code][:arr] << [dim.id, "#{@translations[dim.dim_name_key]}"]
           end # h[:dimtrees].each do |dt|
           %>
           <div class="related-items-table">
@@ -38,7 +38,7 @@
                   <em><%= duration_str %></em>
                   </div>
                 <% end %>
-                <%= h[:text] %>
+                <%= h[:text].html_safe %>
               </div>
               <!--TO DO: draw this array from the grid_headers field in TreeType
                 ['essq','bigidea','pract','expl','miscon']
@@ -51,8 +51,15 @@
                         <%= dimsInfo[area][:found] != 1 ? @dimTypeTitleByCode[area].pluralize : @dimTypeTitleByCode[area].singularize %>
                       </div>
                       <% dimsInfo[area][:arr].each do |dim| %>
+                        <% dim_link = dimension_path(dim[0]) if @dimDisplayHash[area] %>
                         <div class="dim-item">
-                          <%= dim %>
+                          <% if dim_link %>
+                            <a href="<%= dim_link %>">
+                              <%= dim[1].html_safe %>
+                            </a>
+                          <% else %>
+                            <%= dim[1].html_safe %>
+                          <% end %>
                         </div>
                       <% end #ess_q_arr.each do |dim| %>
                     </div>

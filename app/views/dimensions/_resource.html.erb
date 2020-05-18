@@ -1,0 +1,16 @@
+<ul class='grid-item'>
+  <div class='dimension-header'>
+    <%= Dimension.get_resource_name(resource, @treeTypeRec.code, @versionRec.code, @locale_code, 'Missing Category Title') %>
+  </div>
+  <li class="dimension-item padding-left padding-right min-height">
+    <%= link_to(fa_icon("edit"), edit_dimension_path(@dimension.id, dimension: { resource_code: resource }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(@dimension.dim_code) %>
+    <%=
+      @dimension.resource_name(
+        @locale_code,
+        resource,
+        ""
+      ).html_safe
+    %>
+
+  </li>
+</ul>

@@ -9,6 +9,19 @@ class Dimension < BaseRec
   COMPETENCY = 'comp'
   STANDARD = 'standard'
   VAL_DIM_TYPES = [BIG_IDEA, MISCONCEPTION, ESSENTIAL_QUESTION]
+  # Do not change existing sequence of
+  # RESOURCES_TYPES.
+  # Only add new resource types to end.
+  RESOURCE_TYPES = [
+    'second_subj',
+    'correct_understanding',
+    'poss_source_miscon',
+    'compiler',
+    'citation',
+    'link',
+    'distractor',
+    'question_bank',
+  ]
 
   validate :valid_dim_type
 
@@ -97,6 +110,45 @@ class Dimension < BaseRec
       end #if info[1]
     end #filters.split(",").each do
     return ret
+  end
+
+  def self.get_resource_key(
+    resourceType,
+    treeTypeCode,
+    versionCode
+  )
+    return "curriculum.#{treeTypeCode}.#{versionCode}.dim.#{resourceType}"
+  end
+
+  def self.get_resource_name(
+    resourceType,
+    treeTypeCode,
+    versionCode,
+    localeCode,
+    default
+  )
+    return Translation.find_translation_name(
+      localeCode,
+      "curriculum.#{treeTypeCode}.#{versionCode}.dim.#{resourceType}",
+      default
+    )
+  end
+
+  def resource_key(resourceType)
+    return "dimension.#{id}.#{resourceType}"
+  end
+
+  def resource_name(
+    localeCode,
+    resourceType,
+    default
+  )
+    key = resource_key(resourceType)
+    return Translation.find_translation_name(
+      localeCode,
+      key,
+      default
+    )
   end
 
   private

@@ -60,7 +60,11 @@ namespace :seed_stessa_2 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       detail_headers: 'grade,unit,lo,weeks,hours,<bigidea<,>essq>,<concept<,>skill>,<miscon>,[sector],[connect],[resource#1#3#2]',
-      grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]'
+      grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
+      #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
+      #Dimensions must appear in this string to have a show page
+      #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
+      dim_display: 'miscon#0#1#2#3#4#5#6#7',
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
@@ -377,6 +381,17 @@ namespace :seed_stessa_2 do
       ['skill', 'Skill', 'مهارة'],
       ['miscon', 'Misconception', 'اعتقاد خاطئ'],
     ]
+
+    dim_resource_types_arr = [
+      ['Second Subject', 'الموضوع الثاني'],
+      ['Correct Understanding', 'الفهم الصحيح'],
+      ['Possible Source of Misconception', 'مصدر محتمل للفهم الخاطئ'],
+      ['Compiler/Source'],
+      ['Primary Research Citation', 'مترجم / المصدر'],
+      ['Website Link References', 'مراجع رابط الموقع'],
+      ['Test Distractor Percent', 'اختبار نسبة تشتيت الانتباه'],
+      ['Link to Question Item Bank', 'رابط إلى بنك عناصر السؤال'],
+    ]
     dim_translations_arr.each do |dim|
       dim_name_key = Dimension.get_dim_type_key(
         dim[0],
@@ -386,6 +401,17 @@ namespace :seed_stessa_2 do
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, dim_name_key, dim[1])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, dim_name_key, dim[2])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+    dim_resource_types_arr.each_with_index do |resource, i|
+      resource_name_key = Dimension.get_resource_key(
+        Dimension::RESOURCE_TYPES[i],
+        @tt.code,
+        @ver.code
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end

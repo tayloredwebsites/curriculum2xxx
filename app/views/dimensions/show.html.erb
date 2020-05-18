@@ -1,0 +1,42 @@
+<% content_for(:title_code, 'trees.show.name') %>
+<% content_for(:page_class, 'trees') %>
+
+<%= dimTypeTitle = @dimTypeTitleByCode[@dimension.dim_code] %>
+
+<div class="dimension-page">
+  <div class="pull-left">
+  	<strong><%= dimTypeTitle %></strong>:
+  	<%= paragraph_to_br(@dim_translation).html_safe %>
+  </div>
+  <br>
+  <div class="pull-left">
+    <strong><%= I18n.translate('app.labels.subject') %></strong>:
+    <%= @subject_name %>
+  </div>
+  <br>
+  <div class="pull-left">
+    <% plural_grades = @dimension.max_grade - @dimension.min_grade != 0 %>
+    <strong><%= plural_grades ? I18n.translate('app.labels.grade_band').pluralize : I18n.translate('app.labels.grade_band') %></strong>:
+    <%=
+      plural_grades ?
+      "#{@dimension.min_grade} - #{@dimension.max_grade}" :
+      @dimension.min_grade
+     %>
+  </div>
+
+	<div class='col col-lg-12 text-right'>
+	  <% if @editMe %>
+	    <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", dimension_path(@dimension.id) ) %>)</span>
+	  <% else %>
+	    <%= link_to("Edit #{dimTypeTitle}", dimension_path(@dimension.id, editMe: true) ) if can_edit_type?(@dimension.dim_code)
+	     %>
+	  <% end %>
+	</div>
+  <div class="dimension-grid cols-2">
+  	<% @dimDisplayHash[@dimension.dim_code].each do |resource| %>
+  	  <%=
+  	  	render partial: "resource", locals: { resource: resource }
+  	  %>
+  	<% end %>
+  </div>
+</div>

@@ -31,10 +31,17 @@ class TreeType < BaseRec
 
   def self.versions_hash()
     ret_hash = Hash.new { |hash, key| hash[key] = [] }
+    codes_found = []
     all.each do |tree_type|
       begin
         ver = Version.find(tree_type[:version_id])
-        curriculum_code = "#{tree_type.code}.#{ver.code}"
+        if codes_found.include?(tree_type.code.downcase)
+          ver_code = ".#{ver.code}"
+        else
+          codes_found << tree_type.code.downcase
+          ver_code = TreeType.where(:code => tree_type.code).count > 1 ? ".#{ver.code}" : ''
+        end
+        curriculum_code = "#{tree_type.code}#{ver_code}"
         ret_hash[tree_type.id] << { str: curriculum_code, tree_type_id: tree_type.id, version_id: ver.id, working: tree_type.working_status }
       rescue StandardError => e
         puts "Could not find version for treeType record: #{tree_type.inspect} Error: #{e.inspect}"
