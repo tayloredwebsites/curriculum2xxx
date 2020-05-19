@@ -27,6 +27,7 @@ class UsersController < ApplicationController
     :last_tree_type_id,
     :last_version_id,
     :refresh_path,
+    :admin_subjects,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,

@@ -1,5 +1,7 @@
 
+<% admin_subjects = @user.admin_subjects.split(',') %>
 <% if current_is_admin? %>
+  <%= form.hidden_field :admin_subjects %>
   <div class='row'>
     <span class='col col-md-4 label-col'>
       <%= form.label :role_admin %>
@@ -33,6 +35,38 @@
       <%= form.check_box :role_public %>
       <% if @user.errors.present? && @user.errors[:role_public].present? %>
         <span class='ui-error'><%= @user.errors[:role_public].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+  <div class='row'>
+    <span class='col col-md-4 label-col'>
+      <% if current_is_admin? %>
+        <%= form.label "Add Admin Subjects:" %>
+        <select id='admin-subjects-select'>
+          <% BaseRec::BASE_SUBJECTS.each do |subject| %>
+            <% if !admin_subjects.include?(subject) %>
+              <option value='<%= subject %>'>
+                <%= subject %>
+              </option>
+            <% end %>
+          <% end %>
+        </select>
+      <% end %>
+      <button id='admin-subjects-btn' class='btn btn-info'>+</button>
+    </span>
+  </div>
+  <div class='row'>
+    <span class='col col-md-4 label-col admin_subjects-selected'>
+    <%= form.label 'Admin Subjects:' %>
+      <% if admin_subjects.length > 0 %>
+        <% admin_subjects.each do |subject| %>
+          <span id='admin-subject-<%= subject %>' class='cloud-tag js-admin-subject-tag'>
+            <%= subject %>
+            <button id="js-x-<%= subject %>" class="btn btn-small">
+              <i class='fa fa-times'></i>
+            </button>
+          </span>
+        <% end %>
       <% end %>
     </span>
   </div>

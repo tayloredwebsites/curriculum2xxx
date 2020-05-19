@@ -130,7 +130,13 @@ body {
   }
 }
 
-
+.cloud-tag {
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 2px 5px;
+  display: inline-block;
+}
 
 // use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)
 .treeview {
