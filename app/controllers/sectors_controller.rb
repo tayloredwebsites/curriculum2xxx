@@ -1,6 +1,6 @@
 class SectorsController < ApplicationController
   # Controller for the (10) Sectors of the Knowledge Base
-
+  before_action :authenticate_user!
   def index
 
     @subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")

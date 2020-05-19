@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   before_action :find_user, only: [:show, :edit, :update]
+  before_action :authenticate_user!, only: [:home, :index, :set_curriculum, :update_home_page]
   before_action :set_current_user_instance
 
   REGULAR_USER_PARAMS = [
@@ -26,6 +27,7 @@ class UsersController < ApplicationController
     :last_tree_type_id,
     :last_version_id,
     :refresh_path,
+    :admin_subjects,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,

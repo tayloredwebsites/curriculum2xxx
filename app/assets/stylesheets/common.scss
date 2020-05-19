@@ -1,5 +1,28 @@
 // styles common throughout pages
 body {
+  .logoImage {
+    background-image: url("/logo_shared.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .login-bg {
+    background: url("/login_bg.jpg") no-repeat center fixed;
+    background-size: cover;
+    min-height: 91vh;
+    height: 95%;
+    margin: 0 -15px;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    color: black;
+  }
+  .translucent {
+    background: white;
+    opacity: .9;
+    border-radius: 10px;
+    max-width: 75vw;
+    margin: auto;
+    padding: 10px 15px;
+  }
   .smallest-text {
     font-size: 0.6rem;
   }
@@ -105,6 +128,14 @@ body {
   .min-height {
     min-height: 75px;
   }
+}
+
+.cloud-tag {
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 2px 5px;
+  display: inline-block;
 }
 
 // use font awesome fonts for glyphicon classes (for bootstrap 3 treeview library)

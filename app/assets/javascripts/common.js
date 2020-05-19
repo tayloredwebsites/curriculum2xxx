@@ -205,6 +205,30 @@ $(function() {
       show_maint_details(true, ($(this).data("resize")));
     })
   }
+
+  init_admin_subjects_editing = function () {
+    $('#admin-subjects-btn').on("click", function () {
+      var subject = $('#admin-subjects-select').val();
+      var admin_subjects = $('#user_admin_subjects').val();
+       admin_subjects += (admin_subjects.length > 0 ? ',' + subject : subject);
+      $('#user_admin_subjects').val(admin_subjects);
+      var subject_tag = $( "<span id='admin-subject-"
+        + subject + "' class='cloud-tag'>" + subject
+        + "<button class='btn btn-small'> \
+        <i class='fa fa-times'></i> \
+        </button></span>" );
+      $('#admin_subjects-selected').append(subject_tag);
+    });
+
+    $('.js-admin-subject-tag .btn').on("click", function () {
+      var subject = $(this).attr('id').split("-")[2];
+      var admin_subjects = $('#user_admin_subjects').val().split(',');
+      admin_subjects = admin_subjects.filter(function (val) {
+        return val != subject }).join(",");
+      $('#user_admin_subjects').val(admin_subjects);
+      $('#admin_subjects-selected').remove("#admin-subject-" + subject);
+    });
+  }
   //###################################
   //# ADD EVENT BINDINGS
 
@@ -216,9 +240,11 @@ $(function() {
     });
     readyFontSizes();
     init_hierarchy_show();
+    init_admin_subjects_editing();
   });
   readyFontSizes();
   init_hierarchy_show();
+  init_admin_subjects_editing();
 
   $(".fa-bars").on("click", function(event, state) {
     toggleTopNav(this, event);

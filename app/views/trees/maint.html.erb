@@ -21,7 +21,7 @@
       dim_type: dim,
       show_dim: @visible_dim_codes_arr.include?(dim),
       dim_title: dimObj[:name],
-      can_edit: can_edit_type?(dim)
+      can_edit: can_edit_type?(dim) || current_user.subject_admin?(@subject_code)
       }
   %>
 <% end #@dimsArray.each do |dimObj|
@@ -48,7 +48,7 @@
             dim_title: @dimTypeTitleByCode[dim[:code]],
             dims: @dimensions[dim[:code]],
             grades_str: grades_str,
-            can_edit: can_edit_type?(dim[:code]),
+            can_edit: can_edit_type?(dim[:code]) || current_user.subject_admin?(@subject_code),
             }
         %>
       <% end #for @dimsArray.each do |dim| %>

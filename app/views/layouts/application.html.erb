@@ -19,11 +19,17 @@
           <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
         </div>
       <% end %>
-      <div id='main-container' class='<%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
-        <%= yield %>
+      <div id='main-container' class='<%= current_user.present? ? "": " login-bg"%><%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
+        <%if current_user.present? %>
+          <%= yield %>
+        <% else %>
+          <div class="translucent"><%= yield %></div>
+        <% end %>
       </div>
     </div>
-    <%= render 'layouts/modal_popup' %>
+    <% if current_user.present? %>
+      <%= render 'layouts/modal_popup' %>
+    <% end %>
   </body>
 
 </html>

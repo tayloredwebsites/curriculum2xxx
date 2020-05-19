@@ -1,7 +1,7 @@
 class TreesController < ApplicationController
 
+  before_action :authenticate_user!
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
-  before_action :authenticate_user!, only: [:reorder]
   after_action -> {flash.discard}, only: [:maint]
 
   def index
