@@ -8,20 +8,23 @@ body {
   .login-bg {
     background: url("/login_bg.jpg") no-repeat center fixed;
     background-size: cover;
-    min-height: 91vh;
+    min-height: 93vh;
     height: 95%;
     margin: 0 -15px;
     padding-top: 10%;
     padding-bottom: 10%;
     color: black;
+    a { color: red; }
   }
   .translucent {
     background: white;
-    opacity: .9;
+    opacity: .7;
     border-radius: 10px;
     max-width: 75vw;
+    display: inline-block;
     margin: auto;
     padding: 10px 15px;
+    #user_work_address { width: 100%; }
   }
   .smallest-text {
     font-size: 0.6rem;
@@ -128,7 +131,29 @@ body {
   .min-height {
     min-height: 75px;
   }
+
+  .generic-grid {
+    display: grid;
+    width: 100%;
+    align-content: space-around;
+    &.generic-grid--xl-xs { grid-template-columns: 89% 4%; }
+    &.generic-grid--cols-1 { grid-template-columns: 100% }
+    &.generic-grid--cols-2 { grid-template-columns: 50% 50%; }
+    &.generic-grid--cols-3 { grid-template-columns: 33% 33% 33%; }
+    &.generic-grid--cols-4 { grid-template-columns: 25% 25% 25% 25%; }
+
+    &.generic-grid--labels-1 { grid-template-columns: 100%; }
+    &.generic-grid--labels-2 { grid-template-columns: 50% 50%; }
+    &.generic-grid--labels-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
+    &.generic-grid--labels-4 { grid-template-columns: 25% 25% 25% 25%; }
+  }
 }
+
+.dark-border {
+  border: 1px solid black;
+}
+.dark-border--left {border-left: 1px solid black;}
+.dark-border--right {border-right: 1px solid black;}
 
 .cloud-tag {
   border: 1px solid grey;

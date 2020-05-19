@@ -1,7 +1,7 @@
 # seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :create_uploads, :create_sectors]
 
   task setup: :environment do
     @versionNum = 'v02'
@@ -41,13 +41,14 @@ namespace :seed_turkey_v02 do
       # Detail headers notation key:
       #   item - HEADER
       #   (item) - optional HEADER item
-      #   [item] - TABLE item, full width of table, may be multiple connected items of this type
-      #   {item} - TABLE item, full width of table
-      #   <item< - TABLE item, left side column (of two), must be followed by >item>
+      #   [item] - TABLE item, full width of table, dim_code
+      #   {item} - TABLE item, lookup with Outcome::RESOURCE_TYPES
+      #   <item< - TABLE item, must be a dim_code, left side column (of two), must be followed by >item>
       #   >item> - TABLE item, right side column (of two), must follow <item<
       #   <item> - TABLE item, full width of table with two cols: item | item resources
       #   [item#n#n#n] - TABLE item, full width of table, with numeric codes identifying which categories of this item to display
-      detail_headers: 'grade,unit,(sub_unit),comp,<bigidea<,>ess_q>,{explain},[miscon],[sector],[connect],[resource#0#1#2#3#4#5]',
+      #   *item#n#n#n* - PARENT TABLE, with category codes
+      detail_headers: 'grade,unit,(sub_unit),comp,<bigidea<,>essq>,{explain},{evid_learning},[miscon#2#1],[sector],[connect],[resource#0#1#2#3#4#5]',
       # Grid headers notation key:
       # item or (item) - Ignored for now
       # [item] - grid column, may have multiple connected items
@@ -301,6 +302,51 @@ namespace :seed_turkey_v02 do
     end
 
   end #create_subjects
+
+  ###################################################################################
+  desc "create translations for dimension types"
+  task dimension_translations: :environment do
+    # essq,bigidea,pract,miscon
+    dim_translations_arr = [
+      ['essq', 'K-12 Big Idea', 'K-12 Büyük Fikir'],
+      ['bigidea', 'Specific Big Idea', 'Belirli Büyük Fikir'],
+      ['pract', 'Associated Practice', 'İlişkili Uygulama'],
+      ['miscon', 'Misconception', 'Yanlış kanı'],
+    ]
+
+    dim_resource_types_arr = [
+      ['Second Subject', 'İkinci Konu'],
+      ['Correct Understanding', 'Doğru Anlama'],
+      ['Possible Source of Misconception', 'Yanlış Anlaşmanın Olası Kaynağı'],
+      ['Compiler/Source'],
+      ['Primary Research Citation', 'Derleyici / Kaynak'],
+      ['Website Link References', 'Web Sitesi Bağlantı Referansları'],
+      ['Test Distractor Percent', 'Test Distraktör Yüzdesi'],
+      ['Link to Question Item Bank', 'Soru Bağlantısı Bankası'],
+    ]
+    dim_translations_arr.each do |dim|
+      dim_name_key = Dimension.get_dim_type_key(
+        dim[0],
+        @tt.code,
+        @ver.code
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, dim_name_key, dim[1])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, dim_name_key, dim[2])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+    dim_resource_types_arr.each_with_index do |resource, i|
+      resource_name_key = Dimension.get_resource_key(
+        Dimension::RESOURCE_TYPES[i],
+        @tt.code,
+        @ver.code
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, resource_name_key, resource[1])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
 
   ###################################################################################
   desc "create the upload control files"

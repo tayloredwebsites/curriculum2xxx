@@ -94,7 +94,7 @@
               dim_code: detail[:dim_code],
               outcomes: detail[:outcome],
               sector: detail[:sector],
-              resources: (area[:type] == 'resource-col'),
+              category_codes: (area[:codes] && area[:codes].length > 3 ? area[:codes][0..2]: area[:codes]),
               can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
              }
           %>
