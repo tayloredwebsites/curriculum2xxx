@@ -158,6 +158,9 @@ class User < BaseRec
     return "#{self.given_name} #{self.family_name}"
   end
 
+  def subject_admin?(subject_code)
+    return admin_subjects.split(',').include?(subject_code)
+  end
 
   private
 

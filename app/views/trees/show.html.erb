@@ -48,7 +48,7 @@
                 </strong>
               <% end %>
               <% if h[:depth] == @treeTypeRec[:outcome_depth] %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(h[:name]) %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
               <% end %>
             </div>
           </div>
@@ -62,7 +62,7 @@
                 }
               %>
               <%= durations[:"#{h[:name]}"] %>
-              <%= link_to(fa_icon("edit"), edit_tree_path(tree.id, tree: { edit_type: h[:name]}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(h[:name]) %>
+              <%= link_to(fa_icon("edit"), edit_tree_path(tree.id, tree: { edit_type: h[:name]}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
             </div>
           </div>
         <% end #if rec %>
@@ -95,7 +95,7 @@
               outcomes: detail[:outcome],
               sector: detail[:sector],
               resources: (area[:type] == 'resource-col'),
-              can_edit: can_edit_type?(area[:name]),
+              can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
              }
           %>
           <%
@@ -104,7 +104,7 @@
             <%=
               render partial: "trees/show/connect_detail", locals: {
                 detail_title: detail[:title],
-                can_edit: can_edit_type?(area[:name]),
+                can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
               }
             %>
           <%
@@ -115,7 +115,7 @@
                 tree: detail[:tree],
                 indicator: detail[:indicator],
                 comment: detail[:comment],
-                can_edit: can_edit_type?(area[:name]),
+                can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
               }
           %>
           <%
@@ -136,7 +136,7 @@
 
       <div class='row outcome-row'>
         <div class='col col-lg-6 text-right'>
-          <% if @editMe && can_edit_type?('resource') %>
+          <% if @editMe && (can_edit_type?('resource') || current_user.subject_admin?(@subject_code)) %>
             <span class='font-weight-bold'>Editing</span>
           <% else %>
             <!-- %= # link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) % -->

@@ -57,7 +57,7 @@
   </div>
   <div class='row'>
     <span class='col col-md-4 label-col admin_subjects-selected'>
-    <%= form.label 'Admin Subjects:' %>
+      <%= form.label 'Admin Subjects:' %>
       <% if admin_subjects.length > 0 %>
         <% admin_subjects.each do |subject| %>
           <span id='admin-subject-<%= subject %>' class='cloud-tag js-admin-subject-tag'>
@@ -86,4 +86,16 @@
       <% end %>
     </span>
   </div>
+  <% if admin_subjects.length > 0 %>
+    <div class='row'>
+      <span class='col col-md-4 label-col admin_subjects-selected'>
+        <%= form.label 'Admin Subjects:' %>
+        <% admin_subjects.each do |subject| %>
+          <span id='admin-subject-<%= subject %>' class='cloud-tag'>
+            <%= subject %>
+          </span>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
 <% end %>
