@@ -1,14 +1,24 @@
 <div class='related-items-table'>
-  <div class='row center-label-bold top-label'>
-    <div class='col col-<%= resources ? 6 : 12 %>'>
+  <div class='row center-label-bold top-label generic-grid generic-grid--cols-<%= category_codes && category_codes.length <= 3 ? category_codes.length + 1 : 1 %>'>
+    <div class='padding-right padding-left'>
       <%= detail_title %>
       <%= link_to(fa_icon("plus-square"), edit_tree_path(@tree.id, tree: { edit_type: 'sector', attr_id: 'new'}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && sector && can_edit %>
     </div>
-    <% if resources %>
-        <div class='col col-6'>
-          <%= I18n.translate('trees.labels.dimension_resources', dim_name: detail_title.singularize) %>
+    <% if category_codes && dim %>
+      <% category_codes = category_codes.map { |c| Dimension::RESOURCE_TYPES[c.to_i] } %>
+      <% category_codes.each do |code| %>
+        <div class='dark-border--left padding-right padding-left'>
+          <%= "#{detail_title}: #{Dimension.get_resource_name(
+              code,
+              @treeTypeRec.code,
+              @versionRec.code,
+              @locale_code,
+              code
+            )}"
+          %>
         </div>
-    <% end %>
+      <% end #category_codes.each do %>
+    <% end #if category_codes && dim %>
   </div>
   <% detailsFound = 0 %>
   <% details.each do |dt| %>
@@ -20,24 +30,37 @@
       detailsFound += 1
     %>
     <div class='row'>
-      <div class='col col-<%= resources ? 6 : 12 %> rel-sectors padding-left padding-right'>
-        <% dim_link = dimension_path(d.id) if @dimDisplayHash[d.dim_code] %>
-        <% if dim_link %>
-          <a href="<%= dim_link %>">
-            <%= @translations[d.dim_name_key].html_safe %>
-          </a>
-        <% else %>
-          <%= @translations[d.dim_name_key].html_safe %>
-        <% end %>
-        <% if @editMe && can_edit %>
-        <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
-        <% end #if @editMe %>
-      </div>
-      <% if resources %>
-        <div class="col col-6 rel-sectors padding-left padding-right">
-          <!-- To Do: populate with resources list -->
+      <div class='dark-border generic-grid generic-grid--cols-<%= category_codes && category_codes.length <= 3 ? category_codes.length + 1 : 1 %>'>
+        <div class="<%= @editMe && can_edit ? "generic-grid generic-grid--xl-xs" : "" %>">
+          <div class="padding-left padding-right">
+            <% dim_link = dimension_path(d.id) if @dimDisplayHash[d.dim_code] %>
+            <% if dim_link %>
+              <a href="<%= dim_link %>">
+                <%= @translations[d.dim_name_key].html_safe %>
+              </a>
+            <% else %>
+              <%= @translations[d.dim_name_key].html_safe %>
+            <% end %>
+          </div>
+          <div class="padding-right">
+            <% if @editMe && can_edit %>
+            <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if @editMe %>
+            <% end #if @editMe %>
+          </div>
         </div>
-      <% end %>
+        <% if category_codes %>
+          <% category_codes.each do |code| %>
+            <div class='dark-border--left col padding-left padding-right'>
+              <%= d.resource_name(
+                    @locale_code,
+                    code,
+                    ""
+                  ).html_safe
+              %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   <%
     end #if d.dim_code == dim_code

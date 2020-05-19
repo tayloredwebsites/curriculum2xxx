@@ -12,17 +12,24 @@ class Outcome < BaseRec
     "activity",
     "teacher_ref",
     "goal",
+    "explain",
+    "evid_learning",
+    "connections",
   ]
 
   # Field Translations
+
+  # deprecated
   def get_evidence_of_learning_key
     return base_key + ".evid_learning"
   end
 
+  # deprecated
   def get_connections_key
     return base_key + ".connections"
   end
 
+  #deprecated
   def get_explain_key
     return base_key + ".explain"
   end
