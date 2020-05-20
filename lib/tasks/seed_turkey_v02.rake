@@ -39,7 +39,7 @@ namespace :seed_turkey_v02 do
       dim_codes: 'essq,bigidea,pract,miscon',
       tree_code_format: 'subject,grade,unit,sub_unit,comp',
       # To Do: Write documentation on obtaining translation keys
-      # - for dimension translation use dim.get_dim_ref_key
+      # - for dimension translation use dim.get_dim_resource_key
       #
       # Detail headers notation key:
       #   item - HEADER

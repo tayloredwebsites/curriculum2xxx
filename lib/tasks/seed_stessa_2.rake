@@ -40,7 +40,7 @@ namespace :seed_stessa_2 do
       dim_codes: 'bigidea,essq,concept,skill,miscon',
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
-      # - for dimension translation use dim.get_dim_ref_key
+      # - for dimension translation use dim.get_dim_resource_key
       #
       # Detail headers notation key:
       #   item - HEADER
