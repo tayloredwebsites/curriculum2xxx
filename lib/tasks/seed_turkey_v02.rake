@@ -55,12 +55,13 @@ namespace :seed_turkey_v02 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,sub_unit,comp,[bigidea]_[essq],{resource#7},{resource#8},[miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+      detail_headers: 'grade,unit,sub_unit,comp,[bigidea]_[essq],[pract],{resource#6},[miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       # Grid headers notation key:
       # item or (item) - Ignored for now
       # [item] - grid column, may have multiple connected items
       # {item} - grid column, single item
-      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
+      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]',
+      dim_display: 'miscon#0#1#2#3#4#5#6#7',
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)
