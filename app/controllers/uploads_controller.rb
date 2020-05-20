@@ -276,14 +276,15 @@ class UploadsController < ApplicationController
 
         # confirm we have a valid grade before starting
         @gradeCodeIn = rowH['Grade'] || rowH['Proposed Grade']
-        Rails.logger.debug("### @gradeCodeIn: #{@gradeCodeIn}")
+        @gradeCode = minTwoDigCode(@gradeCodeIn, ' ', '')
+        Rails.logger.debug("### @gradeCodeIn: #{@gradeCodeIn}, @gradeCode: #{@gradeCode}")
         Rails.logger.debug("### @treeTypeRec.id: #{@treeTypeRec.id}")
-        @gradeBandRec = GradeBand.where(tree_type_id: @treeTypeRec.id, code: @gradeCodeIn).first
-        @abortRun = abortWithMessage("ERROR - missing grade band: #{@gradeCodeIn}") if !@gradeBandRec
+        @gradeBandRec = GradeBand.where(tree_type_id: @treeTypeRec.id, code: noLeadingZeros(@gradeCode)).first
+        @abortRun = abortWithMessage("ERROR - missing grade band: #{@gradeCode}") if !@gradeBandRec
         break if @abortRun
 
         Rails.logger.debug("### @gradeBandRec: #{@gradeBandRec.inspect}")
-        Rails.logger.debug("### Proposed Grade: #{@gradeCodeIn} - found '#{@gradeBandRec.code}'")
+        Rails.logger.debug("### Proposed Grade: #{@gradeCode} - found '#{@gradeBandRec.code}'")
 
         # process the record in hierarchy order
         hierarchyCodeArray = [] # the array that gets built with the record codes in hierarchy order
@@ -294,44 +295,44 @@ class UploadsController < ApplicationController
         @treeTypeRec.hierarchy_codes.split(',').each_with_index do |hCode, ix|
           Rails.logger.debug("*** Hierarchy was: #{hierarchyCodeArray.join(',')}, code at: #{ix} = #{hCode}")
 
-          colGradeCode = rowH['Grade'] || rowH['Proposed Grade']
           colSemesterCode = rowH['Semester']
           colUnitName = rowH['Unit'] || rowH['Unit Name']
           colSubUnitName = rowH[' Sub unit']
           colFullLoCode = rowH['LO Code:']
           colLoDesc = rowH['Learning Outcome'] || rowH['Proposed Student Competences']
-          if hCode == 'grade' && colGradeCode
-            Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{colGradeCode}")
+          if hCode == 'grade' && @gradeCode
+            Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{@gradeCode}")
             # use the grade number as the code
-            gradeCode = colGradeCode
-            hierarchyCodeArray = processField(hierarchyCodeArray, gradeCode, colGradeCode, ix)
+            gradeCode = lookupItemCodeForName(@gradeCode, hierarchyCodeArray.join('.'))
+            hierarchyCodeArray = processField(hierarchyCodeArray, @gradeCode, @gradeCode, ix)
           elsif hCode == 'sem' && colSemesterCode
             # if semester code is numeric, use that for the code
-            if colSemesterCode.delete('^0-9') == colSemesterCode
-              semCode = colSemesterCode
-            else
-              semCode = lookupItemCodeForName(colSemesterCode, hierarchyCodeArray.join('.'))
-            end
-            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, colSemesterCode, ix)
+            minCode = minTwoDigCode(colSemesterCode, ' ', '')
+            Rails.logger.debug("*** minCode: #{minCode}")
+            semCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
+            Rails.logger.debug("*** semCode: #{semCode}")
+            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, semCode, ix)
             Rails.logger.debug("*** Process Semester field: #{hierarchyCodeArray.join('.')} - #{colSemesterCode}")
           elsif hCode == 'unit' && colUnitName
             # get a code for the unit name (assigned sequentially as found)
             Rails.logger.debug("*** Process Unit field: #{hierarchyCodeArray.join('.')} - #{colUnitName}")
-            unitCode = lookupItemCodeForName(colUnitName, hierarchyCodeArray.join('.'))
+            minCode = minTwoDigCode(colUnitName, ' ', '')
+            unitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
             hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix)
           elsif hCode == 'sub_unit' #  if no sub_unit value passed in, write a special record to allow attaching competencies below it
             # get a code for the sub-unit name, if given (assigned sequentially as found)
             # optional records look like: <code: "<grade>.<unit>.", name_key: nil, base_key: "">
             Rails.logger.debug("*** Process Sub Unit field: #{hierarchyCodeArray.join('.')} - #{colSubUnitName}")
-            subUnitCode = lookupItemCodeForName(colSubUnitName, hierarchyCodeArray.join('.'))
+            minCode = minTwoDigCode(colUnitName, ' ', '')
+            subUnitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
             hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix)
           elsif (hCode == 'lo' || hCode == 'comp') && colLoDesc
             Rails.logger.debug("*** colLoDesc: #{colLoDesc}, colLoDesc: #{colLoDesc}, colFullLoCode: #{colFullLoCode}")
             if colFullLoCode.present?
               # If given the Full LO Code, get the code number by splitting the LO Code by periods, getting the last one, and only keeping the digits
-              colLoCode = colFullLoCode.split('.').last.delete('^0-9')
+              colLoCode = minTwoDigCode(colFullLoCode.split('.').last.delete('^0-9'), '', '')
             else
-              colLoCode = lookupItemCodeForName(colLoDesc, hierarchyCodeArray.join('.'))
+              colLoCode = lookupItemCodeForName(minTwoDigCode(colLoDesc, ' ', ''), hierarchyCodeArray.join('.'))
             end
             Rails.logger.debug("*** colLoCode: #{colLoCode}")
             hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix)
@@ -559,7 +560,6 @@ class UploadsController < ApplicationController
   def processField(parentCodeArray, code, codeName, ix)
     ######################################################
     # Write the Grade level tree record (create or update)
-    # gradeCodeA = [@gradeCodeIn]
     hierarchyCodeArray = parentCodeArray.clone()
     hierarchyCodeArray << code
     Rails.logger.debug("*** parentCodeArray: #{parentCodeArray.inspect}, code: #{code}")
@@ -576,6 +576,27 @@ class UploadsController < ApplicationController
     return hierarchyCodeArray
   end
 
+  # Create code with minimum 2 digits, numeric leading zero, string specify leading or trailing fill
+  def minTwoDigCode(strCodeIn, ifStrLead, ifStrTrail)
+    if strCodeIn.blank?
+      # return empty string if nil, etc.
+      retCode = ""
+    elsif strCodeIn.length == 1
+      if strCodeIn.delete('^0-9') == strCodeIn
+        strCodeNum = Integer(strCodeIn) rescue 0
+        retCode = format('%02d', strCodeNum)
+      else
+        retCode = ifStrLead+strCodeIn+ifStrTrail
+      end
+    else
+      retCode = strCodeIn
+    end
+  end
+
+  def noLeadingZeros(strCodeIn)
+    return strCodeIn.gsub(/\b0+(?=\d)/,'')
+  end
+
   def lookupItemCodeForName(itemName, parentCode)
     # determine code from codeName field.
     # check hash for parent, seeing last used, and the hash to get the code from the codeName(key)
@@ -588,9 +609,7 @@ class UploadsController < ApplicationController
     if itemName.blank?
       itemCode = ''
     elsif lastCodeH.present?
-      Rails.logger.debug("+++ lastCodeH.present?")
-      Rails.logger.debug("+++ lastCodeH[:valuesAssigned]: #{lastCodeH[:valuesAssigned].inspect}")
-      Rails.logger.debug("+++ lastCodeH[:valuesAssigned][unitName]: #{lastCodeH[:valuesAssigned][itemName]}")
+      Rails.logger.debug("+++ lastCodeH[:valuesAssigned][#{itemName}]: #{lastCodeH[:valuesAssigned][itemName]}")
       lookupItem = lastCodeH[:valuesAssigned][itemName]
       if lookupItem.present?
         Rails.logger.debug("+++ set code to matched value (lookupItem.present?)")
@@ -602,12 +621,12 @@ class UploadsController < ApplicationController
         lastCode = Integer(lastCodeH[:lastSubCode]) rescue 0
         lastCode += 1
       end
-      itemCode = lastCode.to_s
+      itemCode = minTwoDigCode(lastCode.to_s, '', '')
     else
       # no units have been assigned yet
-      Rails.logger.debug("+++ set code to 1")
+      Rails.logger.debug("+++ set code to 01")
       lastCode = 1
-      itemCode = '1'
+      itemCode = '01'
     end
     return itemCode
   end
@@ -650,7 +669,7 @@ class UploadsController < ApplicationController
 
   def writeTreeRecord(depth, parentCodeA, codeA, thisCode, thisCodeTransl, currentRec, explainText)
     codeStr = codeA.join('.')
-    Rails.logger.debug("*** writeTreeRecord codeStr: #{codeStr}")
+    Rails.logger.debug("*** writeTreeRecord codeStr: #{codeStr}, thisCode: #{thisCode}, thisCodeTransl: #{thisCodeTransl}")
     codeA2 = codeA.clone
     reportRecord = true
     wroteRecord = true
