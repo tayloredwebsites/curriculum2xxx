@@ -794,14 +794,18 @@ class TreesController < ApplicationController
         # get translation key for each sector, big idea and misconception for this item
         if treeKeys
           t.sector_trees.active.each do |st|
-            treeKeys << st.sector.name_key
-            @detailsHash['sector'] << st
-            #treeKeys << st.explanation_key
+            if st.sector
+              treeKeys << st.sector.name_key
+              @detailsHash['sector'] << st
+              #treeKeys << st.explanation_key
+            end
           end
           t.dim_trees.active.each do |dt|
-            treeKeys << dt.dimension.dim_name_key
-            @detailsHash[dt.dimension.dim_code] << dt
-            #treeKeys << dt.dim_explanation_key
+            if dt.dimension
+              treeKeys << dt.dimension.dim_name_key
+              @detailsHash[dt.dimension.dim_code] << dt
+              #treeKeys << dt.dim_explanation_key
+            end
           end
         end
         # get translation key for each related item for this item
@@ -825,87 +829,7 @@ class TreesController < ApplicationController
       end
       @translations = Translation.translationsByKeys(@locale_code, treeKeys)
 
-      #################
-      #Build data for partials
-      #'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#7},<sector>,+treetree+,{resources#1#3#2}'
-      detail_areas.each do |a|
-        header_area = false
-        details = a.split("_") # e.g., [bigidea]_[essq] might be in the same table
-        table = {}
-        table[:num_cols] = 0
-        table[:num_rows] = 1
-        table[:title_code_type_action_catsArr] = []
-        table[:partial] = "evenly_spaced_details"
-        details.each do |d|
-          ttac_arr = []
-          table[:num_cols] += 1
-          #table building 'evenly_spaced_details' partial
-          if d.first == "{" && d.last == "}" #outcome resource(s)
-            catCodes = d[1..d.length - 2].split("#")
-            table[:title_code_type_action_catsArr] << [
-                "", #title
-                Outcome::RESOURCE_TYPES[catCodes[1].to_i], #code
-                Outcome::RESOURCE_TYPES[catCodes[1].to_i],
-                "edit", #action
-                catCodes[1..catCodes.length - 1] #numeric category codes
-              ]
-            table[:partial] = catCodes[0] if catCodes[0] != "resource"
-            @editTypes[Outcome::RESOURCE_TYPES[catCodes[1].to_i]] = {
-              :name => "resource",
-              :codes => catCodes[1..catCodes.length - 1]
-            }
-          #table building 'evenly_spaced_details' partial
-          elsif d.first == "[" && d.last == "]" #dimtree
-            catCodes = d[1..d.length - 2].split("#")
-            table[:title_code_type_action_catsArr] << [
-                @dimTypeTitleByCode[catCodes[0]], #title
-                catCodes[0], #code
-                "dimtree", #edit_type
-                "edit", #action
-                catCodes[1..catCodes.length - 1] #numeric category codes
-              ]
-            table[:num_cols] += catCodes.length - 1
-            table[:num_rows] =  [@detailsHash[catCodes[0]].length, table[:num_rows]].max
-            @editTypes[catCodes[0]] = {
-              :name => "dimtree",
-              :codes => catCodes[1..catCodes.length - 1]
-            }
-          #table building 'evenly_spaced_details' partial
-          elsif d.first == "<" && d.last == ">" #sector
-            catCode = d[1..d.length - 2]
-            table[:title_code_type_action_catsArr] << [
-                @sectorName, #title
-                catCode, #code
-                "sector", #edit_type
-                "create", #action
-                nil #category codes not implemented for sectors
-              ]
-            table[:num_rows] =  [@detailsHash[catCodes].length, table[:num_rows]].max
-            @editTypes[catCode] = { :name => "sector"}
-          #table uses 'treetree' partial
-          elsif d.first == "+" && d.last == "+" #treetree
-            catCode = d[1..d.length - 2]
-            table[:title_code_type_action_catsArr] << [
-                I18n.t(
-                  'trees.labels.outcome_connections',
-                  outcome: @hierarchies[@tree.depth - 1].pluralize
-                ), #title
-                catCode, #code
-                "treetree", #edit_type
-                "create", #action
-                nil #category codes not implemented for sectors
-              ]
-            table[:num_cols] += 3
-            table[:partial] = 'treetree' #treetrees have a special partial
-            @editTypes[catCode] = {:name => 'treetree'}
-          else
-            header_area = true
-          end
-        end #details in table
-        @detailTables << table if !header_area
-        @detail_headers << {type: 'header', name: a, depth: hierarchy_codes.index(a) } if header_area
-        #@detail_areas << {type: detail_type, name: detail, codes: category_codes} if detail_type != 'header'
-      end
+      parse_detail_headers(detail_areas, hierarchy_codes)
     end
   end # def show
 
