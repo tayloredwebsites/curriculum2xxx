@@ -1,0 +1,33 @@
+<!-- Dimensions Table (e.g., misconceptions, etc) -->
+<% dt = details
+   d = dt.dimension if dt
+%>
+<div class="<%= @editMe && can_edit ? "generic-grid generic-grid--xl-xs" : "" %>">
+  <div class="padding-left padding-right">
+    <% dim_link = dimension_path(d.id) if details && @dimDisplayHash[d.dim_code] %>
+    <% if dim_link %>
+      <a href="<%= dim_link %>">
+        <%= @translations[d.dim_name_key].html_safe if details %>
+      </a>
+    <% else %>
+      <%= @translations[d.dim_name_key].html_safe if details %>
+    <% end %>
+  </div>
+  <div class="padding-right">
+    <% if @editMe && can_edit %>
+    <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if details && @editMe %>
+    <% end #if @editMe %>
+  </div>
+</div>
+<% if category_codes %>
+  <% category_codes.each do |code| %>
+    <div class='dark-border--left col padding-left padding-right'>
+      <%= d.resource_name(
+            @locale_code,
+            code,
+            ""
+          ).html_safe if details
+      %>
+    </div>
+  <% end %>
+<% end %>

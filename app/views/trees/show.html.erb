@@ -6,6 +6,7 @@
   outcome = @tree
   component = outcome.present? ? outcome.getParentRec : nil
   area = component.present? ? component.getParentRec : nil
+  active_dim_trees = @tree.dim_trees.where(:active => true)
 %>
 <div class='container'>
   <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
@@ -76,63 +77,33 @@
             <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
           <% end %>
         </div>
-      <!-- Dynamically Ordered Tables -->
-      <% @detail_areas.each do |area|
-          detail = detail_lookup[:"#{area[:name]}"]
-          if area[:type] == "left-col"
-          %>
-            <div class='related-items-table grid-2'>
-          <%
-          end #if detail && detail[:dim_code] == 'essq'
-          if detail && (detail[:dim] || detail[:sector])
+
+
+        <% @detailTables.each do |table|
+          title, code, type, action, cats = table[:title_code_type_action_catsArr][0]
+          puts "++++TABLE!!!! #{table[:title_code_type_action_catsArr]}"
+          puts "++++TABLE PARTIAL!!!! #{table[:partial]}"
           %>
           <%=
-            render partial: "trees/show/detail_area", locals: {
-              detail_title: detail[:title],
-              details: detail[:details],
-              dim: detail[:dim],
-              dim_code: detail[:dim_code],
-              outcomes: detail[:outcome],
-              sector: detail[:sector],
-              category_codes: (area[:codes] && area[:codes].length > 3 ? area[:codes][0..2]: area[:codes]),
-              can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
-             }
-          %>
-          <%
-          elsif detail && detail[:outcomes]
-            %>
-            <%=
-              render partial: "trees/show/connect_detail", locals: {
-                detail_title: detail[:title],
-                can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
-              }
-            %>
-          <%
-          elsif detail && detail[:tree]
-          %>
-          <%=
-            render partial: "trees/show/tree_detail_area", locals: {
-                tree: detail[:tree],
-                indicator: detail[:indicator],
-                comment: detail[:comment],
-                can_edit: can_edit_type?(area[:name]) || current_user.subject_admin?(@subject_code),
-              }
-          %>
-          <%
-          elsif area[:codes]
-          %>
-          <%=
-            render partial: "trees/show/resources", locals: {
-                resource_codes: area[:codes],
+            render partial: "trees/show/#{table[:partial]}", locals: {
+              num_cols: table[:num_cols],
+              num_rows: table[:num_rows],
+              title_code_type_action_catsArr: table[:title_code_type_action_catsArr],
+              detailsHash: @detailsHash,
+              can_edit: can_edit_type?(type) || current_user.subject_admin?(@subject_code),
+              detail_title: title,
+              tree: @tree,
+              indicator: table[:indicator],
+              resource_codes: cats,
             }
           %>
-          <%
-          end #detail && (detail[:dim] || detail[:sector]
-          %>
-          <% if area[:type] == "right-col" %>
-            </div>
-          <% end #if detail && detail[:dim_code] == 'bigidea' %>
-      <% end #@detail_areas.each do |area| %>
+        <% end %>
+
+
+
+
+
+
 
       <div class='row outcome-row'>
         <div class='col col-lg-6 text-right'>

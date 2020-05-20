@@ -7,9 +7,10 @@
 </div>
 <div class='teacher-grid'>
 <% resource_codes.each do |c| %>
-  <% code = c.to_i %>
-  <%= render partial: "/trees/show/resource_category", locals: {
-          code: code,
+  <% code = Outcome::RESOURCE_TYPES[c.to_i] %>
+  <%= render partial: "/trees/show/resource", locals: {
+          type_code: code,
+          render_label: true
         }
   %>
 <% end %>
