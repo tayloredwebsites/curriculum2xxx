@@ -2,8 +2,8 @@
 <% dt = details
    d = dt.dimension if dt
 %>
-<div class="<%= @editMe && can_edit ? "generic-grid generic-grid--xl-xs" : "" %>">
-  <div class="padding-left padding-right">
+<div class="dark-border--left <%= @editMe && can_edit ? "generic-grid generic-grid--xl-xs" : "" %>">
+  <div class="padding-left padding-right padding-top padding-bottom">
     <% dim_link = dimension_path(d.id) if details && @dimDisplayHash[d.dim_code] %>
     <% if dim_link %>
       <a href="<%= dim_link %>">
@@ -13,7 +13,7 @@
       <%= @translations[d.dim_name_key].html_safe if details %>
     <% end %>
   </div>
-  <div class="padding-right">
+  <div class="padding-right padding-top padding-bottom">
     <% if @editMe && can_edit %>
     <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'dimtree', attr_id: dt[:id], active: false}, sector_tree: {active: false}), {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[d.dim_name_key]), method: :patch}) if details && @editMe %>
     <% end #if @editMe %>
@@ -21,10 +21,10 @@
 </div>
 <% if category_codes %>
   <% category_codes.each do |code| %>
-    <div class='dark-border--left col padding-left padding-right'>
+    <div class='dark-border--left col padding-left padding-right padding-top padding-bottom'>
       <%= d.resource_name(
             @locale_code,
-            code,
+            Dimension::RESOURCE_TYPES[code.to_i],
             ""
           ).html_safe if details
       %>

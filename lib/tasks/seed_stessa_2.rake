@@ -56,7 +56,7 @@ namespace :seed_stessa_2 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6}_{resource#7},<sector>,+treetree+,{resources#1#3#2}',
+      detail_headers: 'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},<sector>,+treetree+,{resources#1#3#2}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
@@ -73,9 +73,9 @@ namespace :seed_stessa_2 do
     @tt = treeTypes.first
 
     puts "Create Default app title translations in English and Arabic"
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Curriculum')
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egypt STEM Curriculum')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهاج دراسي')
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
 
     # Create ENGLISH translation(s) for hierarchy codes

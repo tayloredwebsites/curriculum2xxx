@@ -1,11 +1,11 @@
-<div class='teacher-item'>
+<div class='dark-border--left teacher-item'>
   <% if render_label %>
   <div class='center-label sub-header-margin'>
     <%= Outcome.get_resource_name(type_code, @treeTypeRec.code, @versionRec.code, @locale_code) %>
   </div>
   <% end %>
-  <div class="text-left padding-left padding-right row margin-top margin-bottom">
-    <div class="col col-11">
+  <div class="generic-grid generic-grid--xl-xs">
+    <div class="text-left padding-left padding-right row padding-top padding-bottom">
       <%= Translation.find_translation_name(
       @locale_code,
       @tree.outcome.get_resource_key(type_code),

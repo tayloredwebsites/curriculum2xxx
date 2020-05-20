@@ -71,7 +71,9 @@ namespace :seed_turkey_v02 do
     throw "ERROR: Missing tfv tree type" if treeTypes.count < 1
     @tt = treeTypes.first
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Curriculum App')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Mektebim Curriculum App')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'app.title', 'Mektebim Müfredat Uygulaması')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     # Create translation(s) for hierarchy codes

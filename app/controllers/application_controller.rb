@@ -149,7 +149,7 @@ class ApplicationController < ActionController::Base
       elsif !@versionRec.code
         raise I18n.translate('app.errors.missing_version_code')
       end
-      @appTitle += TreeType.where(:code => @treeTypeRec.code).count > 1 ? " #{@versionRec.code}" : ""
+      @appTitle += TreeType.where(:code => @treeTypeRec.code).count > 1 ? " #{@versionRec.code}" : "" if current_user.present?
       #"[#{@treeTypeRec.working_status ? I18n.t('app.labels.working_version') : I18n.t('app.labels.final_version')}]"
 
       # e.g., [{code: "bigidea", name: "Big Ideas"}, {...}, ...]
@@ -195,11 +195,11 @@ class ApplicationController < ActionController::Base
           'Curriculum'
         )
         # To Do - create new translate method to return value with a default value of some kind
-        @appTitle = Translation.find_translation_name(
+        @appTitle = current_user.present? ? Translation.find_translation_name(
           @locale_code,
           @treeTypeRec.curriculum_title_key,
           default_title
-        )
+        ) : default_title
         @sectorName = Translation.find_translation_name(@locale_code, @treeTypeRec.sector_set_name_key, '')
         @hierarchies = []
         @treeTypeRec.hierarchy_codes.split(',').each do |c|

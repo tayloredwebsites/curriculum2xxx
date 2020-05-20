@@ -27,7 +27,7 @@
             Dimension::RESOURCE_TYPES[cat.to_i]) if @editTypes[detail_code][:name] == "dimtree"
       %>
         <div class='dark-border--left padding-right padding-left'>
-          <%= "#{detail_title}: #{category_title}" %>
+          <%= "#{detail_title.length > 0 ? "#{detail_title}: " : ""}#{category_title}" %>
         </div>
       <%  end # category_codes.each do |code|
          end # if category_codes %>
