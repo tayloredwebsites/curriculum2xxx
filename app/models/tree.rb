@@ -19,7 +19,7 @@ class Tree < BaseRec
   belongs_to :version
   belongs_to :subject
   belongs_to :grade_band
-  belongs_to :outcome, optional: true
+  belongs_to :outcome, optional: true, autosave: true
 
   has_many :tree_referencers, foreign_key: :tree_referencer_id, class_name: 'TreeTree'
   # has_many :tree_referencer_trees, through: :tree_referencers
@@ -73,9 +73,9 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.code}.name"
   end
 
-  def self.buildBaseKey(treeTypeRec, versionRec, subjectRec, gradeBandRec, fullCode)
+  def self.buildBaseKey(treeTypeCode, versionCode, subjectCode, fullCode)
     # return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}"
-    return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{fullCode}"
+    return "#{treeTypeCode}.#{versionCode}.#{subjectCode}.#{fullCode}"
   end
   def buildBaseKey
     # return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}"
@@ -85,6 +85,8 @@ class Tree < BaseRec
   def buildRootKey
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
   end
+
+
   ####################################################
   def update_fields(
     update_type,
@@ -470,6 +472,73 @@ class Tree < BaseRec
       Rails.logger.error ("ERROR - missing tree rec for: #{subjectRec.code}, #{gradeBandRec.code}, #{fullCode}")
       return nil
     end # if
+  end
+
+  #idOrderArr should contain ids for
+  #every active tree with this subject_id
+  def self.update_code_sequence(idOrderArr, treeTypeCode, versionCode, subjectCode)
+    #To Do:
+    # => figure out how this is affected if only one gb is updated
+    # => How to deal with deactivated trees? Add "x" to all of the codes? We need a "deactivate" method.
+
+    translations_hash = {} # h[old_key] = new_key
+    #lookup trees by id and by "outc#{outcome_id}"
+    trees_hash = Hash.new { |h,k| h[k] = {:rec => nil}}
+    treeRecs = where(:id => idOrderArr).order('sort_order')
+    outcomeRecs = Outcome.where(:id => treeRecs.pluck("outcome_id").uniq)
+    translationKeys = []
+    codes_counter_by_depth = Hash.new(0)
+    last_tree_depth = 0
+    new_outcome_gb = true
+
+    #map treeRecs
+    treeRecs.map do |t|
+      trees_hash[t.id][:rec] = t
+      trees_hash["outc#{t.outcome_id}"][:rec] = t if t.outcome_id
+    end
+    idOrderArr.each_with_index do |id, ix|
+      t = trees_hash[id][:rec]
+      if (t[:depth] > last_tree_depth && !t.outcome_id) || (new_outcome_gb && t.outcome_id)
+        codes_counter_by_depth[t[:depth]] = 1
+        new_outcome_gb = false if t.outcome_id
+      else
+        codes_counter_by_depth[t[:depth]] += 1
+        new_outcome_gb = true if t[:depth] == 0
+      end
+      last_tree_depth = t[:depth]
+      code_arr = []
+      [*0..t[:depth]].each { |d| code_arr << format('%02d', codes_counter_by_depth[d]) }
+      new_code = code_arr.join(".")
+      #build old translation name key before
+      #updating t.code and t.base_key
+      old_name_key = t.name_key
+      t.code = new_code
+      t.base_key = Tree.buildBaseKey(treeTypeCode, versionCode, subjectCode, new_code)
+      #build new translation name key with
+      #new t.base_key
+      new_name_key = t.name_key
+      t.sort_order = ix
+      translationKeys << old_name_key
+      translations_hash[old_name_key] = new_name_key
+    end
+    outcomeRecs.map do |o|
+      old_translation_keys = o.list_translation_keys
+      o.base_key = o.get_base_key(
+        trees_hash["outc#{o.id}"][:rec].base_key
+        )
+      new_translation_keys = o.list_translation_keys
+      old_translation_keys.each_with_index do |ok, ix|
+        translationKeys << ok
+        translations_hash[ok] = new_translation_keys[ix]
+      end
+      puts "o.changed_for_autosave?: #{o.changed_for_autosave?}"
+    end
+
+    translationRecs = Translation.where(:key => translationKeys)
+    translationRecs.each { |tr| tr.key = translations_hash[tr.key] }
+
+    #save translationRecs and treeRecs in a transaction. outcomeRecs should autosave with their associated treeRecs
+    BaseRec
   end
 
 end

@@ -672,7 +672,7 @@ class TreesController < ApplicationController
     @dimension_translation = dimension_translation_matches.first ? dimension_translation_matches.first.value : ""
     if dim_tree_matches.length == 0
       @dim_tree = DimTree.new(tree_params)
-      @dim_tree.dim_explanation_key = DimTree.getDimExplanationKey(@tree[:base_key], @dim[:dim_code], @dim[:id])
+      @dim_tree.dim_explanation_key = DimTree.getDimExplanationKey(@tree[:id], @dim[:dim_code], @dim[:id])
       @method = :post
       @form_path = :create_dim_tree_trees
     else
@@ -952,6 +952,13 @@ class TreesController < ApplicationController
   end
 
   def reorder
+    # working on algorithm for reordering all depths
+    # take params:
+    # [id_order_arr], id of moved tree
+    # a = get new location of id in [id_order_arr]
+    # b = get recorded sort order of tree
+    # starting point for recoding= [a,b].min
+    # update_code_sequence(a/b, id_reorder_arr ...)
     Rails.logger.debug(params[:id_order].inspect)
     count = 1
     ActiveRecord::Base.transaction do

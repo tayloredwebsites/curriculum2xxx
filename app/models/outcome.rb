@@ -85,4 +85,8 @@ class Outcome < BaseRec
     }
   end
 
+  def list_translation_keys
+    RESOURCE_TYPES.map { |type| get_resource_key(type) }
+  end
+
 end
