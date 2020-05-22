@@ -526,19 +526,22 @@ class Tree < BaseRec
       o.base_key = o.get_base_key(
         trees_hash["outc#{o.id}"][:rec].base_key
         )
-      new_translation_keys = o.list_translation_keys
+      new_translation_keys = o.list_instance_translation_keys(o.base_key)
       old_translation_keys.each_with_index do |ok, ix|
         translationKeys << ok
         translations_hash[ok] = new_translation_keys[ix]
       end
-      puts "o.changed_for_autosave?: #{o.changed_for_autosave?}"
     end
 
     translationRecs = Translation.where(:key => translationKeys)
     translationRecs.each { |tr| tr.key = translations_hash[tr.key] }
 
     #save translationRecs and treeRecs in a transaction. outcomeRecs should autosave with their associated treeRecs
-    BaseRec
+    ActiveRecord::Base.transaction do
+      treeRecs.each { |t| t.save! if t.changed_for_autosave? }
+      outcomeRecs.each { |o| o.save! if o.changed_for_autosave? }
+      translationRecs.each { |t| t.save! if t.changed_for_autosave? }
+    end
   end
 
 end
