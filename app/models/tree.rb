@@ -502,13 +502,18 @@ class Tree < BaseRec
     treeTypeCode = TreeType.find(firstTree["tree_type_id"]).code
     versionCode = Version.find(firstTree["version_id"]).code
     subjectCode = Subject.find(firstTree["subject_id"]).code
-
+    gb_by_id_and_min_grade = {}
     #map treeRecs
     treeRecs.map do |t|
       puts "mapping tree: #{t.inspect}"
       puts "rec Id instance of string? #{t.id.instance_of? String}"
       trees_hash[t.id][:rec] = t
       trees_hash["outc#{t.outcome_id}"][:rec] = t if t.outcome_id
+      if !gb_by_id_and_min_grade["id#{t.grade_band_id}"]
+        gb = GradeBand.find(t.grade_band_id)
+        gb_by_id_and_min_grade["id#{t.grade_band_id}"] = gb
+        gb_by_id_and_min_grade["min#{gb.min_grade}"] = gb
+      end
     end
     idOrderArr.each_with_index do |id, ix|
       puts "Id instance of string? #{id.instance_of? String}"
@@ -526,6 +531,12 @@ class Tree < BaseRec
       code_arr = []
       [*0..t[:depth]].each { |d| code_arr << format('%02d', codes_counter_by_depth[d]) }
       new_code = code_arr.join(".")
+      # if gradeband code has changed, we need to
+      # update the grade_band_id for the tree rec
+      if format('%02d', code_arr[0]) != t.code.split(".")[0]
+        gb_min_grade = codes_counter_by_depth[0]
+        t.grade_band_id = gb_by_id_and_min_grade["min#{gb_min_grade}"].id
+      end
       #build old translation name key before
       #updating t.code and t.base_key
       old_name_key = t.name_key
