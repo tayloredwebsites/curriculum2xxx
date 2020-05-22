@@ -951,6 +951,12 @@ class TreesController < ApplicationController
     redirect_to tree_path(@tree.id, editme: @tree.id)
   end
 
+
+  # @param {Array[int]} id_order An array of Tree ids. Determines the new sort
+  #                              order for a set of Trees in the curriculum.
+  #                              Will contain either all of the Tree ids for the
+  #                              subject, or all of the Tree ids for the subject
+  #                              and a single gradeband.
   def reorder
     # working on algorithm for reordering all depths
     # take params:
@@ -959,18 +965,22 @@ class TreesController < ApplicationController
     # b = get recorded sort order of tree
     # starting point for recoding= [a,b].min
     # update_code_sequence(a/b, id_reorder_arr ...)
-    Rails.logger.debug(params[:id_order].inspect)
-    count = 1
-    ActiveRecord::Base.transaction do
-    params[:id_order].each do |id|
-      t = Tree.find(id)
-      t.sequence_order = count
-      t.save
-      count += 1
-    end
-    end
+    Rails.logger.debug(tree_params[:id_order].inspect)
+    # OLD METHOD:
+    # count = 1
+    # ActiveRecord::Base.transaction do
+    # params[:id_order].each do |id|
+    #   t = Tree.find(id)
+    #   t.sequence_order = count
+    #   t.save
+    #   count += 1
+    # end
+    # end
+    #
+    #
+    tree_codes_changed = Tree.update_code_sequence(tree_params[:id_order])
     respond_to do |format|
-      format.json {render json: {hello_message: 'hello world'}}
+      format.json {render json: {tree_codes_changed: tree_codes_changed}}
     end
   end
 
@@ -999,6 +1009,7 @@ class TreesController < ApplicationController
       :resource,
       :weeks,
       :hours,
+      :id_order => [],
       :resource_name => [],
       :resource_key => [],
     )
@@ -1050,10 +1061,6 @@ class TreesController < ApplicationController
     rescue
       ActionController::Parameters.new
     end
-  end
-
-  def reorder_params
-    params.permit(:id_order)
   end
 
   def addNodeToArrHash (parent, subCode, newHash)

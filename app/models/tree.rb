@@ -476,10 +476,12 @@ class Tree < BaseRec
 
   #idOrderArr should contain ids for
   #every active tree with this subject_id
-  def self.update_code_sequence(idOrderArr, treeTypeCode, versionCode, subjectCode)
+  def self.update_code_sequence(idOrderArr)
     #To Do:
-    # => figure out how this is affected if only one gb is updated
     # => How to deal with deactivated trees? Add "x" to all of the codes? We need a "deactivate" method.
+
+    #To return. Used to update the maint page with jquery.
+    tree_codes_changed = []
 
     translations_hash = {} # h[old_key] = new_key
     #lookup trees by id and by "outc#{outcome_id}"
@@ -497,14 +499,21 @@ class Tree < BaseRec
     #of other gbs.
     sort_order_offset = firstTree["sort_order"]
     gb_offset = GradeBand.find(firstTree["grade_band_id"]).min_grade - 1
+    treeTypeCode = TreeType.find(firstTree["tree_type_id"]).code
+    versionCode = Version.find(firstTree["version_id"]).code
+    subjectCode = Subject.find(firstTree["subject_id"]).code
 
     #map treeRecs
     treeRecs.map do |t|
+      puts "mapping tree: #{t.inspect}"
+      puts "rec Id instance of string? #{t.id.instance_of? String}"
       trees_hash[t.id][:rec] = t
       trees_hash["outc#{t.outcome_id}"][:rec] = t if t.outcome_id
     end
     idOrderArr.each_with_index do |id, ix|
-      t = trees_hash[id][:rec]
+      puts "Id instance of string? #{id.instance_of? String}"
+      t = trees_hash[id.to_i][:rec]
+      puts "Tree to recode: #{id} #{t.inspect}"
       if (t[:depth] > last_tree_depth && !t.outcome_id) || (new_outcome_gb && t.outcome_id)
         codes_counter_by_depth[t[:depth]] = 1
         new_outcome_gb = false if t.outcome_id
@@ -528,6 +537,7 @@ class Tree < BaseRec
       t.sort_order = ix + sort_order_offset
       translationKeys << old_name_key
       translations_hash[old_name_key] = new_name_key
+      tree_codes_changed << {tree_id: t.id, new_code: new_code}
     end
     outcomeRecs.map do |o|
       old_translation_keys = o.list_translation_keys
@@ -550,6 +560,7 @@ class Tree < BaseRec
       outcomeRecs.each { |o| o.save! if o.changed_for_autosave? }
       translationRecs.each { |t| t.save! if t.changed_for_autosave? }
     end
-  end
+    return tree_codes_changed
+  end #update_code_sequence
 
 end
