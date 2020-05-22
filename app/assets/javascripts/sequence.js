@@ -367,7 +367,17 @@ initializeSortAndDrag = function() {
         async: false
       })
         .then(function(res) {
-          console.log(res);
+          console.log(res.tree_codes_changed);
+          var subject_code = $("#subject_code_hidden").text();
+          res.tree_codes_changed.forEach(function (h) {
+            $("#"+subject_code+"_tree_"+h["tree_id"])
+              .find(".js-tree-code")
+              .html(
+                "<strong><em>"
+                +h["new_code"]
+                +"</em></strong>"
+              )
+          })
         })
         .catch(function(err) {
         console.log("ERROR:", err);

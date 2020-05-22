@@ -1,4 +1,5 @@
 <ul class="list-group maint-column">
+  <div id="subject_code_hidden" class="hidden"><%= @subject_code %></div>
   <li>
     <%= render partial: "maint_filter", locals: {col: "tree"} %>
   </li>
@@ -18,7 +19,7 @@
        %>
       <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-treeid="<%= h[:id] %>">
         <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
-        <strong><em><%= h[:formatted_code] %></em></strong>
+        <span class="js-tree-code"><strong><em><%= h[:formatted_code] %></em></strong></span>
         </a>
         <%= h[:text].html_safe %>
         <% if h[:dimtrees].length > 0 %>

@@ -198,6 +198,7 @@ class TreesController < ApplicationController
     treePrep
     dimPrep
     #To Do: Remove Alt Flag when design is finalized
+    subjectLocaleCode = @subjects[@subject_code].get_abbr(@locale_code).downcase
     @use_alt_partial = params[:alt]
     @editing = params[:editme] && can_edit_any_dims?(@treeTypeRec)
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
@@ -239,10 +240,15 @@ class TreesController < ApplicationController
         depth: tree.depth,
         outcome: tree.outcome,
         weeks: tree.outcome ? tree.outcome.duration_weeks : nil,
-        subj_code: tree.subject.code,
+        subj_code: @subject_code,
         gb_code: tree.grade_band.code,
         code: tree.code,
-        formatted_code: tree.outcome ? tree.format_code(@locale_code) : tree.codeArray.last,
+        formatted_code: tree.outcome ? tree.format_code(
+            @locale_code,
+            @treeTypeRec.hierarchy_codes.split(","),
+            @treeTypeRec.tree_code_format,
+            subjectLocaleCode
+          ) : tree.codeArray.last,
         selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],
         text: "#{translation}",
@@ -958,13 +964,6 @@ class TreesController < ApplicationController
   #                              subject, or all of the Tree ids for the subject
   #                              and a single gradeband.
   def reorder
-    # working on algorithm for reordering all depths
-    # take params:
-    # [id_order_arr], id of moved tree
-    # a = get new location of id in [id_order_arr]
-    # b = get recorded sort order of tree
-    # starting point for recoding= [a,b].min
-    # update_code_sequence(a/b, id_reorder_arr ...)
     Rails.logger.debug(tree_params[:id_order].inspect)
     # OLD METHOD:
     # count = 1
@@ -978,7 +977,10 @@ class TreesController < ApplicationController
     # end
     #
     #
-    tree_codes_changed = Tree.update_code_sequence(tree_params[:id_order])
+    tree_codes_changed = Tree.update_code_sequence(
+      tree_params[:id_order],
+      @locale_code
+    )
     respond_to do |format|
       format.json {render json: {tree_codes_changed: tree_codes_changed}}
     end

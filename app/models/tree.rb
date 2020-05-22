@@ -158,20 +158,31 @@ class Tree < BaseRec
     end
   end # def update_fields
 
-  def format_code(localeCode)
-    hierarchies = tree_type.hierarchy_codes.split(",")
-    if tree_type.tree_code_format != ""
-      format_str = tree_type.tree_code_format
+  # Example of expected structure for the optional params:
+  #   localeCode = "en"
+  #   hierarchy_codes = ["grade", "sem", "unit", "lo"]
+  #   tree_code_format = "subject,grade,lo"
+  #   subject_code = "bio"
+  # Note: Optional params are present to enable us to avoid
+  #       doing a very large number of database lookups,
+  #       when formatting many tree codes at once (as on
+  #       the maint page)
+  def format_code(localeCode = BaseRec::LOCALE_EN, hierarchy_codes = nil, tree_code_format = nil, subject_code = nil)
+    hierarchy_codes = tree_type.hierarchy_codes.split(",") if !hierarchy_codes
+    tree_code_format = tree_type.tree_code_format if !tree_code_format
+    subject_code = subject.get_abbr(localeCode).downcase if !subject_code
+    if tree_code_format != ""
+      format_str = tree_code_format
     else
-      format_str = "subject,#{tree_type.hierarchy_codes}"
+      format_str = "subject,#{hierarchy_codes}"
     end
     format_arr = []
     hierarchic_arr = code.split('.').map {|c| c == "" ? 0 : c }
     format_str.split(",").each do |c|
       if c == "subject"
-        format_arr << subject.get_abbr(localeCode).downcase
+        format_arr << subject_code
       else
-        c_index = hierarchies.index(c)
+        c_index = hierarchy_codes.index(c)
         format_arr << hierarchic_arr[c_index] if hierarchic_arr[c_index]
       end
     end
@@ -476,7 +487,7 @@ class Tree < BaseRec
 
   #idOrderArr should contain ids for
   #every active tree with this subject_id
-  def self.update_code_sequence(idOrderArr)
+  def self.update_code_sequence(idOrderArr, localeCode = "en")
     #To Do:
     # => How to deal with deactivated trees? Add "x" to all of the codes? We need a "deactivate" method.
 
@@ -499,14 +510,17 @@ class Tree < BaseRec
     #of other gbs.
     sort_order_offset = firstTree["sort_order"]
     gb_offset = GradeBand.find(firstTree["grade_band_id"]).min_grade - 1
-    treeTypeCode = TreeType.find(firstTree["tree_type_id"]).code
+    treeTypeRec = TreeType.find(firstTree["tree_type_id"])
+    treeTypeCode = treeTypeRec.code
     versionCode = Version.find(firstTree["version_id"]).code
-    subjectCode = Subject.find(firstTree["subject_id"]).code
+    subjectRec = Subject.find(firstTree["subject_id"])
+    subjectCode = subjectRec.code
+    subjectLocaleCode = subjectRec.get_abbr(localeCode).downcase
     gb_by_id_and_min_grade = {}
     #map treeRecs
     treeRecs.map do |t|
-      puts "mapping tree: #{t.inspect}"
-      puts "rec Id instance of string? #{t.id.instance_of? String}"
+      # puts "mapping tree: #{t.inspect}"
+      # puts "rec Id instance of string? #{t.id.instance_of? String}"
       trees_hash[t.id][:rec] = t
       trees_hash["outc#{t.outcome_id}"][:rec] = t if t.outcome_id
       if !gb_by_id_and_min_grade["id#{t.grade_band_id}"]
@@ -516,39 +530,43 @@ class Tree < BaseRec
       end
     end
     idOrderArr.each_with_index do |id, ix|
-      puts "Id instance of string? #{id.instance_of? String}"
+      # puts "Id instance of string? #{id.instance_of? String}"
       t = trees_hash[id.to_i][:rec]
-      puts "Tree to recode: #{id} #{t.inspect}"
+      # puts "Tree to recode: #{id} #{t.inspect}"
+      #############
+      #constructing the new tree code
       if (t[:depth] > last_tree_depth && !t.outcome_id) || (new_outcome_gb && t.outcome_id)
         codes_counter_by_depth[t[:depth]] = 1
         new_outcome_gb = false if t.outcome_id
       else #depth == 0 will always end up in this block
         new_outcome_gb = t[:depth] == 0
         codes_counter_by_depth[t[:depth]] += (new_outcome_gb ? 1 + gb_offset : 1)
-
       end
       last_tree_depth = t[:depth]
       code_arr = []
       [*0..t[:depth]].each { |d| code_arr << format('%02d', codes_counter_by_depth[d]) }
       new_code = code_arr.join(".")
-      # if gradeband code has changed, we need to
-      # update the grade_band_id for the tree rec
+      ############
+      #update tree in instance data, but not in db
+      ############
       if format('%02d', code_arr[0]) != t.code.split(".")[0]
+        # if gradeband code has changed, we need to
+        # update the grade_band_id for the tree rec
         gb_min_grade = codes_counter_by_depth[0]
         t.grade_band_id = gb_by_id_and_min_grade["min#{gb_min_grade}"].id
       end
-      #build old translation name key before
-      #updating t.code and t.base_key
+      #save old translation name key before
+      #updating t.code and t.base_key in
       old_name_key = t.name_key
       t.code = new_code
       t.base_key = Tree.buildBaseKey(treeTypeCode, versionCode, subjectCode, new_code)
-      #build new translation name key with
-      #new t.base_key
+      #build new translation name key now that
+      #base_key has been reset for this instance of the tree
       new_name_key = t.name_key
       t.sort_order = ix + sort_order_offset
       translationKeys << old_name_key
       translations_hash[old_name_key] = new_name_key
-      tree_codes_changed << {tree_id: t.id, new_code: new_code}
+      tree_codes_changed << {tree_id: t.id, new_code: t.format_code(localeCode, treeTypeRec.hierarchy_codes.split(","), treeTypeRec.tree_code_format, subjectLocaleCode)} if t.changed_for_autosave?
     end
     outcomeRecs.map do |o|
       old_translation_keys = o.list_translation_keys
