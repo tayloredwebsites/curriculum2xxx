@@ -365,7 +365,11 @@ initializeSortAndDrag = function() {
         },
         dataType: "json",
         async: false
-      }).catch(function(err) {
+      })
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(err) {
         console.log("ERROR:", err);
       });
     }

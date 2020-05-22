@@ -94,6 +94,7 @@ tr:
       title: "Mektebim STEM Müfredatı"
     sequencing:
       title: "Dizileme"
+      tooltip: "Bu %{tree_depth_name} kaynağını yeniden oluşturmak için tıklayın ve sürükleyin"
     misconc:
       title: "Yanlış"
     bigidea:
@@ -101,6 +102,8 @@ tr:
       relates_to: "alakalı"
     show:
       name: "Müfredat Ayrıntı Sayfası"
+    edit:
+      tooltip: "%{tree_depth_name} 'i düzenleyin: %{tree_code}"
     labels:
       show_areas: "Birimleri Göster"
       show_components: "Bölümlerini Göster"

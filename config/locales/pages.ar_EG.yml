@@ -185,6 +185,7 @@ ar_EG:
       title: "منهاج مصر للعلوم والتكنولوجيا والهندسة والرياضيات"
     sequencing:
       title: "علاقات"
+      tooltip: "انقر واسحب لإعادة تجهيز %{tree_depth_name}"
     maint:
       title: "التحرير"
     dimension:
@@ -198,6 +199,8 @@ ar_EG:
       relates_to: "متعلق ب"
     show:
       name: "صفحة تفاصيل المناهج"
+    edit:
+      tooltip: "تحرير %{tree_depth_name}: %{tree_code}"
     labels:
       filter_by_subject_grade: "تصفية حسب الموضوع والدرجة"
       future_vision: "التحديات الكبرى"

@@ -293,7 +293,7 @@ class TreesController < ApplicationController
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
-    @trees = listing.joins(:grade_band).order("trees.sequence_order, code").all
+    @trees = listing.joins(:grade_band).order("trees.sort_order, code").all
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
