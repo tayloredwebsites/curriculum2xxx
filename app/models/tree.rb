@@ -490,6 +490,13 @@ class Tree < BaseRec
     codes_counter_by_depth = Hash.new(0)
     last_tree_depth = 0
     new_outcome_gb = true
+    firstTree = treeRecs.first.attributes
+    #if only one GradeBand is shown on the maint page,
+    #sort_order_offset will ensure that the sort_orders
+    #for this gb won't overlap with the sort_order values
+    #of other gbs.
+    sort_order_offset = firstTree["sort_order"]
+    gb_offset = GradeBand.find(firstTree["grade_band_id"]).min_grade - 1
 
     #map treeRecs
     treeRecs.map do |t|
@@ -501,9 +508,10 @@ class Tree < BaseRec
       if (t[:depth] > last_tree_depth && !t.outcome_id) || (new_outcome_gb && t.outcome_id)
         codes_counter_by_depth[t[:depth]] = 1
         new_outcome_gb = false if t.outcome_id
-      else
-        codes_counter_by_depth[t[:depth]] += 1
-        new_outcome_gb = true if t[:depth] == 0
+      else #depth == 0 will always end up in this block
+        new_outcome_gb = t[:depth] == 0
+        codes_counter_by_depth[t[:depth]] += (new_outcome_gb ? 1 + gb_offset : 1)
+
       end
       last_tree_depth = t[:depth]
       code_arr = []
@@ -517,7 +525,7 @@ class Tree < BaseRec
       #build new translation name key with
       #new t.base_key
       new_name_key = t.name_key
-      t.sort_order = ix
+      t.sort_order = ix + sort_order_offset
       translationKeys << old_name_key
       translations_hash[old_name_key] = new_name_key
     end
