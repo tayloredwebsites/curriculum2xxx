@@ -380,7 +380,8 @@ initializeSortAndDrag = function() {
           })
         })
         .catch(function(err) {
-        console.log("ERROR:", err);
+          window.location.reload();
+          console.log("ERROR:", err);
       });
     }
   });
