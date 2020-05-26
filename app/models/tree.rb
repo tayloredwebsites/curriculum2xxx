@@ -510,6 +510,7 @@ class Tree < BaseRec
     #of other gbs.
     sort_order_offset = firstTree["sort_order"]
     gb_offset = GradeBand.find(firstTree["grade_band_id"]).min_grade - 1
+    codes_counter_by_depth[0] = gb_offset
     treeTypeRec = TreeType.find(firstTree["tree_type_id"])
     treeTypeCode = treeTypeRec.code
     versionCode = Version.find(firstTree["version_id"]).code
@@ -532,7 +533,7 @@ class Tree < BaseRec
     idOrderArr.each_with_index do |id, ix|
       # puts "Id instance of string? #{id.instance_of? String}"
       t = trees_hash[id.to_i][:rec]
-      # puts "Tree to recode: #{id} #{t.inspect}"
+      #puts "Tree to recode: #{id} #{t.inspect}"
       #############
       #constructing the new tree code
       if (t[:depth] > last_tree_depth && !t.outcome_id) || (new_outcome_gb && t.outcome_id)
@@ -540,16 +541,17 @@ class Tree < BaseRec
         new_outcome_gb = false if t.outcome_id
       else #depth == 0 will always end up in this block
         new_outcome_gb = t[:depth] == 0
-        codes_counter_by_depth[t[:depth]] += (new_outcome_gb ? 1 + gb_offset : 1)
+        codes_counter_by_depth[t[:depth]] += 1
       end
       last_tree_depth = t[:depth]
       code_arr = []
-      [*0..t[:depth]].each { |d| code_arr << format('%02d', codes_counter_by_depth[d]) }
+      [*0..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == 0 ? '' : format('%02d', codes_counter_by_depth[d])) }
       new_code = code_arr.join(".")
+      #puts "codes_counter_by_depth: #{codes_counter_by_depth.inspect}"
       ############
       #update tree in instance data, but not in db
       ############
-      if format('%02d', code_arr[0]) != t.code.split(".")[0]
+      if code_arr[0].to_i != t.code.split(".")[0].to_i
         # if gradeband code has changed, we need to
         # update the grade_band_id for the tree rec
         gb_min_grade = codes_counter_by_depth[0]
