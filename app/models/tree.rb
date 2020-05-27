@@ -167,20 +167,23 @@ class Tree < BaseRec
   #       doing a very large number of database lookups,
   #       when formatting many tree codes at once (as on
   #       the maint page)
-  def format_code(localeCode = BaseRec::LOCALE_EN, hierarchy_codes = nil, tree_code_format = nil, subject_code = nil)
+  def format_code(localeCode = BaseRec::LOCALE_EN, hierarchy_codes = nil, tree_code_format = nil, subject_code = nil, grade_band_code = nil)
     hierarchy_codes = tree_type.hierarchy_codes.split(",") if !hierarchy_codes
     tree_code_format = tree_type.tree_code_format if !tree_code_format
     subject_code = subject.get_abbr(localeCode).downcase if !subject_code
+    grade_band_code = grade_band.code if !grade_band_code
     if tree_code_format != ""
       format_str = tree_code_format
     else
       format_str = "subject,#{hierarchy_codes}"
     end
     format_arr = []
-    hierarchic_arr = code.split('.').map {|c| c == "" ? 0 : c }
+    hierarchic_arr = code.split('.').map {|c| c == "" ? "00" : c }
     format_str.split(",").each do |c|
       if c == "subject"
         format_arr << subject_code
+      elsif c == "grade"
+        format_arr << grade_band_code
       else
         c_index = hierarchy_codes.index(c)
         format_arr << hierarchic_arr[c_index] if hierarchic_arr[c_index]
@@ -500,7 +503,7 @@ class Tree < BaseRec
     treeRecs = where(:id => idOrderArr).order('sort_order')
     outcomeRecs = Outcome.where(:id => treeRecs.pluck("outcome_id").uniq)
     translationKeys = []
-    codes_counter_by_depth = Hash.new(0)
+    codes_counter_by_depth = Hash.new(nil)
     last_tree_depth = 0
     new_outcome_gb = true
     firstTree = treeRecs.first.attributes
@@ -541,11 +544,21 @@ class Tree < BaseRec
         new_outcome_gb = false if t.outcome_id
       else #depth == 0 will always end up in this block
         new_outcome_gb = t[:depth] == 0
-        codes_counter_by_depth[t[:depth]] += 1
+        if codes_counter_by_depth[t[:depth]].nil?
+          codes_counter_by_depth[t[:depth]] = 1
+        else
+          codes_counter_by_depth[t[:depth]] += 1
+        end
+      end
+      if t[:depth] - 1 > last_tree_depth
+        #skipped an optional depth (e.g., unit to lo, skipping a subunit)
+        [*(last_tree_depth+1)..(t[:depth]-1)].each do |d|
+          codes_counter_by_depth[d] = nil
+        end
       end
       last_tree_depth = t[:depth]
       code_arr = []
-      [*0..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == 0 ? '' : format('%02d', codes_counter_by_depth[d])) }
+      [*0..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == nil ? '' : format('%02d', codes_counter_by_depth[d])) }
       new_code = code_arr.join(".")
       #puts "codes_counter_by_depth: #{codes_counter_by_depth.inspect}"
       ############
@@ -568,7 +581,11 @@ class Tree < BaseRec
       t.sort_order = ix + sort_order_offset
       translationKeys << old_name_key
       translations_hash[old_name_key] = new_name_key
-      tree_codes_changed << {tree_id: t.id, new_code: t.format_code(localeCode, treeTypeRec.hierarchy_codes.split(","), treeTypeRec.tree_code_format, subjectLocaleCode)} if t.changed_for_autosave?
+      tree_codes_changed << {tree_id: t.id, new_code: t.format_code(localeCode,
+        treeTypeRec.hierarchy_codes.split(","),
+        treeTypeRec.tree_code_format,
+        subjectLocaleCode,
+        gb_by_id_and_min_grade["id#{t.grade_band_id}"].code)} if t.changed_for_autosave?
     end
     outcomeRecs.map do |o|
       old_translation_keys = o.list_translation_keys
@@ -593,5 +610,23 @@ class Tree < BaseRec
     end
     return tree_codes_changed
   end #update_code_sequence
+
+  def self.create_and_insert_tree(tree_params, locale_code = "en")
+    if tree_params[:sort_order] && tree_params[:subject_id]
+      subjectRec = Subject.find(tree_params[:subject_id])
+      insert_at = tree_params[:sort_order].to_i
+      Tree.create(tree_params)
+      treesAfterInsert = Tree.where(
+        "subject_id = ? AND sort_order >= ?",
+        subjectRec.id,
+        insert_at
+      )
+      treesAfterInsert.update_all("sort_order = sort_order + 1")
+      idOrderArr = Tree.active.where(
+        :subject_id => subjectRec.id,
+      ).order('sort_order').pluck('id')
+      return update_code_sequence(idOrderArr, locale_code)
+    end
+  end
 
 end
