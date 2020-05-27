@@ -748,48 +748,10 @@ class TreesController < ApplicationController
       # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
       @trees = [@tree]
       process_tree = true
-      detail_areas = @treeTypeRec.detail_headers.split(",")
-      @detail_headers = []
-      @detail_areas = []
-      hierarchy_codes = @treeTypeRec.hierarchy_codes.split(",").map { |h| h.split("_").join("") }
-      detail_areas.each do |a|
-        detail_type = 'header'
-        detail = a
-        if a.first == "{" && a.last == "}"
-          detail_type = 'single'
-          detail = a[1..a.length - 2]
-        elsif a.first == "[" && a.last == "]"
-          detail_type = 'multi'
-          detail = a[1..a.length - 2]
-        elsif a.first == "(" && a.last == ")"
-          detail_type = 'header'
-          detail = a[1..a.length - 2]
-        elsif a.first == "<" && a.last == "<"
-          detail_type = 'left-col'
-          detail = a[1..a.length - 2]
-        elsif a.first == ">" && a.last == ">"
-          detail_type = 'right-col'
-          detail = a[1..a.length - 2]
-        elsif a.first == "<" && a.last == ">"
-          detail_type = 'resource-col'
-          detail = a[1..a.length - 2]
-        end
-        category_codes = detail.split("#")
-        if category_codes.length > 1
-          detail = category_codes[0]
-          category_codes = category_codes[1..category_codes.length]
-        else
-          category_codes = nil
-        end
-        detail = detail.split("_").join("")
-        @detail_headers << {type: detail_type, name: detail, depth: hierarchy_codes.index(detail) } if detail_type == 'header'
-        @detail_areas << {type: detail_type, name: detail, codes: category_codes} if detail_type != 'header'
-      end
     else
       # not a detail page, go back to index page
       index_prep
       render :index
-
     end
 
     if process_tree
@@ -812,6 +774,12 @@ class TreesController < ApplicationController
       Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
       # get all translation keys for this learning outcome
       treeKeys = @tree.getAllTransNameKeys
+      @detailsHash = Hash.new { |hash, key| hash[key] = [] } #{code: [{edit_type, details, category_codes}, {}, ....]}
+      @editTypes = {}
+      detail_areas = @treeTypeRec.detail_headers.split(",")
+      @detail_headers = []
+      @detailTables = [] #[{num_cols, num_rows, title_type_action_catsArr}]
+      hierarchy_codes = @treeTypeRec.hierarchy_codes.split(",").map { |h| h.split("_").join("") }
       if @tree.depth == 4
         # when outcome level, get children (indicators), to in outcome page
         @tree.getAllChildren.each do |c|
@@ -825,13 +793,19 @@ class TreesController < ApplicationController
         treeKeys << t.buildNameKey
         # get translation key for each sector, big idea and misconception for this item
         if treeKeys
-          t.sector_trees.each do |st|
-            treeKeys << st.sector.name_key
-            #treeKeys << st.explanation_key
+          t.sector_trees.active.each do |st|
+            if st.sector
+              treeKeys << st.sector.name_key
+              @detailsHash['sector'] << st
+              #treeKeys << st.explanation_key
+            end
           end
-          t.dim_trees.where(:active => true).each do |dt|
-            treeKeys << dt.dimension.dim_name_key
-            #treeKeys << dt.dim_explanation_key
+          t.dim_trees.active.each do |dt|
+            if dt.dimension
+              treeKeys << dt.dimension.dim_name_key
+              @detailsHash[dt.dimension.dim_code] << dt
+              #treeKeys << dt.dim_explanation_key
+            end
           end
         end
         # get translation key for each related item for this item
@@ -854,8 +828,10 @@ class TreesController < ApplicationController
         @tree_items_to_display << t
       end
       @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+
+      parse_detail_headers(detail_areas, hierarchy_codes)
     end
-  end
+  end # def show
 
   def edit
     process_tree = false

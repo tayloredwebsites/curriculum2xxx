@@ -3,7 +3,7 @@
     <div class='logoImage'></div>
   </a>
   <div id='pageHeaderTitle' class=''>
-    <h1 class='text-center'><%= @appTitle %></h1>
+    <h1 class='text-center'><%= @appTitle if current_user.present? %></h1>
   </div>
   <% if current_user.present? %>
     <div id='pageHeaderCurriculumSelect'>

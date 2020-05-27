@@ -1,17 +1,19 @@
-<h2><%= t('.sign_up') %></h2>
+<div class="login-form">
+	<h2><%= t('.sign_up') %></h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+	<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+	  <%= devise_error_messages! %>
 
-  <div class='row-stripes'>
-    <%= render partial: 'users/form_email', :locals => {:form => f} %>
-    <%= render partial: 'users/form_new_passwd', :locals => {:form => f} %>
-    <%= render partial: 'users/form_other', :locals => {:form => f} %>
-  </div>
+	  <div class='row-stripes'>
+	    <%= render partial: 'users/form_email', :locals => {:form => f} %>
+	    <%= render partial: 'users/form_new_passwd', :locals => {:form => f} %>
+	    <%= render partial: 'users/form_other', :locals => {:form => f} %>
+	  </div>
 
-  <div class="actions">
-    <%= f.submit t('.sign_up') %>
-  </div>
-<% end %>
+	  <div class="actions">
+	    <%= f.submit t('.sign_up') %>
+	  </div>
+	<% end %>
 
-<%= render "devise/shared/links" %>
+	<%= render "devise/shared/links" %>
+</div>

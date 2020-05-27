@@ -56,11 +56,15 @@ class Outcome < BaseRec
     if resource_index
       name = Translation.find_translation_name(
           locale_code,
-          "curriculum.#{tree_type_code}.#{version_code}.ref_type_name.#{resource_type}",
+          "curriculum.#{tree_type_code}.#{version_code}.resource_type_name.#{resource_type}",
           nil
         ) || I18n.translate("trees.labels.teacher_field_#{resource_index + 1}")
     end
     return name
+  end
+
+  def self.get_resource_key(resource_type, tree_type_code, version_code)
+    return "curriculum.#{tree_type_code}.#{version_code}.resource_type_name.#{resource_type}"
   end
 
   # To Do: deprecate the Translation Table for Resource Names (ensure seed file provides these)
@@ -71,12 +75,12 @@ class Outcome < BaseRec
     if resource_index
       name = Translation.find_translation_name(
           locale_code,
-          "curriculum.#{tree_type_code}.#{version_code}.ref_type_name.#{resource_type}",
+          "curriculum.#{tree_type_code}.#{version_code}.resource_type_name.#{resource_type}",
           nil
         ) || I18n.translate("trees.labels.teacher_field_#{resource_index + 1}")
     end
     return {
-      key: "curriculum.#{tree_type_code}.#{version_code}.ref_type_name.#{resource_type}",
+      key: "curriculum.#{tree_type_code}.#{version_code}.resource_type_name.#{resource_type}",
       name: name
     }
   end

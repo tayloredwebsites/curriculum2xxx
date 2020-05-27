@@ -41,8 +41,8 @@ class Dimension < BaseRec
     return ret
   end
 
-  def get_dim_ref_key
-    return "dimension.#{id}.ref"
+  def get_dim_resource_key
+    return "dimension.#{id}.resource"
   end
 
   def self.get_dim_type_key(dimCode, tree_type, version)

@@ -13,7 +13,7 @@
   <body>
     <div id='outer-container' class="container-fluid">
       <%= render 'layouts/header' %>
-      <% if flash[:notice].present? || flash[:alert].present? %>
+      <% if current_user.present? && (flash[:notice].present? || flash[:alert].present?) %>
         <div class=''>
           <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
           <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
@@ -23,7 +23,14 @@
         <%if current_user.present? %>
           <%= yield %>
         <% else %>
-          <div class="translucent"><%= yield %></div>
+          <% if flash[:notice].present? || flash[:alert].present? %>
+            <div class=''>
+              <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
+              <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
+            </div>
+          <% end %>
+          <h1><%= @appTitle %></h1>
+          <div><%= yield %></div>
         <% end %>
       </div>
     </div>

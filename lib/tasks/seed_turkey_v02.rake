@@ -1,7 +1,7 @@
 # seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :create_uploads, :create_sectors]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors]
 
   task setup: :environment do
     @versionNum = 'v02'
@@ -38,22 +38,30 @@ namespace :seed_turkey_v02 do
       working_status: true,
       dim_codes: 'essq,bigidea,pract,miscon',
       tree_code_format: 'subject,grade,unit,sub_unit,comp',
+      # To Do: Write documentation on obtaining translation keys
+      # - for dimension translation use dim.get_dim_resource_key
+      #
       # Detail headers notation key:
       #   item - HEADER
       #   (item) - optional HEADER item
-      #   [item] - TABLE item, full width of table, dim_code
-      #   {item} - TABLE item, lookup with Outcome::RESOURCE_TYPES
-      #   <item< - TABLE item, must be a dim_code, left side column (of two), must be followed by >item>
-      #   >item> - TABLE item, right side column (of two), must follow <item<
-      #   <item> - TABLE item, full width of table with two cols: item | item resources
-      #   [item#n#n#n] - TABLE item, full width of table, with numeric codes identifying which categories of this item to display
-      #   *item#n#n#n* - PARENT TABLE, with category codes
-      detail_headers: 'grade,unit,(sub_unit),comp,<bigidea<,>essq>,{explain},{evid_learning},[miscon#2#1],[sector],[connect],[resource#0#1#2#3#4#5]',
+      #   [item] - TABLE item, dimension.
+      #   {resource#n} - TABLE item, outcome resource translation
+      #   <item> - TABLE item, sector
+      #   +item+ - TABLE item, treetree
+      #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #   {resources#n#...} - TABLE item, full width of table,
+      #                  with numeric codes identifying which
+      #                  categories of this item to display.
+      #                  e.g., may use indexes in the
+      #                  Outcome::RESOURCE_TYPES array.
+      #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
+      detail_headers: 'grade,unit,sub_unit,comp,[bigidea]_[essq],[pract],{resource#6},[miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       # Grid headers notation key:
       # item or (item) - Ignored for now
       # [item] - grid column, may have multiple connected items
       # {item} - grid column, single item
-      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]'
+      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]',
+      dim_display: 'miscon#0#1#2#3#4#5#6#7',
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)
@@ -64,7 +72,9 @@ namespace :seed_turkey_v02 do
     throw "ERROR: Missing tfv tree type" if treeTypes.count < 1
     @tt = treeTypes.first
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Curriculum App')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Mektebim Curriculum App')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'app.title', 'Mektebim Müfredat Uygulaması')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     # Create translation(s) for hierarchy codes
@@ -347,6 +357,34 @@ namespace :seed_turkey_v02 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end
+
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task outcome_translations: :environment do
+    outc_resource_types_arr = [
+      ["Multi, inter or trans disciplinary Grand Challenges based projects", "Çoklu, disiplinler arası veya disiplinler arası Grand Challenges tabanlı projeler"],
+      ["Daily Lesson Plans", "Günlük Ders Planları"],
+      ["Textbook and Resource Materials to Use in Class", "Sınıfta Kullanılacak Ders Kitabı ve Kaynak Materyaller"],
+      ["Suggested Assessment Resources and Activities", "Önerilen Değerlendirme Kaynakları ve Faaliyetleri"],
+      ["Additional Background and Resource Materials for the Teacher", "Öğretmen için Ek Arka Plan ve Kaynak Materyalleri"],
+      ["Goal behaviour (What students will do, Practical learning targets)","Hedef davranışı (Öğrenciler ne yapacak, Pratik öğrenme hedefleri)"],
+      ["Teacher Support", "Öğretmen Desteği"],
+      ["Evidence of Learning", "Öğrenmenin Kanıtı"],
+      ["Connections", "Bağlantılar"],
+    ]
+
+    outc_resource_types_arr.each_with_index do |resource, i|
+      resource_name_key = Outcome.get_resource_key(
+        Outcome::RESOURCE_TYPES[i],
+        @tt.code,
+        @ver.code
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, resource_name_key, resource[1])
+      throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
 
   ###################################################################################
   desc "create the upload control files"
