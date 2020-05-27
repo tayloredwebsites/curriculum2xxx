@@ -1111,7 +1111,7 @@ class UploadsController < ApplicationController
         currentRec.get_dim_name_key,
         dim_name
       )
-      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].base_key, dim_type, currentRec.id)
+      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
       dimTree = DimTree.create(
         tree_id: treeRec[:rec].id,
         dimension_id: currentRec.id,
@@ -1131,7 +1131,7 @@ class UploadsController < ApplicationController
       currentRec.min_grade = min_grade if min_grade < currentRec.min_grade
       currentRec.max_grade = max_grade if max_grade > currentRec.max_grade
       currentRec.save
-      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].base_key, dim_type, currentRec.id)
+      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
       dimTrees = DimTree.where(tree_id: treeRec[:rec].id, dimension_id: currentRec.id)
       if dimTrees.count < 1
         dimTree = DimTree.create(

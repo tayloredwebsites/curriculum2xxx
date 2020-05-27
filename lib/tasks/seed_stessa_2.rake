@@ -41,10 +41,11 @@ namespace :seed_stessa_2 do
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
+      # NOTE: Please avoid underscores (_) and commas (,)
+      #       in item names.
       #
       # Detail headers notation key:
       #   item - HEADER
-      #   (item) - optional HEADER item
       #   [item] - TABLE item, dimension.
       #   {resource#n} - TABLE item, outcome resource translation
       #   <item> - TABLE item, sectors

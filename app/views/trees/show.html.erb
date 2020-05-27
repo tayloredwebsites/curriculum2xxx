@@ -81,8 +81,6 @@
 
         <% @detailTables.each do |table|
           title, code, type, action, cats = table[:title_code_type_action_catsArr][0]
-          puts "++++TABLE!!!! #{table[:title_code_type_action_catsArr]}"
-          puts "++++TABLE PARTIAL!!!! #{table[:partial]}"
           %>
           <%=
             render partial: "trees/show/#{table[:partial]}", locals: {

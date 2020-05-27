@@ -338,7 +338,7 @@ edit_tree_tree = function(tree_tree_id) {
  *    gradebands.
  */
 initializeSortAndDrag = function() {
-  $(".sequence-page .list-group").sortable({
+  $(".maint-page .list-group").sortable({
     //specify only .list-group-items
     //should be sortable (to
     //exclude subject headers)
@@ -348,9 +348,9 @@ initializeSortAndDrag = function() {
     stop: function(e, ui) {
       console.log("e:", e);
       console.log("ui:", ui);
-      tree_ids = $.map($(this).find(".sequence-item"), function(el) {
-        return el.id.split("_")[1];
-      });
+      tree_ids = $(".sequence-item").map(function () {
+        return $(this).data('treeid');
+      }).get();
       console.log(tree_ids);
       token = $("meta[name='csrf-token']").attr("content");
 
@@ -361,12 +361,27 @@ initializeSortAndDrag = function() {
         data: {
           source_controller: "trees",
           source_action: "reorder",
-          id_order: tree_ids
+          tree: { id_order: tree_ids }
         },
         dataType: "json",
         async: false
-      }).catch(function(err) {
-        console.log("ERROR:", err);
+      })
+        .then(function(res) {
+          console.log(res.tree_codes_changed);
+          var subject_code = $("#subject_code_hidden").text();
+          res.tree_codes_changed.forEach(function (h) {
+            $("#"+subject_code+"_tree_"+h["tree_id"])
+              .find(".js-tree-code")
+              .html(
+                "<strong><em>"
+                +h["new_code"]
+                +"</em></strong>"
+              )
+          })
+        })
+        .catch(function(err) {
+          window.location.reload();
+          console.log("ERROR:", err);
       });
     }
   });

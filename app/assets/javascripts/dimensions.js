@@ -124,14 +124,14 @@ initializeDrag = function() {
       //find out if the item being dragged is of the same type as the
       //item it was dropped on.
       var types = [
-        item_to_connect.dataset["loid"] == undefined,
-        ui.helper[0].dataset["loid"] == undefined
+        item_to_connect.dataset["treeid"] == undefined,
+        ui.helper[0].dataset["treeid"] == undefined
       ];
       //if an item is dropped on an item that is not of the same type
       if (item_to_connect != null && types[0] != types[1]) {
         var tree_id, dimension_id;
-        if (ui.helper[0].dataset["loid"]) {
-          tree_id = ui.helper[0].dataset["loid"];
+        if (ui.helper[0].dataset["treeid"]) {
+          tree_id = ui.helper[0].dataset["treeid"];
           dimension_id = item_to_connect.id.split("_")[2];
         } else {
           tree_id = item_to_connect.id.split("_")[2];

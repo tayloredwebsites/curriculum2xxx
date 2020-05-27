@@ -13,8 +13,8 @@ class DimTree < BaseRec
 
   # Standard for dim_explanation_key
   # e.g. TFV.v01.bio.9.1.1.1.miscon.3.expl
-  def self.getDimExplanationKey(treeBaseKey, dimType, dimId)
-    return "#{treeBaseKey}.#{dimType}.#{dimId}.expl"
+  def self.getDimExplanationKey(treeId, dimType, dimId)
+    return "tree.#{treeId}.#{dimType}.#{dimId}.expl"
   end
 
 

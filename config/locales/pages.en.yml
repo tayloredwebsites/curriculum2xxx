@@ -187,6 +187,7 @@ en:
       title: "Mektebim STEM Curriculum"
     sequencing:
       title: "Relations"
+      tooltip: "Click and drag to resequence this %{tree_depth_name}"
     maint:
       title: "Editing"
     dimension:
@@ -200,6 +201,8 @@ en:
       relates_to: "relates to"
     show:
       name: "Curriculum Detail Page"
+    edit:
+      tooltip: "Edit %{tree_depth_name}: %{tree_code}"
     labels:
       filter_by_subject_grade: "Filter by Subject & Grade"
       future_vision: "Future Vision"

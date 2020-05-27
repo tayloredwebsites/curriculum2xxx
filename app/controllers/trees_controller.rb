@@ -198,6 +198,7 @@ class TreesController < ApplicationController
     treePrep
     dimPrep
     #To Do: Remove Alt Flag when design is finalized
+    subjectLocaleCode = @subjects[@subject_code].get_abbr(@locale_code).downcase
     @use_alt_partial = params[:alt]
     @editing = params[:editme] && can_edit_any_dims?(@treeTypeRec)
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
@@ -234,15 +235,22 @@ class TreesController < ApplicationController
           tree.outcome.get_explain_key,
           nil
         ) : nil
+      gb_code = tree.grade_band.code
       newHash = {
         id: tree.id,
         depth: tree.depth,
         outcome: tree.outcome,
         weeks: tree.outcome ? tree.outcome.duration_weeks : nil,
-        subj_code: tree.subject.code,
-        gb_code: tree.grade_band.code,
+        subj_code: @subject_code,
+        gb_code: gb_code,
         code: tree.code,
-        formatted_code: tree.outcome ? tree.format_code(@locale_code) : tree.codeArray.last,
+        formatted_code: tree.outcome ? tree.format_code(
+            @locale_code,
+            @treeTypeRec.hierarchy_codes.split(","),
+            @treeTypeRec.tree_code_format,
+            subjectLocaleCode,
+            gb_code
+          ) : tree.codeArray.last,
         selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],
         text: "#{translation}",
@@ -293,7 +301,7 @@ class TreesController < ApplicationController
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
     )
-    @trees = listing.joins(:grade_band).order("trees.sequence_order, code").all
+    @trees = listing.joins(:grade_band).order("trees.sort_order, code").all
     @tree = Tree.new(
       tree_type_id: @treeTypeRec.id,
       version_id: @versionRec.id
@@ -672,7 +680,7 @@ class TreesController < ApplicationController
     @dimension_translation = dimension_translation_matches.first ? dimension_translation_matches.first.value : ""
     if dim_tree_matches.length == 0
       @dim_tree = DimTree.new(tree_params)
-      @dim_tree.dim_explanation_key = DimTree.getDimExplanationKey(@tree[:base_key], @dim[:dim_code], @dim[:id])
+      @dim_tree.dim_explanation_key = DimTree.getDimExplanationKey(@tree[:id], @dim[:dim_code], @dim[:id])
       @method = :post
       @form_path = :create_dim_tree_trees
     else
@@ -951,19 +959,32 @@ class TreesController < ApplicationController
     redirect_to tree_path(@tree.id, editme: @tree.id)
   end
 
+
+  # @param {Array[int]} id_order An array of Tree ids. Determines the new sort
+  #                              order for a set of Trees in the curriculum.
+  #                              Will contain either all of the Tree ids for the
+  #                              subject, or all of the Tree ids for the subject
+  #                              and a single gradeband.
   def reorder
-    Rails.logger.debug(params[:id_order].inspect)
-    count = 1
-    ActiveRecord::Base.transaction do
-    params[:id_order].each do |id|
-      t = Tree.find(id)
-      t.sequence_order = count
-      t.save
-      count += 1
-    end
-    end
+    Rails.logger.debug(tree_params[:id_order].inspect)
+    # OLD METHOD:
+    # count = 1
+    # ActiveRecord::Base.transaction do
+    # params[:id_order].each do |id|
+    #   t = Tree.find(id)
+    #   t.sequence_order = count
+    #   t.save
+    #   count += 1
+    # end
+    # end
+    #
+    #
+    tree_codes_changed = Tree.update_code_sequence(
+      tree_params[:id_order],
+      @locale_code
+    )
     respond_to do |format|
-      format.json {render json: {hello_message: 'hello world'}}
+      format.json {render json: {tree_codes_changed: tree_codes_changed}}
     end
   end
 
@@ -992,6 +1013,7 @@ class TreesController < ApplicationController
       :resource,
       :weeks,
       :hours,
+      :id_order => [],
       :resource_name => [],
       :resource_key => [],
     )
@@ -1043,10 +1065,6 @@ class TreesController < ApplicationController
     rescue
       ActionController::Parameters.new
     end
-  end
-
-  def reorder_params
-    params.permit(:id_order)
   end
 
   def addNodeToArrHash (parent, subCode, newHash)

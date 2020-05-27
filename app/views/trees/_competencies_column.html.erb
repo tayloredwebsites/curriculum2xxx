@@ -1,4 +1,5 @@
 <ul class="list-group maint-column">
+  <div id="subject_code_hidden" class="hidden"><%= @subject_code %></div>
   <li>
     <%= render partial: "maint_filter", locals: {col: "tree"} %>
   </li>
@@ -16,9 +17,9 @@
            }
          end
        %>
-      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-loid="<%= h[:id] %>">
+      <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-treeid="<%= h[:id] %>">
         <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
-        <strong><em><%= h[:formatted_code] %></em></strong>
+        <span class="js-tree-code"><strong><em><%= h[:formatted_code] %></em></strong></span>
         </a>
         <%= h[:text].html_safe %>
         <% if h[:dimtrees].length > 0 %>
@@ -41,15 +42,16 @@
         <div class="pull-right">
           <!-- TO DO: Implement working resequence button and deactivate button -->
           <a class="" href="/<%= @locale_code %>/trees/<%= h[:id] %>?editme=<%= h[:id] %>">
-            <i class="fa fa-edit pull-right" title="edit this LO"></i>
+            <i class="fa fa-edit pull-right" data-toggle="tooltip" title="<%= I18n.translate("trees.edit.tooltip", tree_depth_name: @hierarchies[@treeTypeRec[:outcome_depth]], tree_code: h[:formatted_code]) %>"></i>
           </a>
+          <a class="sort-handle lo-handle" onclick=""><i class="fa fa-thumb-tack pull-right link-blue" data-toggle="tooltip" title="<%= I18n.translate("trees.sequencing.tooltip", tree_depth_name: @hierarchies[@treeTypeRec[:outcome_depth]]) %>"></i></a>
         </div>
         <% end %>
       </li>
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
       <% else %>
-        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>">
+        <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>" data-treeid="<%= h[:id] %>">
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>

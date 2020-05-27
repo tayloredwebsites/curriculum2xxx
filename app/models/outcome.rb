@@ -38,6 +38,10 @@ class Outcome < BaseRec
     return tree_base_key + '.outc'
   end
 
+  def self.build_base_key(tree_base_key)
+    return tree_base_key + '.outc'
+  end
+
   ######
   # Field Translations: Outcome Resources
   def get_resource_key(resource_type)
@@ -83,6 +87,14 @@ class Outcome < BaseRec
       key: "curriculum.#{tree_type_code}.#{version_code}.resource_type_name.#{resource_type}",
       name: name
     }
+  end
+
+  def list_translation_keys
+    RESOURCE_TYPES.map { |type| get_resource_key(type) }
+  end
+
+  def list_instance_translation_keys(outc_base_key)
+    RESOURCE_TYPES.map { |type| "#{outc_base_key}.#{type}" }
   end
 
 end
