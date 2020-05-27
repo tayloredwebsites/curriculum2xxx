@@ -611,11 +611,23 @@ class Tree < BaseRec
     return tree_codes_changed
   end #update_code_sequence
 
-  def self.create_and_insert_tree(tree_params, locale_code = "en")
+  def self.create_and_insert_tree(tree_params, options = {}, locale_code = "en")
     if tree_params[:sort_order] && tree_params[:subject_id]
       subjectRec = Subject.find(tree_params[:subject_id])
       insert_at = tree_params[:sort_order].to_i
-      Tree.create(tree_params)
+      tree = Tree.new(tree_params)
+      outc = Outcome.new(options[:outcome_params]) if options[:outcome_params]
+      outc.base_key = Outcome.buildBaseKey(tree.base_key)
+      outc.save
+      outc.reload
+      tree.outcome_id = outc.id
+      tree.save
+      tree.reload
+      translation = Translation.new(
+        options[:translation_params]
+      ) if options[:translation_params]
+      translation.key = tree.name_key
+      translation.save
       treesAfterInsert = Tree.where(
         "subject_id = ? AND sort_order >= ?",
         subjectRec.id,
@@ -628,5 +640,10 @@ class Tree < BaseRec
       return update_code_sequence(idOrderArr, locale_code)
     end
   end
+
+  def deactivate_and_extract
+    treesAfterExtract
+  end
+
 
 end

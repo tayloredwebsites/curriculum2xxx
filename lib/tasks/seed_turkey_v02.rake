@@ -28,7 +28,7 @@ namespace :seed_turkey_v02 do
     myTreeTypes = TreeType.where(code: @curriculumCode, version_id: @ver.id)
     myTreeTypeValues = {
       code: @curriculumCode,
-      hierarchy_codes: 'grade,unit,sub_unit,comp',
+      hierarchy_codes: 'grade,unit,subunit,comp',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_TR,
       sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
@@ -37,13 +37,14 @@ namespace :seed_turkey_v02 do
       version_id: @ver.id,
       working_status: true,
       dim_codes: 'essq,bigidea,pract,miscon',
-      tree_code_format: 'subject,grade,unit,sub_unit,comp',
+      tree_code_format: 'subject,grade,unit,subunit,comp',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
       #
       # Detail headers notation key:
-      #   item - HEADER
-      #   (item) - optional HEADER item
+      # NOTE: Please avoid underscores (_) and commas (,)
+      #       in item names.
+      #   item - HEADER item
       #   [item] - TABLE item, dimension.
       #   {resource#n} - TABLE item, outcome resource translation
       #   <item> - TABLE item, sector
@@ -55,12 +56,12 @@ namespace :seed_turkey_v02 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,sub_unit,comp,[bigidea]_[essq],[pract],{resource#6},[miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+      detail_headers: 'grade,unit,subunit,comp,[bigidea]_[essq],[pract],{resource#6},[miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       # Grid headers notation key:
       # item or (item) - Ignored for now
       # [item] - grid column, may have multiple connected items
       # {item} - grid column, single item
-      grid_headers: 'grade,unit,(sub_unit),comp,[essq],[bigidea],[pract],{explain},[miscon]',
+      grid_headers: 'grade,unit,subunit,comp,[essq],[bigidea],[pract],{explain},[miscon]',
       dim_display: 'miscon#0#1#2#3#4#5#6#7',
     }
     if myTreeTypes.count < 1
@@ -72,9 +73,9 @@ namespace :seed_turkey_v02 do
     throw "ERROR: Missing tfv tree type" if treeTypes.count < 1
     @tt = treeTypes.first
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Mektebim Curriculum App')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Mektebim STEM Curriculum App')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'app.title', 'Mektebim Müfredat Uygulaması')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, 'app.title', 'Mektebim STEM Müfredat Uygulaması')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     # Create translation(s) for hierarchy codes
@@ -83,7 +84,7 @@ namespace :seed_turkey_v02 do
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.unit', 'Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     STDOUT.puts 'Create translation record for essential questions as K-12 Big Ideas.'
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.sub_unit', 'Sub-Unit')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.subunit', 'Sub-Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     STDOUT.puts 'Create translation record for Sub-Unit.'
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.tfv.hierarchy.comp', 'Competence')

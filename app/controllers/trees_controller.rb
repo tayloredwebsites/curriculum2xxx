@@ -235,19 +235,21 @@ class TreesController < ApplicationController
           tree.outcome.get_explain_key,
           nil
         ) : nil
+      gb_code = tree.grade_band.code
       newHash = {
         id: tree.id,
         depth: tree.depth,
         outcome: tree.outcome,
         weeks: tree.outcome ? tree.outcome.duration_weeks : nil,
         subj_code: @subject_code,
-        gb_code: tree.grade_band.code,
+        gb_code: gb_code,
         code: tree.code,
         formatted_code: tree.outcome ? tree.format_code(
             @locale_code,
             @treeTypeRec.hierarchy_codes.split(","),
             @treeTypeRec.tree_code_format,
-            subjectLocaleCode
+            subjectLocaleCode,
+            gb_code
           ) : tree.codeArray.last,
         selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],

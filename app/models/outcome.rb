@@ -38,6 +38,10 @@ class Outcome < BaseRec
     return tree_base_key + '.outc'
   end
 
+  def self.build_base_key(tree_base_key)
+    return tree_base_key + '.outc'
+  end
+
   ######
   # Field Translations: Outcome Resources
   def get_resource_key(resource_type)
