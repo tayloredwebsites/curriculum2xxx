@@ -13,6 +13,7 @@ en:
       cancel: "Cancel"
       submit: "Submit"
       edit: "Edit"
+      title: "Title"
       leave_edit_mode: "Leave Edit Mode"
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"

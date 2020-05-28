@@ -70,7 +70,7 @@ class Tree < BaseRec
   end
   def buildNameKey
     # return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}.name"
-    return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.code}.name"
+    return "#{tree_type.code}.#{version.code}.#{subject.code}.#{code}.name"
   end
 
   def self.buildBaseKey(treeTypeCode, versionCode, subjectCode, fullCode)
@@ -533,6 +533,9 @@ class Tree < BaseRec
         gb_by_id_and_min_grade["min#{gb.min_grade}"] = gb
       end
     end
+    ###############
+    # Update tree sort_order, codes, and base_keys
+    # Prepare hash mapping old tree name translation keys to new
     idOrderArr.each_with_index do |id, ix|
       # puts "Id instance of string? #{id.instance_of? String}"
       t = trees_hash[id.to_i][:rec]
@@ -587,6 +590,9 @@ class Tree < BaseRec
         subjectLocaleCode,
         gb_by_id_and_min_grade["id#{t.grade_band_id}"].code)} if t.changed_for_autosave?
     end
+    ####################
+    # Update Outcome base keys
+    # Map old outcome resource translation keys to new keys
     outcomeRecs.map do |o|
       old_translation_keys = o.list_translation_keys
       o.base_key = o.get_base_key(
@@ -611,39 +617,71 @@ class Tree < BaseRec
     return tree_codes_changed
   end #update_code_sequence
 
-  def self.create_and_insert_tree(tree_params, options = {}, locale_code = "en")
+  def self.create_and_insert_tree(tree_params, translation_params, outcome_params = nil, locale_code = "en")
     if tree_params[:sort_order] && tree_params[:subject_id]
       subjectRec = Subject.find(tree_params[:subject_id])
       insert_at = tree_params[:sort_order].to_i
       tree = Tree.new(tree_params)
-      outc = Outcome.new(options[:outcome_params]) if options[:outcome_params]
+      outc = Outcome.new(outcome_params) if outcome_params
       outc.base_key = Outcome.buildBaseKey(tree.base_key)
       outc.save
       outc.reload
       tree.outcome_id = outc.id
       tree.save
-      tree.reload
-      translation = Translation.new(
-        options[:translation_params]
-      ) if options[:translation_params]
+      translation = Translation.new(translation_params)
       translation.key = tree.name_key
       translation.save
       treesAfterInsert = Tree.where(
         "subject_id = ? AND sort_order >= ?",
-        subjectRec.id,
+        tree_params[:subject_id],
         insert_at
       )
       treesAfterInsert.update_all("sort_order = sort_order + 1")
       idOrderArr = Tree.active.where(
-        :subject_id => subjectRec.id,
+        :subject_id => tree_params[:subject_id],
       ).order('sort_order').pluck('id')
       return update_code_sequence(idOrderArr, locale_code)
     end
   end
 
-  def deactivate_and_extract
-    treesAfterExtract
-  end
+  def deactivate_and_recode(locale_code = "en")
+    translations_hash = {}
+    translation_keys = []
+    old_name_key = name_key
+    #update tree code and base_key
+    code = "XtreeidX#{id}"
+    base_key = Tree.buildBaseKey(
+      tree_type_code,
+      version.code,
+      subject.code,
+      code
+    )
+    #generate name key from new base_key
+    new_name_key = name_key
+    active = false
+    translations_hash[old_name_key] = new_name_key
+    if outcome_id
+      old_translation_keys = outcome.list_translation_keys
+      outcome.base_key = outcome.get_base_key(base_key)
+      new_translation_keys = outcome.list_instance_translation_keys(outcome.base_key)
+      old_translation_keys.each_with_index do |oldKey, ix|
+        translation_keys << oldKey
+        translations_hash[oldKey] = new_translation_keys[ix]
+      end
+    end
+    translationRecs = Translation.where(:key => translation_keys)
+    translationRecs.each { |tr| tr.key = translations_hash[tr.key] }
 
+    ##########################
+    # Update deactivated tree, any associated outcome, and any
+    # associated translations
+    ActiveRecord::Base.transaction do
+      save!
+      outcome.save! if outcome_id
+      translationRecs.each { |t| t.save! }
+    end
+    idOrderArr = Tree.active.where(:subject_id => subject_id).order('sort_order').pluck('id')
+    Tree.update_code_sequence(idOrderArr, localeCode)
+  end
 
 end
