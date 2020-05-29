@@ -331,6 +331,8 @@ edit_tree_tree = function(tree_tree_id) {
 
 initializeAddOutcome = function() {
   $(".createLO").on("click", function() {
+    var outcome_depth = $(".btn-hierarchies").first().data("outcome_depth");
+    show_hierarchy_level(outcome_depth, outcome_depth);
     var sort_order = $(this).data("nextsortorder");
     var subject_id = $(this).data("subjectid");
     var grade_band_id = $(this).data("gbid");
