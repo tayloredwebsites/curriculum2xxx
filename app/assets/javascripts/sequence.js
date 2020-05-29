@@ -381,8 +381,10 @@ initializeSortAndDrag = function() {
     placeholder: "drop-placeholder",
     handle: ".sort-handle",
     stop: function(e, ui) {
-      console.log("e:", e);
-      console.log("ui:", ui);
+      // console.log("e:", e);
+      // console.log("ui:", ui);
+      $(".spotlight-new").removeClass("spotlight-new");
+      ui.item.addClass("spotlight-new");
       tree_ids = $(".sequence-item").map(function () {
         return $(this).data('treeid');
       }).get();
