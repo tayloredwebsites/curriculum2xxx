@@ -16,6 +16,7 @@ ar_EG:
       deactivate: "إبطال"
       confirm_deactivate: "هل أنت متأكد من أنك تريد إلغاء تنشيط الاتصال بالعنصر التالي:\n%{item}"
       create: "خلق"
+      create_item: "Create %{item}"
       subject: "موضوع"
       grade_band: "درجة"
       min_grade: "الدرجة الدنيا"

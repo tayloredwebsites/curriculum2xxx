@@ -329,6 +329,41 @@ edit_tree_tree = function(tree_tree_id) {
     });
 };
 
+initializeAddOutcome = function() {
+  $(".createLO").on("click", function() {
+    var sort_order = $(this).data("nextsortorder");
+    var subject_id = $(this).data("subjectid");
+    var grade_band_id = $(this).data("gbid");
+    var depth = $(this).data("childdepth");
+    var parentElemId = $(this).parent().attr("id");
+    var parentCode = $(this).data("parentCode");
+    var token = $("meta[name='csrf-token']").attr("content");
+    $.ajax({
+      type: "get",
+      url: "/trees/new",
+      headers: { "X-CSRF-Token": token },
+      data: {
+        source_controller: "trees",
+        source_action: "new",
+        tree: {
+          subject_id: subject_id,
+          grade_band_id: grade_band_id,
+          sort_order: sort_order,
+          depth: depth,
+          parent_code: parentCode,
+          parent_elem_id: parentElemId
+        }
+      },
+      dataType: "script",
+      async: false
+    })
+    .catch(function(err) {
+      window.location.reload();
+      console.log("ERROR:", err);
+    })
+  })
+}
+
 /**
  *
  * 1) Initializes jqueryui sort behavior for LOs
@@ -445,5 +480,7 @@ initializeSortAndDrag = function() {
 
 $(document).on("turbolinks:load", function(event, state) {
   initializeSortAndDrag();
+  initializeAddOutcome();
 });
 initializeSortAndDrag();
+initializeAddOutcome();

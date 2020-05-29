@@ -1,0 +1,14 @@
+<% formatted_code = @tree.format_code(@locale_code, @treeTypeRec.hierarchy_codes.split(","), @treeTypeRec.tree_code_format, @subject_code, @gb_code) %>
+<li id="<%= @subject_code %>_tree_<%= @tree.id %>" class="sequence-item maint-item indent-3 spotlight-applies <%= @selectors_by_parent.join(" ") %> list-group-item level-<%= @tree.depth - 1 %>" data-treeid="<%= @tree.id %>">
+  <a href="<%= tree_path(@tree.id)%>" title="<%= @translation.value.html_safe %>"><%= @hierarchies[@treeTypeRec[:outcome_depth]] %>:
+  <span class="js-tree-code"><strong><em><%= formatted_code %></em></strong></span>
+  </a>
+  <%= @translation.value.html_safe %>
+  <div class="pull-right">
+    <!-- TO DO: Implement working resequence button and deactivate button -->
+    <a class="" href="/<%= @locale_code %>/trees/<%= @tree.id %>?editme=<%= @tree.id %>">
+      <i class="fa fa-edit pull-right" data-toggle="tooltip" title="<%= I18n.translate("trees.edit.tooltip", tree_depth_name: @hierarchies[@treeTypeRec[:outcome_depth]], tree_code: formatted_code) %>"></i>
+    </a>
+    <a class="sort-handle lo-handle" onclick=""><i class="fa fa-thumb-tack pull-right link-blue" data-toggle="tooltip" title="<%= I18n.translate("trees.sequencing.tooltip", tree_depth_name: @hierarchies[@treeTypeRec[:outcome_depth]]) %>"></i></a>
+  </div>
+</li>

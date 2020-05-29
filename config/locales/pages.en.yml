@@ -18,6 +18,7 @@ en:
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
       create: "Create"
+      create_item: "Create %{item}"
       subject: "Subject"
       grade_band: "Grade"
       min_grade: "Minimum Grade"

@@ -56,6 +56,7 @@
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>
           <%= "#{h[:depth_name]} #{h[:formatted_code]}#{": #{h[:text]}" if h[:depth] > 1}" %>
+          <a class="createLO" onclick="" data-target="#modal_popup" data-remote="true" data-parentCode="<%= h[:code] %>" data-subjectId=<%= h[:subject_id] %> data-gbId=<%= h[:grade_band_id] %> data-nextSortOrder="<%= h[:nextSortOrder] %>" data-childDepth="<%= @treeTypeRec[:outcome_depth] %>"><i class="fa fa-plus pull-right link-blue" data-toggle="tooltip" title="<%= I18n.translate("app.labels.create_item", item: @hierarchies[@treeTypeRec[:outcome_depth]]) + "#{h[:nextSortOrder]}" %>"></i></a>
         </li>
       <% end %>
     <% end %>

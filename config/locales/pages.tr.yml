@@ -10,6 +10,7 @@ tr:
       edit: "Edit"
       deactivate: "devre dışı bırakmak"
       create: "Create"
+      create_item: "Create %{item}"
       subject: "Konusu"
       grade_band: "seviyesi"
       grade_band_show: "Notu Göster"

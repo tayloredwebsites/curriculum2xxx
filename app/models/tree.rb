@@ -617,30 +617,32 @@ class Tree < BaseRec
     return tree_codes_changed
   end #update_code_sequence
 
-  def self.create_and_insert_tree(tree_params, translation_params, outcome_params = nil, locale_code = "en")
+  def self.create_and_insert_tree(tree_params, translation_params, outcome_params = nil, locale_code = "en", subjectRec)
     if tree_params[:sort_order] && tree_params[:subject_id]
-      subjectRec = Subject.find(tree_params[:subject_id])
+      subjectRec = Subject.find(tree_params[:subject_id]) if !subjectRec
       insert_at = tree_params[:sort_order].to_i
       tree = Tree.new(tree_params)
       outc = Outcome.new(outcome_params) if outcome_params
-      outc.base_key = Outcome.buildBaseKey(tree.base_key)
-      outc.save
-      outc.reload
-      tree.outcome_id = outc.id
-      tree.save
+      outc.base_key = Outcome.build_base_key(tree.base_key)
       translation = Translation.new(translation_params)
-      translation.key = tree.name_key
-      translation.save
-      treesAfterInsert = Tree.where(
-        "subject_id = ? AND sort_order >= ?",
-        tree_params[:subject_id],
-        insert_at
-      )
-      treesAfterInsert.update_all("sort_order = sort_order + 1")
+      ActiveRecord::Base.transaction do
+        outc.save
+        outc.reload
+        tree.outcome_id = outc.id
+        tree.save
+        translation.key = tree.name_key
+        translation.save
+        treesAfterInsert = Tree.where(
+          "subject_id = ? AND sort_order >= ?",
+          tree_params[:subject_id],
+          insert_at
+        )
+        treesAfterInsert.update_all("sort_order = sort_order + 1")
+      end
       idOrderArr = Tree.active.where(
         :subject_id => tree_params[:subject_id],
       ).order('sort_order').pluck('id')
-      return update_code_sequence(idOrderArr, locale_code)
+      return [tree, translation, update_code_sequence(idOrderArr, locale_code)]
     end
   end
 
