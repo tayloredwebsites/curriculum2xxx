@@ -319,11 +319,11 @@ class UploadsController < ApplicationController
             minCode = minTwoDigCode(colUnitName, ' ', '')
             unitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
             hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix)
-          elsif hCode == 'sub_unit' #  if no sub_unit value passed in, write a special record to allow attaching competencies below it
+          elsif hCode == 'subunit' #  if no sub_unit value passed in, write a special record to allow attaching competencies below it
             # get a code for the sub-unit name, if given (assigned sequentially as found)
             # optional records look like: <code: "<grade>.<unit>.", name_key: nil, base_key: "">
             Rails.logger.debug("*** Process Sub Unit field: #{hierarchyCodeArray.join('.')} - #{colSubUnitName}")
-            minCode = minTwoDigCode(colUnitName, ' ', '')
+            minCode = minTwoDigCode(colSubUnitName, ' ', '')
             subUnitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
             hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix)
           elsif (hCode == 'lo' || hCode == 'comp') && colLoDesc
