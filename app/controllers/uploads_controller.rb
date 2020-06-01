@@ -504,22 +504,22 @@ class UploadsController < ApplicationController
           currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
 
           if dCode == 'bigidea' && colBigIdea
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload')
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'essq' && colEssq
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload')
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'concept' && colConcepts
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload')
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'skill' && colSkills
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload')
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'miscon' && colMiscon
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload')
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'pract' && colPractice
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload')
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", createdOrUpdated]) if createdOrUpdated.present?
           else
             Rails.logger.debug("*** skip the '#{dCode}' dimension")
@@ -531,6 +531,31 @@ class UploadsController < ApplicationController
 
       elsif isValidRow == 'blank'
         # # skip this record
+      elsif isValidRow == 'dimensions'
+        # Dimensions/Dimension Resources only
+        # Use @dimsArray from application controller
+        # @dimsArray << {code: dim_code, name: dim_name}
+        @dimsArray.each do |dimH|
+          dim_name = dimH[:name]
+          dim_code = dimH[:code]
+          dim_text = rowH[dim_name]
+          default_grades = {:min => GradeBand::MIN_GRADE, :max => GradeBand::MAX_GRADE}
+          grades = rowH['Grade band'].present? ? parseGrades(rowH['Grade band']) : default_grades
+          if dim_text.present?
+            createdOrUpdated = createOrUpdateDimRecs(
+              nil,
+              @subjectRec.id,
+              dim_code,
+              grades[:min],
+              grades[:max],
+              @subjectRec.code,
+              dim_text,
+              'From Upload',
+              rowH
+            )
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat(["", "#{dim_name}: #{dim_text}", createdOrUpdated]) if createdOrUpdated.present?
+          end
+        end
       else
         # build a report with an error
         rptRec = [@rowNum.to_s]
@@ -660,6 +685,11 @@ class UploadsController < ApplicationController
       if (rowH['Grade'].blank? && rowH['Proposed Grade'].blank?) ||
           (rowH['Unit'].blank? && rowH['Unit Name'].blank?) ||
           (rowH['Proposed Student Competences'].blank? && rowH['LO Code:'].blank?)
+        @treeTypeRec.dim_codes.split(",").each do |dim_code|
+          if !rowH[@dimTypeTitleByCode[dim_code]].blank?
+            return 'dimensions'
+          end
+        end
         return 'invalid'
       else
         return 'valid'
@@ -1076,7 +1106,7 @@ class UploadsController < ApplicationController
   end
 
 
-  def createOrUpdateDimRecs(treeRec, subject_id, dim_type, min_grade, max_grade, subject_code, dim_name, dim_tree_expl)
+  def createOrUpdateDimRecs(treeRec, subject_id, dim_type, min_grade, max_grade, subject_code, dim_name, dim_tree_expl, rowH)
     # be able to update Dimension, DimTree (for the tree passed in), and their Translations
     # no updates to Tree
     # note: we are not using dim_desc_key!!!  this is not used.
@@ -1091,6 +1121,7 @@ class UploadsController < ApplicationController
     #   - otherwise we will create a new dimension
 
     currentRecH = @currentDims[dim_type][dim_name]
+    currentRec = nil
     createdOrUpdated = ''
     if !currentRecH.present?
       Rails.logger.debug("$$$ Did NOT find current dimension: #{dim_name}")
@@ -1111,29 +1142,8 @@ class UploadsController < ApplicationController
         currentRec.get_dim_name_key,
         dim_name
       )
-      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
-      dimTree = DimTree.create(
-        tree_id: treeRec[:rec].id,
-        dimension_id: currentRec.id,
-        dim_explanation_key: dimExplKey
-      )
-      transl_rec, text_status, transl_text = Translation.find_or_update_translation(
-        @localeRec.code,
-        dimExplKey,
-        dim_tree_expl
-      )
-      @currentDims[dim_type][dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
-      createdOrUpdated = 'Created and Mapped'
-    else #existing Dimension record
-      Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
-      currentRec = currentRecH[:rec]
-      Rails.logger.debug("$$$ current dimension record: #{currentRec.inspect}")
-      currentRec.min_grade = min_grade if min_grade < currentRec.min_grade
-      currentRec.max_grade = max_grade if max_grade > currentRec.max_grade
-      currentRec.save
-      dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
-      dimTrees = DimTree.where(tree_id: treeRec[:rec].id, dimension_id: currentRec.id)
-      if dimTrees.count < 1
+      if treeRec
+        dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
         dimTree = DimTree.create(
           tree_id: treeRec[:rec].id,
           dimension_id: currentRec.id,
@@ -1144,11 +1154,64 @@ class UploadsController < ApplicationController
           dimExplKey,
           dim_tree_expl
         )
-        @currentDims[dim_type][dim_name][:updated] = true
-        createdOrUpdated = 'Mapped'
+      end #if treeRec
+      @currentDims[dim_type][dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
+      createdOrUpdated = 'Created and Mapped'
+    else #existing Dimension record
+      Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
+      currentRec = currentRecH[:rec]
+      Rails.logger.debug("$$$ current dimension record: #{currentRec.inspect}")
+      currentRec.min_grade = min_grade if min_grade < currentRec.min_grade
+      currentRec.max_grade = max_grade if max_grade > currentRec.max_grade
+      currentRec.save
+      if treeRec
+        dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
+        dimTrees = DimTree.where(tree_id: treeRec[:rec].id, dimension_id: currentRec.id)
+        if dimTrees.count < 1
+          dimTree = DimTree.create(
+            tree_id: treeRec[:rec].id,
+            dimension_id: currentRec.id,
+            dim_explanation_key: dimExplKey
+          )
+          transl_rec, text_status, transl_text = Translation.find_or_update_translation(
+            @localeRec.code,
+            dimExplKey,
+            dim_tree_expl
+          )
+          @currentDims[dim_type][dim_name][:updated] = true
+          createdOrUpdated = 'Mapped'
+        end
+      end #if treeRec
+    end
+    if currentRec && rowH
+      Dimension::RESOURCE_TYPES.each do |type|
+        resource_text = rowH["#{@dimTypeTitleByCode[dim_Type]}::#{type}"]
+        if !resource_text.blank?
+          currentRec.reload
+          resource_key = currentRec.resource_key(type)
+          Translation.find_or_update_translation(
+            @locale_code,
+            resource_key,
+            resource_text
+          )
+        end
       end
     end
     return createdOrUpdated
   end # end createOrUpdateDimRecs
+
+  def parseGrades(gradeStr)
+    grades = gradeStr.split('-')
+    post_secondary = {:min => 13, :max => GradeBand::MAX_GRADE}
+    ret = {}
+    if grades[0].downcase == 'adult' || grades[0].downcase == 'college'
+      ret = post_secondary
+    elsif grades.length == 2
+      # 'k' will be converted to 0 by the .to_i method
+      ret[:min] = grades[0].to_i
+      ret[:max] = (grades[1].downcase == 'college' ? GradeBand::MAX_GRADE : grades[1].to_i)
+    end
+    return ret
+  end #end def parseGrades(gradeStr)
 
 end
