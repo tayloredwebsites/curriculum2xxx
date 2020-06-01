@@ -387,6 +387,7 @@ initializeSortAndDrag = function() {
       // console.log("ui:", ui);
       $(".spotlight-new").removeClass("spotlight-new");
       ui.item.addClass("spotlight-new");
+      $(".sequence-item").removeClass("hidden");
       tree_ids = $(".sequence-item").map(function () {
         return $(this).data('treeid');
       }).get();

@@ -139,10 +139,10 @@ class ApplicationController < ActionController::Base
       @versionsHash = TreeType.versions_hash
       if @treeTypeRec
         version_id = @treeTypeRec.version_id
-        @versionRec = version_id ? Version.where(:id => version_id).first : Version.first
+        @versionRec = version_id ? Version.active.where(:id => version_id).first : Version.active.first
         puts "SET VERISON TO #{@versionRec.inspect} with: current_user.present? condition"
       else
-        @versionRec = Version.first
+        @versionRec = Version.active.first
       end
       if @versionRec.blank?
         raise I18n.translate('app.errors.missing_version_record')
@@ -171,14 +171,14 @@ class ApplicationController < ActionController::Base
       # defaults to first tree type record
       if current_user.present?
         puts "SETTING INIT TYPE CODE WITH USER PRESENT #{current_user.inspect}"
-        last_tree_type = TreeType.where(:id => current_user[:last_tree_type_id])
+        last_tree_type = TreeType.active.where(:id => current_user[:last_tree_type_id])
         puts "SETTING INIT TYPE CODE WITH USER PRESENT #{last_tree_type.inspect}"
-        @treeTypeRec = last_tree_type.count > 0 ? last_tree_type.first : TreeType.first
+        @treeTypeRec = last_tree_type.count > 0 ? last_tree_type.first : TreeType.active.first
         puts "SET TREE_TYPE_REC #{@treeTypeRec.inspect}"
       elsif cookies.permanent.signed[:last_tree_type_id]
-        @treeTypeRec = TreeType.where(:id => cookies.permanent.signed[:last_tree_type_id]).first || TreeType.first
+        @treeTypeRec = TreeType.active.where(:id => cookies.permanent.signed[:last_tree_type_id]).first || TreeType.active.first
       else
-        @treeTypeRec = TreeType.first
+        @treeTypeRec = TreeType.active.first
       end
       if @treeTypeRec
         Rails.logger.debug("*** @treeTypeRec.curriculum_title_key: #{@treeTypeRec.curriculum_title_key}")
