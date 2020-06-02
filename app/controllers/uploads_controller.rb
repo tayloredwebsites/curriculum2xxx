@@ -37,7 +37,13 @@ class UploadsController < ApplicationController
 
   def new
     unauthorized() and return if !user_is_admin?(current_user)
-    @upload = Upload.new()
+    @upload = Upload.new(
+        status: 0,
+      )
+    @errs = []
+    @message = "Select file to upload to get to next step"
+    @rptRecs = []
+    render :do_upload
   end
 
   def create
@@ -676,6 +682,7 @@ class UploadsController < ApplicationController
         rowH['Associated Practices'].blank? &&
         rowH['Explanatory Comments'].blank? &&
         rowH['Misconceptions'].blank? &&
+        rowH['Misconception'].blank? &&
         rowH['Display relations'].blank? &&
         rowH['Resourcs'].blank?
       Rails.logger.debug("*** blank rowH: #{rowH.inspect}")
@@ -963,7 +970,24 @@ class UploadsController < ApplicationController
   end
 
   def find_upload
-    @upload = Upload.find(params[:id])
+    if params[:id].to_i != 0
+      @upload = Upload.find(params[:id])
+    elsif params[:phase] == "0" && upload_params[:subject_id].present? &&
+      upload_params['file'].original_filename.split('.').last == 'csv'
+      @upload = Upload.where(
+          tree_type_code: @treeTypeRec.code,
+          subject_id: upload_params[:subject_id],
+          locale_id: Locale.where(:code => @locale_code).first.id,
+          filename: upload_params['file'].original_filename
+        ).first || Upload.create(
+          tree_type_code: @treeTypeRec.code,
+          subject_id: upload_params[:subject_id],
+          grade_band_id: nil,
+          locale_id: Locale.where(:code => @locale_code).first.id,
+          status: 0,
+          filename: upload_params['file'].original_filename
+        )
+    end
   end
 
   def upload_params
@@ -1142,6 +1166,7 @@ class UploadsController < ApplicationController
         currentRec.get_dim_name_key,
         dim_name
       )
+      createdOrUpdated = 'Created'
       if treeRec
         dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
         dimTree = DimTree.create(
@@ -1154,9 +1179,9 @@ class UploadsController < ApplicationController
           dimExplKey,
           dim_tree_expl
         )
+        createdOrUpdated += '  and Mapped'
       end #if treeRec
       @currentDims[dim_type][dim_name] = {updated: true, rec: currentRec, transl_name: dim_name, transl_id: transl_rec.id}
-      createdOrUpdated = 'Created and Mapped'
     else #existing Dimension record
       Rails.logger.debug("$$$ Found current dimension: #{dim_name}")
       currentRec = currentRecH[:rec]
@@ -1185,7 +1210,7 @@ class UploadsController < ApplicationController
     end
     if currentRec && rowH
       Dimension::RESOURCE_TYPES.each do |type|
-        resource_text = rowH["#{@dimTypeTitleByCode[dim_Type]}::#{type}"]
+        resource_text = rowH["#{@dimTypeTitleByCode[dim_type]}::#{type}"]
         if !resource_text.blank?
           currentRec.reload
           resource_key = currentRec.resource_key(type)
@@ -1194,6 +1219,7 @@ class UploadsController < ApplicationController
             resource_key,
             resource_text
           )
+          createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
         end
       end
     end

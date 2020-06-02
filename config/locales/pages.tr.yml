@@ -33,6 +33,7 @@ tr:
       message: "Message"
       gen_list: "Liste Oluştur"
       sector: "Gelecek Vizyonu"
+      upload_new: 'Yükleme Ekle ve Yap'
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
       errors:

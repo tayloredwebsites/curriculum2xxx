@@ -43,6 +43,7 @@ ar_EG:
       gen_list: "إنشاء قائمة"
       sector: "التحدي الكبير"
       upload_summary: 'تحميل تقرير ملخص'
+      upload_new: 'إضافة وتحميل'
       upload_file: "رفع ملف"
       upload_status_errors: "حالة / أخطاء التحميل"
       related_to_sectors: "المتعلقة بالقطاعات: %{sectors}"

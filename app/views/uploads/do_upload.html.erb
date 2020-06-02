@@ -1,11 +1,13 @@
 <% content_for(:title_code, 'uploads.upload.name') %>
 <% content_for(:page_class, 'uploads') %>
 <h2 class='h4'><%= translate('uploads.upload.h2') %></h2>
-<ul class='titleList'>
-  <li><%= "#{translate('app.labels.subject')}: #{@upload.subject.code}" %></li>
-  <li><%= "#{translate('app.labels.grade_band')}: All Grades" %> <%# @upload.grade_band.code %></li>
-  <li><%= "#{translate('app.labels.language')}: #{@upload.locale.name}" %></li>
-</ul>
+<% if @upload.id %>
+  <ul class='titleList'>
+    <li><%= "#{translate('app.labels.subject')}: #{@upload.subject.code}" %></li>
+    <li><%= "#{translate('app.labels.grade_band')}: All Grades" %> <%# @upload.grade_band.code %></li>
+    <li><%= "#{translate('app.labels.language')}: #{@upload.locale.name}" %></li>
+  </ul>
+<% end %>
 <div class="col-lg-8 offset-lg-2 col-sm-10 offset-sm-1 col-xs-12">
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: <%= BaseRec::UPLOAD_PROGRESS_PCT[@upload.status] %>%" aria-valuenow="<%= BaseRec::UPLOAD_PROGRESS_PCT[@upload.status] %>" aria-valuemin="0" aria-valuemax="100"></div>
@@ -34,10 +36,21 @@
 
 <div><%= @messages %></div>
 <h5 class='h6'><%= @message %></h5>
-<%= form_tag do_upload_upload_path, {multipart: true, class: 'text-center'} do |form| %>
+<% form_path = @upload.id.present? ? do_upload_upload_path : do_upload_upload_path(0) %>
+<%= form_tag form_path, {multipart: true, class: 'text-center'} do |form| %>
+  <% if @upload.id.nil? %>
+    <%= "#{translate('app.labels.subject')}: " %>
+    <select name="upload[subject_id]">
+      <% @subjectByCode.each do |code, s| %>
+        <option value="<%= s[:rec].id %>"><%= s[:name] %></option>
+      <% end %>
+    </select>
+    <br>
+    <br>
+  <% end %>
   <%= file_field(:upload, :file, accept: 'text/txt', class: 'text-center') %>
   <br>
-  <input type='hidden' id='phase1' name='phase' value='1'/>
+  <input type='hidden' id='phase1' name='phase' value='<%= @upload.id ? "1" : "0" %>'/>
   <div class='text-center'>
   <button class='btn btn-primary' type='submit'>Upload</button>
 <% end %>

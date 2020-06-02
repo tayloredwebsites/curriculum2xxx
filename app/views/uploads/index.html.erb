@@ -2,6 +2,7 @@
 <% content_for(:page_class, 'uploads') %>
 
 <p><%= link_to translate('uploads.labels.upload_summary'), upload_summary_path() %></p>
+<p><%= link_to translate('app.labels.upload_new'), new_upload_path() %></p>
 <table id='uploadsTable' class='table-striped'>
   <thead>
     <tr>
