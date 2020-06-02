@@ -50,6 +50,8 @@
               <% end %>
               <% if h[:depth] == @treeTypeRec[:outcome_depth] %>
                 <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
+              <% else %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'tree', attr_id: rec.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
               <% end %>
             </div>
           </div>

@@ -88,7 +88,8 @@
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>
-          <%= "#{h[:depth_name]} #{h[:formatted_code]}#{": #{h[:text]}" if h[:depth] > 1}" %>
+          <%= "#{h[:depth_name]} #{"#{h[:formatted_code]}: " if h[:depth] > 1}" %>
+          <%= h[:text].html_safe %>
         </li>
       <% end %>
     <% end %>

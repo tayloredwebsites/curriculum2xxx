@@ -92,6 +92,7 @@ class Tree < BaseRec
     update_type,
     locale_code: 'en',
     name_translation: nil,
+    attr_tree: nil,
     comment: nil,
     weeks: nil,
     hours: nil,
@@ -106,10 +107,10 @@ class Tree < BaseRec
     x_dim_tree_id: nil
   )
     begin
-      name_translation = name_translation[3..name_translation.length].gsub('<br>', '').gsub('</p>', '').gsub('<p>', '<br>') if name_translation
+      # name_translation = name_translation[3..name_translation.length].gsub('<br>', '').gsub('</p>', '').gsub('<p>', '<br>') if name_translation
       Translation.find_or_update_translation(
         locale_code,
-        buildNameKey,
+        (attr_tree ? attr_tree.buildNameKey : buildNameKey),
         name_translation
       ) if name_translation
       Translation.find_or_update_translation(

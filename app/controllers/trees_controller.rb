@@ -932,8 +932,8 @@ class TreesController < ApplicationController
         @weeks = @tree.outcome.duration_weeks
       elsif @edit_type == "hours"
         @hours = @tree.outcome.hours_per_week
-      elsif @edit_type == "indicator"
-        @indicator = Tree.find(tree_params[:attr_id])
+      elsif @edit_type == "tree"
+        @indicator = Tree.find(tree_params[:attr_id].to_i)
         @attr_id = @indicator.id
         name_key = @indicator.buildNameKey
         translation = Translation.translationsByKeys(
@@ -997,11 +997,14 @@ class TreesController < ApplicationController
   def update
     errors = []
     update_type = tree_params[:edit_type]
+    attr_tree = (update_type == 'tree' && tree_params[:attr_id] ?
+      Tree.find(tree_params[:attr_id]) : nil)
     tree_to_update = update_type == "indicator" ? Tree.find(tree_params[:attr_id]) : @tree
     message = tree_to_update.update_fields(
       update_type,
       locale_code: @locale_code,
       name_translation: tree_params[:name_translation],
+      attr_tree: attr_tree,
       comment: tree_params[:comment],
       weeks: tree_params[:weeks],
       hours: tree_params[:hours],
