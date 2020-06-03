@@ -2,7 +2,7 @@
 namespace :seed_stessa_2 do
 
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :ensure_default_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :ensure_default_translations]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -37,7 +37,7 @@ namespace :seed_stessa_2 do
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
-      dim_codes: 'bigidea,essq,concept,skill,miscon',
+      dim_codes: 'bigidea,essq,concept,skill,miscon,standardus,standardeg',
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
@@ -51,13 +51,14 @@ namespace :seed_stessa_2 do
       #   <item> - TABLE item, sectors
       #   +item+ - TABLE item, treetrees
       #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
       #                  categories of this item to display.
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},<sector>,+treetree+,{resources#1#3#2}',
+      detail_headers: 'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},{grade#0}_{unit#2}_{sem#4},<sector>,+treetree+,{resources#1#3#2}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
@@ -378,6 +379,8 @@ namespace :seed_stessa_2 do
       ['concept', 'Concept', 'مفهوم'],
       ['skill', 'Skill', 'مهارة'],
       ['miscon', 'Misconception', 'اعتقاد خاطئ'],
+      ['standardus', 'US Standard', 'المعيار الأمريكي'],
+      ['standardeg', 'Egyptian Standard', 'المواصفة المصرية']
     ]
 
     dim_resource_types_arr = [
@@ -424,9 +427,12 @@ namespace :seed_stessa_2 do
       ["Suggested Assessment Resources and Activities", "موارد وأنشطة التقييم المقترحة"],
       ["Additional Background and Resource Materials for the Teacher", "معلومات أساسية وموارد إضافية للمعلم"],
       ["Goal behaviour (What students will do, Practical learning targets)", "سلوك الهدف (ما سيفعله الطلاب ، أهداف التعلم العملية)"],
-      ["Teacher Support", "دعم المعلم"],
+      ["Reviewer Comments", "دعم المعلم"],
       ["Evidence of Learning", "دليل التعلم"],
-      ["Connections", "روابط"],
+      ["Capstone Connection", "روابط"],
+      ["SEC Topic", "موضوع SEC"],
+      ["SEC Code", "كود SEC"],
+      ["SEC Cognitive Demand", "الطلب المعرفي SEC"]
     ]
 
     outc_resource_types_arr.each_with_index do |resource, i|
@@ -439,6 +445,29 @@ namespace :seed_stessa_2 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task tree_resource_translations: :environment do
+    tree_resource_types_arr = [
+      ["Course Materials", "مواد الدورة"],
+      ["Semester Materials", "مواد الفصل"],
+      ["Unit Materials", "مواد الوحدة"],
+      ["Semester Lesson Plans Folder", "مجلد خطط الدرس للفصل الدراسي"],
+      ["Semester Theme", "موضوع الفصل"]
+    ]
+
+    tree_resource_types_arr.each_with_index do |resource, i|
+      resource_name_key = Tree.get_resource_type_key(
+        Tree::RESOURCE_TYPES[i],
+        @tt.code,
+        @ver.code
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating tree resource translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
+      throw "ERROR updating tree resource translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end
   ###################################################################################

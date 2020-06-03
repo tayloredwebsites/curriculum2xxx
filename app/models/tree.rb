@@ -15,6 +15,14 @@ class Tree < BaseRec
   # hash to return cyrillic letter for english letter in sequence order
   GET_ENG_SEQ_CYR_IND_H = INDICATOR_CYR_SEQ_CYR.zip(INDICATOR_SEQ_ENG).to_h
 
+  RESOURCE_TYPES = [
+    "depth_0_materials", #materials for hierarchy depth 0
+    "depth_1_materials",
+    "depth_2_materials",
+    "lp_folder", #semester lesson plans folder
+    "theme",
+  ]
+
   belongs_to :tree_type
   belongs_to :version
   belongs_to :subject
@@ -86,6 +94,21 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
   end
 
+  def get_resource_key(resource_type)
+    if RESOURCE_TYPES.include?(resource_type)
+      return "#{base_key}.#{resource_type}"
+    else
+      return nil
+    end
+  end
+
+  def self.get_resource_type_key(resource_type, tree_type_code, version_code)
+    if RESOURCE_TYPES.include?(resource_type)
+      return "curriculum.#{tree_type_code}.#{version_code}.tree_resource_type_name.#{resource_type}"
+    else
+      return nil
+    end
+  end
 
   ####################################################
   def update_fields(

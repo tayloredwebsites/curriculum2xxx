@@ -98,16 +98,18 @@ module ApplicationHelper
         #table building 'evenly_spaced_details' partial
         if d.first == "{" && d.last == "}" #outcome resource(s)
           catCodes = d[1..d.length - 2].split("#")
+          resource_types = catCodes[0] == 't' ? Tree::RESOURCE_TYPES : Outcome::RESOURCE_TYPES
           table[:title_code_type_action_catsArr] << [
               "", #title
-              Outcome::RESOURCE_TYPES[catCodes[1].to_i], #code
-              Outcome::RESOURCE_TYPES[catCodes[1].to_i],
+              resource_types[catCodes[1].to_i], #code
+              resource_types[catCodes[1].to_i],
               "edit", #action
               catCodes[1..catCodes.length - 1] #numeric category codes
             ]
-          table[:partial] = catCodes[0] if catCodes[0] != "resource"
-          @editTypes[Outcome::RESOURCE_TYPES[catCodes[1].to_i]] = {
-            :name => "resource",
+          table[:partial] = "resources" if catCodes[0] == "resources"
+          table[:depth] = hierarchy_codes.index(catCodes[0])
+          @editTypes[resource_types[catCodes[1].to_i]] = {
+            :name => (hierarchy_codes.include?(catCodes[0]) ? "tree_resource" : "resource"),
             :codes => catCodes[1..catCodes.length - 1]
           }
         #table building 'evenly_spaced_details' partial

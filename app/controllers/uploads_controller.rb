@@ -310,28 +310,28 @@ class UploadsController < ApplicationController
             Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{@gradeCode}")
             # use the grade number as the code
             gradeCode = lookupItemCodeForName(@gradeCode, hierarchyCodeArray.join('.'))
-            hierarchyCodeArray = processField(hierarchyCodeArray, @gradeCode, @gradeCode, ix)
+            hierarchyCodeArray = processField(hierarchyCodeArray, @gradeCode, @gradeCode, ix, rowH)
           elsif hCode == 'sem' && colSemesterCode
             # if semester code is numeric, use that for the code
             minCode = minTwoDigCode(colSemesterCode, ' ', '')
             Rails.logger.debug("*** minCode: #{minCode}")
             semCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
             Rails.logger.debug("*** semCode: #{semCode}")
-            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, semCode, ix)
+            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, semCode, ix, rowH)
             Rails.logger.debug("*** Process Semester field: #{hierarchyCodeArray.join('.')} - #{colSemesterCode}")
           elsif hCode == 'unit' && colUnitName
             # get a code for the unit name (assigned sequentially as found)
             Rails.logger.debug("*** Process Unit field: #{hierarchyCodeArray.join('.')} - #{colUnitName}")
             minCode = minTwoDigCode(colUnitName, ' ', '')
             unitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
-            hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix)
+            hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix, rowH)
           elsif hCode == 'subunit' #  if no sub_unit value passed in, write a special record to allow attaching competencies below it
             # get a code for the sub-unit name, if given (assigned sequentially as found)
             # optional records look like: <code: "<grade>.<unit>.", name_key: nil, base_key: "">
             Rails.logger.debug("*** Process Sub Unit field: #{hierarchyCodeArray.join('.')} - #{colSubUnitName}")
             minCode = minTwoDigCode(colSubUnitName, ' ', '')
             subUnitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
-            hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix)
+            hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix, rowH)
           elsif (hCode == 'lo' || hCode == 'comp') && colLoDesc
             Rails.logger.debug("*** colLoDesc: #{colLoDesc}, colLoDesc: #{colLoDesc}, colFullLoCode: #{colFullLoCode}")
             if colFullLoCode.present?
@@ -341,7 +341,7 @@ class UploadsController < ApplicationController
               colLoCode = lookupItemCodeForName(minTwoDigCode(colLoDesc, ' ', ''), hierarchyCodeArray.join('.'))
             end
             Rails.logger.debug("*** colLoCode: #{colLoCode}")
-            hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix)
+            hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix, rowH)
             Rails.logger.debug("*** To Do - Process LO field: #{hierarchyCodeArray.join('.')} - #{colLoDesc}")
           else
             Rails.logger.debug("*** skip this code")
@@ -506,6 +506,8 @@ class UploadsController < ApplicationController
           colSkills = rowH['Skills']
           colMiscon = nil # rowH['No Misconceptions Column']
           colPractice = rowH['Associated Practices']
+          colUsStandard = rowH['US Standard']
+          colEgStandard = rowH['Egyptian Standard']
 
           currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
 
@@ -527,6 +529,12 @@ class UploadsController < ApplicationController
           elsif dCode == 'pract' && colPractice
             createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload', rowH)
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'standardus' && colUsStandard
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'standardus', 0, 12, @subjectRec.code, colUsStandard, 'From Upload', rowH)
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colUsStandard}", createdOrUpdated]) if createdOrUpdated.present?
+          elsif dCode == 'standardeg' && colEgStandard
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'standardeg', 0, 12, @subjectRec.code, colEgStandard, 'From Upload', rowH)
+            @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colEgStandard}", createdOrUpdated]) if createdOrUpdated.present?
           else
             Rails.logger.debug("*** skip the '#{dCode}' dimension")
           end
@@ -588,7 +596,7 @@ class UploadsController < ApplicationController
     @rptRecs << ['','','','','','','','','End of Report']
   end
 
-  def processField(parentCodeArray, code, codeName, ix)
+  def processField(parentCodeArray, code, codeName, ix, rowH)
     ######################################################
     # Write the Grade level tree record (create or update)
     hierarchyCodeArray = parentCodeArray.clone()
@@ -597,7 +605,7 @@ class UploadsController < ApplicationController
     Rails.logger.debug("*** hierarchyCodeArray: #{hierarchyCodeArray.inspect}")
     currentRec = @currentRecs[hierarchyCodeArray.join('.')]
     Rails.logger.debug("*** currentRec: #{currentRec.inspect}")
-    rptRec = writeTreeRecord(ix, parentCodeArray, hierarchyCodeArray, code, codeName, currentRec, '')
+    rptRec = writeTreeRecord(ix, parentCodeArray, hierarchyCodeArray, code, codeName, currentRec, '', rowH)
     @rptRecs <<  rptRec if rptRec.present?
     @recordOrder += 1
 
@@ -704,7 +712,7 @@ class UploadsController < ApplicationController
     end
   end
 
-  def writeTreeRecord(depth, parentCodeA, codeA, thisCode, thisCodeTransl, currentRec, explainText)
+  def writeTreeRecord(depth, parentCodeA, codeA, thisCode, thisCodeTransl, currentRec, explainText, rowH)
     codeStr = codeA.join('.')
     Rails.logger.debug("*** writeTreeRecord codeStr: #{codeStr}, thisCode: #{thisCode}, thisCodeTransl: #{thisCodeTransl}")
     codeA2 = codeA.clone
@@ -719,7 +727,7 @@ class UploadsController < ApplicationController
       baseKeyStr = @baseKeyRoot + '.' + codeStr
     end
     if currentRec.blank?
-      outRecId = getOrCreateOutcome(depth, baseKeyStr)
+      outRecId = getOrCreateOutcome(depth, baseKeyStr, rowH)
       Rails.logger.debug("+++ outRecId: #{outRecId}")
       rec = Tree.create(
         tree_type_id: @treeTypeRec.id,
@@ -750,7 +758,7 @@ class UploadsController < ApplicationController
       wroteRecord = false
     else
       Rails.logger.debug("+++ currentRec not updated is #{currentRec[:updated]}")
-      outRecId = getOrCreateOutcome(depth, baseKeyStr)
+      outRecId = getOrCreateOutcome(depth, baseKeyStr, rowH)
       Rails.logger.debug("+++ outRecId: #{outRecId}")
       rec = Tree.update(currentRec[:rec].id,
         tree_type_id: @treeTypeRec.id,
@@ -774,6 +782,18 @@ class UploadsController < ApplicationController
       end
     end
     if wroteRecord
+      Tree::RESOURCE_TYPES.each do |type|
+        resource_text = rowH["#{@hierarchies[depth]}::#{type}"]
+        if !resource_text.blank?
+          resource_key = rec.get_resource_key(type)
+          Translation.find_or_update_translation(
+            @locale_code,
+            resource_key,
+            resource_text
+          )
+          rptErrorMsg += "#{rptErrorMsg.length > 0 ? " ," : "" }Updated Resource Type: #{type}"
+        end
+      end
       # output the translation record if any changes
       transl_rec, text_status, transl_text = Translation.find_or_update_translation(
         @localeRec.code,
@@ -797,7 +817,7 @@ class UploadsController < ApplicationController
     return rptRec
   end
 
-  def getOrCreateOutcome(depth, baseKeyStr)
+  def getOrCreateOutcome(depth, baseKeyStr, rowH)
     if depth == @treeTypeRec.outcome_depth
       outRecs = Outcome.where(base_key: baseKeyStr+'.outc')
       if outRecs.count > 0
@@ -808,6 +828,17 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** created outrec: #{outRec.inspect}")
       end
       outRecId = outRec.id
+      Outcome::RESOURCE_TYPES.each do |type|
+        resource_text = rowH["Learning Outcome::#{type}"]
+        if !resource_text.blank?
+          resource_key = outRec.get_resource_key(type)
+          Translation.find_or_update_translation(
+            @locale_code,
+            resource_key,
+            resource_text
+          )
+        end
+      end
     else
       outRecId = nil
     end
