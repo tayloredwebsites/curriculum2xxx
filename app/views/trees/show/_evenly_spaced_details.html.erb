@@ -61,7 +61,7 @@
                 category_codes: @editTypes[detail_code][:codes],
                 render_label: false,
                 can_edit: can_edit_type?(detail_code) || current_user.subject_admin?(@subject_code),
-                parent: parent
+                parent: parents[ix]
                }
             %>
 

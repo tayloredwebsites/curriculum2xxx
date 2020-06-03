@@ -600,6 +600,8 @@ class Tree < BaseRec
       #save old translation name key before
       #updating t.code and t.base_key in
       old_name_key = t.name_key
+      Tree::RESOURCE_TYPES.map { |rt| translationKeys << t.get_resource_key(rt) }
+      old_base_key = t.base_key
       t.code = new_code
       t.base_key = Tree.buildBaseKey(treeTypeCode, versionCode, subjectCode, new_code)
       #build new translation name key now that
@@ -608,6 +610,7 @@ class Tree < BaseRec
       t.sort_order = ix + sort_order_offset
       translationKeys << old_name_key
       translations_hash[old_name_key] = new_name_key
+      Tree::RESOURCE_TYPES.map { |rt| translations_hash["#{old_base_key}.#{rt}"] = t.get_resource_key(rt) }
       tree_codes_changed << {tree_id: t.id, new_code: t.format_code(localeCode,
         treeTypeRec.hierarchy_codes.split(","),
         treeTypeRec.tree_code_format,

@@ -13,7 +13,7 @@
       ).html_safe %>
     </div>
     <div class="col col-1">
-     <%= #link_to(fa_icon("edit"), edit_tree_path(parent.id, tree: { edit_type: type_code, tree_redirect_id: @tree.id }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('resource') %>
+     <%= link_to(fa_icon("edit"), edit_tree_path(parent.id, tree: { edit_type: type_code, tree_redirect_id: @tree.id }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('resource') %>
     </div>
   </div>
 </div>

@@ -475,4 +475,67 @@ namespace :seed_stessa_2 do
   task ensure_default_translations: :environment do
 
   end #task
+
+  #####################################
+  desc "One-time process to convert google folder-ids to google links in Tree Resource Translations"
+  task make_google_links: :environment do
+    @tt = TreeType.where(code: 'egstem').first
+    @ver = Version.find(@tt.version_id)
+    trees = Tree.where(tree_type_id: @tt.id)
+    url = "https://drive.google.com/drive/folders/"
+    trees.each do |t|
+      if t[:depth] == 0
+        course_materials_key = Tree.get_resource_key('depth_0_materials')
+        folder_id = Translation.find_translation_name(
+          "en",
+          course_materials_key,
+          nil
+        )
+        if folder_id && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-folder'></i></a>"
+          Translation.find_or_update_translation(
+            "en",
+            course_materials_key,
+            folder_id
+          )
+        end
+      elsif t[:depth] == 1
+        semester_lp_folder = Tree.get_resource_key('lp_folder')
+        folder_id = Translation.find_translation_name(
+          "en",
+          semester_lp_folder,
+          nil
+        )
+        if folder_id && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-folder'></i></a>"
+            Translation.find_or_update_translation(
+            "en",
+            semester_materials_key,
+            folder_id
+          )
+        end
+      elsif t[:depth] == 2
+        unit_materials_key = Tree.get_resource_key('depth_2_materials')
+        folder_id = Translation.find_translation_name(
+          "en",
+          unit_materials_key,
+          nil
+        )
+        if folder_id && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-folder'></i></a>"
+          Translation.find_or_update_translation("en", unit_materials_key, folder_id)
+        end
+      elsif t.outcome_id
+        lp_key = t.outcome.get_resource_key('learn_prog')
+        #https://docs.google.com/spreadsheets/d/
+        #fa-file
+        file_id = Translation.find_translation_name("en", lp_key, nil)
+        if file_id && !file_id.include?("https://docs.google.com/spreadsheets/d/")
+          file_id = "<a href='https://docs.google.com/spreadsheets/d/#{folder_id}' target='_blank'><i class='fa fa-file'></i></a>"
+          Translation.find_or_update_translation("en", lp_key, file_id)
+        end
+      end
+    end #trees.each do |t|
+  end
+
 end

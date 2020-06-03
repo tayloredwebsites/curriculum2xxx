@@ -791,7 +791,7 @@ class UploadsController < ApplicationController
             resource_key,
             resource_text
           )
-          rptErrorMsg += "#{rptErrorMsg.length > 0 ? " ," : "" }Updated Resource Type: #{type}"
+          rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
         end
       end
       # output the translation record if any changes
@@ -830,7 +830,7 @@ class UploadsController < ApplicationController
       outRecId = outRec.id
       Outcome::RESOURCE_TYPES.each do |type|
         resource_text = rowH["Learning Outcome::#{type}"]
-        if !resource_text.blank?
+        if resource_text.present?
           resource_key = outRec.get_resource_key(type)
           Translation.find_or_update_translation(
             @locale_code,

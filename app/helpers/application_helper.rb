@@ -92,13 +92,14 @@ module ApplicationHelper
       table[:num_rows] = 1
       table[:title_code_type_action_catsArr] = []
       table[:partial] = "evenly_spaced_details"
+      table[:depths] = []
       details.each do |d|
         ttac_arr = []
         table[:num_cols] += 1
         #table building 'evenly_spaced_details' partial
         if d.first == "{" && d.last == "}" #outcome resource(s)
           catCodes = d[1..d.length - 2].split("#")
-          resource_types = catCodes[0] == 't' ? Tree::RESOURCE_TYPES : Outcome::RESOURCE_TYPES
+          resource_types = hierarchy_codes.include?(catCodes[0]) ? Tree::RESOURCE_TYPES : Outcome::RESOURCE_TYPES
           table[:title_code_type_action_catsArr] << [
               "", #title
               resource_types[catCodes[1].to_i], #code
@@ -107,7 +108,7 @@ module ApplicationHelper
               catCodes[1..catCodes.length - 1] #numeric category codes
             ]
           table[:partial] = "resources" if catCodes[0] == "resources"
-          table[:depth] = hierarchy_codes.index(catCodes[0])
+          table[:depths] << hierarchy_codes.index(catCodes[0])
           @editTypes[resource_types[catCodes[1].to_i]] = {
             :name => (hierarchy_codes.include?(catCodes[0]) ? "tree_resource" : "resource"),
             :codes => catCodes[1..catCodes.length - 1]
@@ -124,6 +125,7 @@ module ApplicationHelper
             ]
           table[:num_cols] += catCodes.length - 1
           table[:num_rows] =  [@detailsHash[catCodes[0]].length, table[:num_rows]].max
+          table[:depths] << nil
           @editTypes[catCodes[0]] = {
             :name => "dimtree",
             :codes => catCodes[1..catCodes.length - 1]
@@ -139,6 +141,7 @@ module ApplicationHelper
               nil #category codes not implemented for sectors
             ]
           table[:num_rows] =  [@detailsHash[catCodes].length, table[:num_rows]].max
+          table[:depths] << nil
           @editTypes[catCode] = { :name => "sector"}
         #table uses 'treetree' partial
         elsif d.first == "+" && d.last == "+" #treetree
@@ -155,6 +158,7 @@ module ApplicationHelper
             ]
           table[:num_cols] += 3
           table[:partial] = 'treetree' #treetrees have a special partial
+          table[:depths] << nil
           @editTypes[catCode] = {:name => 'treetree'}
         else
           header_area = true
