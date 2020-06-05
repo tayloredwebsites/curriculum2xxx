@@ -5,6 +5,9 @@ class Outcome < BaseRec
   # Do not change existing sequence of
   # RESOURCES_TYPES.
   # Only add new resource types to end.
+  #
+  # See special processing behavior for specific
+  # resource types in BaseRec.process_resource_content(type, content)
   RESOURCE_TYPES = [
     "proj_ref",
     "learn_prog", #lesson plans
@@ -18,6 +21,7 @@ class Outcome < BaseRec
     "sec_topic",
     "sec_code",
     "cog_demand", #SEC Cognitive Demand
+    "lp_ss_id", #Lesson Plan (expect a Google Spreadsheet Id)
   ]
 
   # Field Translations

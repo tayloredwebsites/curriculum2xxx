@@ -9,32 +9,34 @@
   </li>
   <% if dims && dims.count > 0 %>
     <% dims.each do |dim| %>
-      <% dim_link = dimension_path(dim.id) if @dimDisplayHash[dim.dim_code] %>
-      <li id="<%= "#{dim_subj_name}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
-        <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{dim_subj_name}" %></span>
+      <% if @translations[dim.dim_name_key] %>
+        <% dim_link = dimension_path(dim.id) if @dimDisplayHash[dim.dim_code] %>
+        <li id="<%= "#{dim_subj_name}-dim-#{dim.id}"%>" class="dim-item dim-item--collapsable list-group-item ui-draggable" data-dimid="<%= dim.id %>">
+          <span class='pull-left'><strong><%= "#{translate('app.labels.subject')}:"%></strong> <%="#{dim_subj_name}" %></span>
+            <br/>
+            <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
+
           <br/>
-          <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
+          <span class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong>
+            <% if dim_link %>
+              <a href="<%= dim_link %>">
+              <%= @translations[dim.dim_name_key].html_safe %>
+              </a>
+            <% else %>
+              <%= @translations[dim.dim_name_key].html_safe %>
+            <% end %>
+          </span>
+          <br/>
 
-        <br/>
-        <span class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong>
-          <% if dim_link %>
-            <a href="<%= dim_link %>">
-            <%= @translations[dim.dim_name_key].html_safe %>
-            </a>
-          <% else %>
-            <%= @translations[dim.dim_name_key].html_safe %>
-          <% end %>
-        </span>
-        <br/>
-
-        <% if can_edit && @editing%>
-          <div class="pull-right">
-              <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
-              <%= link_to(fa_icon("times", class: "pull-right"), update_dimension_trees_path(dimension: { id: dim.id, active: false}), {'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[dim.dim_name_key]), method: :patch}) %>
-              <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
-          </div>
+          <% if can_edit && @editing%>
+            <div class="pull-right">
+                <a class="connect-handle lo-handle" onclick=""><i class="fa fa-link pull-right" title="make a connection"></i></a>
+                <%= link_to(fa_icon("times", class: "pull-right"), update_dimension_trees_path(dimension: { id: dim.id, active: false}), {'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: @translations[dim.dim_name_key]), method: :patch}) %>
+                <%= link_to(fa_icon("edit", class: "pull-right"), dimension_form_trees_path( dimension: { id: dim.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
+            </div>
+        <% end %>
+        </li>
       <% end %>
-      </li>
-    <% end %>
+    <% end #dims.each do |dim| %>
   <% end #if dims %>
 </ul>

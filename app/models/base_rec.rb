@@ -65,4 +65,24 @@ class BaseRec < ActiveRecord::Base
 
   DIM_CHANGE_LOG_PATH = "#{Rails.root}/log/dimension_changes.out"
 
+  def self.process_resource_content(resource_type, resource_name, content_text)
+    convert_id_to_google_folder_url = [
+      'depth_0_materials',
+      'depth_1_materials',
+      'depth_2_materials',
+      'lp_folder'
+    ]
+    convert_id_to_google_ss_url = [
+      'lp_ss_id'
+    ]
+    ret = content_text
+    if convert_id_to_google_folder_url.include?(resource_type)
+      ret = "<a href='https://drive.google.com/drive/folders/#{content_text}' target='_blank'>#{resource_name}</a>"
+    elsif convert_id_to_google_ss_url.include?(resource_type)
+      ret = "<a href='https://docs.google.com/spreadsheets/d/#{content_text}' target='_blank'>#{resource_name}</a>"
+    end
+    return ret
+  end
+
+
 end

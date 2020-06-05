@@ -21,6 +21,7 @@ class UploadsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :find_upload, only: [:show, :edit, :update, :start_upload, :do_upload]
+  before_action :build_resource_names, only: [:do_upload]
 
   def index
     unauthorized() and return if !user_is_admin?(current_user)
@@ -785,6 +786,7 @@ class UploadsController < ApplicationController
       Tree::RESOURCE_TYPES.each do |type|
         resource_text = rowH["#{@hierarchies[depth]}::#{type}"]
         if !resource_text.blank?
+          resource_text = BaseRec.process_resource_content(type, @resource_names['tree'][type], resource_text)
           resource_key = rec.get_resource_key(type)
           Translation.find_or_update_translation(
             @locale_code,
@@ -831,6 +833,7 @@ class UploadsController < ApplicationController
       Outcome::RESOURCE_TYPES.each do |type|
         resource_text = rowH["Learning Outcome::#{type}"]
         if resource_text.present?
+          resource_text = BaseRec.process_resource_content(type, @resource_names['outcome'][type], resource_text)
           resource_key = outRec.get_resource_key(type)
           Translation.find_or_update_translation(
             @locale_code,
@@ -1243,6 +1246,7 @@ class UploadsController < ApplicationController
       Dimension::RESOURCE_TYPES.each do |type|
         resource_text = rowH["#{@dimTypeTitleByCode[dim_type]}::#{type}"]
         if !resource_text.blank?
+          resource_text = BaseRec.process_resource_content(type, @resource_names['dim'][type], resource_text)
           currentRec.reload
           resource_key = currentRec.resource_key(type)
           Translation.find_or_update_translation(
@@ -1270,5 +1274,36 @@ class UploadsController < ApplicationController
     end
     return ret
   end #end def parseGrades(gradeStr)
+
+  def build_resource_names
+    @resource_names = Hash.new { |h, k| h[k] = {} }
+    resource_types_by_key = {}
+    lookupkeys = []
+    Outcome::RESOURCE_TYPES.each do |t|
+      key = Outcome.get_resource_key(t, @treeTypeRec.code, @versionRec.code)
+      resource_types_by_key[key] = ['outcome', t]
+      lookupkeys << key
+    end
+    Tree::RESOURCE_TYPES.map do |t|
+      key = Tree.get_resource_type_key(t, @treeTypeRec.code, @versionRec.code)
+      resource_types_by_key[key] = ['tree', t]
+      lookupkeys << key
+    end
+    Dimension::RESOURCE_TYPES.map do |t|
+      key = Dimension.get_dim_type_key(t, @treeTypeRec.code, @versionRec.code)
+      resource_types_by_key[key] = ['dim', t]
+      lookupkeys << key
+    end
+    nameTranslations = Translation.where(
+      locale: @locale_code,
+      key: lookupkeys
+    )
+    nameTranslations.each do |rec|
+      rtArr = resource_types_by_key[rec.key]
+      if rtArr
+        @resource_names[rtArr[0]][rtArr[1]] = rec.value
+      end
+    end
+  end
 
 end

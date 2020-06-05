@@ -58,7 +58,7 @@ namespace :seed_stessa_2 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},{grade#0}_{unit#2}_{sem#4},<sector>,+treetree+,{resources#1#3#2}',
+      detail_headers: 'grade,sem,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},{grade#0}_{unit#2}_{sem#4},<sector>,+treetree+,{resources#12#3#2}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
@@ -432,7 +432,8 @@ namespace :seed_stessa_2 do
       ["Capstone Connection", "روابط"],
       ["SEC Topic", "موضوع SEC"],
       ["SEC Code", "كود SEC"],
-      ["SEC Cognitive Demand", "الطلب المعرفي SEC"]
+      ["SEC Cognitive Demand", "الطلب المعرفي SEC"],
+      ["Daily Lesson Plans", "خطط الدروس اليومية"], #LP as a spreadsheet ID, processed differently than the LP at index 1.
     ]
 
     outc_resource_types_arr.each_with_index do |resource, i|
@@ -485,14 +486,14 @@ namespace :seed_stessa_2 do
     url = "https://drive.google.com/drive/folders/"
     trees.each do |t|
       if t[:depth] == 0
-        course_materials_key = Tree.get_resource_key('depth_0_materials')
+        course_materials_key = t.get_resource_key('depth_0_materials')
         folder_id = Translation.find_translation_name(
           "en",
           course_materials_key,
           nil
         )
-        if folder_id && !folder_id.include?(url)
-          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-folder'></i></a>"
+        if !folder_id.blank? && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-lg fa-folder'></i></a>"
           Translation.find_or_update_translation(
             "en",
             course_materials_key,
@@ -500,29 +501,29 @@ namespace :seed_stessa_2 do
           )
         end
       elsif t[:depth] == 1
-        semester_lp_folder = Tree.get_resource_key('lp_folder')
+        semester_lp_folder = t.get_resource_key('lp_folder')
         folder_id = Translation.find_translation_name(
           "en",
           semester_lp_folder,
           nil
         )
-        if folder_id && !folder_id.include?(url)
-          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-folder'></i></a>"
+        if !folder_id.blank? && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-lg fa-folder'></i></a>"
             Translation.find_or_update_translation(
             "en",
-            semester_materials_key,
+            semester_lp_folder,
             folder_id
           )
         end
       elsif t[:depth] == 2
-        unit_materials_key = Tree.get_resource_key('depth_2_materials')
+        unit_materials_key = t.get_resource_key('depth_2_materials')
         folder_id = Translation.find_translation_name(
           "en",
           unit_materials_key,
           nil
         )
-        if folder_id && !folder_id.include?(url)
-          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-folder'></i></a>"
+        if !folder_id.blank? && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-lg fa-folder'></i></a>"
           Translation.find_or_update_translation("en", unit_materials_key, folder_id)
         end
       elsif t.outcome_id
@@ -530,8 +531,8 @@ namespace :seed_stessa_2 do
         #https://docs.google.com/spreadsheets/d/
         #fa-file
         file_id = Translation.find_translation_name("en", lp_key, nil)
-        if file_id && !file_id.include?("https://docs.google.com/spreadsheets/d/")
-          file_id = "<a href='https://docs.google.com/spreadsheets/d/#{folder_id}' target='_blank'><i class='fa fa-file'></i></a>"
+        if !file_id.blank? && !file_id.include?("https://docs.google.com/spreadsheets/d/")
+          file_id = "<a href='https://docs.google.com/spreadsheets/d/#{folder_id}' target='_blank'><i class='fa fa-lg fa-file'></i></a>"
           Translation.find_or_update_translation("en", lp_key, file_id)
         end
       end

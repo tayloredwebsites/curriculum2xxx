@@ -15,11 +15,19 @@ class Tree < BaseRec
   # hash to return cyrillic letter for english letter in sequence order
   GET_ENG_SEQ_CYR_IND_H = INDICATOR_CYR_SEQ_CYR.zip(INDICATOR_SEQ_ENG).to_h
 
+
+  # Do not change existing sequence of
+  # RESOURCES_TYPES.
+  # Only add new resource types to end.
+  #
+  # See special processing behavior for specific
+  # resource types in BaseRec.process_resource_content(type, content)
   RESOURCE_TYPES = [
-    "depth_0_materials", #materials for hierarchy depth 0
-    "depth_1_materials",
-    "depth_2_materials",
-    "lp_folder", #semester lesson plans folder
+    "depth_0_materials", # expect a google folder id.
+                         # materials for hierarchy depth 0
+    "depth_1_materials", # expect a google folder id.
+    "depth_2_materials", # expect a google folder id.
+    "lp_folder", # expect a google folder id. semester lesson plans folder
     "theme",
   ]
 
@@ -120,6 +128,7 @@ class Tree < BaseRec
     weeks: nil,
     hours: nil,
     resource: nil,
+    resource_key: nil,
     resource_name_arr: nil,
     resource_name_keys: nil,
     tree_tree_id: nil,
@@ -145,7 +154,7 @@ class Tree < BaseRec
       outcome.update(hours_per_week: hours.to_i) if hours
       Translation.find_or_update_translation(
         locale_code,
-        outcome.get_resource_key(update_type),
+        resource_key,
         resource.split("<script>").join("").split("</script>").join("")
       ) if resource
       if (resource_name_arr && resource_name_keys)

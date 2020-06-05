@@ -1,4 +1,5 @@
-<div class='dark-border--left teacher-item'>
+<% resource_key = parent.get_resource_key(type_code) %>
+<div class='dark-border--left'>
   <% if render_label %>
     <div class='center-label sub-header-margin'>
       <%= Tree.get_resource_name(type_code, @treeTypeRec.code, @versionRec.code, @locale_code) %>
@@ -8,12 +9,12 @@
     <div class="text-left padding-left padding-right row padding-top padding-bottom">
       <%= Translation.find_translation_name(
       @locale_code,
-      parent.get_resource_key(type_code),
+      resource_key,
       ""
       ).html_safe %>
     </div>
     <div class="col col-1">
-     <%= link_to(fa_icon("edit"), edit_tree_path(parent.id, tree: { edit_type: type_code, tree_redirect_id: @tree.id }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('resource') %>
+     <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: type_code, tree_redirect_id: @tree.id }, translation: {key: resource_key}), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?('resource') %>
     </div>
   </div>
 </div>

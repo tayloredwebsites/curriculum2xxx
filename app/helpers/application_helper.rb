@@ -140,7 +140,7 @@ module ApplicationHelper
               "create", #action
               nil #category codes not implemented for sectors
             ]
-          table[:num_rows] =  [@detailsHash[catCodes].length, table[:num_rows]].max
+          table[:num_rows] =  [@detailsHash[catCode].length, table[:num_rows]].max
           table[:depths] << nil
           @editTypes[catCode] = { :name => "sector"}
         #table uses 'treetree' partial
