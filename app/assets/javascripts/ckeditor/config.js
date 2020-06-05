@@ -1,7 +1,6 @@
 /*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
-
 eso note: This file copied from the source and modified.
 */
 
@@ -45,7 +44,7 @@ CKEDITOR.editorConfig = function( config )
     { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-    { name: 'insert', items: [ 'Table', 'HorizontalRule', 'SpecialChar' ] }
+    { name: 'insert', items: [ 'Table', 'HorizontalRule', 'SpecialChar', 'Smiley' ] }
   ];
   config.toolbar = 'mini'
 };

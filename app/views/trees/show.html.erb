@@ -95,13 +95,10 @@
               tree: @tree,
               indicator: table[:indicator],
               resource_codes: cats,
+              parents: (table[:depths].length > 0 ? table[:depths].map { |d| parents_by_depth[d]} : nil) ,
             }
           %>
         <% end %>
-
-
-
-
 
 
 
@@ -116,4 +113,8 @@
       </div>
     </div>
   <% end %>
+  <br>
+  <div class="pull-left">
+    <%= I18n.translate("app.labels.last_updated", time: @updated_at) %>
+  </div>
 </div>

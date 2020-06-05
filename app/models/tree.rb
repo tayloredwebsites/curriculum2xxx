@@ -15,6 +15,22 @@ class Tree < BaseRec
   # hash to return cyrillic letter for english letter in sequence order
   GET_ENG_SEQ_CYR_IND_H = INDICATOR_CYR_SEQ_CYR.zip(INDICATOR_SEQ_ENG).to_h
 
+
+  # Do not change existing sequence of
+  # RESOURCES_TYPES.
+  # Only add new resource types to end.
+  #
+  # See special processing behavior for specific
+  # resource types in BaseRec.process_resource_content(type, content)
+  RESOURCE_TYPES = [
+    "depth_0_materials", # expect a google folder id.
+                         # materials for hierarchy depth 0
+    "depth_1_materials", # expect a google folder id.
+    "depth_2_materials", # expect a google folder id.
+    "lp_folder", # expect a google folder id. semester lesson plans folder
+    "theme",
+  ]
+
   belongs_to :tree_type
   belongs_to :version
   belongs_to :subject
@@ -86,6 +102,21 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
   end
 
+  def get_resource_key(resource_type)
+    if RESOURCE_TYPES.include?(resource_type)
+      return "#{base_key}.#{resource_type}"
+    else
+      return nil
+    end
+  end
+
+  def self.get_resource_type_key(resource_type, tree_type_code, version_code)
+    if RESOURCE_TYPES.include?(resource_type)
+      return "curriculum.#{tree_type_code}.#{version_code}.tree_resource_type_name.#{resource_type}"
+    else
+      return nil
+    end
+  end
 
   ####################################################
   def update_fields(
@@ -97,6 +128,7 @@ class Tree < BaseRec
     weeks: nil,
     hours: nil,
     resource: nil,
+    resource_key: nil,
     resource_name_arr: nil,
     resource_name_keys: nil,
     tree_tree_id: nil,
@@ -107,6 +139,7 @@ class Tree < BaseRec
     x_dim_tree_id: nil
   )
     begin
+      touch(:updated_at)
       # name_translation = name_translation[3..name_translation.length].gsub('<br>', '').gsub('</p>', '').gsub('<p>', '<br>') if name_translation
       Translation.find_or_update_translation(
         locale_code,
@@ -122,7 +155,7 @@ class Tree < BaseRec
       outcome.update(hours_per_week: hours.to_i) if hours
       Translation.find_or_update_translation(
         locale_code,
-        outcome.get_resource_key(update_type),
+        resource_key,
         resource.split("<script>").join("").split("</script>").join("")
       ) if resource
       if (resource_name_arr && resource_name_keys)
@@ -577,6 +610,8 @@ class Tree < BaseRec
       #save old translation name key before
       #updating t.code and t.base_key in
       old_name_key = t.name_key
+      Tree::RESOURCE_TYPES.map { |rt| translationKeys << t.get_resource_key(rt) }
+      old_base_key = t.base_key
       t.code = new_code
       t.base_key = Tree.buildBaseKey(treeTypeCode, versionCode, subjectCode, new_code)
       #build new translation name key now that
@@ -585,6 +620,7 @@ class Tree < BaseRec
       t.sort_order = ix + sort_order_offset
       translationKeys << old_name_key
       translations_hash[old_name_key] = new_name_key
+      Tree::RESOURCE_TYPES.map { |rt| translations_hash["#{old_base_key}.#{rt}"] = t.get_resource_key(rt) }
       tree_codes_changed << {tree_id: t.id, new_code: t.format_code(localeCode,
         treeTypeRec.hierarchy_codes.split(","),
         treeTypeRec.tree_code_format,

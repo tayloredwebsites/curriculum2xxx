@@ -8,6 +8,7 @@
     <%= f.hidden_field :active, name: 'tree[active]', value: true %>
     <%= f.hidden_field :edit_type, name: 'tree[edit_type]', value: @edit_type %>
     <%= f.hidden_field :attr_id, name: 'tree[attr_id]', value: @attr_id  if (@edit_type != 'outcome') %>
+    <%= f.hidden_field :translation_key, name: 'translation[key]', value: @translation_key  if @translation_key %>
   </div>
   <!--feilds for editing the Outcome and Indicator text-->
 	<% if @edit_type == 'outcome' || @edit_type == 'tree' %>

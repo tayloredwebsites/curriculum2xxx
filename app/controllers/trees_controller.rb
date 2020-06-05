@@ -826,6 +826,7 @@ class TreesController < ApplicationController
     if process_tree
       editMe = params['editme']
       @editMe = false
+      @updated_at = @tree.updated_at
       # turn off detail editing page for now
       if editMe && editMe == @tree.id.to_s && current_user.present?
         @editMe = true
@@ -946,11 +947,24 @@ class TreesController < ApplicationController
       elsif Outcome::RESOURCE_TYPES.include?(@edit_type)
         @ref = Translation.find_translation_name(
             @locale_code,
-            @tree.outcome.get_resource_key(@edit_type),
+            translation_params[:key],
             ""
           )
         #To Do: normalize these translations
-        @ref_label = I18n.t("trees.labels.teacher_field_#{Outcome::RESOURCE_TYPES.index(@edit_type) + 1}")
+        @ref_label = Outcome.get_resource_name(@edit_type, @treeTypeRec.code, @versionRec.code, @locale_code)
+        @translation_key = translation_params[:key]
+      elsif Tree::RESOURCE_TYPES.include?(@edit_type)
+        @ref = Translation.find_translation_name(
+            @locale_code,
+            translation_params[:key],
+            ""
+          )
+        @ref_label = Translation.find_translation_name(
+            @locale_code,
+            Tree.get_resource_type_key(@edit_type, @treeTypeRec.code, @versionRec.code),
+            ""
+          )
+        @translation_key = translation_params[:key]
       elsif @edit_type.split("#")[0] == "ref_settings"
         resource_types = @edit_type.split("#")
         if resource_types.length > 1
@@ -997,8 +1011,7 @@ class TreesController < ApplicationController
   def update
     errors = []
     update_type = tree_params[:edit_type]
-    attr_tree = (update_type == 'tree' && tree_params[:attr_id] ?
-      Tree.find(tree_params[:attr_id]) : nil)
+    attr_tree = (update_type == 'tree' && tree_params[:attr_id] ? Tree.find(tree_params[:attr_id]) : nil)
     tree_to_update = update_type == "indicator" ? Tree.find(tree_params[:attr_id]) : @tree
     message = tree_to_update.update_fields(
       update_type,
@@ -1009,6 +1022,7 @@ class TreesController < ApplicationController
       weeks: tree_params[:weeks],
       hours: tree_params[:hours],
       resource: tree_params[:resource],
+      resource_key: translation_params ? translation_params[:key] : nil,
       resource_name_arr: tree_params[:resource_name],
       resource_name_keys: tree_params[:resource_key],
       tree_tree_id: update_type == 'treetree' ? tree_params[:attr_id] : nil,

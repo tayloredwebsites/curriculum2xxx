@@ -19,6 +19,16 @@
             @treeTypeRec.code,
             @versionRec.code,
             @locale_code) if @editTypes[detail_code][:name] == "resource"
+          category_title = Translation.find_translation_name(
+              @locale_code,
+              Tree.get_resource_type_key(
+                Tree::RESOURCE_TYPES[cat.to_i],
+                @treeTypeRec.code,
+                @versionRec.code
+              ),
+              Tree::RESOURCE_TYPES[cat.to_i]
+            )  if @editTypes[detail_code][:name] == "tree_resource"
+
           category_title = Dimension.get_resource_name(
             Dimension::RESOURCE_TYPES[cat.to_i],
             @treeTypeRec.code,
@@ -51,6 +61,7 @@
                 category_codes: @editTypes[detail_code][:codes],
                 render_label: false,
                 can_edit: can_edit_type?(detail_code) || current_user.subject_admin?(@subject_code),
+                parent: parents[ix]
                }
             %>
 

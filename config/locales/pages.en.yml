@@ -61,6 +61,7 @@ en:
       final_version: "Final"
       connect_form_title: "Save Connection?"
       show_details: "Show Details"
+      last_updated: "Last updated at: %{time}"
     roles:
       name: 'Roles'
       admin:

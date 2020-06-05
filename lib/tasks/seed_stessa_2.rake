@@ -2,7 +2,7 @@
 namespace :seed_stessa_2 do
 
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :ensure_default_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :ensure_default_translations]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -37,7 +37,7 @@ namespace :seed_stessa_2 do
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
-      dim_codes: 'bigidea,essq,concept,skill,miscon',
+      dim_codes: 'bigidea,essq,concept,skill,miscon,standardus,standardeg',
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
@@ -51,13 +51,14 @@ namespace :seed_stessa_2 do
       #   <item> - TABLE item, sectors
       #   +item+ - TABLE item, treetrees
       #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
       #                  categories of this item to display.
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},<sector>,+treetree+,{resources#1#3#2}',
+      detail_headers: 'grade,sem,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},{grade#0}_{unit#2}_{sem#4},<sector>,+treetree+,{resources#12#3#2}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
@@ -378,6 +379,8 @@ namespace :seed_stessa_2 do
       ['concept', 'Concept', 'مفهوم'],
       ['skill', 'Skill', 'مهارة'],
       ['miscon', 'Misconception', 'اعتقاد خاطئ'],
+      ['standardus', 'US Standard', 'المعيار الأمريكي'],
+      ['standardeg', 'Egyptian Standard', 'المواصفة المصرية']
     ]
 
     dim_resource_types_arr = [
@@ -424,9 +427,14 @@ namespace :seed_stessa_2 do
       ["Suggested Assessment Resources and Activities", "موارد وأنشطة التقييم المقترحة"],
       ["Additional Background and Resource Materials for the Teacher", "معلومات أساسية وموارد إضافية للمعلم"],
       ["Goal behaviour (What students will do, Practical learning targets)", "سلوك الهدف (ما سيفعله الطلاب ، أهداف التعلم العملية)"],
-      ["Teacher Support", "دعم المعلم"],
+      ["Reviewer Comments", "دعم المعلم"],
       ["Evidence of Learning", "دليل التعلم"],
-      ["Connections", "روابط"],
+      ["Capstone Connection", "روابط"],
+      ["SEC Topic", "موضوع SEC"],
+      ["SEC Code", "كود SEC"],
+      ["SEC Cognitive Demand", "الطلب المعرفي SEC"],
+      ["Daily Lesson Plans", "خطط الدروس اليومية"], #LP as a spreadsheet ID, processed differently than the LP at index 1.
+      ["WL Review Comments", "تعليقات مراجعة WL"]
     ]
 
     outc_resource_types_arr.each_with_index do |resource, i|
@@ -442,8 +450,94 @@ namespace :seed_stessa_2 do
     end
   end
   ###################################################################################
+  desc "create translations for outcome resources"
+  task tree_resource_translations: :environment do
+    tree_resource_types_arr = [
+      ["Course Materials", "مواد الدورة"],
+      ["Semester Materials", "مواد الفصل"],
+      ["Unit Materials", "مواد الوحدة"],
+      ["Semester Lesson Plans Folder", "مجلد خطط الدرس للفصل الدراسي"],
+      ["Semester Theme", "موضوع الفصل"]
+    ]
+
+    tree_resource_types_arr.each_with_index do |resource, i|
+      resource_name_key = Tree.get_resource_type_key(
+        Tree::RESOURCE_TYPES[i],
+        @tt.code,
+        @ver.code
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating tree resource translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
+      throw "ERROR updating tree resource translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
+  ###################################################################################
   desc "Ensure default subject translations exist"
   task ensure_default_translations: :environment do
 
   end #task
+
+  #####################################
+  desc "One-time process to convert google folder-ids to google links in Tree Resource Translations"
+  task make_google_links: :environment do
+    @tt = TreeType.where(code: 'egstem').first
+    @ver = Version.find(@tt.version_id)
+    trees = Tree.where(tree_type_id: @tt.id)
+    url = "https://drive.google.com/drive/folders/"
+    trees.each do |t|
+      if t[:depth] == 0
+        course_materials_key = t.get_resource_key('depth_0_materials')
+        folder_id = Translation.find_translation_name(
+          "en",
+          course_materials_key,
+          nil
+        )
+        if !folder_id.blank? && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-lg fa-folder'></i></a>"
+          Translation.find_or_update_translation(
+            "en",
+            course_materials_key,
+            folder_id
+          )
+        end
+      elsif t[:depth] == 1
+        semester_lp_folder = t.get_resource_key('lp_folder')
+        folder_id = Translation.find_translation_name(
+          "en",
+          semester_lp_folder,
+          nil
+        )
+        if !folder_id.blank? && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-lg fa-folder'></i></a>"
+            Translation.find_or_update_translation(
+            "en",
+            semester_lp_folder,
+            folder_id
+          )
+        end
+      elsif t[:depth] == 2
+        unit_materials_key = t.get_resource_key('depth_2_materials')
+        folder_id = Translation.find_translation_name(
+          "en",
+          unit_materials_key,
+          nil
+        )
+        if !folder_id.blank? && !folder_id.include?(url)
+          folder_id = "<a href='#{url}#{folder_id}' target='_blank'><i class='fa fa-lg fa-folder'></i></a>"
+          Translation.find_or_update_translation("en", unit_materials_key, folder_id)
+        end
+      elsif t.outcome_id
+        lp_key = t.outcome.get_resource_key('learn_prog')
+        #https://docs.google.com/spreadsheets/d/
+        #fa-file
+        file_id = Translation.find_translation_name("en", lp_key, nil)
+        if !file_id.blank? && !file_id.include?("https://docs.google.com/spreadsheets/d/")
+          file_id = "<a href='https://docs.google.com/spreadsheets/d/#{folder_id}' target='_blank'><i class='fa fa-lg fa-file'></i></a>"
+          Translation.find_or_update_translation("en", lp_key, file_id)
+        end
+      end
+    end #trees.each do |t|
+  end
+
 end
