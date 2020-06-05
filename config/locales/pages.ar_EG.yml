@@ -58,6 +58,7 @@ ar_EG:
       final_version: "نهائي"
       connect_form_title: "حفظ الاتصال؟"
       show_details: "اظهر التفاصيل"
+      last_updated: "Last updated at: %{time}"
     roles:
       name: 'الأدوار'
       admin:

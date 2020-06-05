@@ -826,6 +826,7 @@ class TreesController < ApplicationController
     if process_tree
       editMe = params['editme']
       @editMe = false
+      @updated_at = @tree.updated_at
       # turn off detail editing page for now
       if editMe && editMe == @tree.id.to_s && current_user.present?
         @editMe = true

@@ -22,6 +22,7 @@ class Outcome < BaseRec
     "sec_code",
     "cog_demand", #SEC Cognitive Demand
     "lp_ss_id", #Lesson Plan (expect a Google Spreadsheet Id)
+    "review_comments" #WL Review Comments
   ]
 
   # Field Translations

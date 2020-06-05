@@ -434,6 +434,7 @@ namespace :seed_stessa_2 do
       ["SEC Code", "كود SEC"],
       ["SEC Cognitive Demand", "الطلب المعرفي SEC"],
       ["Daily Lesson Plans", "خطط الدروس اليومية"], #LP as a spreadsheet ID, processed differently than the LP at index 1.
+      ["WL Review Comments", "تعليقات مراجعة WL"]
     ]
 
     outc_resource_types_arr.each_with_index do |resource, i|

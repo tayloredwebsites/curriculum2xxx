@@ -139,6 +139,7 @@ class Tree < BaseRec
     x_dim_tree_id: nil
   )
     begin
+      touch(:updated_at)
       # name_translation = name_translation[3..name_translation.length].gsub('<br>', '').gsub('</p>', '').gsub('<p>', '<br>') if name_translation
       Translation.find_or_update_translation(
         locale_code,
