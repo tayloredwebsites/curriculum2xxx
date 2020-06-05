@@ -140,23 +140,80 @@ class TreesController < ApplicationController
   end
 
   def new
+    #$('<li id="newlo"></li>').insertAfter("#bio_tree_7963")
+    #sequence-item maint-item/maint-sub-header indent-3 collapsable child-of-01-02-01 child-of-01-02 child-of-01 level-3 // list-group-item ui-draggable
+    @parentElemId = tree_params[:parent_elem_id]
+    @parentCode = tree_params[:parent_code]
+    subject = Subject.find(tree_params[:subject_id])
+    treeType = TreeType.find(subject.tree_type_id)
+    version = Version.find(treeType.version_id)
+    gradeBand = GradeBand.find(tree_params[:grade_band_id])
+    code = "temp.subj#{tree_params[:subject_id]}.sort#{tree_params[:sort_order]}"
+    base_key = Tree.buildBaseKey(
+        treeType.code,
+        version.code,
+        subject.code,
+        code)
     @tree = Tree.new(
-      tree_type_id: @treeTypeRec.id,
-      version_id: @versionRec.id
+      tree_type_id: treeType.id,
+      version_id: version.id,
+      grade_band_id: gradeBand.id,
+      subject_id: tree_params[:subject_id],
+      sort_order: tree_params[:sort_order],
+      depth: tree_params[:depth],
+      code: code,
+      base_key: base_key
     )
+    @translation = Translation.new(
+      key: Tree.buildNameKey(
+        treeType,
+        version,
+        subject,
+        gradeBand,
+        code),
+      value: "",
+      locale: @locale_code
+    )
+    if tree_params[:depth].to_i == treeType[:outcome_depth]
+      @outcome = Outcome.new(
+        base_key: Outcome.build_base_key(base_key)
+      )
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
-  # def create
-  #   Rails.logger.debug("Tree.create params: #{tree_params.inspect}")
-  #   @tree = Tree.new(tree_params)
-  #   if @tree.save
-  #     flash[:success] = "tree created."
-  #     # I18n.backend.reload!
-  #     redirect_to trees_path
-  #   else
-  #     render :new
-  #   end
-  # end
+  def create
+    puts "params: #{params}"
+    @parentElemId = tree_params[:parent_elem_id]
+    subjectRec = Subject.find(tree_params[:subject_id])
+    @subject_code = subjectRec.code
+    @gb_code = GradeBand.find(tree_params[:grade_band_id]).code
+    tree_create_params = {
+      :tree_type_id => tree_params[:tree_type_id],
+      :version_id => tree_params[:version_id],
+      :subject_id => tree_params[:subject_id],
+      :grade_band_id => tree_params[:grade_band_id],
+      :code => tree_params[:code],
+      :base_key => tree_params[:base_key],
+      :sort_order => tree_params[:sort_order],
+      :depth => tree_params[:depth],
+    }
+    @tree, @translation, @tree_codes_changed = Tree.create_and_insert_tree(
+      tree_create_params,
+      translation_params,
+      outcome_params,
+      @locale_code,
+      subjectRec)
+    parentTree = Tree.find(tree_params[:parent_elem_id].split("_")[2])
+    @selectors_by_parent = parentTree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
 
   # def show
   #   # to do - refactor so this and show_outcome are same action and view
@@ -236,14 +293,18 @@ class TreesController < ApplicationController
           nil
         ) : nil
       gb_code = tree.grade_band.code
+
       newHash = {
         id: tree.id,
         depth: tree.depth,
         outcome: tree.outcome,
         weeks: tree.outcome ? tree.outcome.duration_weeks : nil,
         subj_code: @subject_code,
+        subject_id: tree.subject_id,
         gb_code: gb_code,
+        grade_band_id: tree.grade_band_id,
         code: tree.code,
+        nextSortOrder: tree.sort_order + 1,
         formatted_code: tree.outcome ? tree.format_code(
             @locale_code,
             @treeTypeRec.hierarchy_codes.split(","),
@@ -871,8 +932,8 @@ class TreesController < ApplicationController
         @weeks = @tree.outcome.duration_weeks
       elsif @edit_type == "hours"
         @hours = @tree.outcome.hours_per_week
-      elsif @edit_type == "indicator"
-        @indicator = Tree.find(tree_params[:attr_id])
+      elsif @edit_type == "tree"
+        @indicator = Tree.find(tree_params[:attr_id].to_i)
         @attr_id = @indicator.id
         name_key = @indicator.buildNameKey
         translation = Translation.translationsByKeys(
@@ -936,11 +997,14 @@ class TreesController < ApplicationController
   def update
     errors = []
     update_type = tree_params[:edit_type]
+    attr_tree = (update_type == 'tree' && tree_params[:attr_id] ?
+      Tree.find(tree_params[:attr_id]) : nil)
     tree_to_update = update_type == "indicator" ? Tree.find(tree_params[:attr_id]) : @tree
     message = tree_to_update.update_fields(
       update_type,
       locale_code: @locale_code,
       name_translation: tree_params[:name_translation],
+      attr_tree: attr_tree,
       comment: tree_params[:comment],
       weeks: tree_params[:weeks],
       hours: tree_params[:hours],
@@ -1001,6 +1065,11 @@ class TreesController < ApplicationController
       :subject_id,
       :grade_band_id,
       :code,
+      :base_key,
+      :parent_code,
+      :parent_elem_id,
+      :depth,
+      :sort_order,
       :tree_id,
       :dimension_id,
       :sector_id,
@@ -1017,6 +1086,30 @@ class TreesController < ApplicationController
       :resource_name => [],
       :resource_key => [],
     )
+  end
+
+  def outcome_params
+    if params.has_key?(:outcome)
+      params.require(:outcome).permit(
+        :duration_weeks,
+        :hours_per_week,
+        :base_key
+      )
+    else
+      nil
+    end
+  end
+
+  def translation_params
+    if params.has_key?(:translation)
+      params.require(:translation).permit(
+        :key,
+        :locale,
+        :value
+      )
+    else
+      nil
+    end
   end
 
   def dim_tree_params

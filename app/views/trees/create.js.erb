@@ -1,0 +1,12 @@
+$("#modal_popup").modal('hide');
+$("<%= escape_javascript(render('trees/create')) %>").insertAfter("#<%= @parentElemId %>");
+var tree_codes_changed = JSON.parse('<%= @tree_codes_changed.to_json.html_safe %>');
+tree_codes_changed.forEach(function (h) {
+$("#<%= @subject_code %>_tree_"+h["tree_id"])
+  .find(".js-tree-code")
+  .html(
+    "<strong><em>"
+    +h["new_code"]
+    +"</em></strong>"
+  )
+});

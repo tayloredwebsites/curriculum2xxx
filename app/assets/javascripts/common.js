@@ -156,8 +156,16 @@ $(function() {
 
   show_hierarchy_level = function (level, maxLevel) {
     $(".level-" + level).removeClass("hidden");
-    var removeClass = (level == maxLevel ? "fa-expand" : "option-selected fa-compress");
-    var addClass = (level == maxLevel ? "option-selected fa-compress" : "fa-expand")
+    if (level == maxLevel) {
+      var removeClass = "fa-expand";
+      var addClass = "option-selected fa-compress";
+      $(".createLO").removeClass("hidden");
+    }
+    else {
+      var removeClass = "option-selected fa-compress";
+      var addClass = "fa-expand";
+      $(".createLO").addClass("hidden");
+    }
     $(".level-" + level + " i.accordion").removeClass(removeClass);
     $(".level-" + level + " i.accordion").addClass(addClass);
     level = parseInt(level);

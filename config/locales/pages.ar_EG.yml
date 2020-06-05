@@ -16,6 +16,7 @@ ar_EG:
       deactivate: "إبطال"
       confirm_deactivate: "هل أنت متأكد من أنك تريد إلغاء تنشيط الاتصال بالعنصر التالي:\n%{item}"
       create: "خلق"
+      create_item: "Create %{item}"
       subject: "موضوع"
       grade_band: "درجة"
       min_grade: "الدرجة الدنيا"
@@ -42,6 +43,7 @@ ar_EG:
       gen_list: "إنشاء قائمة"
       sector: "التحدي الكبير"
       upload_summary: 'تحميل تقرير ملخص'
+      upload_new: 'إضافة وتحميل'
       upload_file: "رفع ملف"
       upload_status_errors: "حالة / أخطاء التحميل"
       related_to_sectors: "المتعلقة بالقطاعات: %{sectors}"

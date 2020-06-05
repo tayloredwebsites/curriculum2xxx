@@ -47,6 +47,15 @@ body {
     }
   }
 
+  .spotlight-new {
+    animation: fadewhite 5s ease-out;
+  }
+
+  @keyframes fadewhite {
+    from {background-color: lightblue;}
+    to {background-color: white;}
+  }
+
   .smallest-text {
     font-size: 0.6rem;
   }

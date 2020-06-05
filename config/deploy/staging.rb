@@ -1,5 +1,5 @@
 set :stage, :staging
-server 'turkeycurriculum.parloproject.org', user: 'deploy', roles: %w{web app db}
+server 'mektebim.21pstem.org', user: 'deploy', roles: %w{web app db}
 set :rvm_ruby_version, '2.3.3p222'
 set :deploy_to, '/web/turkeycurriculum'
 set :rails_env, 'staging'

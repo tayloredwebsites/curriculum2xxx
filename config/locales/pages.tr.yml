@@ -10,6 +10,7 @@ tr:
       edit: "Edit"
       deactivate: "devre dışı bırakmak"
       create: "Create"
+      create_item: "Create %{item}"
       subject: "Konusu"
       grade_band: "seviyesi"
       grade_band_show: "Notu Göster"
@@ -32,6 +33,7 @@ tr:
       message: "Message"
       gen_list: "Liste Oluştur"
       sector: "Gelecek Vizyonu"
+      upload_new: 'Yükleme Ekle ve Yap'
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
       errors:

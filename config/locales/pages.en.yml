@@ -13,10 +13,12 @@ en:
       cancel: "Cancel"
       submit: "Submit"
       edit: "Edit"
+      title: "Title"
       leave_edit_mode: "Leave Edit Mode"
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
       create: "Create"
+      create_item: "Create %{item}"
       subject: "Subject"
       grade_band: "Grade"
       min_grade: "Minimum Grade"
@@ -44,6 +46,7 @@ en:
       gen_list: "Generate List"
       sector: "Sector"
       upload_summary: 'Uploads Summary Report'
+      upload_new: 'Add and Do Upload'
       upload_file: "Upload File"
       upload_status_errors: "Upload Status / Errors"
       related_to_sectors: "Related to sectors: %{sectors}"

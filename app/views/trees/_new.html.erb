@@ -1,0 +1,38 @@
+<div class="modal-header">
+<h3 id="myModalLabel"><%= I18n.translate('app.labels.create_item', item: @hierarchies[@tree[:depth]]) %></h3>
+</div>
+<div class="modal-body">
+  <%= form_for(@tree, remote: true, data: { type: 'script' }) do |f| %>
+    <%= f.hidden_field :code, name: 'tree[code]', value: @tree.code %>
+    <%= f.hidden_field :sort_order, name: 'tree[sort_order]', value: @tree.sort_order %>
+    <%= f.hidden_field :depth, name: 'tree[depth]', value: @tree.depth %>
+    <%= f.hidden_field :base_key, name: 'tree[base_key]', value: @tree.base_key %>
+    <%= f.hidden_field :subject_id, name: 'tree[subject_id]', value: @tree.subject_id %>
+    <%= f.hidden_field :grade_band_id, name: 'tree[grade_band_id]', value: @tree.grade_band_id %>
+    <%= f.hidden_field :tree_type_id, name: 'tree[tree_type_id]', value: @tree.tree_type_id %>
+    <%= f.hidden_field :version_id, name: 'tree[version_id]', value: @tree.version_id %>
+    <input type="hidden" name="tree[parent_elem_id]" value="<%= @parentElemId %>">
+    <input type="hidden" name="tree[parent_code]" value="<%= @parentCode %>">
+    <input type="hidden" name="translation[locale]" value="<%= @locale_code %>">
+    <input type="hidden" name="translation[key]" value="<%= @translation.key %>">
+    <fieldset>
+      <label for="title" class="pull-left"><%= I18n.translate('app.labels.title') %></label>
+      <textarea id="title" class="pull-left" name="translation[value]" value=""></textarea>
+    </fieldset>
+    <% if @outcome %>
+      <input type="hidden" name="outcome[base_key]" value="<%= Outcome.build_base_key(@tree.base_key) %>">
+      <fieldset>
+        <label for="weeks" class="pull-left"><%= I18n.translate('trees.labels.duration_weeks') %>:</label>
+        <input id="weeks" class="pull-left" type="number" name="outcome[duration_weeks]" value="1">
+      </fieldset>
+      <fieldset>
+        <label for="hours" class="pull-left"><%= I18n.translate('trees.labels.hours_per_week') %>:</label>
+        <input id="hours" class="pull-left" type="number" name="outcome[hours_per_week]" value="1">
+      </fieldset>
+    <% end %>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true"><%= translate('app.labels.cancel') %></button>
+      <button type="submit" class="btn btn-primary"><%= translate('app.labels.save') %></button>
+    </div>
+  <% end %>
+</div>
