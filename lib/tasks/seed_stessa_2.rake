@@ -58,7 +58,7 @@ namespace :seed_stessa_2 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,sem,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#6},{resource#7},{grade#0}_{unit#2}_{sem#4},<sector>,+treetree+,{resources#12#3#2}',
+      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},{sem#4}_{sem#3}_{grade#0}_{unit#2},[bigidea]_[essq],[miscon#2#1],[concept]_[skill],{resource#2}_{resource#7},{resource#8},{resource#13},<sector>,[standardus]_[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page

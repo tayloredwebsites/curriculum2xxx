@@ -79,7 +79,7 @@ class BaseRec < ActiveRecord::Base
     if convert_id_to_google_folder_url.include?(resource_type)
       ret = "<a href='https://drive.google.com/drive/folders/#{content_text}' target='_blank'>#{resource_name}</a>"
     elsif convert_id_to_google_ss_url.include?(resource_type)
-      ret = "<a href='https://docs.google.com/spreadsheets/d/#{content_text}' target='_blank'>#{resource_name}</a>"
+      ret = "<a href='https://docs.google.com/spreadsheets/d/#{content_text}' target='_blank'>#{resource_name.singularize}</a>"
     end
     return ret
   end

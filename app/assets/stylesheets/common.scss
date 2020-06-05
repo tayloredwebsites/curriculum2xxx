@@ -171,6 +171,7 @@ body {
   .generic-grid {
     display: grid;
     width: 100%;
+    overflow-wrap: anywhere;
     align-content: space-between;
     &.generic-grid--xl-xs { grid-template-columns: 89% 4%; }
     &.generic-grid--cols-1 { grid-template-columns: 100% }
