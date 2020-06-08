@@ -19,7 +19,7 @@
           <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
         </div>
       <% end %>
-      <div id='main-container' class='<%= current_user.present? ? "": " login-bg"%><%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
+      <div id='main-container' class='<%= current_user.present? ? "": " login-bg login-bg--#{@treeTypeRec.code.downcase}"%><%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
         <%if current_user.present? %>
           <%= yield %>
         <% else %>

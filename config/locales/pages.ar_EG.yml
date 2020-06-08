@@ -176,6 +176,7 @@ ar_EG:
       value: "القيمة"
     errors:
       missing_translations_locale_code: "ترجمات مفقودة للغة: %{locale}، الرمز: %{code}"
+      missing_translation_for_item: "ترجمة مفقودة للعنصر"
       too_many_translations_locale_code: "ترجمات كثيرة جدًا للغة: %{locale} ، الرمز: %{code}"
       creating_translations_locale_code: "خطأ في إنشاء الترجمة للغة: %{locale} ، الرمز: %{code}"
       creating_translations_locale_code: "خطأ في تحديث الترجمة للغة: %{locale} ، الكود: %{code}"
@@ -211,7 +212,7 @@ ar_EG:
       related_sectors: 'التحديات ذات الصلة'
       how_sectors_related: 'كيف يرتبط التحدي الكبير'
       indicator_connections: 'اتصالات بتفسيرات أخرى:'
-      outcome_connections: 'اتصالات بـ %{result} أخرى:'
+      outcome_connections: 'اتصالات بـ %{outcome} أخرى:'
       relation: 'الإتصال'
       how_outcome_related: 'كيف يرتبط الإنجاز'
       relation_types:
@@ -304,9 +305,9 @@ ar_EG:
   activerecord:
     attributes:
       user:
-        role_public: "Public"
-        role_teacher: "Teacher"
-        role_admin: "Future Vision Curriculum Web Admin"
+        role_public: "عامة"
+        role_teacher: "مدرس"
+        role_admin: "مسؤول الويب"
         email: "E-Mail Address"
         password: "Password"
         password_confirmation: "Password Confirmation"

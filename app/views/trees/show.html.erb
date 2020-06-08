@@ -44,7 +44,7 @@
               <% if h[:depth] > 0 %>
                 </strong>
               <% end %>
-              <%= @translations[rec.buildNameKey].html_safe %>
+              <%= html_safe_translations(@translations[rec.buildNameKey]) %>
               <% if h[:depth] == 0 %>
                 </strong>
               <% end %>

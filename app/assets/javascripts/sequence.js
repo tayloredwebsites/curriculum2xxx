@@ -289,8 +289,8 @@ add_edit_form = function(res) {
     res.relation_values.akin +
     (res.tree_tree.relationship == "akin" ? '" selected>' : '">') +
     res.translations.akin +
-    "</option> \
-          <option value=" +
+    '</option> \
+          <option value="' +
     res.relation_values.applies +
     (res.tree_tree.relationship == "applies" ? '" selected>' : '">') +
     res.translations.applies +

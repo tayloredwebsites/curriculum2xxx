@@ -179,6 +179,7 @@ en:
       value: "Value"
     errors:
       missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
+      missing_translation_for_item: "missing translation for item"
       too_many_translations_locale_code: "too many translations for locale: %{locale}, code: %{code}"
       creating_translations_locale_code: "error creating translation for locale: %{locale}, code: %{code}"
       creating_translations_locale_code: "error updating translation for locale: %{locale}, code: %{code}"
@@ -311,7 +312,7 @@ en:
       user:
         role_public: "Public"
         role_teacher: "Teacher"
-        role_admin: "Future Vision Curriculum Web Admin"
+        role_admin: "Web Admin"
         email: "E-Mail Address"
         password: "Password"
         password_confirmation: "Password Confirmation"
