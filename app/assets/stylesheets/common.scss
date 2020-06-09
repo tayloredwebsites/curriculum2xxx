@@ -61,6 +61,9 @@ body {
   /**treeview items that are not at LO depth, but come immediately after an element that is at LO depth**/
   .node-tree[style*="background-color:undefined"] + .node-tree[style*="background-color:#"] {margin-top:4vh;}
 
+  .treeview .list-group-item {display: inline-flex;}
+
+
   .spotlight-new {
     animation: fadewhite 5s ease-out;
   }
