@@ -2,9 +2,9 @@
   <li>
     <%= render partial: "maint_filter", locals: {col: "tree"} %>
   </li>
+  <li class="maint-header indent-0"><%= @subjectByCode[@subject_code]? @subjectByCode[@subject_code][:name] : @subject_code %></li>
   <%
    @treeByParents.each do |tkey, codeh| %>
-    <li class="maint-header indent-0"><%= @translations[tkey] %></li>
     <% codeh.each do |code, h| %>
       <% if h[:outcome] %>
       <%
