@@ -21,7 +21,7 @@ class Outcome < BaseRec
     "sec_topic",
     "sec_code",
     "cog_demand", #SEC Cognitive Demand
-    "lp_ss_id", #Lesson Plan (expect a Google Spreadsheet Id)
+    "lp_ss_id", #TO DO: change to lp_google_ss_id: Lesson Plan (expect a Google Spreadsheet Id)
     "review_comments" #WL Review Comments
   ]
 
