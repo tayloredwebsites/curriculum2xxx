@@ -22,10 +22,12 @@ body {
     }
     h1 {
       font-size: 5em;
-      font-weight: bold;
       max-width: 60%;
       margin: auto;
       color: red;
+    }
+    &.login-bg--tfv h1 {
+      font-weight: bold;
       text-shadow: 0 0 10px black;
     }
     .login-form {
@@ -46,6 +48,18 @@ body {
       }
     }
   }
+
+  /**treeview items that are not at LO depth**/
+  .node-tree[style*="background-color:#"] {height:50px;border:none !important;margin-top:5px;}
+
+  /**treeview items that are at the depth immediately before LO depth**/
+  .node-tree[style*="color:black"] {margin-top:4vh;margin-bottom:0px !important;}
+
+  /**treeview items that are at LO depth**/
+  .node-tree[style*="background-color:undefined"] { border: 1px solid #bbb !important; }
+
+  /**treeview items that are not at LO depth, but come immediately after an element that is at LO depth**/
+  .node-tree[style*="background-color:undefined"] + .node-tree[style*="background-color:#"] {margin-top:4vh;}
 
   .spotlight-new {
     animation: fadewhite 5s ease-out;

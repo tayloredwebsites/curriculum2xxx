@@ -135,3 +135,6 @@ tr:
   tree_trees:
     labels:
       explanation: "Açıklama"
+  translations:
+    errors:
+      missing_translations_locale_code: "locale için eksik çeviriler: %{locale}, kod: %{code}"

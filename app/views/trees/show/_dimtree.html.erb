@@ -7,10 +7,10 @@
     <% dim_link = dimension_path(d.id) if details && @dimDisplayHash[d.dim_code] %>
     <% if dim_link %>
       <a href="<%= dim_link %>">
-        <%= @translations[d.dim_name_key].html_safe if details %>
+        <%= html_safe_translations(@translations[d.dim_name_key]) if details %>
       </a>
     <% else %>
-      <%= @translations[d.dim_name_key].html_safe if details %>
+      <%= html_safe_translations(@translations[d.dim_name_key]) if details %>
     <% end %>
   </div>
   <div class="padding-right padding-top padding-bottom">
@@ -22,11 +22,13 @@
 <% if category_codes %>
   <% category_codes.each do |code| %>
     <div class='dark-border--left col padding-left padding-right padding-top padding-bottom'>
-      <%= d.resource_name(
-            @locale_code,
-            Dimension::RESOURCE_TYPES[code.to_i],
-            ""
-          ).html_safe if details
+      <%= html_safe_translations(
+            d.resource_name(
+                @locale_code,
+                Dimension::RESOURCE_TYPES[code.to_i],
+                nil
+            )
+          ) if details
       %>
     </div>
   <% end %>

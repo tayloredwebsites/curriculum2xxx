@@ -35,12 +35,12 @@ class TreesController < ApplicationController
       case depth
 
       when 1
-        newHash = {text: "#{@hierarchies[0] if @hierarchies.length > 0} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
+        newHash = {text: "#{@hierarchies[0] if @hierarchies.length > 0} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, at_unit_depth: (@treeTypeRec[:outcome_depth] == 1), nodes: {}}
         # add grade (band) if not there already
         treeHash[tree.codeArrayAt(0)] = newHash if !treeHash[tree.codeArrayAt(0)].present?
 
       when 2
-        newHash = {text: "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
+        newHash = {text: "#{@hierarchies[1] if @hierarchies.length > 1} #{tree.codeArrayAt(1)}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, at_unit_depth: (@treeTypeRec[:outcome_depth] == 2), nodes: {}}
         Rails.logger.debug("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -49,7 +49,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 3
-        newHash = {text: "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
+        newHash = {text: "#{@hierarchies[2] if @hierarchies.length > 2} #{tree.codeArrayAt(2)}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, at_unit_depth: (@treeTypeRec[:outcome_depth] == 3), nodes: {}}
         Rails.logger.debug("+++ codeArray: #{tree.codeArray.inspect}")
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -60,7 +60,7 @@ class TreesController < ApplicationController
         addNodeToArrHash(parent, tree.subCode, newHash)
 
       when 4
-        newHash = {text: "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
+        newHash = {text: "#{@hierarchies[3] if @hierarchies.length > 3} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, at_unit_depth: (@treeTypeRec[:outcome_depth] == 4), nodes: {}}
         if treeHash[tree.codeArrayAt(0)].blank?
           raise I18n.t('trees.errors.missing_grade_in_tree')
         elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)].blank?
@@ -76,7 +76,7 @@ class TreesController < ApplicationController
         # Rails.logger.debug("*** tree index_listing: #{tree.inspect}")
         # Rails.logger.debug("*** tree.name_key: #{tree.name_key}")
         # Rails.logger.debug("*** Translation for tree.name_key: #{Translation.where(locale: 'en', key: tree.name_key).first.inspect}")
-        newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, nodes: {}}
+        newHash = {text: "#{I18n.translate('app.labels.indicator')} #{tree.subCode}: #{translation}", id: "#{tree.id}", outcome: tree.outcome, at_unit_depth: (@treeTypeRec[:outcome_depth] == 5), nodes: {}}
         #If certain levels in the hierarchy are optional, these missing components are not necessarily errors.
         #
         # Rails.logger.debug("indicator newhash: #{newHash.inspect}")
@@ -102,13 +102,17 @@ class TreesController < ApplicationController
     # puts ("+++ treeHash: #{JSON.pretty_generate(treeHash)}")
     otcArrHash = []
     treeHash.each do |key1, area|
-      a2 = {text: area[:text], href: "javascript:void(0);"}
+      color = area[:at_unit_depth] ? "black" : "undefined"
+      a2 = {text: area[:text], href: "javascript:void(0);", backColor: "#ffedc1", color: color}
       if area[:nodes]
         area[:nodes].each do |key2, comp|
-          a3 = {text: comp[:text], href: "javascript:void(0);"}
+          color = comp[:at_unit_depth] ? "black" : "undefined"
+          a3 = {text: comp[:text], href: "javascript:void(0);", backColor: "#ffcaca", color: color}
           comp[:nodes].each do |key3, outc|
+            bgColor = outc[:outcome] ? "white" :  "#c8e5ff"
+            color = outc[:at_unit_depth] ? "black" : "undefined"
             path4 = outc[:outcome] ? tree_path(outc[:id]) : "javascript:void(0);"
-            a4 = {text: outc[:text], href: path4, setting: 'outcome'}
+            a4 = {text: outc[:text], href: path4, setting: 'outcome', backColor: bgColor, color: color}
             outc[:nodes].each do |key4, indic|
               a5 = {text: indic[:text], href: tree_path(indic[:id]), setting: 'indicator'}
               a4[:nodes] = [] if a4[:nodes].blank?
@@ -1261,9 +1265,9 @@ class TreesController < ApplicationController
       version_id: @versionRec.id
     )
     Rails.logger.debug("*** listing.count: #{listing.count}")
-    listing = listing.where(subject_id: @subj.id) if @subj.present?
+    listing = listing.active.where(subject_id: @subj.id) if @subj.present?
     Rails.logger.debug("*** listing.count: #{listing.count}")
-    listing = listing.where(grade_band_id: @gb.id) if @gb.present?
+    listing = listing.active.where(grade_band_id: @gb.id) if @gb.present?
     Rails.logger.debug("*** listing.count: #{listing.count}")
 
     # @tree is used for filtering form

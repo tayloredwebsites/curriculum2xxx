@@ -58,7 +58,8 @@ namespace :seed_stessa_2 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},{sem#4}_{sem#3}_{grade#0}_{unit#2},[bigidea]_[essq],[miscon#2#1],[concept]_[skill],{resource#2}_{resource#7},{resource#8},{resource#13},<sector>,[standardus]_[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
+      #   To Do: standards header on top RIGHT of the show page.
+      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},<sector>_[bigidea]_[essq],{sem#3}_{grade#0}_{unit#2},[miscon#2#1],[concept]_[skill],{resource#2}_{resource#7},{resource#8},[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
@@ -75,7 +76,7 @@ namespace :seed_stessa_2 do
     @tt = treeTypes.first
 
     puts "Create Default app title translations in English and Arabic"
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egypt STEM Curriculum')
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egyptian STEM Curriculum App')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
@@ -427,7 +428,7 @@ namespace :seed_stessa_2 do
       ["Suggested Assessment Resources and Activities", "موارد وأنشطة التقييم المقترحة"],
       ["Additional Background and Resource Materials for the Teacher", "معلومات أساسية وموارد إضافية للمعلم"],
       ["Goal behaviour (What students will do, Practical learning targets)", "سلوك الهدف (ما سيفعله الطلاب ، أهداف التعلم العملية)"],
-      ["Reviewer Comments", "دعم المعلم"],
+      ["Teacher Notes", "ملاحظات المعلم"],
       ["Evidence of Learning", "دليل التعلم"],
       ["Capstone Connection", "روابط"],
       ["SEC Topic", "موضوع SEC"],
@@ -456,7 +457,7 @@ namespace :seed_stessa_2 do
       ["Course Materials", "مواد الدورة"],
       ["Semester Materials", "مواد الفصل"],
       ["Unit Materials", "مواد الوحدة"],
-      ["Semester Lesson Plans Folder", "مجلد خطط الدرس للفصل الدراسي"],
+      ["Lesson Plans Folder", "مجلد خطط الدرس"],
       ["Semester Theme", "موضوع الفصل"]
     ]
 

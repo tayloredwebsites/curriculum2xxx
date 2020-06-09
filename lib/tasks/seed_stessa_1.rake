@@ -69,7 +69,7 @@ namespace :seed_eg_stem do
     @tt = TreeType.where(code: 'egstemuniv').first
 
     puts "Create Default app title translations in English and Arabic"
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egypt STEM Curriculum')
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egyptian STEM Curriculum App')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
@@ -121,7 +121,9 @@ namespace :seed_eg_stem do
   desc "load up the locales (created in seeds.rb seed file)"
   task load_locales: :environment do
     @loc_en = Locale.where(code: 'en').first
+    @loc_en = Locale.create(code: 'en', name: 'English') if !@loc_en
     @loc_ar_EG = Locale.where(code: 'ar_EG').first
+    @loc_ar_EG = Locale.create(code: 'ar_EG', name: 'العربية (مصر)') if !@loc_ar_EG
     puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_ar_EG.code}: #{@loc_ar_EG.name}"
     @loc_other = @loc_ar_EG
   end #load_locales
