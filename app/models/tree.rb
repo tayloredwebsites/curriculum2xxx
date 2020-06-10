@@ -84,9 +84,9 @@ class Tree < BaseRec
     # return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{gradeBandRec.code}.#{fullCode}.name"
     return "#{treeTypeRec.code}.#{versionRec.code}.#{subjectRec.code}.#{fullCode}.name"
   end
-  def buildNameKey
+  def buildNameKey(tree_type_code = nil, version_code = nil, subject_code = nil)
     # return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}.#{self.code}.name"
-    return "#{tree_type.code}.#{version.code}.#{subject.code}.#{code}.name"
+    return "#{tree_type_code || tree_type.code}.#{version_code || version.code}.#{subject_code || subject.code}.#{code}.name"
   end
 
   def self.buildBaseKey(treeTypeCode, versionCode, subjectCode, fullCode)

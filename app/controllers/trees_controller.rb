@@ -377,7 +377,10 @@ class TreesController < ApplicationController
     componentHash = {}
     newHash = {}
     @subj_gradebands = Hash.new { |h, k| h[k] =  [] }
-    @gradebands = ["All", *listing.joins(:grade_band).pluck('grade_bands.code').uniq]
+    gbRecs = GradeBand.where(:id => listing.joins(:grade_band).pluck('grade_band_id').uniq)
+    @gradebands = ["All", *gbRecs.pluck('code').uniq]
+    gbCodesById = {}
+    gbRecs.each { |gb| gbCodesById[gb.id] = gb.code }
     @subjects = {}
     subjIds = {}
     subjects = Subject.where("tree_type_id = ? AND min_grade < ?", @treeTypeRec.id, 999).order("max_grade desc", "min_grade asc", "code")
@@ -399,10 +402,10 @@ class TreesController < ApplicationController
     # note: Active Record had problems with placeholder conditions in join clause.
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
-    base_keys= @trees.map { |t| t.buildNameKey }
+    base_keys= @trees.map { |t| t.buildNameKey(@treeTypeRec.code, @versionRec.code, subjIds[t.subject_id.to_s][:code]) }
     base_keys =  base_keys | subjects.map { |s| "#{s.base_key}.name" }
     base_keys = base_keys | subjects.map { |s| "#{s.base_key}.abbr" }
-    base_keys = base_keys | relations.map { |r| r.explanation_key }
+   # base_keys = base_keys | relations.map { |r| r.explanation_key }
 
     @translations = Hash.new
     translations = Translation.where(locale: @locale_code, key: base_keys)
@@ -410,12 +413,16 @@ class TreesController < ApplicationController
       # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
       @translations[t.key] = t.value
     end
-
+    puts "++++++BLOCK 4"
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.buildNameKey]
+      translation = @translations[tree.buildNameKey(@treeTypeRec.code, @versionRec.code, subjIds[tree.subject_id.to_s][:code])]
       areaHash = {}
       depth = tree.depth
+      t_subj_code = subjIds[tree.subject_id.to_s].code
+      t_gb_code = gbCodesById[tree.grade_band_id]
+      format_hierchy_codes = @treeTypeRec.hierarchy_codes.split(',')
+
       case depth
 
       # when 1
@@ -444,12 +451,18 @@ class TreesController < ApplicationController
       #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)], tree.subCode, newHash)
 
       when  @treeTypeRec[:outcome_depth] + 1
-        tcode = tree.subject.code + tree.code.split('.').join('')
+        tcode = t_subj_code + tree.code.split('.').join('')
         newHash = {
           code: tcode,
-          text: "#{tree.format_code(@locale_code)}: #{translation}",
+          text: "#{tree.format_code(
+            @locale_code,
+            format_hierchy_codes,
+            @treeTypeRec.tree_code_format,
+            t_subj_code,
+            t_gb_code
+          )}: #{translation}",
           id: "#{tree.id}",
-          gb_code: tree.grade_band.code,
+          gb_code: t_gb_code,
           connections: @relations[tree.id]
         }
         # if treeHash[tree.codeArrayAt(0)].blank?
@@ -459,9 +472,8 @@ class TreesController < ApplicationController
         # elsif treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)].blank?
         #   raise I18n.t('trees.errors.missing_component_in_tree')
         #end
-        @s_o_hash[tree.subject.code] << newHash
+        @s_o_hash[t_subj_code] << newHash
         #addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)], tree.subCode, newHash)
-
       when  @treeTypeRec[:outcome_depth] + 2
       #   # # to do - look into refactoring this
       #   # # check to make sure parent in hash exists.
@@ -472,7 +484,7 @@ class TreesController < ApplicationController
         parent_code = tree.code.split('.')
         parent_code.pop()
         parent_code = parent_code.join('')
-        @indicator_hash["#{tree.subject.code}#{parent_code}"] << newHash
+        @indicator_hash["#{t_subj_code}#{parent_code}"] << newHash
       #   # Rails.logger.debug("indicator newhash: #{newHash.inspect}")
       #   if treeHash[tree.codeArrayAt(0)].blank?
       #     raise I18n.t('trees.errors.missing_grade_in_tree')
@@ -486,7 +498,6 @@ class TreesController < ApplicationController
       #   end
       #   Rails.logger.debug("*** translation: #{translation.inspect}")
       #   addNodeToArrHash(treeHash[tree.codeArrayAt(0)][:nodes][tree.codeArrayAt(1)][:nodes][tree.codeArrayAt(2)][:nodes][tree.codeArrayAt(3)], tree.codeArrayAt(4), newHash)
-
       else
         # raise I18n.t('translations.errors.tree_too_deep_id', id: tree.id)
       end
