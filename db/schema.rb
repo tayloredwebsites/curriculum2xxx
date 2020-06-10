@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20200610031343) do
     t.string "base_key"
     t.boolean "active", default: true
     t.string "sector_set_code", default: "", null: false
+    t.string "key_phrase", default: "", null: false
     t.index ["code"], name: "index_sectors_on_code"
   end
 

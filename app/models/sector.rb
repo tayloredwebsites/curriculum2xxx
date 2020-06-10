@@ -3,6 +3,22 @@ class Sector < BaseRec
   has_many :sector_trees
   has_many :trees, through: :sector_trees
 
+  # TO DO: investigate migrating key phrases for
+  # uploads to tags
+  KEY_PHRASES = [
+    "population growth",
+    "alternative energies",
+    "urban congestion",
+    "scientific and technological environment",
+    "public health",
+    "arid areas",
+    "clean water",
+    "industrial",
+    "reduce pollution",
+    "recycle",
+    "climate change",
+  ]
+
 # Translation Field
   def get_name_key
     return "sector.#{sector_set_code}.#{code}.name"

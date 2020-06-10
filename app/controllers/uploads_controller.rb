@@ -193,7 +193,6 @@ class UploadsController < ApplicationController
   private
 
   def v2FileUpload(filePath, separator)
-
     # if @treeTypeRec.hierarchy_codes != "grade,unit,sub_unit,comp"
     #   @abortRun = abortWithMessage("ERROR - cannot upload this format tree hierarchy yet. #{@treeTypeRec.hierarchy_codes}")
     # end
@@ -204,7 +203,10 @@ class UploadsController < ApplicationController
     @rowNum = 2
     @recordOrder = 0
     @baseKeyRoot = "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}"
-
+    @sectorArrByKeyPhrase = []
+    Sector.where(
+      sector_set_code: @treeTypeRec.sector_set_code
+    ).each { |s| @sectorArrByKeyPhrase << [s.key_phrase, s] if s.key_phrase != "" }
     # hash of the existing records for this TreeType (curriculum) and subject
     #
     @currentRecs = Hash.new{ |h, k| h[k] = {} }
@@ -374,7 +376,6 @@ class UploadsController < ApplicationController
         # If LO code supplied, use it as the display of the full lo code (if supplied)
         ## To Do : add displayLoCode field to Outcome record
         colLoFullCode = rowH['LO Code:']
-
 
         # create the duration_weeks field in the LO Record
         startWeekStr = rowH['Start Week']
@@ -796,6 +797,19 @@ class UploadsController < ApplicationController
           rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
         end
       end
+      #map connected sectors that have not yet been mapped to this LO
+      if depth == @treeTypeRec[:outcome_depth]
+        colSectors = rowH[@sectorName]
+        if colSectors.present?
+          sectorIds = SectorTree.where(tree_id: rec.id).pluck("sector_id").uniq
+          @sectorArrByKeyPhrase.each do |phrase_and_rec|
+            phrase, sectorRec = phrase_and_rec
+            if colSectors.downcase.include?(phrase) && !sectorIds.include?(sectorRec.id)
+              SectorTree.create(tree_id: rec.id, sector_id: sectorRec.id)
+            end
+          end
+        end
+      end #map connected sectors
       # output the translation record if any changes
       transl_rec, text_status, transl_text = Translation.find_or_update_translation(
         @localeRec.code,
