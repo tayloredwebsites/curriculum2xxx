@@ -2,7 +2,7 @@
 namespace :seed_stessa_2 do
 
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :ensure_default_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -65,6 +65,13 @@ namespace :seed_stessa_2 do
       #Dimensions must appear in this string to have a show page
       #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
       dim_display: 'miscon#0#1#2#3#4#5#6#7',
+      #user_form_config: list fields that should be included in the user form
+      #dropdown selection fields should have the number of selection options
+      #Dropdown categories in views/users/_form_other.html.erb such as institute_type
+      #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
+      #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
+      #keys for the dropdown options.
+      user_form_config:'given_name,family_name,municipality,institute_type#7,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone',
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
@@ -478,7 +485,33 @@ namespace :seed_stessa_2 do
   task ensure_default_translations: :environment do
 
   end #task
-
+  ####################################################################################
+  desc "Translation for user form dropdown options"
+  task user_form_translations: :environment do
+  #  position_type#6
+  #  @tt.user_form_option_key(version_code, form_field_name, option_num)
+    dropdown_opts = [
+      {ix: 1, field: 'institute_type', en: 'MOE Counselors', ar_EG: 'مستشارو وزارة التربية'},
+      {ix: 2, field: 'institute_type', en: 'STEM Unit', ar_EG: 'وحدة العلوم والتكنولوجيا والهندسة والرياضيات'},
+      {ix: 3, field: 'institute_type', en: 'PAT', ar_EG: 'PAT'},
+      {ix: 4, field: 'institute_type', en: 'Governorate Level Supervisors', ar_EG: 'المشرفون على مستوى المحافظة'},
+      {ix: 5, field: 'institute_type', en: 'STEM School', ar_EG: 'مدرسة STEM'},
+      {ix: 6, field: 'institute_type', en: 'University', ar_EG: 'جامعة'},
+      {ix: 7, field: 'institute_type', en: 'STESSA Project', ar_EG: 'مشروع STESSA'},
+      {ix: 1, field: 'position_type', en: 'School Leader', ar_EG: 'قائد المدرسة'},
+      {ix: 2, field: 'position_type', en: 'Teacher', ar_EG: 'مدرس'},
+      {ix: 3, field: 'position_type', en: 'MOE Counselor', ar_EG: ''},
+      {ix: 4, field: 'position_type', en: 'STEM Unit Member', ar_EG: 'مستشار وزارة التربية'},
+      {ix: 5, field: 'position_type', en: 'Governorate Supervisor', ar_EG: 'مشرف محافظة'},
+      {ix: 6, field: 'position_type', en: 'STESSA Project Staff', ar_EG: 'طاقم مشروع STESSA'},
+    ]
+    dropdown_opts.each do |opt|
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:ar_EG])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
   #####################################
   desc "One-time process to convert google folder-ids to google links in Tree Resource Translations"
   task make_google_links: :environment do
