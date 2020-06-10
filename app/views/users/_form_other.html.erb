@@ -1,5 +1,5 @@
 <% form_config = @treeTypeRec.user_form_config %>
-<% if form_config.include?("given_name") %>
+<% if form_config.length == 0 || form_config.include?("given_name") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :given_name %>
@@ -16,7 +16,7 @@
   <%= form.hidden_field :given_name, value: "given_name" %>
 <% end %>
 
-<% if form_config.include?("family_name") %>
+<% if form_config.length == 0 || form_config.include?("family_name") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :family_name %>
@@ -33,7 +33,7 @@
   <%= form.hidden_field :family_name, value: "family_name" %>
 <% end %>
 
-<% if form_config.include?("govt_level") %>
+<% if form_config.length == 0 || form_config.include?("govt_level") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :govt_level %>
@@ -55,7 +55,7 @@
   <%= form.hidden_field :govt_level, value: "1" %>
 <% end %>
 
-<% if form_config.include?("govt_level_name") %>
+<% if form_config.length == 0 || form_config.include?("govt_level_name") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :govt_level_name %>
@@ -72,7 +72,7 @@
   <%= form.hidden_field :govt_level_name, value: "govt_level_name" %>
 <% end %>
 
-<% if form_config.include?("municipality") %>
+<% if form_config.length == 0 || form_config.include?("municipality") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :municipality %>
@@ -89,7 +89,7 @@
   <%= form.hidden_field :municipality, value: "municipality" %>
 <% end %>
 
-<% if form_config.include?("institute_type") %>
+<% if form_config.length == 0 || form_config.include?("institute_type") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :institute_type %>
@@ -111,7 +111,7 @@
   <%= form.hidden_field :institute_type, value: "0" %>
 <% end %>
 
-<% if form_config.include?("institute_name_loc") %>
+<% if form_config.length == 0 || form_config.include?("institute_name_loc") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :institute_name_loc %>
@@ -128,7 +128,7 @@
   <%= form.hidden_field :institute_name_loc, value: "institute_name_loc" %>
 <% end %>
 
-<% if form_config.include?("position_type") %>
+<% if form_config.length == 0 || form_config.include?("position_type") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :position_type %>
@@ -150,7 +150,7 @@
   <%= form.hidden_field :position_type, value: "0" %>
 <% end %>
 
-<% if form_config.include?("subject1") %>
+<% if form_config.length == 0 || form_config.include?("subject1") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :subject1 %>
@@ -167,7 +167,7 @@
   <%= form.hidden_field :subject1, value: "subj1" %>
 <% end %>
 
-<% if form_config.include?("subject2") %>
+<% if form_config.length == 0 || form_config.include?("subject2") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :subject2 %>
@@ -182,7 +182,7 @@
   </div>
 <% end %>
 
-<% if form_config.include?("gender") %>
+<% if form_config.length == 0 || form_config.include?("gender") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :gender %>
@@ -204,7 +204,7 @@
   <%= form.hidden_field :gender, value: "1" %>
 <% end %>
 
-<% if form_config.include?("education_level") %>
+<% if form_config.length == 0 || form_config.include?("education_level") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :education_level %>
@@ -226,7 +226,7 @@
   <%= form.hidden_field :education_level, value: "0" %>
 <% end %>
 
-<% if form_config.include?("work_phone") %>
+<% if form_config.length == 0 || form_config.include?("work_phone") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :work_phone %>
@@ -243,7 +243,7 @@
   <%= form.hidden_field :work_phone, value: "work_phone" %>
 <% end %>
 
-<% if form_config.include?("work_address") %>
+<% if form_config.length == 0 || form_config.include?("work_address") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :work_address %>
@@ -260,7 +260,7 @@
   <%= form.hidden_field :work_address, value: "work_address" %>
 <% end %>
 
-<% if form_config.include?("terms_accepted") %>
+<% if form_config.length == 0 || form_config.include?("terms_accepted") %>
   <div class='row'>
     <span class='col col-md-4 label-col'>
       <%= form.label :terms_accepted %>

@@ -65,13 +65,16 @@ namespace :seed_stessa_2 do
       #Dimensions must appear in this string to have a show page
       #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
       dim_display: 'miscon#0#1#2#3#4#5#6#7',
-      #user_form_config: list fields that should be included in the user form
-      #dropdown selection fields should have the number of selection options
-      #Dropdown categories in views/users/_form_other.html.erb such as institute_type
-      #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
-      #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
-      #keys for the dropdown options.
-      user_form_config:'given_name,family_name,municipality,institute_type#7,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone',
+      #user_form_config:
+      #_form_other: list fields that should be included in the user form
+        #dropdown selection fields should have the number of selection options
+        #Dropdown categories in views/users/_form_other.html.erb such as institute_type
+        #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
+        #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
+        #keys for the dropdown options.
+      #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
+      # ADD DROPDOWN TRANSLATIONS IN TASK: user_form_translations
+      user_form_config:'given_name,family_name,municipality,institute_type#7,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone,role_admin,role_teacher,role_counselor,role_supervisor',
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)

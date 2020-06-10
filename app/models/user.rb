@@ -155,6 +155,42 @@ class User < BaseRec
     return roles_array.include?(PUBLIC_ROLE)
   end
 
+    def role_counselor=(val)
+    roles_array = get_roles_array
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(COUNSELOR_ROLE)
+      roles_array << COUNSELOR_ROLE if !roles_array.include?(COUNSELOR_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(COUNSELOR_ROLE)
+      roles_array = roles_array - ["#{COUNSELOR_ROLE}"]
+    end
+    self.roles = roles_array.join(',')
+  end
+  def role_counselor
+    roles_array = get_roles_array
+    return roles_array.include?(COUNSELOR_ROLE)
+  end
+  def is_counselor?
+    roles_array = get_roles_array
+    return roles_array.include?(COUNSELOR_ROLE)
+  end
+
+  def role_supervisor=(val)
+    roles_array = get_roles_array
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(SUPERVISOR_ROLE)
+      roles_array << SUPERVISOR_ROLE if !roles_array.include?(SUPERVISOR_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(SUPERVISOR_ROLE)
+      roles_array = roles_array - ["#{SUPERVISOR_ROLE}"]
+    end
+    self.roles = roles_array.join(',')
+  end
+  def role_supervisor
+    roles_array = get_roles_array
+    return roles_array.include?(SUPERVISOR_ROLE)
+  end
+  def is_supervisor?
+    roles_array = get_roles_array
+    return roles_array.include?(SUPERVISOR_ROLE)
+  end
+
   def is_registered?
     if is_admin? || is_teacher? || is_public?
       return true

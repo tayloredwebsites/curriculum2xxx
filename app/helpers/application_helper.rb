@@ -8,6 +8,14 @@ module ApplicationHelper
     current_user && current_user.is_teacher?
   end
 
+  def current_is_counselor?
+    current_user && current_user.is_counselor?
+  end
+
+  def current_is_supervisor?
+    current_user && current_user.is_supervisor?
+  end
+
   def current_is_admin?
     user_is_admin?(current_user)
   end
@@ -54,7 +62,9 @@ module ApplicationHelper
 
   def can_edit_type?(type)
     teachers_can_edit = ['miscon', 'sector', 'connect', 'resource']
-    return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type))
+    return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type)) ||
+      (current_is_counselor? && teachers_can_edit.include?(type)) ||
+      (current_is_supervisor? && teachers_can_edit.include?(type))
   end
 
   def can_edit_any_dims?(treeTypeRec)
