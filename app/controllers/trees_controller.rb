@@ -413,7 +413,7 @@ class TreesController < ApplicationController
       # puts "t.key: #{t.key.inspect}, t.value: #{t.value.inspect}"
       @translations[t.key] = t.value
     end
-    puts "++++++BLOCK 4"
+
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
       translation = @translations[tree.buildNameKey(@treeTypeRec.code, @versionRec.code, subjIds[tree.subject_id.to_s][:code])]
