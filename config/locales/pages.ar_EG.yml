@@ -70,6 +70,12 @@ ar_EG:
       public:
         abbrev: 'عامة'
         name: 'الوصول العام'
+      counselor:
+        abbrev: 'Couns.'
+        name: 'Counselor'
+      supervisor:
+        abbrev: 'Super.'
+        name: 'Supervisor'
     errors:
       too_many_matched_key: "الكثير من المباريات لـ %{key}"
       invalid_grade_band: "نطاق الدرجات غير صالح %{grade_band}"
@@ -308,6 +314,8 @@ ar_EG:
         role_public: "عامة"
         role_teacher: "مدرس"
         role_admin: "مسؤول الويب"
+        role_counselor: "Counselor"
+        role_supervisor: "Supervisor"
         email: "E-Mail Address"
         password: "Password"
         password_confirmation: "Password Confirmation"
@@ -323,7 +331,7 @@ ar_EG:
         govt_level_val5: 'District (enter name below)'
         govt_level_name: 'Government Level Name'
         municipality: 'Municipality Name'
-        institute_type: 'Institutiion Type'
+        institute_type: 'Institution Type'
         institute_type_val0: 'Ministry'
         institute_type_val1: 'Pedagogical Institute (PI)'
         institute_type_val2: 'Faculty'

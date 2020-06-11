@@ -23,20 +23,28 @@ class User < BaseRec
   ADMIN_ROLE = 'admin'
   TEACHER_ROLE = 'teacher'
   PUBLIC_ROLE = 'public'
-  VALID_ROLES = ["#{ADMIN_ROLE}", "#{TEACHER_ROLE}", "#{PUBLIC_ROLE}"]
+  COUNSELOR_ROLE = 'counselor'
+  SUPERVISOR_ROLE = 'supervisor'
+  VALID_ROLES = ["#{ADMIN_ROLE}", "#{TEACHER_ROLE}", "#{PUBLIC_ROLE}", "#{COUNSELOR_ROLE}", "#{SUPERVISOR_ROLE}"]
   ROLE_ABBREVS = [
     I18n.translate('app.roles.admin.abbrev'),
     I18n.translate('app.roles.teacher.abbrev'),
-    I18n.translate('app.roles.public.abbrev')
+    I18n.translate('app.roles.public.abbrev'),
+    I18n.translate('app.roles.counselor.name'),
+    I18n.translate('app.roles.supervisor.name'),
   ]
   ROLE_NAMES = [
     I18n.translate('app.roles.admin.name'),
     I18n.translate('app.roles.teacher.name'),
-    I18n.translate('app.roles.public.name')
+    I18n.translate('app.roles.public.name'),
+    I18n.translate('app.roles.counselor.name'),
+    I18n.translate('app.roles.supervisor.name'),
   ]
   ROLES_ADMIN = 0
   ROLES_TEACHER = 1
   ROLES_PUBLIC = 2
+  ROLES_COUNSELOR = 3
+  ROLES_SUPERVISOR = 4
 
   GOVT_LEVELS = [
     I18n.translate('activerecord.attributes.user.govt_level_val0'),
@@ -88,6 +96,8 @@ class User < BaseRec
     ret << ROLE_NAMES[ROLES_ADMIN] if roles_array.include?(ADMIN_ROLE)
     ret << ROLE_NAMES[ROLES_TEACHER] if roles_array.include?(TEACHER_ROLE)
     ret << ROLE_NAMES[ROLES_PUBLIC] if roles_array.include?(PUBLIC_ROLE)
+    ret << ROLE_NAMES[ROLES_COUNSELOR] if roles_array.include?(COUNSELOR_ROLE)
+    ret << ROLE_NAMES[ROLES_SUPERVISOR] if roles_array.include?(SUPERVISOR_ROLE)
     return ret.join(', ')
   end
 
@@ -143,6 +153,42 @@ class User < BaseRec
   def is_public?
     roles_array = get_roles_array
     return roles_array.include?(PUBLIC_ROLE)
+  end
+
+    def role_counselor=(val)
+    roles_array = get_roles_array
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(COUNSELOR_ROLE)
+      roles_array << COUNSELOR_ROLE if !roles_array.include?(COUNSELOR_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(COUNSELOR_ROLE)
+      roles_array = roles_array - ["#{COUNSELOR_ROLE}"]
+    end
+    self.roles = roles_array.join(',')
+  end
+  def role_counselor
+    roles_array = get_roles_array
+    return roles_array.include?(COUNSELOR_ROLE)
+  end
+  def is_counselor?
+    roles_array = get_roles_array
+    return roles_array.include?(COUNSELOR_ROLE)
+  end
+
+  def role_supervisor=(val)
+    roles_array = get_roles_array
+    if IS_CHECKED_VALUES.include?(val) && !roles_array.include?(SUPERVISOR_ROLE)
+      roles_array << SUPERVISOR_ROLE if !roles_array.include?(SUPERVISOR_ROLE)
+    elsif !IS_CHECKED_VALUES.include?(val) && roles_array.include?(SUPERVISOR_ROLE)
+      roles_array = roles_array - ["#{SUPERVISOR_ROLE}"]
+    end
+    self.roles = roles_array.join(',')
+  end
+  def role_supervisor
+    roles_array = get_roles_array
+    return roles_array.include?(SUPERVISOR_ROLE)
+  end
+  def is_supervisor?
+    roles_array = get_roles_array
+    return roles_array.include?(SUPERVISOR_ROLE)
   end
 
   def is_registered?

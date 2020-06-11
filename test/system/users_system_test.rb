@@ -77,7 +77,7 @@ class UsersSystemTest < ApplicationSystemTestCase
       assert page.has_content?("Government Level can't be blank")
       assert page.has_content?("Government Level Name can't be blank")
       assert page.has_content?("Municipality Name can't be blank")
-      assert page.has_content?("Institutiion Type can't be blank")
+      assert page.has_content?("Institution Type can't be blank")
       assert page.has_content?("Institution Name can't be blank")
       assert page.has_content?("Position Type can't be blank")
       assert page.has_content?("Subject Teaching can't be blank")

@@ -33,6 +33,8 @@ class UsersController < ApplicationController
     :role_admin,
     :role_teacher,
     :role_public,
+    :role_counselor,
+    :role_supervisor,
     :home_page_text,
     :resources_text,
   ]

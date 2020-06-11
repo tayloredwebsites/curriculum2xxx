@@ -2,42 +2,77 @@
 <% admin_subjects = @user.admin_subjects.split(',') %>
 <% if current_is_admin? %>
   <%= form.hidden_field :admin_subjects %>
-  <div class='row'>
-    <span class='col col-md-4 label-col'>
-      <%= form.label :role_admin %>
-    </span>
-    <span class='col col-md-8 input-col'>
-      <span class='required'>&nbsp;</span>
-      <%= form.check_box :role_admin %>
-      <% if @user.errors.present? && @user.errors[:role_admin].present? %>
-        <span class='ui-error'><%= @user.errors[:role_admin].join(', ') %></span>
-      <% end %>
-    </span>
-  </div>
-  <div class='row'>
-    <span class='col col-md-4 label-col'>
-      <%= form.label :role_teacher %>
-    </span>
-    <span class='col col-md-8 input-col'>
-      <span class='required'>&nbsp;</span>
-      <%= form.check_box :role_teacher %>
-      <% if @user.errors.present? && @user.errors[:role_teacher].present? %>
-        <span class='ui-error'><%= @user.errors[:role_teacher].join(', ') %></span>
-      <% end %>
-    </span>
-  </div>
-  <div class='row'>
-    <span class='col col-md-4 label-col'>
-      <%= form.label :role_public %>
-    </span>
-    <span class='col col-md-8 input-col'>
-      <span class='required'>&nbsp;</span>
-      <%= form.check_box :role_public %>
-      <% if @user.errors.present? && @user.errors[:role_public].present? %>
-        <span class='ui-error'><%= @user.errors[:role_public].join(', ') %></span>
-      <% end %>
-    </span>
-  </div>
+  <% if @treeTypeRec.user_form_config.blank? || @treeTypeRec.user_form_config.include?("role_admin") %>
+    <div class='row'>
+      <span class='col col-md-4 label-col'>
+        <%= form.label :role_admin %>
+      </span>
+      <span class='col col-md-8 input-col'>
+        <span class='required'>&nbsp;</span>
+        <%= form.check_box :role_admin %>
+        <% if @user.errors.present? && @user.errors[:role_admin].present? %>
+          <span class='ui-error'><%= @user.errors[:role_admin].join(', ') %></span>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+  <% if @treeTypeRec.user_form_config.blank? || @treeTypeRec.user_form_config.include?("role_teacher") %>
+    <div class='row'>
+      <span class='col col-md-4 label-col'>
+        <%= form.label :role_teacher %>
+      </span>
+      <span class='col col-md-8 input-col'>
+        <span class='required'>&nbsp;</span>
+        <%= form.check_box :role_teacher %>
+        <% if @user.errors.present? && @user.errors[:role_teacher].present? %>
+          <span class='ui-error'><%= @user.errors[:role_teacher].join(', ') %></span>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+  <% if @treeTypeRec.user_form_config.blank? || @treeTypeRec.user_form_config.include?("role_counselor") %>
+    <div class='row'>
+      <span class='col col-md-4 label-col'>
+        <%= form.label :role_counselor %>
+      </span>
+      <span class='col col-md-8 input-col'>
+        <span class='required'>&nbsp;</span>
+        <%= form.check_box :role_counselor %>
+        <% if @user.errors.present? && @user.errors[:role_counselor].present? %>
+          <span class='ui-error'><%= @user.errors[:role_counselor].join(', ') %></span>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+  <% if @treeTypeRec.user_form_config.length == 0 || @treeTypeRec.user_form_config.include?("role_supervisor") %>
+    <div class='row'>
+      <span class='col col-md-4 label-col'>
+        <%= form.label :role_supervisor %>
+      </span>
+      <span class='col col-md-8 input-col'>
+        <span class='required'>&nbsp;</span>
+        <%= form.check_box :role_supervisor %>
+        <% if @user.errors.present? && @user.errors[:role_supervisor].present? %>
+          <span class='ui-error'><%= @user.errors[:role_supervisor].join(', ') %></span>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+  <% if @treeTypeRec.user_form_config.blank? || @treeTypeRec.user_form_config.include?("role_public") %>
+    <div class='row'>
+      <span class='col col-md-4 label-col'>
+        <%= form.label :role_public %>
+      </span>
+      <span class='col col-md-8 input-col'>
+        <span class='required'>&nbsp;</span>
+        <%= form.check_box :role_public %>
+        <% if @user.errors.present? && @user.errors[:role_public].present? %>
+          <span class='ui-error'><%= @user.errors[:role_public].join(', ') %></span>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+
   <div class='row'>
     <span class='col col-md-4 label-col'>
       <% if current_is_admin? %>
@@ -77,13 +112,15 @@
     </span>
     <span class='col col-md-8 input-col'>
       <span class='required'>&nbsp;</span>
-      <% if @user.is_admin? %>
-        <%= I18n.t('app.roles.admin.name') %>
-      <% elsif @user.is_teacher? %>
-        <%= I18n.t('app.roles.teacher.name') %>
-      <% elsif @user.is_public? %>
-        <%= I18n.t('app.roles.public.name') %>
-      <% end %>
+      <% roles = [] %>
+      <%
+        roles << I18n.t('app.roles.admin.name') if @user.is_admin?
+        roles << I18n.t('app.roles.teacher.name') if @user.is_teacher?
+        roles << I18n.t('app.roles.public.name') if @user.is_public?
+        roles << I18n.t('app.roles.counselor.name') if @user.is_counselor?
+        roles << I18n.t('app.roles.supervisor.name') if @user.is_supervisor?
+      %>
+      <%= roles.join(", ") %>
     </span>
   </div>
   <% if admin_subjects.length > 0 %>

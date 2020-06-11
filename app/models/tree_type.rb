@@ -22,6 +22,10 @@ class TreeType < BaseRec
   def resources_page_key
     return "curriculum.#{code}.#{Version.find(version_id).code}.rsrc_page"
   end
+
+  def user_form_option_key(version_code, form_field_name, option_num)
+    return "#{code}.#{version_code}.user_attr.#{form_field_name}.no.#{option_num}"
+  end
   #######################################
   def self.get_sector_set_code(code)
     return code.split(",")[0]
@@ -54,6 +58,27 @@ class TreeType < BaseRec
 
   def hide_sectors
     return self.sector_set_code.split(",").length > 1
+  end
+
+  def user_form_options(version_code, form_field_name, locale_code)
+    puts "!!!GET USER FIELD: #{form_field_name} OPTIONS. ver:#{version_code} loc:#{locale_code}"
+    config_str = user_form_config.match(/#{form_field_name}#\d+/)
+    if config_str
+      puts "CONFIG FOR OPTION: #{config_str}"
+      ret =  []
+      num_opts = config_str.to_s.split("#")[1].to_i
+      puts "NUM OPTS = #{num_opts}"
+      [*1..num_opts].each do |num|
+        ret << Translation.find_translation_name(
+            locale_code,
+            user_form_option_key(version_code, form_field_name, num),
+            nil
+          ) || I18n.translate('translations.errors.missing_translation_for_item')
+      end
+      return ret
+    else
+      return nil
+    end
   end
 
 end

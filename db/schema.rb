@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200519031537) do
+ActiveRecord::Schema.define(version: 20200610031343) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.string "base_key"
     t.boolean "active", default: true
     t.string "sector_set_code", default: "", null: false
+    t.string "key_phrase", default: "", null: false
     t.index ["code"], name: "index_sectors_on_code"
   end
 
@@ -144,6 +145,7 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.string "grid_headers", default: "", null: false
     t.string "dim_codes", default: "bigidea,miscon", null: false
     t.string "dim_display", default: "", null: false
+    t.string "user_form_config", default: "", null: false
     t.index ["code", "version_id"], name: "index_tree_types_on_code_and_version_id", unique: true
   end
 
