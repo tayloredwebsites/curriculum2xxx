@@ -37,7 +37,7 @@ namespace :seed_stessa_2 do
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
-      dim_codes: 'bigidea,essq,concept,skill,miscon,standardus,standardeg',
+      dim_codes: 'caps,bigidea,essq,concept,skill,miscon,standardus,standardeg',
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
@@ -59,7 +59,7 @@ namespace :seed_stessa_2 do
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
       #   To Do: standards header on top RIGHT of the show page.
-      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},<sector>_[bigidea]_[essq],{sem#3}_{grade#0}_{unit#2},[miscon#2#1],[concept]_[skill],{resource#7},{resource#8},[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
+      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},<sector>_[bigidea]_[essq],{sem#3}_{grade#0}_{unit#2},[miscon#2#1],[concept]_[skill],{resource#7},[caps],{resource#8},[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
@@ -231,7 +231,10 @@ namespace :seed_stessa_2 do
       sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: 'علم', locName: 'علم'},
       ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: 'علوم الأرض', locName: 'علوم الأرض'},
       geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: 'جيولوجيا', locName: 'جيولوجيا'},
-      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'}
+      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'},
+      adv: {abbr: 'adv', inCurric: true, engName: 'Advisory', locAbbr: 'استشاري', locName: 'استشاري'},
+      ara: {abbr: 'ara', inCurric: true, engName: 'Arabic', locAbbr: 'عربى', locName: 'عربى'},
+      art: {abbr: 'art', inCurric: true, engName: 'Art', locAbbr: 'فن', locName: 'فن'},
     }
 
     @subjectsHash.each do |key, subjHash|
@@ -387,6 +390,7 @@ namespace :seed_stessa_2 do
   desc "create translations for dimension types"
   task dimension_translations: :environment do
     dim_translations_arr = [
+      ['caps', 'Capstone Challenge', 'تحدي كابستون'],
       ['bigidea', 'Big Idea', 'فكرة هامة'],
       ['essq', 'Essential Question', 'السؤال الجوهري'],
       ['concept', 'Concept', 'مفهوم'],

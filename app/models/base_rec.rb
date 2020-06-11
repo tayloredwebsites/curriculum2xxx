@@ -48,6 +48,9 @@ class BaseRec < ActiveRecord::Base
     'ear', #Earth Science
     'geo', #Geology
     'tech', #Technology
+    'adv', #advisory
+    'ara', #Arabic
+    'art', #Art
   ]
 
   # BASE_PRACTICES = [
