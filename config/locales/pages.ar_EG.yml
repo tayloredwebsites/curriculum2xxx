@@ -40,7 +40,7 @@ ar_EG:
       code: "الشفرة"
       description: 'وصف'
       message: "رسالة"
-      gen_list: "إنشاء قائمة"
+      gen_list: "تبين"
       sector: "التحدي الكبير"
       upload_summary: 'تحميل تقرير ملخص'
       upload_new: 'إضافة وتحميل'

@@ -43,7 +43,7 @@ en:
       code: "Code"
       description: 'Description'
       message: "Message"
-      gen_list: "Generate List"
+      gen_list: "Show"
       sector: "Sector"
       upload_summary: 'Uploads Summary Report'
       upload_new: 'Add and Do Upload'
