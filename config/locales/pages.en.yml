@@ -62,6 +62,7 @@ en:
       connect_form_title: "Save Connection?"
       show_details: "Show Details"
       last_updated: "Last updated at: %{time}"
+      print: "Print"
     roles:
       name: 'Roles'
       admin:

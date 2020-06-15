@@ -59,6 +59,7 @@ ar_EG:
       connect_form_title: "حفظ الاتصال؟"
       show_details: "اظهر التفاصيل"
       last_updated: "Last updated at: %{time}"
+      print: "طباعة"
     roles:
       name: 'الأدوار'
       admin:

@@ -37,6 +37,7 @@ tr:
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
       last_updated: "Last updated at: %{time}"
+      print: "Yazdır"
       errors:
         max_subj_display_count: "Bir defada en fazla %{num} konu görüntülenebilir."
   nav_bar:
