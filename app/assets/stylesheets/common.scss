@@ -48,6 +48,20 @@ body {
       }
     }
   }
+.colorful-header {
+  text-align: left;
+  min-height: 40px;
+  &.colorful-header-0 { background-color: #d2ccf5; }
+  &.colorful-header-1 { background-color: #ffedc1; }
+  &.colorful-header-2 { background-color: #ffcaca; }
+  &.colorful-header-3 { background-color: #c8e5ff; }
+}
+.sequence-item:not(.colorful-header) + .sequence-item.colorful-header {
+ margin-top:4vh;
+}
+/*********************************************************************
+Start Treeview styles- deprecated. These are for the old Curriculum Tree page.
+************************************************************************/
 
   /**treeview items that are not at LO depth**/
   .node-tree[style*="background-color:#"] {height:50px;border:none !important;margin-top:5px;}
@@ -63,6 +77,9 @@ body {
 
   .treeview .list-group-item {display: inline-flex;}
 
+/*********************************************************************
+End Treeview styles- deprecated. These are for the old Curriculum Tree page.
+************************************************************************/
 
   .spotlight-new {
     animation: fadewhite 5s ease-out;

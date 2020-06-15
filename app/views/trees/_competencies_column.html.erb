@@ -3,7 +3,7 @@
   <li>
     <%= render partial: "maint_filter", locals: {col: "tree"} %>
   </li>
-  <li class="maint-header indent-0"><%= @subjectByCode[@subject_code] ? @subjectByCode[@subject_code][:name] : @subject_code %></li>
+  <li class="colorful-header colorful-header-0 indent-0"><%= @subjectByCode[@subject_code] ? @subjectByCode[@subject_code][:name] : @subject_code %></li>
   <%
    @treeByParents.each do |tkey, codeh| %>
     <% codeh.each do |code, h| %>
@@ -51,7 +51,7 @@
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
       <% else %>
-        <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item maint-sub-header list-group-item indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>" data-treeid="<%= h[:id] %>">
+        <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item list-group-item indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %> colorful-header colorful-header-<%= h[:depth] %>" data-treeid="<%= h[:id] %>">
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>

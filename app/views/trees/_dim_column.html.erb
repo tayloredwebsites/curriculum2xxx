@@ -2,7 +2,7 @@
   <li>
     <%= render partial: "maint_filter", locals: {col: dim_type } %>
   </li>
-  <li class="maint-header"><%= "#{dim_subj_name} - #{dim_title} (#{grades_str}: #{@dim_filters[dim_type][:gb][:min_grade]} - #{@dim_filters[dim_type][:gb][:max_grade]})" %>
+  <li class="colorful-header colorful-header-0"><%= "#{dim_subj_name} - #{dim_title} (#{grades_str}: #{@dim_filters[dim_type][:gb][:min_grade]} - #{@dim_filters[dim_type][:gb][:max_grade]})" %>
     <% if @editing && can_edit %>
       <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
     <% end %>
