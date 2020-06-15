@@ -121,8 +121,8 @@ en:
       name: "Editing"
       hover: "Page for Editing of Curriculum Items"
     connections:
-      name: "Other"
-      hover: "Other Connections"
+      name: "Views"
+      hover: "Views"
     bigidea:
       name: "Big Ideas"
       hover: "Big Ideas"

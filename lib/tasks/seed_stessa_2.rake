@@ -31,7 +31,7 @@ namespace :seed_stessa_2 do
       code: @curriculumCode,
       hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
-      sector_set_code: 'gr_chall',
+      sector_set_code: 'gr_chall,hide',
       sector_set_name_key: 'sector.set.gr_chal.name',
       curriculum_title_key: 'curriculum.egstem.title', # 'Egypt STEM Curriculum - deprecated - see treeType.title_key'
       outcome_depth: 3,

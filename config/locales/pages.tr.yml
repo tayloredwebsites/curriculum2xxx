@@ -51,8 +51,8 @@ tr:
       name: "Gelecek Sektörler"
       hover: "Gelecekteki Sektörlere Göre Müfredatı görüntüler"
     connections:
-      name: "Bağlantılar"
-      hover: "açılır"
+      name: "Görüntüleme"
+      hover: "Görüntüleme"
     big_ideas:
       name: "Büyük Fikirler"
       hover: ""

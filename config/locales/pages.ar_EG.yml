@@ -118,8 +118,8 @@ ar_EG:
       name: "التحرير"
       hover: "صفحة تحرير عناصر المناهج"
     connections:
-      name: "آخر"
-      hover: "اتصالات أخرى"
+      name: "الآراء"
+      hover: "الآراء"
     bigidea:
       name: "أفكار كبيرة"
       hover: "أفكار كبيرة"
