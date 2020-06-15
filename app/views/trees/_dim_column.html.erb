@@ -17,7 +17,7 @@
             <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
 
           <br/>
-          <span class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong>
+          <div class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong>
             <% if dim_link %>
               <a href="<%= dim_link %>">
               <%= @translations[dim.dim_name_key].html_safe %>
@@ -25,7 +25,7 @@
             <% else %>
               <%= @translations[dim.dim_name_key].html_safe %>
             <% end %>
-          </span>
+          </div>
           <br/>
 
           <% if can_edit && @editing%>
