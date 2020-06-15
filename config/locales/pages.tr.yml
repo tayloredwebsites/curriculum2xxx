@@ -44,6 +44,7 @@ tr:
     home:
       name: "Ev"
       hover: "Mektebim STEM Ana Sayfa"
+    welcome: "Hoş geldiniz, %{name}!"
     curriculum:
       name: "Gelecek Müfredat"
       hover: "Müfredat Ağacı'nı görüntüler"

@@ -105,6 +105,7 @@ ar_EG:
     home:
       name: "الصفحة الرئيسية"
       hover: "الصفحة الرئيسية STEM في مصر"
+    welcome: "!%{name} مرحبًا"
     curriculum:
       name: "شجرة المناهج"
       hover: "يعرض شجرة المناهج"

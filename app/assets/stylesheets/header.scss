@@ -2,7 +2,7 @@
 #pageHeader {
   #pageHeaderLogo {
      margin-left: 0px;
-     min-width: 100px;
+     min-width: 160px;
      .logoImage {
        /* background-image: url(asset_path('logo.png'));*/
        /* background-repeat: no-repeat; */
@@ -48,11 +48,13 @@ nav#topNav {
 }
 
 
-
+ .navbar-expand-sm, .flexContainer {flex-flow: wrap !important;}
 @media only screen and (max-width: 767px) {
-  #pageHeaderTitle {
-    display: none;
+  #pageHeaderTitle--mobile {
+    margin-right: 25px;
+    h1 {font-size: 1.5rem;}
   }
+  #pageHeaderTitle {display:none;}
   #pageSubHeaderTitle {
     margin: 0 auto;
     max-width: 300px;
@@ -64,6 +66,7 @@ nav#topNav {
 }
 
 @media only screen and (min-width: 768px) {
+  #pageHeaderTitle--mobile {display:none;}
   #pageSubHeaderTitle {
     display: none;
   }

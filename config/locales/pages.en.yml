@@ -108,15 +108,16 @@ en:
     home:
       name: "Home"
       hover: "Mektebim STEM Home Page"
+    welcome: "Welcome, %{name}!"
     curriculum:
-      name: "Curriculum Tree"
+      name: "Curriculum"
       hover: "Displays the Curriculum Tree"
     sectors:
       name: "Sectors"
       hover: "Displays the Curriculum by Sectors"
     relations:
-      name: "Relations"
-      hover: "Display the Relations between Curriculum Items"
+      name: "Connections"
+      hover: "Display the Connections between Curriculum Items"
     maint:
       name: "Editing"
       hover: "Page for Editing of Curriculum Items"
