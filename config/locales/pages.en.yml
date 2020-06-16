@@ -60,7 +60,7 @@ en:
       working_version: "Working"
       final_version: "Final"
       connect_form_title: "Save Connection?"
-      show_details: "Show Details"
+      show_details: "Show Grid"
       last_updated: "Last updated at: %{time}"
       print: "Print"
     roles:

@@ -36,6 +36,7 @@ tr:
       upload_new: 'Yükleme Ekle ve Yap'
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
+      show_details: "Izgarayı göster"
       last_updated: "Last updated at: %{time}"
       print: "Yazdır"
       errors:
