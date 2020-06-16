@@ -90,6 +90,10 @@ class User < BaseRec
     where("roles = ''")
   }
 
+  def active_for_authentication?
+    super && roles.length > 0
+  end
+
   def role_names
     ret = []
     roles_array = get_roles_array

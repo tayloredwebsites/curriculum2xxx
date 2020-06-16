@@ -1,72 +1,79 @@
-<header id='pageHeader' class='d-flex flex-row justify-content-between'>
-  <a id='pageHeaderLogo' class='' href='#'>
-    <div class='logoImage'></div>
-  </a>
-  <div id='pageHeaderTitle' class=''>
-    <h1 class='text-center'><%= @appTitle if current_user.present? %></h1>
-  </div>
-  <% if current_user.present? %>
-    <div id='pageHeaderCurriculumSelect'>
-      <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum('<%= request.env['PATH_INFO'] %>', <%= current_user.present? ? current_user.id : '' %>)">
-        <% @versionsHash.each_value do |arr| %>
-          <% arr.each do |cur| %>
-            <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>
-            <option value="<%= [cur[:tree_type_id], cur[:version_id]].to_s %>"<%= selected_curriculum ? " selected" : "" %>>
-              <%=
-              "#{cur[:str]}"
-              # "[#{cur[:working] ? translate('app.labels.working_version') : translate('app.labels.final_version')}]"
-              %>
-            </option>
-          <% end %>
-        <% end %>
-      </select>
+<header id='pageHeader' class='d-flex flex-row navbar justify-content-between'>
+  <div class="col-12 navbar navbar-expand-sm flexContainer">
+    <a id='pageHeaderLogo' class='' href='#'>
+      <div class='logoImage nav-item'></div>
+    </a>
+    <div id='pageHeaderTitle--mobile' class='nav-item'>
+      <h1 class='text-center'><%= @appTitle if current_user.present? %></h1>
     </div>
-  <% end %>
-  <div id='pageHeaderFontSize' class='font-size-select'>
-    <span class='smallest-text'>A</span>
-    <span class='smaller-text'>A</span>
-    <span class='medium-text'>A</span>
-    <span class='larger-text'>A</span>
-    <span class='largest-text'>A</span>
-  </div>
-  <div id='pageHeaderShowNav' class=''>
-    <ul id='locale-select'>
-      <% @locale_codes.each do |lc| %>
-        <% if lc == 'tr'%>
-          <% if @locale_code == 'tr' %>
-            <li class='cur-locale'>
-              <span>Türkçe</span>
-            </li>
-          <% else %>
-            <li class='locale-opt'>
-              <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türkçe</a>
-            </li>
+    <div class="pull-left nav-item"><%= I18n.translate("nav_bar.welcome", name: current_user.given_name) if current_user.present? %></div>
+    <div id='pageHeaderTitle' class='nav-item'>
+      <h1 class='text-center'><%= @appTitle if current_user.present? %></h1>
+    </div>
+    <% if current_user.present? %>
+      <div id='pageHeaderCurriculumSelect' class='nav-item'>
+        <select id='selectCurriculumDropdown' name='tree_type[type_and_version_id]' onchange="selectCurriculum('<%= request.env['PATH_INFO'] %>', <%= current_user.present? ? current_user.id : '' %>)">
+          <% @versionsHash.each_value do |arr| %>
+            <% arr.each do |cur| %>
+              <% selected_curriculum = (cur[:tree_type_id] == @treeTypeRec.id && cur[:version_id] == @versionRec.id) %>
+              <option value="<%= [cur[:tree_type_id], cur[:version_id]].to_s %>"<%= selected_curriculum ? " selected" : "" %>>
+                <%=
+                "#{cur[:str]}"
+                # "[#{cur[:working] ? translate('app.labels.working_version') : translate('app.labels.final_version')}]"
+                %>
+              </option>
+            <% end %>
+          <% end %>
+        </select>
+      </div>
+    <% end %>
+    <div id='pageHeaderFontSize' class='font-size-select nav-item'>
+      <span class='smallest-text'>A</span>
+      <span class='smaller-text'>A</span>
+      <span class='medium-text'>A</span>
+      <span class='larger-text'>A</span>
+      <span class='largest-text'>A</span>
+    </div>
+
+    <div id='pageHeaderShowNav' class='nav-item'>
+      <ul id='locale-select'>
+        <% @locale_codes.each do |lc| %>
+          <% if lc == 'tr'%>
+            <% if @locale_code == 'tr' %>
+              <li class='cur-locale'>
+                <span>Türkçe</span>
+              </li>
+            <% else %>
+              <li class='locale-opt'>
+                <a href='/users/lang/tr<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Türkçe</a>
+              </li>
+            <% end %>
+          <% end %>
+          <% if lc == 'en'%>
+            <% if @locale_code == 'en' %>
+              <li class='cur-locale'>
+                <span>English</span>
+              </li>
+            <% else %>
+              <li class='locale-opt'>
+                <a href='/users/lang/en<%= "?dim_type=#{@dim_type}" if @dim_type %>'>English</a>
+              </li>
+            <% end %>
+          <% end %>
+          <% if lc == 'ar_EG'%>
+            <% if @locale_code == 'ar_EG' %>
+              <li class='cur-locale'>
+                <span>عربي مصري</span>
+              </li>
+            <% else %>
+              <li class='locale-opt'>
+                <a href='/users/lang/ar_EG<%= "?dim_type=#{@dim_type}" if @dim_type %>'>عربي مصري</a>
+              </li>
+            <% end %>
           <% end %>
         <% end %>
-        <% if lc == 'en'%>
-          <% if @locale_code == 'en' %>
-            <li class='cur-locale'>
-              <span>English</span>
-            </li>
-          <% else %>
-            <li class='locale-opt'>
-              <a href='/users/lang/en<%= "?dim_type=#{@dim_type}" if @dim_type %>'>English</a>
-            </li>
-          <% end %>
-        <% end %>
-        <% if lc == 'ar_EG'%>
-          <% if @locale_code == 'ar_EG' %>
-            <li class='cur-locale'>
-              <span>عربي مصري</span>
-            </li>
-          <% else %>
-            <li class='locale-opt'>
-              <a href='/users/lang/ar_EG<%= "?dim_type=#{@dim_type}" if @dim_type %>'>عربي مصري</a>
-            </li>
-          <% end %>
-        <% end %>
-      <% end %>
-    </ul>
+      </ul>
+    </div>
   </div>
 </header>
 <% if current_user.present? %>
@@ -83,24 +90,14 @@
         </li>
       <%
       end
-      if controller.controller_name == 'trees' && action_name == 'index' %>
-        <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
-        </li>
-      <% else %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= trees_path %>><%= translate('nav_bar.curriculum.name') %></a>
-        </li>
-      <%
-      end
       if controller.controller_name == 'trees' && action_name == 'outcomes' %>
         <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
+          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= translate('nav_bar.curriculum.name') %></a>
         </li>
       <%
       else %>
         <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= @hierarchies[@treeTypeRec[:outcome_depth]].pluralize %></a>
+          <a class="nav-link btn btn-primary" href=<%= maint_trees_path() %>><%= translate('nav_bar.curriculum.name') %></a>
         </li>
       <%
       end
@@ -148,13 +145,6 @@
           <% end %>
           <li class="nav-item" role='menuitem'>
             <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
-          </li>
-          <li class="nav-item active" role='menuitem'>
-          <a class="nav-link btn btn-primary" href="#">
-            <%= translate('nav_bar.concepts.name') %></a>
-          </li>
-          <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href="#"><%= translate('nav_bar.standards.name') %></a>
           </li>
         </ul>
     </li>

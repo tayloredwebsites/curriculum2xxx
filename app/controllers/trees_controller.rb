@@ -358,6 +358,7 @@ class TreesController < ApplicationController
 
   def sequence
     index_prep
+    @page_settings = JSON.parse(cookies[:connect_cols_settings]) if cookies[:connect_cols_settings]
     @max_subjects = 6
     @s_o_hash = Hash.new  { |h, k| h[k] = [] }
     @indicator_hash = Hash.new { |h, k| h[k] = [] }

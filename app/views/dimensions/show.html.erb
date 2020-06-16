@@ -31,6 +31,7 @@
 	    <%= link_to("Edit #{dimTypeTitle}", dimension_path(@dimension.id, editMe: true) ) if can_edit_type?(@dimension.dim_code)
 	     %>
 	  <% end %>
+    <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
 	</div>
   <div class="dimension-grid cols-2">
   	<% @dimDisplayHash[@dimension.dim_code].each do |resource| %>

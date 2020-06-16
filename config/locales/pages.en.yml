@@ -43,7 +43,7 @@ en:
       code: "Code"
       description: 'Description'
       message: "Message"
-      gen_list: "Generate List"
+      gen_list: "Show"
       sector: "Sector"
       upload_summary: 'Uploads Summary Report'
       upload_new: 'Add and Do Upload'
@@ -62,6 +62,7 @@ en:
       connect_form_title: "Save Connection?"
       show_details: "Show Details"
       last_updated: "Last updated at: %{time}"
+      print: "Print"
     roles:
       name: 'Roles'
       admin:
@@ -107,21 +108,22 @@ en:
     home:
       name: "Home"
       hover: "Mektebim STEM Home Page"
+    welcome: "Welcome, %{name}!"
     curriculum:
-      name: "Curriculum Tree"
+      name: "Curriculum"
       hover: "Displays the Curriculum Tree"
     sectors:
       name: "Sectors"
       hover: "Displays the Curriculum by Sectors"
     relations:
-      name: "Relations"
-      hover: "Display the Relations between Curriculum Items"
+      name: "Connections"
+      hover: "Display the Connections between Curriculum Items"
     maint:
       name: "Editing"
       hover: "Page for Editing of Curriculum Items"
     connections:
-      name: "Other"
-      hover: "Other Connections"
+      name: "Views"
+      hover: "Views"
     bigidea:
       name: "Big Ideas"
       hover: "Big Ideas"

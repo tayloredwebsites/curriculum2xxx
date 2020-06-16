@@ -26,7 +26,7 @@ namespace :seed_eg_stem do
       code: 'egstemuniv',
       hierarchy_codes: 'grade,sem,unit,lo,indicator',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
-      sector_set_code: 'gr_chall',
+      sector_set_code: 'gr_chall,hide',
       sector_set_name_key: 'sector.set.gr_chal.name',
       curriculum_title_key: 'curriculum.egstemuniv.title', #'Egypt STEM Teacher Prep Curriculum'
       outcome_depth: 3,
@@ -58,7 +58,7 @@ namespace :seed_eg_stem do
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
       #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
-      dim_display: 'miscon#0#1#2#3#4#5#6#7',
+      dim_display: 'miscon#0#8#1#2#3#4#5#6#7',
       #user_form_config:
       #_form_other: list fields that should be included in the user form
         #dropdown selection fields should have the number of selection options
@@ -373,7 +373,7 @@ namespace :seed_eg_stem do
     ]
 
     dim_resource_types_arr = [
-      ['Second Subject', 'الموضوع الثاني'],
+      ['Second Category', 'الفئة الثانية'],
       ['Correct Understanding', 'الفهم الصحيح'],
       ['Possible Source of Misconception', 'مصدر محتمل للفهم الخاطئ'],
       ['Compiler/Source'],
@@ -381,6 +381,7 @@ namespace :seed_eg_stem do
       ['Website Link References', 'مراجع رابط الموقع'],
       ['Test Distractor Percent', 'اختبار نسبة تشتيت الانتباه'],
       ['Link to Question Item Bank', 'رابط إلى بنك عناصر السؤال'],
+      ['Third Category', 'الفئة الثالثة'],
     ]
     dim_translations_arr.each do |dim|
       dim_name_key = Dimension.get_dim_type_key(

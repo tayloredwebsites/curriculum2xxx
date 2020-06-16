@@ -37,12 +37,14 @@ tr:
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
       last_updated: "Last updated at: %{time}"
+      print: "Yazdır"
       errors:
         max_subj_display_count: "Bir defada en fazla %{num} konu görüntülenebilir."
   nav_bar:
     home:
       name: "Ev"
       hover: "Mektebim STEM Ana Sayfa"
+    welcome: "Hoş geldiniz, %{name}!"
     curriculum:
       name: "Gelecek Müfredat"
       hover: "Müfredat Ağacı'nı görüntüler"
@@ -50,8 +52,8 @@ tr:
       name: "Gelecek Sektörler"
       hover: "Gelecekteki Sektörlere Göre Müfredatı görüntüler"
     connections:
-      name: "Bağlantılar"
-      hover: "açılır"
+      name: "Görüntüleme"
+      hover: "Görüntüleme"
     big_ideas:
       name: "Büyük Fikirler"
       hover: ""

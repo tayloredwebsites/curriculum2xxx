@@ -2,7 +2,7 @@
   <li>
     <%= render partial: "maint_filter", locals: {col: dim_type } %>
   </li>
-  <li class="maint-header"><%= "#{dim_subj_name} - #{dim_title} (#{grades_str}: #{@dim_filters[dim_type][:gb][:min_grade]} - #{@dim_filters[dim_type][:gb][:max_grade]})" %>
+  <li class="colorful-header colorful-header-0"><%= "#{dim_subj_name} - #{dim_title} (#{grades_str}: #{@dim_filters[dim_type][:gb][:min_grade]} - #{@dim_filters[dim_type][:gb][:max_grade]})" %>
     <% if @editing && can_edit %>
       <%= link_to(fa_icon("plus"), dimension_form_trees_path( dimension: { dim_type: dim_type }), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) %>
     <% end %>
@@ -17,7 +17,7 @@
             <span class='pull-left'><strong><%= "#{grades_str}: " %></strong> <%= "#{dim.min_grade} - #{dim.max_grade}" %></span>
 
           <br/>
-          <span class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong>
+          <div class='pull-left left-justify'><strong><%= "#{dim_title.singularize}: " %></strong>
             <% if dim_link %>
               <a href="<%= dim_link %>">
               <%= @translations[dim.dim_name_key].html_safe %>
@@ -25,7 +25,7 @@
             <% else %>
               <%= @translations[dim.dim_name_key].html_safe %>
             <% end %>
-          </span>
+          </div>
           <br/>
 
           <% if can_edit && @editing%>

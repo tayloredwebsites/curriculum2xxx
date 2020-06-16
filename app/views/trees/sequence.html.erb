@@ -1,9 +1,10 @@
 <% content_for(:title_code, 'trees.index.name') %>
 <% content_for(:page_class, 'trees') %>
 
+<% subj_cols_count = 0 %>
 <br>
 <div class='text-center sequence-page'>
-  <h2 id="sequencing-header"><%= translate('trees.sequencing.title') %></h2>
+  <h2 id="sequencing-header"><%= translate('nav_bar.relations.name') %></h2>
   <div id="controls">
     <div>
       <% if @indicator_name %>
@@ -38,9 +39,13 @@
     <% subj_counter = 0 %>
     <% subj_default_count = 3 %>
     <% @s_o_hash.keys.each do |i| %>
-      <% subj_counter += 1 %>
+      <%
+        subj_counter += 1
+        subj_checked = @page_settings ? @page_settings.include?("check-#{i}") : (subj_counter <= subj_default_count)
+        subj_cols_count += 1 if subj_checked
+      %>
       <div class='subj-checkbox'>
-        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>", <%= @max_subjects %>, "<%= I18n.t('app.errors.max_subj_display_count', num: @max_subjects) %>");' <%= subj_counter <= subj_default_count ? "checked" : "" %>></input>
+        <input id="check-<%= i %>" type="checkbox" onchange='subject_visibility("<%= i %>", <%= @max_subjects %>, "<%= I18n.t('app.errors.max_subj_display_count', num: @max_subjects) %>");' <%= subj_checked ? "checked" : "" %>></input>
         <label for="check-<%= i %>">
           <%= @subjectByCode[i][:abbr] %>
         </label>
@@ -49,9 +54,10 @@
           <ul id="<%= i %>-gradebands-list" class="gradebands-list hidden">
             <%
             @subj_gradebands[i].each do |gb_code|
+              gb_checked = @page_settings ? @page_settings.include?("#{i}-gb-check-#{gb_code}") : true
             %>
               <li>
-              <input id="<%= i %>-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility(["<%= i %>"], ["<%= gb_code %>"]);' checked></input>
+              <input id="<%= i %>-gb-check-<%= gb_code %>" type="checkbox" onchange='gradeband_visibility(["<%= i %>"], ["<%= gb_code %>"]);'<%= gb_checked ? " checked" : "" %>></input>
               <label for="<%= i %>-gb-check-<%= gb_code %>">
                 <%= I18n.t('app.labels.grade_band_num', num: gb_code) %>
               </label>
@@ -65,14 +71,20 @@
 </div>
 <% subj_counter = 0 %>
 <div id="trees" class="sequence-page">
-  <div class="sequence-grid cols-<%= subj_default_count %>">
+  <div class="sequence-grid cols-<%= subj_cols_count %>">
 	<% @s_o_hash.each do |i, j| %>
-    <% subj_counter += 1 %>
-    <div id="<%=i%>-column" class="sequence-item subject-column<%= subj_counter > subj_default_count ? " hidden" : "" %>">
+    <% subj_counter += 1
+      subj_checked = @page_settings ? @page_settings.include?("check-#{i}") : (subj_counter <= subj_default_count)
+    %>
+
+    <div id="<%=i%>-column" class="sequence-item subject-column<%= subj_checked ? "" : " hidden" %>">
       <ul class="list-group">
         <li class="sequence-header"><%= @subjects[i].get_name(@locale_code) %></li>
         <% j.each do |k| %>
-          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item lo_gb_code_<%= k[:gb_code] %>" data-lo-id="<%= k[:id] %>">
+          <%
+            gb_checked = @page_settings ? @page_settings.include?("#{i}-gb-check-#{k[:gb_code]}") : true
+          %>
+          <li id="lo_<%= k[:id] %>" class="sequence-item sequence-item--collapsable list-group-item lo_gb_code_<%= k[:gb_code] %><%= gb_checked ? "" : " hidden" %>" data-lo-id="<%= k[:id] %>">
             <a class="truncate-if-collapsed" href="<%= tree_path(k[:id])%>" title="<%= k[:text] %>"><%= k[:text] %></a>
             <% if @indicator_hash[k[:code]].length > 0 %>
               <div class="indicators-container hidden hide-if-collapsed"><strong>

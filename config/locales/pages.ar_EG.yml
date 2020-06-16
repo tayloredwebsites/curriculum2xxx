@@ -40,7 +40,7 @@ ar_EG:
       code: "الشفرة"
       description: 'وصف'
       message: "رسالة"
-      gen_list: "إنشاء قائمة"
+      gen_list: "تبين"
       sector: "التحدي الكبير"
       upload_summary: 'تحميل تقرير ملخص'
       upload_new: 'إضافة وتحميل'
@@ -59,6 +59,7 @@ ar_EG:
       connect_form_title: "حفظ الاتصال؟"
       show_details: "اظهر التفاصيل"
       last_updated: "Last updated at: %{time}"
+      print: "طباعة"
     roles:
       name: 'الأدوار'
       admin:
@@ -104,6 +105,7 @@ ar_EG:
     home:
       name: "الصفحة الرئيسية"
       hover: "الصفحة الرئيسية STEM في مصر"
+    welcome: "!%{name} مرحبًا"
     curriculum:
       name: "شجرة المناهج"
       hover: "يعرض شجرة المناهج"
@@ -117,8 +119,8 @@ ar_EG:
       name: "التحرير"
       hover: "صفحة تحرير عناصر المناهج"
     connections:
-      name: "آخر"
-      hover: "اتصالات أخرى"
+      name: "الآراء"
+      hover: "الآراء"
     bigidea:
       name: "أفكار كبيرة"
       hover: "أفكار كبيرة"

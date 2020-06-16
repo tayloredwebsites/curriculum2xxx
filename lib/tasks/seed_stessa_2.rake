@@ -31,13 +31,13 @@ namespace :seed_stessa_2 do
       code: @curriculumCode,
       hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
-      sector_set_code: 'gr_chall',
+      sector_set_code: 'gr_chall,hide',
       sector_set_name_key: 'sector.set.gr_chal.name',
       curriculum_title_key: 'curriculum.egstem.title', # 'Egypt STEM Curriculum - deprecated - see treeType.title_key'
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
-      dim_codes: 'bigidea,essq,concept,skill,miscon,standardus,standardeg',
+      dim_codes: 'caps,bigidea,essq,concept,skill,miscon,standardus,standardeg',
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
@@ -59,12 +59,12 @@ namespace :seed_stessa_2 do
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
       #   To Do: standards header on top RIGHT of the show page.
-      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},<sector>_[bigidea]_[essq],{sem#3}_{grade#0}_{unit#2},[miscon#2#1],[concept]_[skill],{resource#7},{resource#8},[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
+      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},<sector>_[bigidea]_[essq],{sem#3}_{grade#0}_{unit#2},[miscon#2#1],[concept]_[skill],{resource#7},[caps],{resource#8},[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
       #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
-      dim_display: 'miscon#0#1#2#3#4#5#6#7',
+      dim_display: 'miscon#0#8#1#2#3#4#5#6#7',
       #user_form_config:
       #_form_other: list fields that should be included in the user form
         #dropdown selection fields should have the number of selection options
@@ -231,7 +231,10 @@ namespace :seed_stessa_2 do
       sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: 'علم', locName: 'علم'},
       ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: 'علوم الأرض', locName: 'علوم الأرض'},
       geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: 'جيولوجيا', locName: 'جيولوجيا'},
-      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'}
+      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'},
+      adv: {abbr: 'adv', inCurric: true, engName: 'Advisory', locAbbr: 'استشاري', locName: 'استشاري'},
+      ara: {abbr: 'ara', inCurric: true, engName: 'Arabic', locAbbr: 'عربى', locName: 'عربى'},
+      art: {abbr: 'art', inCurric: true, engName: 'Art', locAbbr: 'فن', locName: 'فن'},
     }
 
     @subjectsHash.each do |key, subjHash|
@@ -387,6 +390,7 @@ namespace :seed_stessa_2 do
   desc "create translations for dimension types"
   task dimension_translations: :environment do
     dim_translations_arr = [
+      ['caps', 'Capstone Challenge', 'تحدي كابستون'],
       ['bigidea', 'Big Idea', 'فكرة هامة'],
       ['essq', 'Essential Question', 'السؤال الجوهري'],
       ['concept', 'Concept', 'مفهوم'],
@@ -397,7 +401,7 @@ namespace :seed_stessa_2 do
     ]
 
     dim_resource_types_arr = [
-      ['Second Subject', 'الموضوع الثاني'],
+      ['Second Category', 'الفئة الثانية'],
       ['Correct Understanding', 'الفهم الصحيح'],
       ['Possible Source of Misconception', 'مصدر محتمل للفهم الخاطئ'],
       ['Compiler/Source'],
@@ -405,6 +409,7 @@ namespace :seed_stessa_2 do
       ['Website Link References', 'مراجع رابط الموقع'],
       ['Test Distractor Percent', 'اختبار نسبة تشتيت الانتباه'],
       ['Link to Question Item Bank', 'رابط إلى بنك عناصر السؤال'],
+      ['Third Category', 'الفئة الثالثة'],
     ]
     dim_translations_arr.each do |dim|
       dim_name_key = Dimension.get_dim_type_key(

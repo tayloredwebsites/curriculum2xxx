@@ -236,6 +236,7 @@ $(function() {
       $('#user_admin_subjects').val(admin_subjects);
       $('#admin_subjects-selected').remove("#admin-subject-" + subject);
     });
+    $(".print-btn").on("click", function() { window.print(); });
   }
   //###################################
   //# ADD EVENT BINDINGS
