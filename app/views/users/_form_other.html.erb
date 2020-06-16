@@ -156,8 +156,12 @@
       <%= form.label :subject1 %>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
-      <%= form.text_field :subject1 %>
+      <span class='required'>&nbsp;</span>
+      <%=
+      form.select :subject1,
+        Subject.where(tree_type_id: @treeTypeRec.id).map { |rec| [rec.get_name(@locale_code), rec.code] },
+        { include_blank: true, :selected => @user.subject1 }
+      %>
       <% if @user.errors.present? && @user.errors[:subject1].present? %>
         <span class='ui-error'><%= @user.errors[:subject1].join(', ') %></span>
       <% end %>
@@ -174,7 +178,11 @@
     </span>
     <span class='col col-md-8 input-col'>
       <span class='required'>&nbsp;</span>
-      <%= form.text_field :subject2 %>
+      <%=
+      form.select :subject2,
+        Subject.where(tree_type_id: @treeTypeRec.id).map { |rec| [rec.get_name(@locale_code), rec.code] },
+        { include_blank: true, :selected => @user.subject2 }
+      %>
       <% if @user.errors.present? && @user.errors[:subject2].present? %>
         <span class='ui-error'><%= @user.errors[:subject2].join(', ') %></span>
       <% end %>

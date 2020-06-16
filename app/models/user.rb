@@ -12,7 +12,7 @@ class User < BaseRec
   validates :institute_type, presence: true
   validates :institute_name_loc, presence: true
   validates :position_type, presence: true
-  validates :subject1, presence: true
+  # validates :subject1, presence: true
   # validates :subject2, presence: true
   validates :gender, presence: true
   validates :education_level, presence: true
