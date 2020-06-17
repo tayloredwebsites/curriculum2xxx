@@ -185,6 +185,7 @@ en:
       locale: "Locale"
       key: "Key"
       value: "Value"
+    add_etc: "%{str} & etc."
     errors:
       missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
       missing_translation_for_item: "missing translation for item"

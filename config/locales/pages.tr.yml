@@ -139,5 +139,6 @@ tr:
     labels:
       explanation: "Açıklama"
   translations:
+    add_etc: "%{str} & vb."
     errors:
       missing_translations_locale_code: "locale için eksik çeviriler: %{locale}, kod: %{code}"

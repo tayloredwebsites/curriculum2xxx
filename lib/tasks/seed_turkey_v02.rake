@@ -40,23 +40,26 @@ namespace :seed_turkey_v02 do
       tree_code_format: 'subject,grade,unit,subunit,comp',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
-      #
-      # Detail headers notation key:
       # NOTE: Please avoid underscores (_) and commas (,)
       #       in item names.
-      #   item - HEADER item
-      #   [item] - TABLE item, dimension.
-      #   {resource#n} - TABLE item, outcome resource translation
-      #   <item> - TABLE item, sector
-      #   +item+ - TABLE item, treetree
-      #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #
+      # Detail headers notation key:
+      #   item - HEADER
+      #   [r#item] - TABLE item, outcome level connected dimension.
+      #   {r#n} - TABLE item, outcome resource translation
+      #   <item> - TABLE item, sectors
+      #   +item+ - TABLE item, treetrees
+      #   {depthCode#n#...} - TABLE item collection, multiple resource translations for tree at the given depth
+      #                     - depthCode should be 'o' for outcome resources
+      #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
       #                  categories of this item to display.
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,unit,subunit,comp,[bigidea]_[essq],[pract],{resource#6},[miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+      #   To Do: standards header on top RIGHT of the show page.
+      detail_headers: 'grade,unit,subunit,comp,[o#bigidea]_[o#essq],[o#pract],{o#6},[o#miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       # Grid headers notation key:
       # item or (item) - Ignored for now
       # [item] - grid column, may have multiple connected items

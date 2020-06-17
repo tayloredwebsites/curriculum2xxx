@@ -182,6 +182,7 @@ ar_EG:
       locale: "لغة"
       key: "مفتاح"
       value: "القيمة"
+    add_etc: "%{str} وما إلى ذلك"
     errors:
       missing_translations_locale_code: "ترجمات مفقودة للغة: %{locale}، الرمز: %{code}"
       missing_translation_for_item: "ترجمة مفقودة للعنصر"

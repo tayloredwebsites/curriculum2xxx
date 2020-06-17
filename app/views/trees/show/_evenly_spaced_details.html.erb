@@ -1,6 +1,14 @@
 <% detail_order = [] %>
-<div class='related-items-table'>
-  <div class='row center-label-bold top-label generic-grid generic-grid--cols-<%= num_cols %>'>
+<% if table_depth
+  detail_title, detail_code, edit_type, action, category_arr = title_code_type_action_catsArr[0]
+  table_name = detail_title.length > 0 ? detail_title : get_category_title(category_arr[0], detail_code)
+  table_code = "#{table_name.downcase.gsub(" ", "")}-#{table_depth}"
+  table_name = "#{etcetera(table_name)}" if title_code_type_action_catsArr.length > 1
+%>
+   <button class="margin-left btn btn-link block show-btn <%= table_code %> js-show-hide-control" data-show-selector='.related-items-table.<%= table_code %>' data-hide-selector='.show-btn.<%= table_code %>'>[  <%= I18n.translate('app.labels.show_indicators', name: table_name) %>]</button>
+<% end %>
+<div class='related-items-table<%= table_name ? " hidden #{table_code} col-8" : "" %>'>
+  <div class='row <%= table_name ? "colorful-header colorful-header-#{table_depth}" : "center-label-bold top-label" %> generic-grid generic-grid--cols-<%= num_cols %>'>
     <% title_code_type_action_catsArr.each do |arr|
       detail_title, detail_code, edit_type, action, category_arr = arr
       detail_order << detail_code
@@ -10,34 +18,20 @@
         <%= detail_title %>
         <%= link_to(fa_icon("plus-square"), edit_tree_path(@tree.id, tree: { edit_type: edit_type, attr_id: 'new'}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (action == 'create') && can_edit
          %>
+         <% if table_depth %>
+            <button class="margin-left btn btn-link hide-btn <%= table_code %> js-show-hide-control" data-hide-selector='.related-items-table.<%= table_code %>' data-show-selector='.show-btn.<%= table_code %>'>[  <%= I18n.translate('app.labels.hide_indicators', name: table_name) %>]</button>
+          <% end %>
       </div>
       <% end %>
       <% if category_arr
         category_arr.each do |cat|
-          category_title = Outcome.get_resource_name(
-            Outcome::RESOURCE_TYPES[cat.to_i],
-            @treeTypeRec.code,
-            @versionRec.code,
-            @locale_code) if @editTypes[detail_code][:name] == "resource"
-          category_title = Translation.find_translation_name(
-              @locale_code,
-              Tree.get_resource_type_key(
-                Tree::RESOURCE_TYPES[cat.to_i],
-                @treeTypeRec.code,
-                @versionRec.code
-              ),
-              Tree::RESOURCE_TYPES[cat.to_i]
-            )  if @editTypes[detail_code][:name] == "tree_resource"
-
-          category_title = Dimension.get_resource_name(
-            Dimension::RESOURCE_TYPES[cat.to_i],
-            @treeTypeRec.code,
-            @versionRec.code,
-            @locale_code,
-            Dimension::RESOURCE_TYPES[cat.to_i]) if @editTypes[detail_code][:name] == "dimtree"
+          category_title = get_category_title(cat, detail_code)
       %>
         <div class='dark-border--left padding-right padding-left'>
           <%= "#{detail_title.length > 0 ? "#{detail_title}: " : ""}#{category_title}" %>
+          <% if table_depth %>
+            <button class="margin-left btn btn-link hide-btn <%= table_code %> js-show-hide-control" data-hide-selector='.related-items-table.<%= table_code %>' data-show-selector='.show-btn.<%= table_code %>'>[  <%= I18n.translate('app.labels.hide_indicators', name: category_title) %>]</button>
+          <% end %>
         </div>
       <%  end # category_codes.each do |code|
          end # if category_codes %>
@@ -50,7 +44,9 @@
       <div class='dark-border generic-grid generic-grid--cols-<%= num_cols %>'>
         <% detail_order.each do |detail_code| %>
             <%
-              detail = @detailsHash[detail_code][ix] if detailsHash[detail_code]
+              parent = parents[ix]
+              detail = @detailsHash[detail_code][ix] if (detailsHash[detail_code] && !parent)
+              detail = @parents_by_depth["p#{parents[ix].id}"]["dims"][detail_code][0].dim_trees.group_by(&:tree_id)[parent.id][0] if parent && @parents_by_depth["p#{parents[ix].id}"]["dims"][detail_code]
               partial_path = "/trees/show/#{@editTypes[detail_code][:name]}"
             %>
             <%=

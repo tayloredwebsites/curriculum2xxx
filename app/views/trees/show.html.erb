@@ -8,6 +8,7 @@
   area = component.present? ? component.getParentRec : nil
   active_dim_trees = @tree.dim_trees.where(:active => true)
 %>
+
 <div class='container'>
   <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
   <% @tree_items_to_display.each do |tree| %>
@@ -28,19 +29,21 @@
       end
     %>
     <div class='detail-page'>
-      <% parents_by_depth = {}
-        tree.getAllParents.map { |t| parents_by_depth[t.depth - 1] = t if t }
-        parents_by_depth[@treeTypeRec[:outcome_depth]] = tree
+      <%
+        @parents_by_depth[tree.id][@treeTypeRec[:outcome_depth]] = tree
       %>
 
       <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
-      <% @detail_headers.each do |h| %>
-        <% rec = @parents_by_depth[tree.id][h[:depth]] %>
-        <% if rec %>
+      <% @detailTables.each_with_index do |h,ix| %>
+        <% rec = @parents_by_depth[tree.id][h[:depth]] if h[:type] == 'header' %>
+        <% if rec
+            name_translation = html_safe_translations(@translations[rec.buildNameKey])
+            code_is_transl = name_translation.delete('0-9').length == 0
+          %>
           <div class='row subject-<%= h[:name] %>-row'>
             <div class='col col-6 text-left'>
               <strong>
-              <%= "#{@subjectByCode[tree.subject.code][:name] if h[:depth] == 0 }#{" #{@hierarchies[h[:depth]]} #{rec.codeArray.last}:" if h[:depth] > 0}" %>
+              <%= "#{@subjectByCode[tree.subject.code][:name] if h[:depth] == 0 }#{" #{@hierarchies[h[:depth]]}#{" #{rec.codeArray.last}" if !code_is_transl}:" if h[:depth] > 0}" %>
               <% if h[:depth] > 0 %>
                 </strong>
               <% end %>
@@ -55,35 +58,6 @@
               <% end %>
             </div>
           </div>
-          <% if rec[:depth] < @treeTypeRec[:outcome_depth]
-              parent_dims = @parents_by_depth["p#{rec.id}"]["dims"]
-              # rec.dimensions.includes(:dim_trees).group_by(&:dim_code)
-              if !parent_dims.blank?
-                parent_dims.each do|dim_code, dim_recs|
-                  if dim_code == 'caps'
-          %>
-            <button class="margin-left btn btn-link block show-btn <%= "#{dim_code}-#{rec[:depth]}" %> js-show-hide-control" data-show-selector='.related-items-table.<%= "#{dim_code}-#{rec[:depth]}" %>' data-hide-selector='.show-btn.<%= "#{dim_code}-#{rec[:depth]}" %>'>[  <%= I18n.translate('app.labels.show_indicators', name: @dimTypeTitleByCode[dim_code]) %>]</button>
-            <div class='related-items-table col-8 <%= "#{dim_code}-#{rec[:depth]}" %> hidden' data-parent-resource-depth='<%= rec[:depth] %>'>
-              <div class='row dark-border colorful-header colorful-header-<%= rec[:depth] %> generic-grid generic-grid--cols-1'>
-                <div class='padding-right padding-left'>
-                  <%= "#{@hierarchies[rec[:depth]]} - #{@dimTypeTitleByCode[dim_code]} " %>
-                  <button class="btn btn-link hide-btn pull-right js-show-hide-control" data-hide-selector='.related-items-table.<%= "#{dim_code}-#{rec[:depth]}" %>' data-show-selector='.show-btn.<%= "#{dim_code}-#{rec[:depth]}" %>'>[  <%= I18n.translate('app.labels.hide_indicators', name: @dimTypeTitleByCode[dim_code]) %>]</button>
-                </div>
-              </div>
-                <% dim_recs.each do |drec|
-                    dt = drec.dim_trees.group_by(&:tree_id)[rec.id][0]
-                %>
-                <%= render partial: "trees/show/dimtree", locals: {
-                    details: dt,
-                    can_edit: can_edit_type?(dim_code) || current_user.subject_admin?(@subject_code),
-                    category_codes: nil
-                } %>
-            <% end # dim_recs.each do |drec| %>
-               </div>
-          <%   end #if dim_code == 'caps'
-              end # parent_dims.each do|dim_code, dim_recs|
-            end # if !parent_dims.blank?
-          end # if rec[:depth] < @treeTypeRec[:outcome_depth] %>
         <% elsif h[:name] == 'weeks' || h[:name] == 'hours' %>
           <div class='row subject-<%= h[:name] %>-row'>
             <div class='col col-6 text-left'>
@@ -97,6 +71,25 @@
               <%= link_to(fa_icon("edit"), edit_tree_path(tree.id, tree: { edit_type: h[:name]}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
             </div>
           </div>
+        <% elsif h[:type] == 'parent_detail'
+            title, code, type, action, cats = h[:title_code_type_action_catsArr][0]
+        %>
+          <%=
+            render partial: "trees/show/#{h[:partial]}", locals: {
+              num_cols: h[:num_cols],
+              num_rows: h[:num_rows],
+              title_code_type_action_catsArr: h[:title_code_type_action_catsArr],
+              detailsHash: @detailsHash,
+              can_edit: can_edit_type?(type) || current_user.subject_admin?(@subject_code),
+              detail_title: title,
+              tree: @tree,
+              indicator: h[:indicator],
+              resource_codes: cats,
+              parents: (h[:depth] ? [@parents_by_depth[tree.id][h[:depth]]] : nil) ,
+              table_depth: h[:depth],
+              table_code: "table#{ix}"
+            }
+          %>
         <% end #if rec %>
       <% end #@detail_headers.each_with_index do |h, i| %>
 
@@ -112,7 +105,8 @@
 
 
         <% @detailTables.each do |table|
-          title, code, type, action, cats = table[:title_code_type_action_catsArr][0]
+          title, code, type, action, cats = table[:title_code_type_action_catsArr][0] if table[:type] == 'tree_detail'
+          puts "tableINSPECT: #{table.inspect}"
           %>
           <%=
             render partial: "trees/show/#{table[:partial]}", locals: {
@@ -125,8 +119,10 @@
               tree: @tree,
               indicator: table[:indicator],
               resource_codes: cats,
-              parents: (table[:depths].length > 0 ? table[:depths].map { |d| parents_by_depth[d]} : nil) ,
-            }
+              parents: (table[:depths].length > 0 ? table[:depths].map { |d| @parents_by_depth[tree.id][d]} : nil) ,
+              table_depth: table[:depth],
+              table_code: nil
+            } if table[:type] == 'tree_detail'
           %>
         <% end %>
 

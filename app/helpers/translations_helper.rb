@@ -11,4 +11,8 @@ module TranslationsHelper
 			return I18n.translate('translations.errors.missing_translation_for_item')
 		end
 	end
+
+	def etcetera(str)
+    return I18n.translate('translations.add_etc', str: str)
+	end
 end

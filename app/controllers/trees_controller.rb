@@ -879,7 +879,7 @@ class TreesController < ApplicationController
         t.getAllParents.each do |p|
           @parents_by_depth[t.id][p[:depth]] = p if p
           @parents_by_depth["p#{p.id}"]["dims"] = p.dimensions.includes(:dim_trees).group_by(&:dim_code) if (p && p[:depth] != @treeTypeRec[:outcome_depth])
-          @parents_by_depth["p#{p.id}"]["dims"].each { |k,arr| arr.map { |rec| treeKeys << rec.dim_name_key}} if @parents_by_depth["p#{p.id}"]["dims"]
+          @parents_by_depth["p#{p.id}"]["dims"].each { |k,arr| arr.map { |rec| treeKeys << rec.dim_name_key}} if (p && @parents_by_depth["p#{p.id}"]["dims"])
         end
         # get translation key for this item
         treeKeys << t.buildNameKey
