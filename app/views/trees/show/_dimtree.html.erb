@@ -1,6 +1,6 @@
 <!-- Dimensions Table (e.g., misconceptions, etc) -->
 <% dt = details
-   d = dt.dimension if dt
+   d = (dt.dimension || dt[:dimension]) if dt
 %>
 <div class="dark-border--left <%= @editMe && can_edit ? "generic-grid generic-grid--xl-xs" : "" %>">
   <div class="padding-left padding-right padding-top padding-bottom">

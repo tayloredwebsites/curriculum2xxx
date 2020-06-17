@@ -875,6 +875,12 @@ class TreesController < ApplicationController
       end
       Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
       @trees.each do |t|
+        @parents_by_depth = Hash.new { |hash, key| hash[key] = {} }
+        t.getAllParents.each do |p|
+          @parents_by_depth[t.id][p[:depth]] = p if p
+          @parents_by_depth["p#{p.id}"]["dims"] = p.dimensions.includes(:dim_trees).group_by(&:dim_code) if (p && p[:depth] != @treeTypeRec[:outcome_depth])
+          @parents_by_depth["p#{p.id}"]["dims"].each { |k,arr| arr.map { |rec| treeKeys << rec.dim_name_key}} if @parents_by_depth["p#{p.id}"]["dims"]
+        end
         # get translation key for this item
         treeKeys << t.buildNameKey
         # get translation key for each sector, big idea and misconception for this item

@@ -44,7 +44,7 @@ class Tree < BaseRec
   has_many :sector_trees
   has_many :sectors, through: :sector_trees
 
-  has_many :dim_trees
+  has_many :dim_trees, -> {where active: true}
   has_many :dimensions, through: :dim_trees
 
   # does not seem to be working ?

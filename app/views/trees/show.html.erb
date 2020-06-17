@@ -35,7 +35,7 @@
 
       <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
       <% @detail_headers.each do |h| %>
-        <% rec = parents_by_depth[h[:depth]] %>
+        <% rec = @parents_by_depth[tree.id][h[:depth]] %>
         <% if rec %>
           <div class='row subject-<%= h[:name] %>-row'>
             <div class='col col-6 text-left'>
@@ -55,6 +55,35 @@
               <% end %>
             </div>
           </div>
+          <% if rec[:depth] < @treeTypeRec[:outcome_depth]
+              parent_dims = @parents_by_depth["p#{rec.id}"]["dims"]
+              # rec.dimensions.includes(:dim_trees).group_by(&:dim_code)
+              if !parent_dims.blank?
+                parent_dims.each do|dim_code, dim_recs|
+                  if dim_code == 'caps'
+          %>
+            <button class="margin-left btn btn-link block show-btn <%= "#{dim_code}-#{rec[:depth]}" %> js-show-hide-control" data-show-selector='.related-items-table.<%= "#{dim_code}-#{rec[:depth]}" %>' data-hide-selector='.show-btn.<%= "#{dim_code}-#{rec[:depth]}" %>'>[  <%= I18n.translate('app.labels.show_indicators', name: @dimTypeTitleByCode[dim_code]) %>]</button>
+            <div class='related-items-table col-8 <%= "#{dim_code}-#{rec[:depth]}" %> hidden' data-parent-resource-depth='<%= rec[:depth] %>'>
+              <div class='row dark-border colorful-header colorful-header-<%= rec[:depth] %> generic-grid generic-grid--cols-1'>
+                <div class='padding-right padding-left'>
+                  <%= "#{@hierarchies[rec[:depth]]} - #{@dimTypeTitleByCode[dim_code]} " %>
+                  <button class="btn btn-link hide-btn pull-right js-show-hide-control" data-hide-selector='.related-items-table.<%= "#{dim_code}-#{rec[:depth]}" %>' data-show-selector='.show-btn.<%= "#{dim_code}-#{rec[:depth]}" %>'>[  <%= I18n.translate('app.labels.hide_indicators', name: @dimTypeTitleByCode[dim_code]) %>]</button>
+                </div>
+              </div>
+                <% dim_recs.each do |drec|
+                    dt = drec.dim_trees.group_by(&:tree_id)[rec.id][0]
+                %>
+                <%= render partial: "trees/show/dimtree", locals: {
+                    details: dt,
+                    can_edit: can_edit_type?(dim_code) || current_user.subject_admin?(@subject_code),
+                    category_codes: nil
+                } %>
+            <% end # dim_recs.each do |drec| %>
+               </div>
+          <%   end #if dim_code == 'caps'
+              end # parent_dims.each do|dim_code, dim_recs|
+            end # if !parent_dims.blank?
+          end # if rec[:depth] < @treeTypeRec[:outcome_depth] %>
         <% elsif h[:name] == 'weeks' || h[:name] == 'hours' %>
           <div class='row subject-<%= h[:name] %>-row'>
             <div class='col col-6 text-left'>

@@ -212,6 +212,10 @@ $(function() {
         $(this).data("outcome_depth"));
       show_maint_details(true, ($(this).data("resize")));
     })
+    $(".js-show-hide-control").on("click", function() {
+      $($(this).data("showSelector")).show();
+      $($(this).data("hideSelector")).hide();
+    });
   }
 
   init_admin_subjects_editing = function () {
