@@ -43,10 +43,22 @@
   </div>
   <div class="row">
     <div class='connections-grid'>
-      <% connectionsFound = 0 %>
+      <%
+        connectionsFound = 0
+        alluvial_data = []
+        tree_code = tree.format_code(@locale_code)
+      %>
       <% @relatedBySubj.each do |subj, rel|%>
         <% rel.each do |r|
            connectionsFound += 1
+           case r[:rel_code]
+              when TreeTree::DEPENDS_KEY
+                alluvial_data << [r[:code], tree_code, 1, "#{tree_code} #{r[:relationship]} #{r[:code]}"]
+              when TreeTree::APPLIES_KEY
+                alluvial_data << [tree_code, r[:code], 1, "#{tree_code} #{r[:relationship]} #{r[:code]}"]
+              else
+                alluvial_data << [r[:code], nil, 1, "#{tree_code} #{r[:relationship]} #{r[:code]}"]
+           end
         %>
           <div class='connections-item'>
             <%= r[:relationship] %>
@@ -82,8 +94,14 @@
       <% end %>
     </div>
     <div class="connections-grid connections-grid__diagram">
-      <div class='connections-item rel-sectors'>
+      <div id='js-alluvial-container' class='js-alluvial connections-item rel-sectors'>
       </div>
     </div>
   </div>
 </div>
+<%= render partial: "trees/show/alluvial", locals: {
+    data: alluvial_data,
+    chart_name: detail_title
+  } if alluvial_data.length > 0
+%>
+

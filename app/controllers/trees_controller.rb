@@ -909,6 +909,7 @@ class TreesController < ApplicationController
           @relatedBySubj[subCode] << {
             code: rTree.format_code(@locale_code),
             relationship: I18n.translate("trees.labels.relation_types.#{r.relationship}"),
+            rel_code: r.relationship,
             tkey: rTree.buildNameKey,
             subj: rTree.subject.get_name(@locale_code),
            # explanation: r.explanation_key,
