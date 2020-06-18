@@ -9,6 +9,7 @@ en:
     title: "Curriculum Website"
     labels:
       all: "All"
+      alluvial: "Alluvial Diagram"
       save: "Save"
       cancel: "Cancel"
       submit: "Submit"

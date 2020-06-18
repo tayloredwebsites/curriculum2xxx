@@ -8,6 +8,7 @@ ar_EG:
     title: "موقع المناهج"
     labels:
       all: "الكل"
+      alluvial: "مخطط رسوبي"
       save: "حفظ"
       cancel: "إلغاء"
       submit: "إرسال"

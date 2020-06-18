@@ -60,7 +60,7 @@ namespace :seed_stessa_2 do
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
       #   To Do: standards header on top RIGHT of the show page.
-      detail_headers: 'grade,{grade#0},sem,{sem#4}_{sem#3},[sem#caps],unit,{unit#2},lo,weeks,hours,{o#6},<sector>_[o#bigidea]_[o#essq],[o#miscon#2#1],[o#concept]_[o#skill],{o#7},{o#8},[o#standardeg],+treetree+,{resources#12#3#2#11#10#9}',
+      detail_headers: 'grade,{grade#0},sem,{sem#4},{sem#3},[sem#caps],unit,{unit#2},lo,weeks,hours,{o#6},<sector>_[o#bigidea]_[o#essq],[o#miscon#2#1],[o#concept]_[o#skill],{o#7},{o#8},[o#standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page

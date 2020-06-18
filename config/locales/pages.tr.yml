@@ -4,6 +4,7 @@ tr:
     title: "Mektebim STEM Ana Sayfa"
     labels:
       all: "Her Sey"
+      alluvial: "Alüvyal Diyagram"
       save: "Save"
       cancel: "Cancel"
       submit: "Submit"
