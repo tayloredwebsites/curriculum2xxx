@@ -4,6 +4,7 @@ tr:
     title: "Mektebim STEM Ana Sayfa"
     labels:
       all: "Her Sey"
+      alluvial: "Alüvyal Diyagram"
       save: "Save"
       cancel: "Cancel"
       submit: "Submit"
@@ -36,6 +37,7 @@ tr:
       upload_new: 'Yükleme Ekle ve Yap'
       explanation: "Açıklama"
       sector_num: "Sektör %{num}"
+      show_details: "Izgarayı göster"
       last_updated: "Last updated at: %{time}"
       print: "Yazdır"
       errors:
@@ -138,5 +140,6 @@ tr:
     labels:
       explanation: "Açıklama"
   translations:
+    add_etc: "%{str} & vb."
     errors:
       missing_translations_locale_code: "locale için eksik çeviriler: %{locale}, kod: %{code}"

@@ -60,6 +60,7 @@ class ApplicationController < ActionController::Base
     def getSubjectCode
       subp = params['subject'].to_s
       subc = cookies['subject'].to_s
+      subu = current_user.subject1 if current_user.present?
       @subject_code = ''
       validSubjects = []
       Subject.where(:tree_type_id => @treeTypeRec.id).each do |s|
@@ -74,12 +75,15 @@ class ApplicationController < ActionController::Base
         # next default Subject to cookie:
         Rails.logger.debug("app cookie set subject code: param: #{subp} cookie: #{subc}")
         @subject_code = subc
+      elsif validSubjects.include?(subu)
+        Rails.logger.debug("User subject1 set subject code: current_user.subject1: #{subu}")
+        @subject_code = subu
       else
         @subject_code = validSubjects.first
         Rails.logger.debug("app no set subject code: param: #{subp} cookie: #{subc}")
       end
       Rails.logger.debug "app @subject_code: #{@subject_code.inspect}"
-      cookies[:subject] = @subject_code
+      cookies[:subject] = @subject_code if current_user.present?
       Rails.logger.debug "app cookies[:subject]: #{cookies[:subject].inspect}"
     end
 

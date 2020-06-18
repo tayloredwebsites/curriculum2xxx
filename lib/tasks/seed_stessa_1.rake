@@ -41,11 +41,12 @@ namespace :seed_eg_stem do
       #
       # Detail headers notation key:
       #   item - HEADER
-      #   [item] - TABLE item, dimension.
-      #   {resource#n} - TABLE item, outcome resource translation
+      #   [r#item] - TABLE item, outcome level connected dimension.
+      #   {r#n} - TABLE item, outcome resource translation
       #   <item> - TABLE item, sectors
       #   +item+ - TABLE item, treetrees
-      #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #   {depthCode#n#...} - TABLE item collection, multiple resource translations for tree at the given depth
+      #                     - depthCode should be 'o' for outcome resources
       #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
@@ -53,7 +54,8 @@ namespace :seed_eg_stem do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,sem,unit,lo,[bigidea],{resource#6},[miscon],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+      #   To Do: standards header on top RIGHT of the show page.
+      detail_headers: 'grade,sem,unit,lo,[o#bigidea],{o#6},[o#miscon],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       grid_headers: 'grade,unit,lo,[bigidea],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page

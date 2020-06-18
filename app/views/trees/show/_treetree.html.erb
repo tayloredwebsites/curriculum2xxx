@@ -31,6 +31,11 @@
         <%= I18n.t('app.labels.description') %>
       </div>
     </div>
+    <div class='connections-header'>
+      <div class='center-label sub-header-margin'>
+        <%= I18n.t('app.labels.alluvial') %>
+      </div>
+    </div>
   </div>
   <div class='connections-grid'>
     <% connectionsFound = 0 %>
@@ -60,6 +65,8 @@
         </div>
       <% end %>
     <% end %>
+    <div class='connections-item rel-sectors'>
+    </div>
     <% if connectionsFound == 0 %>
         <div class='connections-item rel-sectors'>
         </div>

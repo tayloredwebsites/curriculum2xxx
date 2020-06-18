@@ -46,11 +46,12 @@ namespace :seed_stessa_2 do
       #
       # Detail headers notation key:
       #   item - HEADER
-      #   [item] - TABLE item, dimension.
-      #   {resource#n} - TABLE item, outcome resource translation
+      #   [r#item] - TABLE item, outcome level connected dimension.
+      #   {r#n} - TABLE item, outcome resource translation
       #   <item> - TABLE item, sectors
       #   +item+ - TABLE item, treetrees
-      #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #   {depthCode#n#...} - TABLE item collection, multiple resource translations for tree at the given depth
+      #                     - depthCode should be 'o' for outcome resources
       #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
@@ -59,7 +60,7 @@ namespace :seed_stessa_2 do
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
       #   To Do: standards header on top RIGHT of the show page.
-      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},<sector>_[bigidea]_[essq],{sem#3}_{grade#0}_{unit#2},[miscon#2#1],[concept]_[skill],{resource#7},[caps],{resource#8},[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
+      detail_headers: 'grade,{grade#0},sem,{sem#4},{sem#3},[sem#caps],unit,{unit#2},lo,weeks,hours,{o#6},<sector>_[o#bigidea]_[o#essq],[o#miscon#2#1],[o#concept]_[o#skill],{o#7},{o#8},[o#standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
