@@ -903,6 +903,7 @@ class TreesController < ApplicationController
         # get translation key for each related item for this item
         t.tree_referencers.each do |r|
           rTree = r.tree_referencee
+          rTreeSubj = rTree.subject
           treeKeys << rTree.buildNameKey
           treeKeys << r.explanation_key
           subCode = @subjById[rTree.subject_id]
@@ -910,8 +911,9 @@ class TreesController < ApplicationController
             code: rTree.format_code(@locale_code),
             relationship: I18n.translate("trees.labels.relation_types.#{r.relationship}"),
             rel_code: r.relationship,
+            subj_code: rTreeSubj.code,
             tkey: rTree.buildNameKey,
-            subj: rTree.subject.get_name(@locale_code),
+            subj: rTreeSubj.get_name(@locale_code),
            # explanation: r.explanation_key,
             tid: (rTree.depth < 2) ? 0 : rTree.id,
             ttid: r.id

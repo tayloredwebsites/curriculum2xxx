@@ -52,6 +52,24 @@ class BaseRec < ActiveRecord::Base
     'ara', #Arabic
     'art', #Art
   ]
+  SUBJECT_COLORS = [
+    '#E5FFDE',
+    '#009FFD',
+    '#FCAF58',
+    '#DBCBD8',
+    '#DBCBD8',
+    '#564787',
+    '#564787',
+    '#F26DF9',
+    '#F5EE9E',
+    '#A2E8DD',
+    '#A85751',
+    '#2CA58D',
+    '#9DC5BB',
+    '#414535',
+    '#EDD2E0',
+    '#6F9CEB'
+  ]
 
   # BASE_PRACTICES = [
   #   'stem', #Science And Engineering Practices
@@ -87,5 +105,8 @@ class BaseRec < ActiveRecord::Base
     return ret
   end
 
+  def self.subject_color(subject_code)
+    return SUBJECT_COLORS[BASE_SUBJECTS.index(subject_code)]
+  end
 
 end

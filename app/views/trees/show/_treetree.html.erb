@@ -45,20 +45,41 @@
     <div class='connections-grid'>
       <%
         connectionsFound = 0
-        alluvial_data = []
+        alluvial_nodes = [tree.format_code(@locale_code)]
+        alluvial_node_colors = [BaseRec.subject_color(tree.subject.code)]
+        alluvial_links =  {
+              "hoverInfo": "label",
+              "source": [],
+              "target": [],
+              "value": [],
+              "color": [],
+              "label": []
+            }
         tree_code = tree.format_code(@locale_code)
       %>
       <% @relatedBySubj.each do |subj, rel|%>
         <% rel.each do |r|
            connectionsFound += 1
+           alluvial_nodes << r[:code]
+           alluvial_node_colors << BaseRec.subject_color(r[:subj_code])
            case r[:rel_code]
               when TreeTree::DEPENDS_KEY
-                alluvial_data << [r[:code], tree_code, 1, "#{tree_code} #{r[:relationship]} #{r[:code]}"]
+                alluvial_links[:source] << connectionsFound
+                alluvial_links[:target] << 0
+                alluvial_links[:color] << "rgb(255, 201, 181)"
+                alluvial_links[:label] << "#{tree_code} #{r[:relationship]} #{r[:code]}"
               when TreeTree::APPLIES_KEY
-                alluvial_data << [tree_code, r[:code], 1, "#{tree_code} #{r[:relationship]} #{r[:code]}"]
+                alluvial_links[:source] << 0
+                alluvial_links[:target] << connectionsFound
+                alluvial_links[:color] << "rgb(255, 253, 181)"
+                alluvial_links[:label] << "#{tree_code} #{r[:relationship]} #{r[:code]}"
               else
-                alluvial_data << [r[:code], nil, 1, "#{tree_code} #{r[:relationship]} #{r[:code]}"]
+                alluvial_links[:source] << connectionsFound
+                alluvial_links[:target] << 0
+                alluvial_links[:color] << "white"
+                alluvial_links[:label] << "#{tree_code} #{r[:relationship]} #{r[:code]}"
            end
+           alluvial_links[:value] << 1
         %>
           <div class='connections-item'>
             <%= r[:relationship] %>
@@ -100,8 +121,10 @@
   </div>
 </div>
 <%= render partial: "trees/show/alluvial", locals: {
-    data: alluvial_data,
+    alluvial_nodes: alluvial_nodes,
+    alluvial_node_colors: alluvial_node_colors,
+    alluvial_links: alluvial_links,
     chart_name: detail_title
-  } if alluvial_data.length > 0
+  } if connectionsFound > 0
 %>
 

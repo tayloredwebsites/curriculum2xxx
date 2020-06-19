@@ -1,40 +1,44 @@
 <script type="text/javascript">
-// Example data:
-// var data = [
-//       ['BI.1.01', 'CP.1.01', 1, 'BI.1.01 applies to CP.1.01'],
-//       ['BI.1.01', 'CP.1.05', 1, 'BI.1.01 applies to CP.1.05'],
-//       ['CH.1.01', null, 1, 'CH.1.01 akin to BI.1.01'],
-//       ['PH.1.01', 'BI.1.01', 1, 'BI.1.01 depends on PH.1.01']
-//     ];
 
-  Highcharts.chart('js-alluvial-container', {
-    title: {
-      text: '<%= chart_name %>'
-    },
-    accessibility: {
-      point: {
-        valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.tooltip}.'
-      }
-    },
-    series: [{
-      keys: ['from', 'to', 'weight', 'tooltip'],
-      data: JSON.parse('<%= data.to_json.html_safe %>'),
-      type: 'sankey',
-      name: '<%= chart_name %>',
-      tooltip: {
-              headerFormat: '',
-              pointFormat: '<b>{point.tooltip}</b>',
-              nodeFormatter: function() {
-                  var result = '';
-
-                  Highcharts.each(this.linksFrom, function(el) {
-                      result += (el.tooltip && result ? ',' : '') + el.tooltip;
-                  });
-
-                  return result;
-              }
+  data = {
+    "data": [
+        {
+          "type": "sankey",
+          "displayModeBar": false,
+          "arrangment": "fixed",
+          "showlegend": false,
+          "domain": {
+            "x": [
+              0,
+              1
+            ],
+            "y": [
+              0,
+              1
+            ]
           },
-    }],
-  });
+          "node": {
+            "pad": 20,
+            "thickness": 20,
+            "line": {
+              "color": "black",
+              "width": 0.5
+            },
+            "label": JSON.parse('<%= alluvial_nodes.to_json.html_safe %>'),
+            "color": JSON.parse('<%= alluvial_node_colors.to_json.html_safe %>'),
+          },
+          "link": JSON.parse('<%= alluvial_links.to_json.html_safe %>')
+        }],
+    "layout": {
+      "title": "<%= chart_name %>",
+      "width": Math.floor($("#js-alluvial-container").width()) - 10,
+      "height": (Math.floor($("#js-alluvial-container").height()) > 300 ? Math.floor($("#js-alluvial-container").height()) : 300),
+      "font": {
+          "size": 10
+      },
+    }
+  }
+
+  Plotly.plot('js-alluvial-container', data.data, data.layout);
 
 </script>
