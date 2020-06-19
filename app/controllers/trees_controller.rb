@@ -1,7 +1,7 @@
 class TreesController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :find_tree, only: [:show, :show_outcome, :edit, :update]
+  before_action :find_tree, only: [:show, :show_outcome, :edit, :update, :deactivate]
   after_action -> {flash.discard}, only: [:maint]
 
   def index
@@ -1088,6 +1088,14 @@ class TreesController < ApplicationController
     )
     respond_to do |format|
       format.json {render json: {tree_codes_changed: tree_codes_changed}}
+    end
+  end
+
+  def deactivate
+    #puts "Tree to deactivate: #{@tree.inspect}"
+    @tree_codes_changed = @tree.deactivate_and_recode(@locale_code)
+    respond_to do |format|
+      format.js
     end
   end
 
