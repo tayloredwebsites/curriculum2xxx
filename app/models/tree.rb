@@ -595,7 +595,8 @@ class Tree < BaseRec
       end
       last_tree_depth = t[:depth]
       code_arr = []
-      [*0..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == nil ? '' : format('%02d', codes_counter_by_depth[d])) }
+      code_arr << gb_by_id_and_min_grade["min#{codes_counter_by_depth[0]}"].code
+      [*1..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == nil ? '' : format('%02d', codes_counter_by_depth[d])) }
       new_code = code_arr.join(".")
       #puts "codes_counter_by_depth: #{codes_counter_by_depth.inspect}"
       ############
