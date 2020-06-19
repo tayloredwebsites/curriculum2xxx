@@ -4,7 +4,6 @@
     "data": [
         {
           "type": "sankey",
-          "displayModeBar": false,
           "arrangment": "fixed",
           "showlegend": false,
           "domain": {
@@ -18,6 +17,8 @@
             ]
           },
           "node": {
+            "x": JSON.parse('<%= alluvial_nodes_xpos.to_json.html_safe %>'),
+            "y": JSON.parse('<%= alluvial_nodes_ypos.to_json.html_safe %>'),
             "pad": 20,
             "thickness": 20,
             "line": {
@@ -40,5 +41,19 @@
   }
 
   Plotly.plot('js-alluvial-container', data.data, data.layout);
+
+
+  var resizeTimeout;
+$(window).resize(function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(doneResizing, 500);
+});
+
+function doneResizing(){
+  console.log('resiz even')
+  data.layout["width"] = Math.floor($("#js-alluvial-container").width()) - 10;
+  data.layout["height"] = (Math.floor($("#js-alluvial-container").height()) > 300 ? Math.floor($("#js-alluvial-container").height()) : 300);
+    Plotly.plot(document.getElementById('js-alluvial-container'), data.data, data.layout);
+}
 
 </script>
