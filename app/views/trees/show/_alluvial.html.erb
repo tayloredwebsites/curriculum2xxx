@@ -1,6 +1,3 @@
-<style type="text/css">
-  .js-alluvial .modebar { display: none; }
-</style>
 <script type="text/javascript">
 
   data = {
@@ -8,7 +5,6 @@
         {
           "type": "sankey",
           "arrangment": "fixed",
-          "showlegend": false,
           "domain": {
             "x": [
               0,
@@ -20,9 +16,7 @@
             ]
           },
           "node": {
-            "x": JSON.parse('<%= alluvial_nodes_xpos.to_json.html_safe %>'),
-            "y": JSON.parse('<%= alluvial_nodes_ypos.to_json.html_safe %>'),
-            "pad": 20,
+            "pad": 50,
             "thickness": 20,
             "line": {
               "color": "black",
@@ -34,29 +28,23 @@
           "link": JSON.parse('<%= alluvial_links.to_json.html_safe %>')
         }],
     "layout": {
-      "title": "<%= chart_name %>",
-      "width": Math.floor($("#js-alluvial-container").width()) - 10,
-      "height": (Math.floor($("#js-alluvial-container").height()) > 300 ? Math.floor($("#js-alluvial-container").height()) : 300),
+      // "title": "<%= chart_name %>",
+       // "width": Math.floor($("#js-alluvial-container").width() - 20),
+       // "height": 400,
+      "showlegend": false,
       "font": {
           "size": 10
       },
     }
   }
 
-  Plotly.plot('js-alluvial-container', data.data, data.layout);
+  var config = {
+    responsive: true,
+    displayModeBar: false,
+    locale: '<%= @locale_code %>',
+    displaylogo: false,
+  }
 
-
-  var resizeTimeout;
-$(window).resize(function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(doneResizing, 500);
-});
-
-function doneResizing(){
-  console.log('resiz even')
-  data.layout["width"] = Math.floor($("#js-alluvial-container").width()) - 10;
-  data.layout["height"] = (Math.floor($("#js-alluvial-container").height()) > 300 ? Math.floor($("#js-alluvial-container").height()) : 300);
-    Plotly.plot(document.getElementById('js-alluvial-container'), data.data, data.layout);
-}
+  Plotly.plot('js-alluvial-container', data.data, data.layout, config);
 
 </script>

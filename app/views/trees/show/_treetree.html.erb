@@ -46,10 +46,6 @@
       <%
         connectionsFound = 0
         alluvial_nodes = [tree.format_code(@locale_code)]
-        alluvial_node_pos = {:x => [0.5], :y => [0]}
-        leftNodes = 0
-        midNodes = 1
-        rightNodes = 0
         alluvial_node_colors = [BaseRec.subject_color(tree.subject.code)]
         alluvial_links =  {
               "hoverInfo": "label",
@@ -69,28 +65,19 @@
            case r[:rel_code]
               when TreeTree::DEPENDS_KEY
                 alluvial_links[:source] << connectionsFound
-                leftNodes += 1
-                alluvial_node_pos[:x] << -0.2
-                alluvial_node_pos[:y] << leftNodes
                 alluvial_links[:target] << 0
                 alluvial_links[:color] << "rgb(255, 201, 181)"
-                alluvial_links[:label] << "#{tree_code} #{r[:relationship]} #{r[:code]}"
+                alluvial_links[:label] << "#{tree_code} #{r[:relationship].downcase} #{r[:code]}"
               when TreeTree::APPLIES_KEY
                 alluvial_links[:source] << 0
-                rightNodes += 1
-                alluvial_node_pos[:x] << 1.2
-                alluvial_node_pos[:y] << rightNodes
                 alluvial_links[:target] << connectionsFound
                 alluvial_links[:color] << "rgb(255, 253, 181)"
-                alluvial_links[:label] << "#{tree_code} #{r[:relationship]} #{r[:code]}"
+                alluvial_links[:label] << "#{tree_code} #{r[:relationship].downcase} #{r[:code]}"
               else
                 alluvial_links[:source] << connectionsFound
-                leftNodes += 1
-                alluvial_node_pos[:x] << -0.2
-                alluvial_node_pos[:y] << leftNodes
                 alluvial_links[:target] << 0
                 alluvial_links[:color] << "white"
-                alluvial_links[:label] << "#{tree_code} #{r[:relationship]} #{r[:code]}"
+                alluvial_links[:label] << "#{tree_code} #{r[:relationship].downcase} #{r[:code]}"
            end
            alluvial_links[:value] << 1
         %>
@@ -128,15 +115,14 @@
       <% end %>
     </div>
     <div class="connections-grid connections-grid__diagram">
-      <div id='js-alluvial-container' class='js-alluvial connections-item rel-sectors'>
+      <div class='js-alluvial connections-item rel-sectors'>
+        <div id='js-alluvial-container'></div>
       </div>
     </div>
   </div>
 </div>
 <%= render partial: "trees/show/alluvial", locals: {
     alluvial_nodes: alluvial_nodes,
-    alluvial_nodes_xpos: alluvial_node_pos[:x],
-    alluvial_nodes_ypos: alluvial_node_pos[:y].map { |pos| (pos/[leftNodes,rightNodes].max) },
     alluvial_node_colors: alluvial_node_colors,
     alluvial_links: alluvial_links,
     chart_name: detail_title
