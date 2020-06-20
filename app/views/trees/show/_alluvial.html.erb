@@ -23,6 +23,7 @@
             },
             "label": JSON.parse('<%= alluvial_nodes.to_json.html_safe %>'),
             "color": JSON.parse('<%= alluvial_node_colors.to_json.html_safe %>'),
+            "hovertemplate": '<b>%{label}</b>',
           },
           "link": JSON.parse('<%= alluvial_links.to_json.html_safe %>')
         }],

@@ -48,7 +48,7 @@
         alluvial_nodes = [tree.format_code(@locale_code)]
         alluvial_node_colors = [BaseRec.subject_color(tree.subject.code)]
         alluvial_links =  {
-              "hoverInfo": "label",
+              "hovertemplate": '<b>%{label}</b>',
               "source": [],
               "target": [],
               "value": [],
@@ -67,17 +67,17 @@
                 alluvial_links[:source] << connectionsFound
                 alluvial_links[:target] << 0
                 alluvial_links[:color] << "rgb(255, 201, 181)"
-                alluvial_links[:label] << "#{tree_code} #{r[:relationship].downcase} #{r[:code]}"
+                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
               when TreeTree::APPLIES_KEY
                 alluvial_links[:source] << 0
                 alluvial_links[:target] << connectionsFound
                 alluvial_links[:color] << "rgb(255, 253, 181)"
-                alluvial_links[:label] << "#{tree_code} #{r[:relationship].downcase} #{r[:code]}"
+                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
               else
                 alluvial_links[:source] << connectionsFound
                 alluvial_links[:target] << 0
                 alluvial_links[:color] << "white"
-                alluvial_links[:label] << "#{tree_code} #{r[:relationship].downcase} #{r[:code]}"
+                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
            end
            alluvial_links[:value] << 1
         %>
