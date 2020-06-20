@@ -595,7 +595,8 @@ class Tree < BaseRec
       end
       last_tree_depth = t[:depth]
       code_arr = []
-      [*0..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == nil ? '' : format('%02d', codes_counter_by_depth[d])) }
+      code_arr << gb_by_id_and_min_grade["min#{codes_counter_by_depth[0]}"].code
+      [*1..t[:depth]].each { |d| code_arr << (codes_counter_by_depth[d] == nil ? '' : format('%02d', codes_counter_by_depth[d])) }
       new_code = code_arr.join(".")
       #puts "codes_counter_by_depth: #{codes_counter_by_depth.inspect}"
       ############
@@ -683,21 +684,22 @@ class Tree < BaseRec
     end
   end
 
-  def deactivate_and_recode(locale_code = "en")
+  def deactivate_and_recode(localeCode = "en")
     translations_hash = {}
     translation_keys = []
     old_name_key = name_key
+    self.active = false
     #update tree code and base_key
-    code = "XtreeidX#{id}"
-    base_key = Tree.buildBaseKey(
-      tree_type_code,
+    self.code = "XtreeidX#{id}"
+    self.base_key = Tree.buildBaseKey(
+      tree_type.code,
       version.code,
       subject.code,
       code
     )
     #generate name key from new base_key
     new_name_key = name_key
-    active = false
+    translation_keys << old_name_key
     translations_hash[old_name_key] = new_name_key
     if outcome_id
       old_translation_keys = outcome.list_translation_keys
@@ -711,6 +713,7 @@ class Tree < BaseRec
     translationRecs = Translation.where(:key => translation_keys)
     translationRecs.each { |tr| tr.key = translations_hash[tr.key] }
 
+    #puts "trying to update, should have deactivated vals: #{inspect}"
     ##########################
     # Update deactivated tree, any associated outcome, and any
     # associated translations
@@ -719,8 +722,11 @@ class Tree < BaseRec
       outcome.save! if outcome_id
       translationRecs.each { |t| t.save! }
     end
+   # puts "tree updated: #{inspect}"
     idOrderArr = Tree.active.where(:subject_id => subject_id).order('sort_order').pluck('id')
-    Tree.update_code_sequence(idOrderArr, localeCode)
+    ret = Tree.update_code_sequence(idOrderArr, localeCode)
+   # puts "return obj: #{ret.inspect}"
+    return ret
   end
 
 end

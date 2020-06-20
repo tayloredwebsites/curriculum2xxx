@@ -116,7 +116,7 @@
               detailsHash: @detailsHash,
               can_edit: can_edit_type?(type) || current_user.subject_admin?(@subject_code),
               detail_title: title,
-              tree: @tree,
+              tree: tree,
               indicator: table[:indicator],
               resource_codes: cats,
               parents: (table[:depths].length > 0 ? table[:depths].map { |d| @parents_by_depth[tree.id][d]} : nil) ,

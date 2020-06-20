@@ -6,6 +6,7 @@
   <%= @translation.value.html_safe %>
   <div class="pull-right">
     <!-- TO DO: Implement working resequence button and deactivate button -->
+    <%= link_to(fa_icon("times", class: "pull-right"), deactivate_trees_path(id: @tree.id), {'remote' => true, 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: "#{@hierarchies[@treeTypeRec[:outcome_depth]]} - #{@translation.value.html_safe}"), method: :post}) %>
     <a class="" href="/<%= @locale_code %>/trees/<%= @tree.id %>?editme=<%= @tree.id %>">
       <i class="fa fa-edit pull-right" data-toggle="tooltip" title="<%= I18n.translate("trees.edit.tooltip", tree_depth_name: @hierarchies[@treeTypeRec[:outcome_depth]], tree_code: formatted_code) %>"></i>
     </a>

@@ -10,72 +10,122 @@
         <% end %>
     </div>
   </div>
-  <div class='connections-grid'>
-    <div class='connections-header'>
-      <div class='center-label sub-header-margin'>
-        <%= I18n.t('trees.labels.relation') %>
+  <div class="row">
+    <div class='connections-grid'>
+      <div class='connections-header'>
+        <div class='center-label sub-header-margin'>
+          <%= I18n.t('trees.labels.relation') %>
+        </div>
+      </div>
+      <div class='connections-header'>
+        <div class='center-label sub-header-margin'>
+          <%= I18n.t('app.labels.subject') %>
+        </div>
+      </div>
+      <div class='connections-header'>
+        <div class='center-label sub-header-margin'>
+          <%= I18n.t('app.labels.code') %>
+        </div>
+      </div>
+      <div class='connections-header'>
+        <div class='center-label sub-header-margin'>
+          <%= I18n.t('app.labels.description') %>
+        </div>
       </div>
     </div>
-    <div class='connections-header'>
-      <div class='center-label sub-header-margin'>
-        <%= I18n.t('app.labels.subject') %>
-      </div>
-    </div>
-    <div class='connections-header'>
-      <div class='center-label sub-header-margin'>
-        <%= I18n.t('app.labels.code') %>
-      </div>
-    </div>
-    <div class='connections-header'>
-      <div class='center-label sub-header-margin'>
-        <%= I18n.t('app.labels.description') %>
-      </div>
-    </div>
-    <div class='connections-header'>
-      <div class='center-label sub-header-margin'>
-        <%= I18n.t('app.labels.alluvial') %>
+    <div class="connections-grid connections-grid__diagram">
+      <div class='connections-header'>
+        <div class='center-label sub-header-margin'>
+          <%= I18n.t('app.labels.alluvial') %>
+        </div>
       </div>
     </div>
   </div>
-  <div class='connections-grid'>
-    <% connectionsFound = 0 %>
-    <% @relatedBySubj.each do |subj, rel|%>
-      <% rel.each do |r|
-         connectionsFound += 1
+  <div class="row">
+    <div class='connections-grid'>
+      <%
+        connectionsFound = 0
+        alluvial_nodes = [tree.format_code(@locale_code)]
+        alluvial_node_colors = [BaseRec.subject_color(tree.subject.code)]
+        alluvial_links =  {
+              "hovertemplate": '<b>%{label}</b>',
+              "source": [],
+              "target": [],
+              "value": [],
+              "color": [],
+              "label": []
+            }
+        tree_code = tree.format_code(@locale_code)
       %>
-        <div class='connections-item'>
-          <%= r[:relationship] %>
-        </div>
-        <div class='connections-item'>
-          <%= r[:subj] %>
-        </div>
-        <div class='connections-item'>
-          <%= r[:code] %>
-        </div>
-        <div class='connections-item'>
-          <% if r[:tid] == 0 %>
-            <%= @translations[r[:tkey]] %>
-          <% else %>
-            <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
-          <% end %>
-          <% if @editMe && can_edit %>
-            <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe && can_edit %>
-            <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
-          <% end %>
-        </div>
+      <% @relatedBySubj.each do |subj, rel|%>
+        <% rel.each do |r|
+           connectionsFound += 1
+           alluvial_nodes << r[:code]
+           alluvial_node_colors << BaseRec.subject_color(r[:subj_code])
+           case r[:rel_code]
+              when TreeTree::DEPENDS_KEY
+                alluvial_links[:source] << connectionsFound
+                alluvial_links[:target] << 0
+                alluvial_links[:color] << "rgb(255, 201, 181)"
+                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
+              when TreeTree::APPLIES_KEY
+                alluvial_links[:source] << 0
+                alluvial_links[:target] << connectionsFound
+                alluvial_links[:color] << "rgb(255, 253, 181)"
+                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
+              else
+                alluvial_links[:source] << connectionsFound
+                alluvial_links[:target] << 0
+                alluvial_links[:color] << "white"
+                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
+           end
+           alluvial_links[:value] << 1
+        %>
+          <div class='connections-item'>
+            <%= r[:relationship] %>
+          </div>
+          <div class='connections-item'>
+            <%= r[:subj] %>
+          </div>
+          <div class='connections-item'>
+            <%= r[:code] %>
+          </div>
+          <div class='connections-item'>
+            <% if r[:tid] == 0 %>
+              <%= @translations[r[:tkey]] %>
+            <% else %>
+              <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+            <% end %>
+            <% if @editMe && can_edit %>
+              <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe && can_edit %>
+              <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
-    <div class='connections-item rel-sectors'>
+      <% if connectionsFound == 0 %>
+          <div class='connections-item rel-sectors'>
+          </div>
+          <div class='connections-item rel-sectors'>
+          </div>
+          <div class='connections-item rel-sectors'>
+          </div>
+          <div class='connections-item rel-sectors'>
+          </div>
+      <% end %>
     </div>
-    <% if connectionsFound == 0 %>
-        <div class='connections-item rel-sectors'>
-        </div>
-        <div class='connections-item rel-sectors'>
-        </div>
-        <div class='connections-item rel-sectors'>
-        </div>
-        <div class='connections-item rel-sectors'>
-        </div>
-    <% end %>
+    <div class="connections-grid connections-grid__diagram <%= "min-alluvial-height" if connectionsFound > 0 %>">
+      <div class='js-alluvial connections-item rel-sectors'>
+        <div id='js-alluvial-container'></div>
+      </div>
+    </div>
   </div>
 </div>
+<%= render partial: "trees/show/alluvial", locals: {
+    alluvial_nodes: alluvial_nodes,
+    alluvial_node_colors: alluvial_node_colors,
+    alluvial_links: alluvial_links,
+    chart_name: detail_title
+  } if connectionsFound > 0
+%>
+

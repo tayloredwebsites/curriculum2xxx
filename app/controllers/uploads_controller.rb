@@ -210,7 +210,7 @@ class UploadsController < ApplicationController
     # hash of the existing records for this TreeType (curriculum) and subject
     #
     @currentRecs = Hash.new{ |h, k| h[k] = {} }
-    currentCodeRecs = Tree.where(tree_type_id: @treeTypeRec.id, version_id: @versionRec.id, subject_id: @subjectRec.id)
+    currentCodeRecs = Tree.active.where(tree_type_id: @treeTypeRec.id, version_id: @versionRec.id, subject_id: @subjectRec.id)
     currentCodeRecs.each do |rec|
       transl_names = Translation.where(locale: @locale_code, key: "#{rec.base_key}.name")
       if transl_names.count > 0
