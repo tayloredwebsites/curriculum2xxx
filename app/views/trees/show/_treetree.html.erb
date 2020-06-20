@@ -114,7 +114,7 @@
           </div>
       <% end %>
     </div>
-    <div class="connections-grid connections-grid__diagram">
+    <div class="connections-grid connections-grid__diagram <%= "min-alluvial-height" if connectionsFound > 0 %>">
       <div class='js-alluvial connections-item rel-sectors'>
         <div id='js-alluvial-container'></div>
       </div>

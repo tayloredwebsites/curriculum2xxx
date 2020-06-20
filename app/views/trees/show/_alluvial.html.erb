@@ -4,7 +4,6 @@
     "data": [
         {
           "type": "sankey",
-          "arrangment": "fixed",
           "domain": {
             "x": [
               0,
@@ -16,7 +15,7 @@
             ]
           },
           "node": {
-            "pad": 50,
+            "pad": 20,
             "thickness": 20,
             "line": {
               "color": "black",
@@ -28,12 +27,17 @@
           "link": JSON.parse('<%= alluvial_links.to_json.html_safe %>')
         }],
     "layout": {
-      // "title": "<%= chart_name %>",
-       // "width": Math.floor($("#js-alluvial-container").width() - 20),
-       // "height": 400,
+       // "title": "<%= chart_name %>",
       "showlegend": false,
       "font": {
           "size": 10
+      },
+      "margin": {
+        "l": 5,
+        "r": 0,
+        "b": 50,
+        "t": 50,
+        "pad": 4
       },
     }
   }
