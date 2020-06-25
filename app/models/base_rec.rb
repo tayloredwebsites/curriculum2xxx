@@ -86,6 +86,10 @@ class BaseRec < ActiveRecord::Base
 
   DIM_CHANGE_LOG_PATH = "#{Rails.root}/log/dimension_changes.out"
 
+  #To Do: add comment
+  # When/why
+  # generic
+  # what happens when returned
   def self.process_resource_content(resource_type, resource_name, content_text)
     convert_id_to_google_folder_url = [
       'depth_0_materials',

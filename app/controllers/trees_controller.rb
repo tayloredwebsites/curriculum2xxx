@@ -325,13 +325,13 @@ class TreesController < ApplicationController
       }
       @treeByParents[tkey][tree.code] = newHash
 
-      Rails.logger.debug("*** @treeByParent [#{tkey}] [#{tree.code}] = #{newHash.inspect}")
+ #     Rails.logger.debug("*** @treeByParent [#{tkey}] [#{tree.code}] = #{newHash.inspect}")
     end
 
     @treeByParents.each do |tkey, codeh|
-      Rails.logger.debug("*** LOOP @treeByParent tkey: #{tkey}")
+#      Rails.logger.debug("*** LOOP @treeByParent tkey: #{tkey}")
       codeh.each do |code, hash|
-        Rails.logger.debug("*** LOOP code: #{code} => #{hash.inspect}")
+#        Rails.logger.debug("*** LOOP code: #{code} => #{hash.inspect}")
       end
     end
 
