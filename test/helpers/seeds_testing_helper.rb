@@ -381,7 +381,9 @@ module SeedsTestingHelper
         GradeBand.create(
           tree_type_id: @ttTFV.id,
           code: g,
-          sort_order: gf
+          sort_order: gf,
+          min_grade: gf,
+          max_grade: gf
         )
       end
       sort_counter += 1
@@ -396,6 +398,8 @@ module SeedsTestingHelper
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.tfv.#{g}.name", "Grade #{g}")
     throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
   end
+
+  @gb_09 = GradeBand.where(tree_type_id: @ttTFV.id, code: '9').first
 
   ###################################################################################
   #create_subjects
@@ -601,18 +605,17 @@ module SeedsTestingHelper
 
     # Set Subject Abbreviations:
     @sectorsHashTFV = {
-      '1': {code: '1', engName: 'Industry 4.0',locName: 'Endüstri 4.0'},
-      '2': {code: '2', engName: 'Sensors and Imaging Technology', locName: 'Sensörler ve Görüntüleme Teknolojisi'},
-      '3': {code: '3', engName: 'New Food Technologies', locName: 'Yeni Gıda Teknolojileri'},
-      '4': {code: '4', engName: 'Biomedical Technology', locName: 'Biyomedikal Teknoloji'},
-      '5': {code: '5', engName: 'Nanotechnology / Space Technology', locName: 'Nanoteknoloji / Uzay Teknolojisi'},
-      '6': {code: '6', engName: 'Global Warming', locName: 'Küresel Isınma'},
-      '7': {code: '7', engName: 'Internet of Objects / 5G', locName: 'Nesnelerin İnterneti / 5G'},
-      '8': {code: '8', engName: 'Population Increase vs Resource Consumption', locName: 'Nüfus artışı karşı Kaynak Tüketimi'}
+      '1': {code: '1', engName: 'Industry 4.0',locName: 'Endüstri 4.0', keyPhrase: 'industry 4.0'},
+      '2': {code: '2', engName: 'Sensors and Imaging Technology', locName: 'Sensörler ve Görüntüleme Teknolojisi', keyPhrase: 'sensors and imaging'},
+      '3': {code: '3', engName: 'New Food Technologies', locName: 'Yeni Gıda Teknolojileri', keyPhrase: 'food tech'},
+      '4': {code: '4', engName: 'Biomedical Technology', locName: 'Biyomedikal Teknoloji', keyPhrase: 'biomedical tech'},
+      '5': {code: '5', engName: 'Nanotechnology / Space Technology', locName: 'Nanoteknoloji / Uzay Teknolojisi', keyPhrase: 'nanotechnology'},
+      '6': {code: '6', engName: 'Global Warming', locName: 'Küresel Isınma', keyPhrase: 'global warming'},
+      '7': {code: '7', engName: 'Internet of Objects / 5G', locName: 'Nesnelerin İnterneti / 5G', keyPhrase: 'internet'},
+      '8': {code: '8', engName: 'Population Increase vs Resource Consumption', locName: 'Nüfus artışı karşı Kaynak Tüketimi', keyPhrase: 'population'}
     }
 
     @sectorsHashTFV.each do |key, sectHash|
-
       # create the sector
       #puts "create the sector: #{@sectorCodeTFV}, #{sectHash[:code]}"
       sectors = Sector.where(sector_set_code: @sectorCodeTFV, code: sectHash[:code])
@@ -621,12 +624,12 @@ module SeedsTestingHelper
           sector_set_code: @sectorCodeTFV,
           code: sectHash[:code],
           name_key: "sector.#{@sectorCodeTFV}.#{sectHash[:code]}.name",
-          base_key: "sector.#{@sectorCodeTFV}.#{sectHash[:code]}"
+          base_key: "sector.#{@sectorCodeTFV}.#{sectHash[:code]}",
+          key_phrase: sectHash[:keyPhrase]
         )
       else
-        sector = sectors.first
+        sector = sectors.first.update(key_phrase: sectHash[:keyPhrase])
       end
-
       # create the English translation for the Sector Name
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "sector.#{@sectorCodeTFV}.#{sectHash[:code]}.name", sectHash[:engName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
@@ -637,6 +640,8 @@ module SeedsTestingHelper
 
     end
     #puts "Sector translations are created for sector set: #{@sectorCodeTFV}"
+
+    @sector1 = Sector.where(name_key: 'sector.future.1.name').first
 
   end #testing_db_tfv_seed
 

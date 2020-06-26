@@ -51,4 +51,7 @@ FactoryBot.define do
     status BaseRec::UPLOAD_NOT_UPLOADED
   end
 
+  factory :sector_tree do
+  end
+
 end

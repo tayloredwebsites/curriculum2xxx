@@ -25,9 +25,9 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     assert_equal BaseRec::UPLOAD_DONE, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
     assert_equal 56, Tree.count
-    puts "BIO REC: #{@bio.inspect}"
-    puts "TREES CREATED: #{Tree.all.pluck("code").inspect}"
 
+    # Old version of this test loaded two files with one gradeband each.
+    #
     # load up the 13 file
     # up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
     # patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
@@ -39,25 +39,25 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     get sectors_path
     assert_response :success
     # confirm select options have the right number of items
-    assert_equal 13, assigns(:subjects).count
-    assert_equal 0, assigns(:gbs).count
-    assert_equal 10, assigns(:sectors).count
+    assert_equal 1, assigns(:subjects).count
+    assert_equal 13, assigns(:gbs).count
+    assert_equal 8, assigns(:sectors).count
 
-    post sectors_path, params: { tree: { subject_id: @hem.id } }
+    post sectors_path, params: { tree: { subject_id: @bio.id } }
     assert_response :success
-    assert_equal 135, assigns(:rptRows).count
+    assert_equal 26, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { sector_id: @sector1.id } }
     assert_response :success
-    assert_equal 11, assigns(:rptRows).count
+    assert_equal 3, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { grade_band_id: @gb_09.id } }
     assert_response :success
-    assert_equal 131, assigns(:rptRows).count
+    assert_equal 14, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { subject_id: '', grade_band_id: '', sector_id: '' } }
     assert_response :success
-    assert_equal 135, assigns(:rptRows).count
+    assert_equal 26, assigns(:rptRows).count
 
 
   end

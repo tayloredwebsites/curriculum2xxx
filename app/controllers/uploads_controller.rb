@@ -205,7 +205,8 @@ class UploadsController < ApplicationController
     @baseKeyRoot = "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}"
     @sectorArrByKeyPhrase = []
     Sector.where(
-      sector_set_code: @treeTypeRec.sector_set_code
+      # Use TreeType::get_sector_set_code(code) to separate sector_set_code from 'hidden' flag
+      sector_set_code: TreeType.get_sector_set_code(@treeTypeRec.sector_set_code)
     ).each { |s| @sectorArrByKeyPhrase << [s.key_phrase, s] if s.key_phrase != "" }
     # hash of the existing records for this TreeType (curriculum) and subject
     #
@@ -1162,8 +1163,7 @@ class UploadsController < ApplicationController
   # Subject to update the Subject's max_grade and min_grade
   # seems to be not working.  Look at set_min_max_grades.rake
   def updateSubjectGrades(s)
-    puts "CALLED FUNCTION TO UPDATE SUBJECT GRADES"
-    subj_gbs = GradeBand.where(:id => @subjectRec.grade_band_id)
+    subj_gbs = GradeBand.where(:id => Tree.where(subject_id: s.id).pluck('grade_band_id').uniq)
     min_grade = subj_gbs.pluck("min_grade").min
     max_grade = subj_gbs.pluck("max_grade").max
     if min_grade && max_grade
