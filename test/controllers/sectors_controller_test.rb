@@ -13,7 +13,6 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     sign_in @user1
     Rails.logger.debug("+++ setup completed +++")
     testing_db_tfv_seed
-    @bio = Subject.where(:code => 'bio').first
     @bio_upload = Upload.where(:subject_id => @bio.id).first
   end
 

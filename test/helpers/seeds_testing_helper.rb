@@ -400,6 +400,7 @@ module SeedsTestingHelper
   end
 
   @gb_09 = GradeBand.where(tree_type_id: @ttTFV.id, code: '9').first
+  @gb_12 = GradeBand.where(tree_type_id: @ttTFV.id, code: '12').first
 
   ###################################################################################
   #create_subjects
@@ -528,6 +529,7 @@ module SeedsTestingHelper
     end
   end
 
+  @bio = Subject.where(code: 'bio').first
 
   ###################################################################################
   # seed dimension translations

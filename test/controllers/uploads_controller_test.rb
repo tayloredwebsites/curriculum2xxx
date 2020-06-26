@@ -12,7 +12,6 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     @user1.confirm # do a devise confirmation of new user
     sign_in @user1
     testing_db_tfv_seed
-    @bio = Subject.where(:code => 'bio').first
     @bio_upload = Upload.where(:subject_id => @bio.id).first
     @bio_err_upload = Upload.where(:subject_id => @bio.id).third
   end

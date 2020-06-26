@@ -12,9 +12,9 @@ class TreeTest < ActiveSupport::TestCase
 
   test "tree missing code should fail" do
     tree = Tree.new()
-    tree.tree_type_id = @otc.id
-    tree.version_id = @v01.id
-    tree.subject_id = @hem.id
+    tree.tree_type_id = @ttTFV.id
+    tree.version_id = @verTFV.id
+    tree.subject_id = @bio.id
     tree.grade_band_id = @gb_09.id
     tree.code = nil
     refute tree.valid?, 'missing tree code should not be valid'
