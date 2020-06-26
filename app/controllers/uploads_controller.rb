@@ -1162,12 +1162,13 @@ class UploadsController < ApplicationController
   # Subject to update the Subject's max_grade and min_grade
   # seems to be not working.  Look at set_min_max_grades.rake
   def updateSubjectGrades(s)
-    subj_gbs = GradeBand.where(:id => Tree.where(:subject_id => s.id).pluck("grade_band_id").uniq)
-    min_grades = subj_gbs.order("min_grade asc").pluck("min_grade").uniq
-    max_grades = subj_gbs.order("max_grade desc").pluck("max_grade").uniq
-    if min_grades.length > 0 && max_grades.length > 0
-      s.min_grade = min_grades[0]
-      s.max_grade = max_grades[0]
+    puts "CALLED FUNCTION TO UPDATE SUBJECT GRADES"
+    subj_gbs = GradeBand.where(:id => @subjectRec.grade_band_id)
+    min_grade = subj_gbs.pluck("min_grade").min
+    max_grade = subj_gbs.pluck("max_grade").max
+    if min_grade && max_grade
+      s.min_grade = min_grade
+      s.max_grade = max_grade
       begin
         s.save!
         Rails.logger.debug("Updated Subject #{s[:code]}: min_grade = #{s[:min_grade]} and max_grade = #{s[:max_grade]}")
