@@ -290,7 +290,7 @@ module SeedsTestingHelper
   end # self.seed
 
   def testing_db_tfv_seed
-    @versionNumTFV = 'v01'
+    @versionNumTFV = 'v02'
     @curriculumCodeTFV = 'tfv'
     @sectorCodeTFV = 'future'
 
@@ -487,6 +487,23 @@ module SeedsTestingHelper
           filename: "#{@ttTFV.code}#{@verTFV.code}#{subj.code.capitalize}AllTur.csv"
         )
       end
+
+      if subj.code == 'bio' && Upload.where(tree_type_code: @curriculumCodeTFV,
+        subject_id: subj.id,
+        grade_band_id: nil,
+        locale_id: @loc_en.id
+      ).count < 2
+      #puts "create Eng upload for subject: #{subj.id} #{subj.code}"
+        Upload.create!(
+          tree_type_code: @curriculumCodeTFV,
+          subject_id: subj.id,
+          grade_band_id: nil,
+          locale_id: @loc_en.id,
+          status: 0,
+          filename: "#{@ttTFV.code}#{@verTFV.code}#{subj.code.capitalize}AllEngErrors.csv"
+        )
+      end
+
     end
   end
 

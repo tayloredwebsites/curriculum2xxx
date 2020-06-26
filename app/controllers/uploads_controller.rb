@@ -51,7 +51,7 @@ class UploadsController < ApplicationController
     unauthorized() and return if !user_is_admin?(current_user)
     @upload = Upload.new(upload_params)
     if @upload.save
-      flash[:success] = "Upload for #{ @upload.subject.code } #{ @upload.grade_band.code } #{ @upload.locale.name } updated."
+      flash[:success] = "Upload for #{ @upload.subject.code } #{ @upload.locale.name } updated."
       redirect_to uploads_path()
     end
   end
