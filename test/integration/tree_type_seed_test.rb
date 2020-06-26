@@ -20,8 +20,8 @@ class DbSeedTest < ActionDispatch::IntegrationTest
     assert_equal(1, TreeType.count)
     assert_equal(3, Locale.count)
     assert_equal(4, GradeBand.count)
-    assert_equal(9, Subject.count)
-    assert_equal(36, Upload.count)
+    assert_equal(13, Subject.count)
+    assert_equal(18, Upload.count)
     assert_equal(11, Sector.count)
   end
 
@@ -32,45 +32,45 @@ class DbSeedTest < ActionDispatch::IntegrationTest
     assert_equal('Unit', Translation.find_translation_name(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.unit', 'xxx'))
     assert_equal('Learning Outcome', Translation.find_translation_name(BaseRec::LOCALE_EN, 'curriculum.egstemuniv.hierarchy.lo', 'xxx'))
 
-    assert_equal('Grand Challenges', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.set.gr.chal.name', 'xxx'))
+    assert_equal('Grand Challenges', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.set.gr_chall.name', 'xxx'))
 
-    assert_equal('Biology', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.bio.name', 'xxx'))
-    assert_equal('Bio', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.bio.abbr', 'xxx'))
-    assert_equal('Capstones', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.cap.name', 'xxx'))
-    assert_equal('Cap', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.cap.abbr', 'xxx'))
+    assert_equal('Biology', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.bio.name', 'xxx'))
+    assert_equal('bio', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.bio.abbr', 'xxx'))
+    assert_equal('Capstones', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.cap.name', 'xxx'))
+    assert_equal('cap', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.cap.abbr', 'xxx'))
 
-    assert_equal('Chemistry', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.che.name', 'xxx'))
-    assert_equal('Chem', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.che.abbr', 'xxx'))
+    assert_equal('Chemistry', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.che.name', 'xxx'))
+    assert_equal('chem', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.che.abbr', 'xxx'))
 
-    assert_equal('English', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.engl.name', 'xxx'))
-    assert_equal('Engl', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.engl.abbr', 'xxx'))
+    assert_equal('English', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.engl.name', 'xxx'))
+    assert_equal('engl', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.engl.abbr', 'xxx'))
 
-    assert_equal('Education', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.edu.name', 'xxx'))
-    assert_equal('Edu', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.edu.abbr', 'xxx'))
+    assert_equal('Education', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.edu.name', 'xxx'))
+    assert_equal('edu', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.edu.abbr', 'xxx'))
 
-    assert_equal('Geology', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.geo.name', 'xxx'))
-    assert_equal('Geo', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.geo.abbr', 'xxx'))
+    assert_equal('Geology', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.geo.name', 'xxx'))
+    assert_equal('geo', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.geo.abbr', 'xxx'))
 
-    assert_equal('Mathematics', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.mat.name', 'xxx'))
-    assert_equal('Math', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.mat.abbr', 'xxx'))
+    assert_equal('Mathematics', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mat.name', 'xxx'))
+    assert_equal('math', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mat.abbr', 'xxx'))
 
-    assert_equal('Mechanics', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.mec.name', 'xxx'))
-    assert_equal('Mec', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.mec.abbr', 'xxx'))
+    assert_equal('Mechanics', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mec.name', 'xxx'))
+    assert_equal('mec', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.mec.abbr', 'xxx'))
 
-    assert_equal('Physics', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.phy.name', 'xxx'))
-    assert_equal('Phy', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.phy.abbr', 'xxx'))
+    assert_equal('Physics', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.phy.name', 'xxx'))
+    assert_equal('phy', Translation.find_translation_name(BaseRec::LOCALE_EN, 'subject.egstemuniv.v01.phy.abbr', 'xxx'))
 
-    assert_equal('Deal with population growth and its consequences.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.1.name', 'xxx'))
-    assert_equal('Improve the use of alternative energies.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.2.name', 'xxx'))
-    assert_equal('Deal with urban congestion and its consequences.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.3.name', 'xxx'))
-    assert_equal('Improve the scientific and technological environment for all.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.4.name', 'xxx'))
-    assert_equal('Work to eradicate public health issues/disease.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.5.name', 'xxx'))
-    assert_equal('Improve uses of arid areas.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.6.name', 'xxx'))
-    assert_equal('Manage and increase the sources of clean water.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.7.name', 'xxx'))
-    assert_equal('Increase the industrial and agricultural bases of Egypt.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.8.name', 'xxx'))
-    assert_equal('Address and reduce pollution fouling our air, water and soil.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.9.name', 'xxx'))
-    assert_equal('Recycle garbage and waste for economic and environmental purposes.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.10.name', 'xxx'))
-    assert_equal('Reduce and adapt to the effect of climate change.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.egstemuniv.11.name', 'xxx'))
+    assert_equal('Deal with population growth and its consequences.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.1.name', 'xxx'))
+    assert_equal('Improve the use of alternative energies.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.2.name', 'xxx'))
+    assert_equal('Deal with urban congestion and its consequences.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.3.name', 'xxx'))
+    assert_equal('Improve the scientific and technological environment for all.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.4.name', 'xxx'))
+    assert_equal('Work to eradicate public health issues/disease.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.5.name', 'xxx'))
+    assert_equal('Improve uses of arid areas.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.6.name', 'xxx'))
+    assert_equal('Manage and increase the sources of clean water.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.7.name', 'xxx'))
+    assert_equal('Increase the industrial and agricultural bases of Egypt.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.8.name', 'xxx'))
+    assert_equal('Address and reduce pollution fouling our air, water and soil.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.9.name', 'xxx'))
+    assert_equal('Recycle garbage and waste for economic and environmental purposes.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.10.name', 'xxx'))
+    assert_equal('Reduce and adapt to the effect of climate change.', Translation.find_translation_name(BaseRec::LOCALE_EN, 'sector.gr_chall.11.name', 'xxx'))
 
   end
 
