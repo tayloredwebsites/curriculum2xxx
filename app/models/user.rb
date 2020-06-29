@@ -90,8 +90,12 @@ class User < BaseRec
     where("roles = ''")
   }
 
+  scope :active, -> {
+    where(:active => true)
+  }
+
   def active_for_authentication?
-    super && roles.length > 0
+    super && active && roles.length > 0
   end
 
   def role_names

@@ -18,6 +18,8 @@ en:
       leave_edit_mode: "Leave Edit Mode"
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
+      confirm_deactivate_item: "Are you sure you want to deactivate:\n%{item}"
+      confirm_restore_item: "Restore %{item}?"
       create: "Create"
       create_item: "Create %{item}"
       subject: "Subject"
@@ -293,6 +295,7 @@ en:
     nav:
       my_account: 'My Account'
       registrations: 'Registrations'
+      active_users: 'Active Users'
       all_users: 'All Users'
       change_pwd: 'Change Password'
     index:

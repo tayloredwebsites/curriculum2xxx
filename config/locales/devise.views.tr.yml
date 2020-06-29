@@ -8,7 +8,7 @@ tr:
       send_paranoid_instructions: "Eğer eposta adresinizi veritabanımızda kayıtlı ise bir kaç dakika içerisinde eposta adresinizi nasıl onaylayacağınız hakkında bir eposta alacaksınız."
     failure:
       already_authenticated: "Zaten giriş yaptınız."
-      inactive: "Hesabınız henüz aktif edilmedi."
+      inactive: "Hesabınız henüz etkinleştirilmedi veya devre dışı bırakıldı."
       invalid: "Geçersiz %{authentication_keys} veya parola."
       locked: "Hesabınız kilitli."
       last_attempt: "Hesabınız kilitlenmeden önceki son şansınız."
