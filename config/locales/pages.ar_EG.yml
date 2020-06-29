@@ -16,6 +16,8 @@ ar_EG:
       leave_edit_mode: "غادر وضع التحرير"
       deactivate: "إبطال"
       confirm_deactivate: "هل أنت متأكد من أنك تريد إلغاء تنشيط الاتصال بالعنصر التالي:\n%{item}"
+      confirm_deactivate_item: "هل أنت متأكد من أنك تريد إلغاء التنشيط:\n%{item}"
+      confirm_restore_item: "هل تريد استعادة %{item}؟"
       create: "خلق"
       create_item: "Create %{item}"
       subject: "موضوع"
@@ -288,6 +290,7 @@ ar_EG:
     nav:
       my_account: 'My Account'
       registrations: 'Registrations'
+      active_users: 'المستخدمين النشطين'
       all_users: 'All Users'
       change_pwd: 'Change Password'
     index:
