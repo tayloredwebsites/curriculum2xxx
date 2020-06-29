@@ -117,7 +117,7 @@
       <%= form.label :institute_name_loc %>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
+      <span class='required'>&nbsp;</span>
       <%= form.text_field :institute_name_loc %>
       <% if @user.errors.present? && @user.errors[:institute_name_loc].present? %>
         <span class='ui-error'><%= @user.errors[:institute_name_loc].join(', ') %></span>
