@@ -222,15 +222,15 @@ namespace :seed_turkey_v02 do
     @subjectsHash = {
       bio: {abbr: 'bio', inCurric: true, engName: 'Biology', locAbbr: 'Biy', locName: 'Biyoloji'},
       cap: {abbr: 'cap', inCurric: false, engName: 'Capstones', locAbbr: '', locName: ''},
-      che: {abbr: 'Chem', inCurric: true, engName: 'Chemistry', locAbbr: 'Kim', locName: 'Kimya'},
+      che: {abbr: 'chem', inCurric: true, engName: 'Chemistry', locAbbr: 'Kim', locName: 'Kimya'},
       edu: {abbr: 'edu', inCurric: false, engName: 'Education', locAbbr: '', locName: ''},
       engl: {abbr: 'engl', inCurric: false, engName: 'English', locAbbr: '', locName: ''},
       eng: {abbr: 'eng', inCurric: false, engName: 'Engineering', locAbbr: '', locName: ''},
-      mat: {abbr: 'Math', inCurric: true, engName: 'Mathematics', locAbbr: 'Mat', locName: 'Matematik'},
+      mat: {abbr: 'math', inCurric: true, engName: 'Mathematics', locAbbr: 'Mat', locName: 'Matematik'},
       mec: {abbr: 'mec', inCurric: false, engName: 'Mechanics', locAbbr: '', locName: ''},
       phy: {abbr: 'phy', inCurric: true, engName: 'Physics', locAbbr: 'Fiz', locName: 'Fizik'},
       sci: {abbr: 'sci', inCurric: true, engName: 'Science', locAbbr: 'Bil', locName: 'Bilim'},
-      ear: {abbr: 'Ear', inCurric: true, engName: 'Earth, Space, & Environmental Science', locAbbr: 'Dün', locName: 'Dünya, Uzay ve Çevre Bilimi'},
+      ear: {abbr: 'ear', inCurric: true, engName: 'Earth, Space, & Environmental Science', locAbbr: 'Dün', locName: 'Dünya, Uzay ve Çevre Bilimi'},
       geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: '', locName: ''},
       tech: {abbr: 'tech', inCurric: true, engName: 'Tech Engineering', locAbbr: '', locName: ''}
     }
@@ -256,24 +256,24 @@ namespace :seed_turkey_v02 do
       end
 
       # create english translation for subject name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:engName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:engName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create english translation for subject abbreviation
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:abbr])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:abbr])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       if subjHash[:inCurric]
 
         if subjHash[:locName].present?
           # create locale's translation for subject name
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:locName])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
         if subjHash[:locAbbr].present?
           # create locale's translation for subject abbreviation
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:locAbbr])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
