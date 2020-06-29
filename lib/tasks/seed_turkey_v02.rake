@@ -1,7 +1,7 @@
 # seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations]
 
   task setup: :environment do
     @versionNum = 'v02'
@@ -66,6 +66,17 @@ namespace :seed_turkey_v02 do
       # {item} - grid column, single item
       grid_headers: 'grade,unit,subunit,comp,[essq],[bigidea],[pract],{explain},[miscon]',
       dim_display: 'miscon#0#8#1#2#3#4#5#6#7', #To Do: update on server
+            #user_form_config:
+      #_form_other: list fields that should be included in the user form
+        #dropdown selection fields should have the number of selection options
+        #Dropdown categories in views/users/_form_other.html.erb such as institute_type
+        #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
+        #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
+        #keys for the dropdown options.
+      #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
+      #ADD DROPDOWN TRANSLATIONS WITH TASK: user_form_translations
+      user_form_config:'given_name,family_name,municipality,institute_type#5,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone,role_admin,role_teacher',
+
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)
@@ -392,6 +403,33 @@ namespace :seed_turkey_v02 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_uploads
+
+  ####################################################################################
+  desc "Translation for user form dropdown options"
+  task user_form_translations: :environment do
+  #  position_type#6
+  #  @tt.user_form_option_key(version_code, form_field_name, option_num)
+    dropdown_opts = [
+      {ix: 1, field: 'position_type', en: 'Mektebim Management', tr: 'Mektebim Yönetimi'},
+      {ix: 2, field: 'position_type', en: 'School Principal', tr: 'Okul Müdürü'},
+      {ix: 3, field: 'position_type', en: 'School Leader', tr: 'Okul Lideri'},
+      {ix: 4, field: 'position_type', en: 'Subject Supervisor', tr: 'Konu Danışmanı'},
+      {ix: 5, field: 'position_type', en: 'School Teacher', tr: 'Okul Öğretmeni'},
+      {ix: 6, field: 'position_type', en: 'Other', tr: 'Diğer'},
+      {ix: 1, field: 'institute_type', en: 'Mektebim Administration', tr: 'Mektebim Yönetimi'},
+      {ix: 2, field: 'institute_type', en: 'Secondary School', tr: 'Orta okul'},
+      {ix: 3, field: 'institute_type', en: 'Middle School', tr: 'Orta okul'},
+      {ix: 4, field: 'institute_type', en: 'Elementary School', tr: 'İlkokul'},
+      {ix: 5, field: 'institute_type', en: 'Other', tr: 'Diğer'},
+    ]
+    dropdown_opts.each do |opt|
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:tr])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
+
 
   ###################################################################################
   desc "create the upload control files"
