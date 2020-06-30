@@ -1,6 +1,6 @@
 # Additional translations at https://github.com/plataformatec/devise/wiki/I18n
 
-en:
+ar_EG:
   devise:
     confirmations:
       confirmed: "تم تأكيد حسابك الشخصي بنجاح."
