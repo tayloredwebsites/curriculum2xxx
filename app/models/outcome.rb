@@ -1,6 +1,9 @@
 class Outcome < BaseRec
 
   has_one :tree
+  has_many :resource_joins, as: :resourceable
+  has_many :user_resources, as: :user_resourceable
+  has_many :resources, through: :resource_joins
 
   # Do not change existing sequence of
   # RESOURCES_TYPES.
