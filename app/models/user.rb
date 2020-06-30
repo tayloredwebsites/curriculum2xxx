@@ -19,6 +19,8 @@ class User < BaseRec
   validates :work_address, presence: true
   validates :terms_accepted, presence: true
 
+  has_many :user_resources
+  has_many :resources, through: :user_resources
 
   ADMIN_ROLE = 'admin'
   TEACHER_ROLE = 'teacher'

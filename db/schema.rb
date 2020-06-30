@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200629160411) do
+ActiveRecord::Schema.define(version: 20200630175056) do
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -66,6 +66,21 @@ ActiveRecord::Schema.define(version: 20200629160411) do
     t.datetime "updated_at", null: false
     t.integer "duration_weeks", default: 0, null: false
     t.integer "hours_per_week", default: 0, null: false
+  end
+
+  create_table "resource_joins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "resource_id", null: false
+    t.string "resourceable_type"
+    t.bigint "resourceable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_resource_joins_on_resource_id"
+    t.index ["resourceable_type", "resourceable_id"], name: "resourceable"
+  end
+
+  create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.string "base_key", default: "", null: false
+    t.string "resource_code", default: "", null: false
   end
 
   create_table "sector_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -190,6 +205,18 @@ ActiveRecord::Schema.define(version: 20200629160411) do
     t.index ["locale_id"], name: "index_uploads_on_locale_id"
     t.index ["subject_id", "grade_band_id", "locale_id"], name: "index_uploads_on_keys"
     t.index ["subject_id"], name: "index_uploads_on_subject_id"
+  end
+
+  create_table "user_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "resource_id", null: false
+    t.bigint "user_id", null: false
+    t.string "user_resourceable_type"
+    t.bigint "user_resourceable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_user_resources_on_resource_id"
+    t.index ["user_id"], name: "index_user_resources_on_user_id"
+    t.index ["user_resourceable_type", "user_resourceable_id"], name: "user_resourceable"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
