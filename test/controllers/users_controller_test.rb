@@ -111,4 +111,44 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert assigns(:user).roles.include?(User::ADMIN_ROLE)
   end
 
+  test "Admin should be able to deactivate and restore users" do
+    sign_in @admin
+    # get 'Active Users' listing
+    get users_path
+    assert_response :success
+    assert_select "#deactivate-#{@teacher.id}", text: "Deactivate"
+    assert_select "#restore-#{@teacher.id}", false, "Active user should have no restore option"
+    put "/users/#{@teacher.id}", params: { user: { active: false } }
+    assert_redirected_to users_path
+    get users_path
+    @teacher.reload
+    assert_equal false, @teacher.active
+    assert_select "#deactivate-#{@teacher.id}", false, "Deactivated user should not appear on the 'Active Users' list"
+    assert_select "#restore-#{@teacher.id}", false, "Deactivated user should not appear on the 'Active Users' list"
+    # get 'All Users' listing
+    get users_path(showDeactivated: true)
+    assert_response :success
+    assert_select "#restore-#{@teacher.id}", text: "Restore"
+    assert_select "#deactivate-#{@teacher.id}", false, "Deactivated user should have no 'Deactivate' option"
+    put "/users/#{@teacher.id}", params: { user: { active: true } }
+    assert_redirected_to users_path
+    get users_path
+    @teacher.reload
+    assert_equal true, @teacher.active
+    assert_select "#deactivate-#{@teacher.id}", text: "Deactivate"
+  end
+
+  test "deactivated teacher should be unable to log in." do
+    @teacher.update(active: false)
+    sign_in @teacher
+    get root_path
+    assert_redirected_to new_user_session_path
+    follow_redirect!
+    @teacher.update(active: true)
+    @teacher.reload
+    sign_in @teacher
+    get trees_path
+    assert_response :success
+  end
+
 end
