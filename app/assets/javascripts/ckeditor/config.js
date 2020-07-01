@@ -44,7 +44,7 @@ CKEDITOR.editorConfig = function( config )
     { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-    { name: 'insert', items: [ 'Table', 'HorizontalRule', 'SpecialChar', 'Smiley' ] }
+    { name: 'insert', items: [ 'Table', 'HorizontalRule', 'Image', 'SpecialChar', 'Smiley' ] }
   ];
   config.toolbar = 'mini'
 };
