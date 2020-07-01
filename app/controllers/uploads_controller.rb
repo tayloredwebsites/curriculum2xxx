@@ -401,7 +401,7 @@ class UploadsController < ApplicationController
         end
 
 
-        # class_text resource field to store the Textbook Materials and Resources field
+        # # class_text resource field to store the Textbook Materials and Resources field
         classTextValue = rowH['Textbook Materials and Resources']
         Rails.logger.debug("*** classTextValue: #{classTextValue}")
         if classTextValue.present?
@@ -411,6 +411,7 @@ class UploadsController < ApplicationController
             outRec.get_resource_key('class_text'),
             classTextValue
           )
+
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -472,9 +473,11 @@ class UploadsController < ApplicationController
           Rails.logger.debug("*** explCommentsValue exists: #{explCommentsValue}")
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
-            outRec.get_explain_key,
+            outRec.get_resource_key('explain'),
             explCommentsValue
           )
+          resource = Resource.find_or_create('explain', outRec.get_resource_key('explain'))
+          outRec.resources << resource
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -790,11 +793,13 @@ class UploadsController < ApplicationController
         if !resource_text.blank?
           resource_text = BaseRec.process_resource_content(type, @resource_names['tree'][type], resource_text)
           resource_key = rec.get_resource_key(type)
-          Translation.find_or_update_translation(
-            @locale_code,
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
             resource_key,
             resource_text
           )
+          resource = Resource.find_or_create(type, resource_key)
+          rec.resources << resource if resource
           rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
         end
       end
@@ -850,11 +855,13 @@ class UploadsController < ApplicationController
         if resource_text.present?
           resource_text = BaseRec.process_resource_content(type, @resource_names['outcome'][type], resource_text)
           resource_key = outRec.get_resource_key(type)
-          Translation.find_or_update_translation(
-            @locale_code,
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
             resource_key,
             resource_text
           )
+          resource = Resource.find_or_create(type, resource_key)
+          outRec.resources << resource if resource
         end
       end
     else
@@ -1265,10 +1272,12 @@ class UploadsController < ApplicationController
           currentRec.reload
           resource_key = currentRec.resource_key(type)
           Translation.find_or_update_translation(
-            @locale_code,
+            @localeRec.code,
             resource_key,
             resource_text
           )
+          resource = Resource.find_or_create(type, resource_key)
+          currentRec.resources << resource if resource
           createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
         end
       end

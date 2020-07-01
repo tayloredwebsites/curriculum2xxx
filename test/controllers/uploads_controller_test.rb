@@ -53,6 +53,16 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal BaseRec::UPLOAD_DONE, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
     assert_equal 56, Tree.count
+    assert_equal 29, Resource.count
+    assert_equal 29, ResourceJoin.count
+    assert_equal 1, ResourceJoin.where(:resourceable_type => 'Tree').count
+    outc_resources = Outcome.first.resources
+    outc_res_key = outc_resources.first.base_key
+    assert_equal 1, outc_resources.count
+    assert_equal 'explain', outc_resources.first.resource_code
+    assert_equal Outcome.first.get_resource_key('explain'), outc_res_key
+    explain_str = "Examples of mathematical representations could include graphs, charts, histograms, and population changes gathered from simulations or historical data sets. Examples of classroom activities could include providing peer feedback on arguments about whether organisms would have the capacity to produce populations of great size were it not for the fact that environments and resources are finite, or defining problems related to carrying capacity in ecosystems."
+    assert_equal explain_str, Translation.find_translation_name(@loc_en.code, outc_res_key, 'xxx')
   end
 
 
