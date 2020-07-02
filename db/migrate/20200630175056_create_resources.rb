@@ -3,6 +3,7 @@ class CreateResources < ActiveRecord::Migration[5.1]
     create_table :resources do |t|
       t.string :base_key, default: "", null: false
       t.string :resource_code, default: "", null: false
+      t.timestamps
     end
 
     create_table :resource_joins do |t|
