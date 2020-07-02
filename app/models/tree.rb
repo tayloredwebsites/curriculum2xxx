@@ -51,6 +51,8 @@ class Tree < BaseRec
   has_many :user_resources, as: :user_resourceable
   has_many :resources, through: :resource_joins
 
+  has_many :lesson_plans
+
   # does not seem to be working ?
   # has_many :my_translations
 

@@ -33,6 +33,9 @@ class Dimension < BaseRec
   has_many :user_resources, as: :user_resourceable
   has_many :resources, through: :resource_joins
 
+  has_many :activity_dimensions
+  has_many :activities, through: :activity_dimensions
+
   scope :active, -> { where(:active => true) }
 
   # Translation Field

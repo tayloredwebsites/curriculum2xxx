@@ -22,6 +22,9 @@ class User < BaseRec
   has_many :user_resources
   has_many :resources, through: :user_resources
 
+  has_many :user_lesson_plans
+  has_many :lesson_plans, through: :user_lesson_plans
+
   ADMIN_ROLE = 'admin'
   TEACHER_ROLE = 'teacher'
   PUBLIC_ROLE = 'public'

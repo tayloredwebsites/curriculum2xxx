@@ -1,11 +1,11 @@
 class CreateLessonPlans < ActiveRecord::Migration[5.1]
   def change
     create_table :lesson_plans do |t|
-      t.belongs_to :tree, :null => false, :index => true
+      t.belongs_to :tree, :null => false, index: {name: "lp_tree_id"}
       t.string :base_key
       t.integer :sequence
       t.boolean :is_exemplar
-      t.references :exemplar_authorizor, foreign_key: {to_table: :users}, :index => true
+      t.references :exemplar_authorizor, foreign_key: {to_table: :users}, index: {name: "lp_authorizor_id"}
       t.string :gd_owner_email
       t.boolean :submit_for_review
       t.boolean :is_draft
@@ -14,8 +14,8 @@ class CreateLessonPlans < ActiveRecord::Migration[5.1]
     end
 
     create_table :user_lesson_plans do |t|
-      t.belongs_to :lesson_plan, :null => false, :index => true
-      t.belongs_to :user, :null => false, :index => true
+      t.belongs_to :lesson_plan, :null => false, index: {name: "user_lp_lp_id"}
+      t.belongs_to :user, :null => false, index: {name: "user_lp_user_id"}
       t.timestamps
     end
 
