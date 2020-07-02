@@ -9,6 +9,8 @@ class Resource < BaseRec
   has_many :outcomes, through: :resource_joins, source: :resourceable, source_type: 'Outcome'
   has_many :dimensions, through: :resource_joins, source: :resourceable, source_type: 'Dimension'
 
+  # If Resource matching the params exist, return rec,
+  # otherwise returns nil
   def self.find_resource(resource_code, base_key)
     matches = Resource.where(
 	  :resource_code => resource_code,
