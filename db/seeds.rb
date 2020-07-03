@@ -18,7 +18,7 @@ throw "Invalid Version Count" if Version.count > 1
 if Locale.count < 3
   Locale.create(
     code: 'tr',
-    name: 'Türk'
+    name: 'Türkçe'
   )
   loc_en = Locale.create(
     code: 'en',
