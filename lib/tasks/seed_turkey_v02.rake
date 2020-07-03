@@ -75,7 +75,7 @@ namespace :seed_turkey_v02 do
         #keys for the dropdown options.
       #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
       #ADD DROPDOWN TRANSLATIONS WITH TASK: user_form_translations
-      user_form_config:'given_name,family_name,municipality,institute_type#5,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone,role_admin,role_teacher',
+      user_form_config:'given_name,family_name,govt_level#4,govt_level_name,municipality,institute_type#5,institute_name_loc,position_type#9,subject1,subject2,gender,work_phone,role_admin,role_teacher',
 
     }
     if myTreeTypes.count < 1
@@ -232,7 +232,8 @@ namespace :seed_turkey_v02 do
       sci: {abbr: 'sci', inCurric: true, engName: 'Science', locAbbr: 'Bil', locName: 'Bilim'},
       ear: {abbr: 'ear', inCurric: true, engName: 'Earth, Space, & Environmental Science', locAbbr: 'Dün', locName: 'Dünya, Uzay ve Çevre Bilimi'},
       geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: '', locName: ''},
-      tech: {abbr: 'tech', inCurric: true, engName: 'Tech Engineering', locAbbr: '', locName: ''}
+      tech: {abbr: 'tech', inCurric: true, engName: 'Tech Engineering', locAbbr: '', locName: ''},
+      soc: {abbr: 'soc', inCurric: true, engName: 'Social Science', locAbbr: 'soc', locName: 'Sosyal bilim'},
     }
     # @subjects = []
 
@@ -414,13 +415,20 @@ namespace :seed_turkey_v02 do
       {ix: 2, field: 'position_type', en: 'School Principal', tr: 'Okul Müdürü'},
       {ix: 3, field: 'position_type', en: 'School Leader', tr: 'Okul Lideri'},
       {ix: 4, field: 'position_type', en: 'Subject Supervisor', tr: 'Konu Danışmanı'},
-      {ix: 5, field: 'position_type', en: 'School Teacher', tr: 'Okul Öğretmeni'},
-      {ix: 6, field: 'position_type', en: 'Other', tr: 'Diğer'},
+      {ix: 5, field: 'position_type', en: 'Preschool Teacher', tr: 'Okul öncesi öğretmeni'},
+      {ix: 6, field: 'position_type', en: 'Primary School Teacher', tr: 'İlkokul öğretmeni'},
+      {ix: 7, field: 'position_type', en: 'Secondary School Teacher', tr: 'Orta okul öğretmeni'},
+      {ix: 8, field: 'position_type', en: 'High School Teacher', tr: 'Lise öğretmeni'},
+      {ix: 9, field: 'position_type', en: 'Other', tr: 'Diğer'},
       {ix: 1, field: 'institute_type', en: 'Mektebim Administration', tr: 'Mektebim Yönetimi'},
       {ix: 2, field: 'institute_type', en: 'Secondary School', tr: 'Orta okul'},
       {ix: 3, field: 'institute_type', en: 'Middle School', tr: 'Orta okul'},
       {ix: 4, field: 'institute_type', en: 'Elementary School', tr: 'İlkokul'},
       {ix: 5, field: 'institute_type', en: 'Other', tr: 'Diğer'},
+      {ix: 1, field: 'govt_level', en: 'Republic of Turkey', tr: 'Türkiye Cumhuriyeti'},
+      {ix: 2, field: 'govt_level', en: 'State', tr: 'Durum'},
+      {ix: 3, field: 'govt_level', en: 'Entity', tr: 'varlık'},
+      {ix: 4, field: 'govt_level', en: 'District (enter name below)', tr: 'Bölge (aşağıya isim girin)'}
     ]
     dropdown_opts.each do |opt|
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])

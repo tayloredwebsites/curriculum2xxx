@@ -37,7 +37,7 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :govt_level %>
-      <span class='required'>*</span>
+      <span class='required'>&nbsp;</span>
     </span>
     <span class='col col-md-8 input-col'>
       <% govt_levels = @treeTypeRec.user_form_options(@versionRec.code, 'govt_level', @locale_code) || User::GOVT_LEVELS %>
@@ -59,7 +59,7 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :govt_level_name %>
-      <span class='required'>*</span>
+      <span class='required'>&nbsp;</span>
     </span>
     <span class='col col-md-8 input-col'>
       <%= form.text_field :govt_level_name %>

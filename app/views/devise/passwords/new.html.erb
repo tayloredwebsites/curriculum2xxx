@@ -1,11 +1,38 @@
+<% if @treeTypeRec.code.downcase == 'tfv' %>
+<% content_for(:page_class, 'tfv') %>
+<div class="tfv-page">
+  <div id="signInTFV">
+  <header id='pageHeaderTFV' class='d-flex flex-row navbar justify-content-between'>
+    <div id='MEKTEBIM_SCHOOLS_COMPETENCE-BA' class='nav-item'>
+      <span><%= @appTitle %></span>
+    </div>
+    <div class='flex-row nav-item justify-content-between navbar'>
+      <div id="ibeunescoorg" class='nav-item'>
+        <a href="http://www.ibe.unesco.org/en">ibe.unesco.org</a>
+      </div>
+      <div class="vl"></div>
+      <select id='locale-select' class='nav-item'>
+        <% Locale.all.each do |lc|
+              lc_selected = lc.code == @locale_code
+        %>
+        http://localhost:3000/users/lang/tr
+          <option value='<%= "#{lang_user_url(locale: lc.code)}" %>' <%= lc_selected ? ' selected' : '' %>>
+            <span><%= lc.name %></span>
+          </option>
+        <% end %>
+      </select>
+    </div>
+  </header>
+<% end %>
+
 <div class="login-form small-right">
-<h2><%= t('.forgot_your_password') %></h2>
+<h2 class="small-centered-tfv"><%= t('.forgot_your_password') %></h2>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>*<br />
     <%= f.email_field :email, autofocus: true %>
   </div>
 
@@ -16,3 +43,86 @@
 
 <%= render "devise/shared/links" %>
 </div>
+
+<% if @treeTypeRec.code.downcase == 'tfv' %>
+  <div id="footerTFV">
+    <div id="footerTitle"><%= @appTitle %></div>
+    <div class="generic-grid generic-grid--cols-3-1-1">
+      <div class="">
+        <div class="footerTFV__col-header">
+          <%= t('footer.contact_us') %>
+        </div>
+        <div class="footerTFV__col-box">
+          <%= t('footer.unesco_address').html_safe %>
+        </div>
+        <div class="footerTFV__col-box">
+          <%= t('footer.unesco_contact').html_safe %>
+        </div>
+      </div>
+      <div class="">
+        <div class="footerTFV__col-header">
+          <%= t('footer.navigate') %>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="<%= new_user_session_url %>"><%= t('nav_bar.signin.name') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="<%= new_user_url %>"><%= t('devise.registrations.sign_up') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="<%= new_user_password_url %>"><%= t('devise.shared.links.forgot_your_password') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="<%= new_user_confirmation_url %>"><%= t('devise.shared.links.didn_t_receive_confirmation_instructions') %></a>
+        </div>
+      </div>
+      <div class="">
+        <div class="footerTFV__col-header">
+          <%= t('footer.terms.header') %>
+        </div>
+        <div class="footerTFV__col-box">
+          <%= t('footer.terms.use') %>
+        </div>
+        <div class="footerTFV__col-box">
+          <%= t('footer.terms.cookie') %>
+        </div>
+      </div>
+      <div class="">
+        <div class="footerTFV__col-header">
+          <%= t('footer.donor.header') %>
+        </div>
+        <div class="footerTFV__col-box">
+          <%= t('footer.donor.desc') %>
+        </div>
+        <button>
+          <%= t('footer.donor.button') %>
+        </button>
+      </div>
+      <div>
+        <div class="footerTFV__col-header">
+          <%= t('footer.follow.header') %>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="https://www.facebook.com/IBEUNESCO" title="<%= t('footer.follow.fb') %>" target="_blank"><%= t('footer.follow.fb') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="https://twitter.com/IBE_UNESCO" title="<%= t('footer.follow.tw') %>" target="_blank"><%= t('footer.follow.tw') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="https://www.youtube.com/user/UnescoIBE" title="<%= t('footer.follow.yt') %>" target="_blank"><%= t('footer.follow.yt') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="https://www.flickr.com/photos/ibe-unesco/" title="<%= t('footer.follow.fl') %>" target="_blank"><%= t('footer.follow.fl') %></a>
+        </div>
+        <div class="footerTFV__col-box">
+          <a href="http://www.ibe.unesco.org/en/news.rss" title="<%= t('footer.follow.rss') %>" target="_blank"><%= t('footer.follow.rss') %></a>
+        </div>
+      </div>
+    </div>
+    <img src="<%= Rails.configuration.root_url %>/logo_shared.png" />
+  </div>
+  <div class="copyright">
+    <%= t('footer.copyright').html_safe %>
+  </div>
+</div>
+<% end %>

@@ -6,8 +6,8 @@ class User < BaseRec
 
   validates :given_name, presence: true
   validates :family_name, presence: true
-  validates :govt_level, presence: true
-  validates :govt_level_name, presence: true
+  # validates :govt_level, presence: true
+  # validates :govt_level_name, presence: true
   validates :municipality, presence: true
   validates :institute_type, presence: true
   #validates :institute_name_loc, presence: true

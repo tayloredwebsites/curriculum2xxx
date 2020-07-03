@@ -24,9 +24,9 @@ class DbSeedTest < ActionDispatch::IntegrationTest
     @ttEgstemUniv = TreeType.where(:code => 'egstemuniv').first
     assert_equal(4, GradeBand.where(:tree_type_id => @ttEgstemUniv.id).count)
     assert_equal(13, GradeBand.where(:tree_type_id => @ttTFV.id).count)
-    assert_equal(13, Subject.where(:tree_type_id => @ttTFV.id).count)
+    assert_equal(14, Subject.where(:tree_type_id => @ttTFV.id).count)
     assert_equal(13, Subject.where(:tree_type_id => @ttEgstemUniv.id).count)
-    assert_equal(32, Upload.count)
+    assert_equal(34, Upload.count)
     assert_equal(11, Sector.where(:sector_set_code => 'gr_chall').count)
     assert_equal(8, Sector.where(:sector_set_code => 'future').count)
   end

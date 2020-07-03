@@ -361,7 +361,7 @@ en:
         govt_level_val4: 'Republic of Srpska'
         govt_level_val5: 'District (enter name below)'
         govt_level_name: 'Government Level Name'
-        municipality: 'Municipality Name'
+        municipality: 'City Name'
         institute_type: 'Institution Type'
         institute_type_val0: 'Ministry'
         institute_type_val1: 'Pedagogical Institute (PI)'
