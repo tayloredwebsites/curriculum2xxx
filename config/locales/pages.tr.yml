@@ -89,6 +89,8 @@ tr:
     users:
       name: "Kullanıcılar"
       hover: "Kullanıcı yönetimi"
+      nav:
+        active_users: 'Active Users'
     my_account:
       name: "Hesabım"
       hover: "Hesap bilgilerimi değiştir"

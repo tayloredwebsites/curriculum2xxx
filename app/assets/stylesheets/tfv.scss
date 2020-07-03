@@ -277,23 +277,32 @@
       .row {
         background: none;
         margin: 20px 20%;
-        border-bottom: 1px solid rgba(91,196,241,1);
+       // border-bottom: 1px solid rgba(91,196,241,1);
         span { text-align: left; }
       }
       .row:not(:first_of_type) {
         width: 50%;
       }
+      &.small-right {
+        width: 30%;
+        margin: auto;
+        a { margin-left: 0; }
+      }
       h2 {
         margin-left: 20%;
         font-family: Lyon Display;
         font-size: 52pt;
+        &.small-centered-tfv {
+          font-size: 42pt;
+          margin-left: 0;
+        }
       }
       form input[type=text], form input[type=password], , form input[type=email] {
-        width: 95%;
+        width: 400px;
         border: 0;
         outline: 0;
         background: transparent !important;
-        //border-bottom: 1px solid rgb(91, 196, 241);
+        border-bottom: 1px solid rgb(91, 196, 241);
       }
       input:-webkit-autofill,             input:-webkit-autofill:hover,             input:-webkit-autofill:focus {
         transition: background-color 5000s ease-in-out 0s;
@@ -305,8 +314,23 @@
         border-radius: 20px;
         padding: 1em 7em;
       }
+      form[action*='/users/password'], form[action*='/users/confirmation'] {
+        width: 35%;
+        .field {
+        }
+        input[type=submit] {
+          margin-left: 0;
+          border-radius: 50px;
+          padding: 0;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          font-weight: bold;
+          width: 400px;
+        }
+      }
       select {
-        width: 110%;        overflow: visible;
+        width: 110%;
+        overflow: visible;
         outline: none;
         white-space: nowrap;
         text-align: right;

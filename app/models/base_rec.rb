@@ -51,6 +51,7 @@ class BaseRec < ActiveRecord::Base
     'adv', #advisory
     'ara', #Arabic
     'art', #Art
+    'soc',
   ]
   SUBJECT_COLORS = [
     '#E5FFDE',
