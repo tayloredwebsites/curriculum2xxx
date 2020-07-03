@@ -1,6 +1,7 @@
 
   #pageHeaderTFV {
     height: 90px;
+    background: white;
     #ibeunescoorg a {
       overflow: visible;
       line-height: 16px;
@@ -236,6 +237,10 @@
       padding-bottom: 15px;
       border-bottom: 1px solid rgba(91,196,241,1);
       text-align: left;
+      a {
+        color: white;
+        text-decoration: none;
+      }
     }
     button {
       background: transparent !important;
@@ -261,4 +266,72 @@
     font-size: 12px;
     color: rgba(0,21,68,1);
     letter-spacing: 0.2px;
+  }
+
+  .tfv-page {
+    background: #eff9fd;
+    .login-form {
+      padding-top: 50px;
+      padding-bottom: 50px;
+      width: 90%;
+      .row {
+        background: none;
+        margin: 20px 20%;
+        border-bottom: 1px solid rgba(91,196,241,1);
+        span { text-align: left; }
+      }
+      .row:not(:first_of_type) {
+        width: 50%;
+      }
+      h2 {
+        margin-left: 20%;
+        font-family: Lyon Display;
+        font-size: 52pt;
+      }
+      form input[type=text], form input[type=password], , form input[type=email] {
+        width: 95%;
+        border: 0;
+        outline: 0;
+        background: transparent !important;
+        //border-bottom: 1px solid rgb(91, 196, 241);
+      }
+      input:-webkit-autofill,             input:-webkit-autofill:hover,             input:-webkit-autofill:focus {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+      form input[type=submit] {
+        margin: 50px 20%;
+        background: transparent !important;
+        border: 2px solid rgb(91, 196, 241);
+        border-radius: 20px;
+        padding: 1em 7em;
+      }
+      select {
+        width: 110%;        overflow: visible;
+        outline: none;
+        white-space: nowrap;
+        text-align: right;
+        font-family: Averta;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        background-color: #eff9fd;
+        margin: 0;
+        margin-left: -10%;
+        padding: 0;
+        box-sizing: border-box;
+        border: none;
+      }
+      a {
+        margin-left: 20%;
+        font-family: Averta;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: rgba(0,21,68,1);
+        letter-spacing: 0.1px;
+        text-decoration: underline;
+      }
+      .required { color: black; }
+    }
+
   }

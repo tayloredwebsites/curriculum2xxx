@@ -2,7 +2,7 @@
 <div class="margin-top padding-top">
   <div id="footerTFV">
     <div id="footerTitle"><%= @appTitle %></div>
-    <div class="generic-grid generic-grid--cols-3-1-1">
+    <div class="generic-grid generic-grid--cols-4">
       <div class="">
         <div class="footerTFV__col-header">
           <%= t('footer.contact_us') %>
@@ -12,23 +12,6 @@
         </div>
         <div class="footerTFV__col-box">
           <%= t('footer.unesco_contact').html_safe %>
-        </div>
-      </div>
-      <div class="">
-        <div class="footerTFV__col-header">
-          <%= t('footer.navigate') %>
-        </div>
-        <div class="footerTFV__col-box">
-          <%= t('nav_bar.signin.name') %>
-        </div>
-        <div class="footerTFV__col-box">
-          <%= t('devise.registrations.sign_up.name') %>
-        </div>
-        <div class="footerTFV__col-box">
-          <%= t('nav_bar.signin.name') %>
-        </div>
-        <div class="footerTFV__col-box">
-          <%= t('nav_bar.signin.name') %>
         </div>
       </div>
       <div class="">
@@ -58,19 +41,19 @@
           <%= t('footer.follow.header') %>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.follow.fb') %>
+          <a href="https://www.facebook.com/IBEUNESCO" title="<%= t('footer.follow.fb') %>" target="_blank"><%= t('footer.follow.fb') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.follow.tw') %>
+          <a href="https://twitter.com/IBE_UNESCO" title="<%= t('footer.follow.tw') %>" target="_blank"><%= t('footer.follow.tw') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.follow.yt') %>
+          <a href="https://www.youtube.com/user/UnescoIBE" title="<%= t('footer.follow.yt') %>" target="_blank"><%= t('footer.follow.yt') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.follow.fl') %>
+          <a href="https://www.flickr.com/photos/ibe-unesco/" title="<%= t('footer.follow.fl') %>" target="_blank"><%= t('footer.follow.fl') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.follow.rss') %>
+          <a href="http://www.ibe.unesco.org/en/news.rss" title="<%= t('footer.follow.rss') %>" target="_blank"><%= t('footer.follow.rss') %></a>
         </div>
       </div>
     </div>
