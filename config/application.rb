@@ -20,6 +20,8 @@ module Curriculum
 
     # missing translations fallback to en (English))
     config.i18n.fallbacks = {'ar_EG' => 'en', 'tr' => 'en'}
-
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts', 'Averta')
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts', 'LyonDisplay')
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
   end
 end

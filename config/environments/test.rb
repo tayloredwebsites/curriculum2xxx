@@ -48,4 +48,6 @@ Rails.application.configure do
   # preceed the test with the following require statement:
   # require 'test_helper_debugging'
 
+  config.root_url = 'http://localhost:3000'
+
 end
