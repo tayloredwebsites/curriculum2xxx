@@ -171,7 +171,7 @@ en:
       hover: "Sign in to Curriculum Web App"
     signout:
       name: "Sign Out"
-      hover: "Sign in to Curritulum Web App"
+      hover: "Sign in to Curriculum Web App"
   footer:
     contact_us: "Contact Us"
     unesco_address: "<strong>IBE - UNESCO</strong><br>15, Route des Morillons<br>1218 Le Grand-Saconnex Geneva,<br>Switzerland"

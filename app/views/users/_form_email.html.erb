@@ -2,9 +2,9 @@
 <div class="row">
   <span class='col col-md-4 label-col'>
     <%= form.label :email %>
+    <span class='required'>*</span>
   </span>
   <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
     <%= form.email_field :email, autofocus: true %>
     <% if @user.errors.present? && @user.errors[:email].present? %>
       <span class='ui-error'><%= @user.errors[:email].join(', ') %></span>
