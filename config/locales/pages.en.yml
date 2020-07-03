@@ -172,6 +172,27 @@ en:
     signout:
       name: "Sign Out"
       hover: "Sign in to Curritulum Web App"
+  footer:
+    contact_us: "Contact Us"
+    unesco_address: "<strong>IBE - UNESCO</strong><br>15, Route des Morillons<br>1218 Le Grand-Saconnex Geneva,<br>Switzerland"
+    unesco_contact: "<strong>T.</strong> +41 22 917 78 00<br><strong>F.</strong> +41 22 917 78 01<br><strong>E.</strong> ibe.info@unesco.org"
+    navigate: "Navigate"
+    terms:
+      header: "Terms & Policies"
+      use: "Terms of Use"
+      cookie: "Cookie Policy"
+    donor:
+      header: "Become a Donor"
+      desc: "Do you want a world where every person has access to relevant, quality education, and lifelong learning? Donor contributions make it possible for the IBE to work towards this goal, by developing its programmes and providing technical support to Member States."
+      button: "Donate"
+    follow:
+      header: "Follow Us"
+      fb: "Facebook"
+      tw: "Twitter"
+      yt: "Youtube"
+      fl: "Flickr"
+      rss: "RSS"
+    copyright: "<span>© 21PSTEM developed the app that hosts this curriculum</span>"
   translations:
     index:
       name: "Translations Listing"
@@ -326,7 +347,7 @@ en:
         role_public: "Public"
         role_teacher: "Teacher"
         role_admin: "Web Admin"
-        email: "E-Mail Address"
+        email: "Email"
         password: "Password"
         password_confirmation: "Password Confirmation"
         current_password: "Current Password"

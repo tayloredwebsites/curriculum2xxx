@@ -1,0 +1,264 @@
+
+  #pageHeaderTFV {
+    height: 90px;
+    #ibeunescoorg a {
+      overflow: visible;
+      line-height: 16px;
+      margin-top: -2px;
+      text-align: right;
+      font-family: Averta;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      color: rgba(0,21,68,1);
+      letter-spacing: 0.5px;
+    }
+    #locale-select {
+      overflow: visible;
+      outline: none;
+      white-space: nowrap;
+      text-align: right;
+      font-family: Averta;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      color: rgba(0,21,68,1);
+      margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    }
+  }
+
+  #loginBgTFV {
+    background: url("/login_bg.jpg") no-repeat center;
+    background-size: cover;
+    margin-right: -15px;
+    min-height: 800px;
+    height: 100vh;
+    padding: 10vh 0 0;
+  }
+
+  .vl {
+    opacity: .3;
+    margin: auto 25px;
+    width: 1px;
+    height: 3vh;
+    background: rgb(91, 196, 241);
+    position: relative;
+  }
+
+  #MEKTEBIM_SCHOOLS_COMPETENCE-BA {
+    position: relative;
+    margin-left: 6.5%;
+    overflow: visible;
+    line-height: 26px;
+    text-align: left;
+    font-family: Averta;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(0,21,68,1);
+    letter-spacing: 0.2px;
+  }
+
+  #loginBoxTVF {
+    opacity: 0.85;
+    background: rgba(255,255,255,1);
+    overflow: visible;
+    border-radius: 20px;
+    width: 544px;
+    height: 650px;
+    margin: auto;
+    margin: 3vh auto 0;
+    // left: 688px;
+    //top: 293px;
+  }
+
+  #loginOverlayTFV {
+    position: relative;
+    width: 544px;
+    height: 650px;
+    margin: -650px auto 0;
+    form { width: 544px; }
+    form input[type=text], form input[type=password] {
+      width: 95%;
+      margin: auto;
+      border: 0;
+      outline: 0;
+      background: transparent !important;
+      border-bottom: 1px solid rgb(91, 196, 241);
+    }
+    input:-webkit-autofill,             input:-webkit-autofill:hover,             input:-webkit-autofill:focus {
+      transition: background-color 5000s ease-in-out 0s;
+    }
+    form input[type=submit] {
+      background: transparent !important;
+      border: 2px solid rgb(91, 196, 241);
+      border-radius: 20px;
+      padding: 1em 7em;
+    }
+    //top293px
+    #Sign_in { //title
+      position: relative;
+      overflow: visible;
+      width: 436px;
+      height: 52px;
+      line-height: 56px;
+      margin-top: 65px;
+      margin-left: 44px;
+      text-align: left;
+      font-family: Lyon Display;
+      font-style: normal;
+      font-weight: lighter;
+      font-size: 52px;
+      color: rgba(0,21,68,1);
+      letter-spacing: 0.25px;
+    }
+    #You_need_to_sign_in_or_sign_up {
+      position: relative;
+      overflow: visible;
+      width: 436px;
+      height: 15px;
+      line-height: 16px;
+      margin-top: 15px;
+      margin-left: 44px;
+      text-align: left;
+      font-family: Averta;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      color: rgba(91,196,241,1);
+      letter-spacing: 0.3px;
+    }
+
+    #Email {
+      margin: 0;
+      position: relative;
+      overflow: visible;
+      width: 436px;
+      margin-top: 50px;
+      margin-left: 44px;
+      white-space: nowrap;
+      line-height: 25px;
+      text-align: left;
+      font-family: Averta;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      color: rgba(0,21,68,1);
+      letter-spacing: 0.1px;
+    }
+    #Password {
+      position: relative;
+      width: 436px;
+      margin-top: 50px;
+      margin-left: 44px;
+      overflow: visible;
+      line-height: 25px;
+      text-align: left;
+      font-family: Averta;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      color: rgba(0,21,68,1);
+      letter-spacing: 0.1px;
+    }
+
+    #devise_links {
+      position: relative;
+      overflow: visible;
+      width: 254px;
+      white-space: nowrap;
+      line-height: 25px;
+      margin-top: 50px;
+      margin-left: 44px;
+      text-align: left;
+      a {
+        font-family: Averta;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: rgba(0,21,68,1);
+        letter-spacing: 0.1px;
+        text-decoration: underline;
+      }
+    }
+    #SIGN_IN { //button
+      margin-top: 50px;
+      margin-left: 44px;
+      line-height: 16px;
+      font-family: Averta;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 13px;
+      color: rgba(0,21,68,1);
+      letter-spacing: 0.5px;
+    }
+  }
+
+  #footerTFV {
+    padding: 90px 70px;
+    background: #001544;
+    text-align: left;
+    font-family: Averta;
+    color: white;
+    letter-spacing: 0.25px;
+    line-height: 20px;
+    text-align: left;
+    font-style: normal;
+    .generic-grid>div:not(:first-of-type) {
+      border-left: 1px solid rgba(91,196,241,1);
+      padding-left: 20px;
+      text-align: left;
+    }
+    .generic-grid {
+      margin: 4em 0;
+    }
+    #footerTitle {
+      max-width: 220px;
+      color: rgba(91, 194, 241, 1);
+      line-height: 22px;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      letter-spacing: 0.2px;
+    }
+    .footerTFV__col-header {
+      font-size: 18px;
+    }
+    .footerTFV__col-box {
+      display: inline-block;
+      max-width: 90%;
+      min-width: 50%;
+      margin-top: 25px;
+      font-size: 14px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(91,196,241,1);
+      text-align: left;
+    }
+    button {
+      background: transparent !important;
+      border: 2px solid rgb(91, 196, 241);
+      border-radius: 40px;
+      font-weight: bold;
+      padding: .5em 5em;
+      margin-top: 40px;
+      color: white;
+      text-align: left;
+    }
+  }
+
+  .copyright {
+    position: relative;
+    margin-left: 6.5%;
+    overflow: visible;
+    line-height: 50px;
+    text-align: left;
+    font-family: Averta;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    color: rgba(0,21,68,1);
+    letter-spacing: 0.2px;
+  }

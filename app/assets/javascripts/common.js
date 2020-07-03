@@ -242,6 +242,12 @@ $(function() {
     });
     $(".print-btn").on("click", function() { window.print(); });
   }
+
+  init_locale_menu = function () {
+    $('#locale-select').on('change', function () {
+      window.location = $(this).val();
+    })
+  }
   //###################################
   //# ADD EVENT BINDINGS
 
@@ -254,10 +260,12 @@ $(function() {
     readyFontSizes();
     init_hierarchy_show();
     init_admin_subjects_editing();
+    init_locale_menu();
   });
   readyFontSizes();
   init_hierarchy_show();
   init_admin_subjects_editing();
+  init_locale_menu();
 
   $(".fa-bars").on("click", function(event, state) {
     toggleTopNav(this, event);
