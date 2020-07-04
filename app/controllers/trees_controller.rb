@@ -260,6 +260,19 @@ class TreesController < ApplicationController
     dimPrep
     #To Do: Remove Alt Flag when design is finalized
     subjectLocaleCode = @subjects[@subject_code].get_abbr(@locale_code).downcase
+   @subjById = {}# Hash[subjById]
+   subjVerKeyHash = {} #Hash[subjVerKey]
+   Subject.all.map do |rec|
+      @subjById[rec.id] = rec.code
+      subjVerKeyHash[rec.id] = rec.get_versioned_name_key
+    end
+    @gbById = {}
+    gbNameKey = {}
+    GradeBand.all.map do |rec|
+      @gbById[rec.id] = rec.code
+      gbNameKey[rec.id] = rec.get_name_key
+    end
+
     @use_alt_partial = params[:alt]
     @editing = params[:editme] && can_edit_any_dims?(@treeTypeRec)
     @page_title = @editing ? translate('trees.maint.title') : (@dim_type ? (Translation.find_translation_name(@locale_code, Dimension.get_dim_type_key(@dim_type, @treeTypeRec.code, @versionRec.code), nil) || translate('nav_bar.'+@dim_type+'.name')) : @hierarchies[@treeTypeRec.outcome_depth].pluralize )
@@ -278,16 +291,16 @@ class TreesController < ApplicationController
 
     # create ruby hash from tree records, to easily build tree from record codes
     @trees.each do |tree|
-      translation = @translations[tree.buildNameKey]
+      translation = @translations[tree.buildNameKey(@treeTypeRec.code, @versionRec.code, @subjById[tree.subject_id])]
       # Parent keys types ( Tree Type, Version, Subject, & Grade Band)
-      tkey = tree.tree_type.code + "." + tree.version.code + "." + tree.subject.code + "." + tree.grade_band.code
+      tkey = @treeTypeRec.code + "." + @versionRec.code + "." + @subjById[tree.subject_id] + "." + @gbById[tree.grade_band_id]
 
       # column header indicating the subject and grade, and if not current one, the curriculum and version
       tkeyTrans = ''
       if (false) # when current curriculum and version are known, check if current column is not the current one
         tkeyTrans += Translation.find_translation_name(@locale_code, 'curriculum.'+tree.tree_type.code+'.title', 'Missing Curriculum Name') + ' - ' + tree.version.code + ' - '
       end
-      tkeyTrans += Translation.find_translation_name(@locale_code, tree.subject.get_versioned_name_key, 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, tree.grade_band.get_name_key, 'Missing Grade Name')
+      tkeyTrans += Translation.find_translation_name(@locale_code, subjVerKeyHash[tree.subject_id], 'Missing Subject Name') + ' - ' + Translation.find_translation_name(@locale_code, gbNameKey[tree.grade_band_id], 'Missing Grade Name')
       @translations[tkey] = tkeyTrans
       selectors_by_parent = tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
       selectors_by_parent = selectors_by_parent.length > 1 ? "collapsable " + selectors_by_parent.join(" ") : "top-selector" + selectors_by_parent.join(" ")
