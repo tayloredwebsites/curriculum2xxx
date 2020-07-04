@@ -1,0 +1,27 @@
+<% if @treeTypeRec.code.downcase == 'tfv' %>
+<% content_for(:page_class, 'tfv') %>
+<!-- First div (.tfv-page) closed in devise/shared/_logged_out_footer -->
+<div class="tfv-page">
+  <div id="signInTFV">
+  <header id='pageHeaderTFV' class='d-flex flex-row navbar justify-content-between'>
+    <div id='MEKTEBIM_SCHOOLS_COMPETENCE-BA' class='nav-item'>
+      <span><%= @appTitle %></span>
+    </div>
+    <div class='flex-row nav-item justify-content-between navbar'>
+      <div id="ibeunescoorg" class='nav-item'>
+        <a href="http://www.ibe.unesco.org/en">ibe.unesco.org</a>
+      </div>
+      <div class="vl"></div>
+      <select id='locale-select' class='nav-item'>
+        <% Locale.all.each do |lc|
+              lc_selected = lc.code == @locale_code
+        %>
+        http://localhost:3000/users/lang/tr
+          <option value='<%= "#{lang_user_url(locale: lc.code)}" %>' <%= lc_selected ? ' selected' : '' %>>
+            <span><%= lc.name %></span>
+          </option>
+        <% end %>
+      </select>
+    </div>
+  </header>
+<% end %>
