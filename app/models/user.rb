@@ -25,6 +25,8 @@ class User < BaseRec
   has_many :user_lesson_plans
   has_many :lesson_plans, through: :user_lesson_plans
 
+  before_create :set_default_role
+
   ADMIN_ROLE = 'admin'
   TEACHER_ROLE = 'teacher'
   PUBLIC_ROLE = 'public'
@@ -98,6 +100,10 @@ class User < BaseRec
   scope :active, -> {
     where(:active => true)
   }
+
+  def set_default_role
+    self.roles = PUBLIC_ROLE if TreeType.first.code.downcase == 'tfv'
+  end
 
   def active_for_authentication?
     super && active && roles.length > 0
@@ -205,7 +211,7 @@ class User < BaseRec
   end
 
   def is_registered?
-    if is_admin? || is_teacher? || is_public?
+    if is_admin? || is_teacher? || is_counselor? || is_supervisor? || is_public?
       return true
     end
   end

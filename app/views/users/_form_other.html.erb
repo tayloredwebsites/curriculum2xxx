@@ -33,7 +33,7 @@
   <%= form.hidden_field :family_name, value: "family_name" %>
 <% end %>
 
-<% if form_config.length == 0 || form_config.include?("govt_level") %>
+<% if form_config.length == 0 || form_config.include?("govt_level,") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :govt_level %>
@@ -58,7 +58,9 @@
 <% if form_config.length == 0 || form_config.include?("govt_level_name") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
-      <%= form.label :govt_level_name %>
+      <label for="govt_level_name">
+        <%= @treeTypeRec.user_form_label_name(@locale_code, @versionRec.code, "govt_level_name") %>
+      </label>
       <span class='required'>&nbsp;</span>
     </span>
     <span class='col col-md-8 input-col'>
@@ -284,4 +286,8 @@
   </div>
 <% else %>
   <%= form.hidden_field :terms_accepted, value: true %>
+<% end %>
+
+<% if form_config.length == 0 || form_config.include?("role_public") %>
+  <%= form.hidden_field :role_public, value: 1 if !current_user.present? %>
 <% end %>
