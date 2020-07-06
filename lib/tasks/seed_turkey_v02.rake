@@ -75,7 +75,7 @@ namespace :seed_turkey_v02 do
         #keys for the dropdown options.
       #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
       #ADD DROPDOWN TRANSLATIONS WITH TASK: user_form_translations
-      user_form_config:'given_name,family_name,govt_level#4,govt_level_name,municipality,institute_type#5,institute_name_loc,position_type#9,subject1,subject2,gender,work_phone,role_admin,role_teacher',
+      user_form_config:'given_name,family_name,govt_level_name,municipality,institute_type#6,institute_name_loc,position_type#9,subject1,subject2,gender,work_phone,role_admin,role_teacher,role_public',
 
     }
     if myTreeTypes.count < 1
@@ -420,16 +420,23 @@ namespace :seed_turkey_v02 do
       {ix: 7, field: 'position_type', en: 'Secondary School Teacher', tr: 'Orta okul öğretmeni'},
       {ix: 8, field: 'position_type', en: 'High School Teacher', tr: 'Lise öğretmeni'},
       {ix: 9, field: 'position_type', en: 'Other', tr: 'Diğer'},
-      {ix: 1, field: 'institute_type', en: 'Mektebim Administration', tr: 'Mektebim Yönetimi'},
-      {ix: 2, field: 'institute_type', en: 'Secondary School', tr: 'Orta okul'},
-      {ix: 3, field: 'institute_type', en: 'Middle School', tr: 'Orta okul'},
-      {ix: 4, field: 'institute_type', en: 'Elementary School', tr: 'İlkokul'},
-      {ix: 5, field: 'institute_type', en: 'Other', tr: 'Diğer'},
-      {ix: 1, field: 'govt_level', en: 'Republic of Turkey', tr: 'Türkiye Cumhuriyeti'},
-      {ix: 2, field: 'govt_level', en: 'State', tr: 'Durum'},
-      {ix: 3, field: 'govt_level', en: 'Entity', tr: 'varlık'},
-      {ix: 4, field: 'govt_level', en: 'District (enter name below)', tr: 'Bölge (aşağıya isim girin)'}
+      {ix: 1, field: 'institute_type', en: 'Government Agency', tr: 'Devlet kurumu'},
+      {ix: 2, field: 'institute_type', en: 'Education Agency', tr: 'Eğitim Ajansı'},
+      {ix: 3, field: 'institute_type', en: 'NGO', tr: 'sivil toplum örgütü'},
+      {ix: 4, field: 'institute_type', en: 'University', tr: 'Üniversite'},
+      {ix: 5, field: 'institute_type', en: 'K-12 School', tr: 'K-12 Okulu'},
+      {ix: 6, field: 'institute_type', en: 'Other', tr: 'Diğer'},
+      # {ix: 1, field: 'govt_level', en: 'Republic of Turkey', tr: 'Türkiye Cumhuriyeti'},
+      # {ix: 2, field: 'govt_level', en: 'State', tr: 'Durum'},
+      # {ix: 3, field: 'govt_level', en: 'Entity', tr: 'varlık'},
+      # {ix: 4, field: 'govt_level', en: 'District (enter name below)', tr: 'Bölge (aşağıya isim girin)'}
     ]
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_label_key(@ver.code, "govt_level_name"), "Country")
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, @tt.user_form_label_key(@ver.code, "govt_level_name"), "ülke")
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+
     dropdown_opts.each do |opt|
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])
       throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
