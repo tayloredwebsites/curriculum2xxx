@@ -60,15 +60,6 @@ module ApplicationHelper
     return ret
   end
 
-
-  def can_view_type?(type)
-    if current_user && current_user.is_public?
-      return false
-    else
-      return true
-    end
-  end
-
   def can_edit_type?(type)
     teachers_can_edit = [] #['tree-detail-page','miscon', 'sector', 'connect', 'resource']
     return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type)) ||
