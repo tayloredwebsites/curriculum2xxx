@@ -15,7 +15,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     setup_all_users
   end
 
-  test "public user should only see sign_in page" do
+  test "unregistered user should only see sign_in page" do
     get root_path
     assert_redirected_to new_user_session_path
     get trees_path
@@ -38,6 +38,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "unauth user should only see public pages" do
     sign_in @unauth
+    puts "UNAUTH ROLES: #{@unauth.roles}"
     get root_path
     assert_redirected_to new_user_session_path
     get trees_path
@@ -58,11 +59,35 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "user with only public role should only see appropriate pages" do
+    sign_in @public
+    get root_path
+    assert_redirected_to root_path('en')
+    get trees_path
+    assert_response :success
+    get sequence_trees_path
+    assert_redirected_to root_path('en')
+    get uploads_path
+    assert_redirected_to root_path('en')
+    get users_path
+    assert_redirected_to root_path('en')
+    get edit_user_path('en', @admin.id)
+    assert_redirected_to root_path('en')
+    get edit_user_path('en', @unauth.id)
+    assert_redirected_to root_path('en')
+    get edit_user_path('en', @public.id)
+    assert_response :success
+    get new_user_session_path
+    assert_redirected_to root_path('en')
+  end
+
   test "teacher should only see appropriate pages" do
     sign_in @teacher
     get root_path
     assert_redirected_to root_path('en')
     get trees_path
+    assert_response :success
+    get sequence_trees_path
     assert_response :success
     get uploads_path
     assert_redirected_to root_path('en')
@@ -83,6 +108,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_redirected_to root_path('en')
     get trees_path
+    assert_response :success
+    get sequence_trees_path
     assert_response :success
     get uploads_path
     assert_response :success
