@@ -57,7 +57,7 @@
             }
         tree_code = tree.format_code(@locale_code)
       %>
-      <% if can_view_type?('treetree') %>
+      <% if can? :read, TreeTree %>
         <% @relatedBySubj.each do |subj, rel|%>
           <% rel.each do |r|
              connectionsFound += 1

@@ -42,6 +42,9 @@ gem 'foreman'
 gem 'devise', '~> 4.7.1'
 gem 'devise-i18n'
 
+# control permissions by role
+gem 'cancancan', '3.1.0'
+
 # # internationalization tables in database
 # gem 'i18n-active_record', :require => 'i18n/active_record'
 

@@ -370,6 +370,7 @@ class TreesController < ApplicationController
   end
 
   def sequence
+    authorize! :read, TreeTree
     index_prep
     @page_settings = JSON.parse(cookies[:connect_cols_settings]) if cookies[:connect_cols_settings]
     @max_subjects = 6
