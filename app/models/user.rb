@@ -102,7 +102,9 @@ class User < BaseRec
   }
 
   def set_default_role
-    self.roles = PUBLIC_ROLE if TreeType.where(:code => 'tfv').count > 0
+    if self.roles == '' && TreeType.where(:code => 'tfv').count > 0
+      self.roles = PUBLIC_ROLE
+    end
   end
 
   def active_for_authentication?
