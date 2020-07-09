@@ -29,6 +29,7 @@ class UsersController < ApplicationController
     :refresh_path,
     :admin_subjects,
     :active,
+    :role_public,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,
@@ -104,6 +105,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    "CREATE PARAMS: #{params.inspect}"
     unauthorized() and return if !user_is_admin?(current_user)
     @user = User.new(admin_user_params)
     if @user.save

@@ -1,3 +1,4 @@
+<% @display_tfv_version = @treeTypeRec.code.downcase == 'tfv'%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,36 +10,72 @@
     <%= javascript_include_tag "https://cdn.plot.ly/plotly-1.54.3.min.js" %>
 
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% if @treeTypeRec.code.downcase == 'tfv' %>
+      <style>
+        @font-face {
+          font-family: 'Averta';
+           src: url('<%= asset_path("averta-regular-webfont.woff2") %>'), url('<%= asset_path("averta-regular-webfont.woff") %>');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'Averta';
+          src: url('<%= asset_path("averta-bold-webfont.woff2") %>'), url('<%= asset_path("averta-bold-webfont.woff") %>');
+          font-weight: bold;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'Lyon Display';
+          src: url('<%= asset_path("LyonDisplay-Light-Web.woff") %>') format("truetype");
+          font-weight: lighter;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'Lyon Display';
+          src: url('<%= asset_path("LyonDisplay-Regular-Web.woff") %>') format("truetype");
+          font-weight: normal;
+          font-style: normal;
+        }
+      </style>
+    <% end %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
-  <body>
-    <div id='outer-container' class="container-fluid">
-      <%= render 'layouts/header' %>
-      <% if current_user.present? && (flash[:notice].present? || flash[:alert].present?) %>
-        <div class=''>
-          <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
-          <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
-        </div>
-      <% end %>
-      <div id='main-container' class='<%= current_user.present? ? "": " login-bg login-bg--#{@treeTypeRec.code.downcase}"%><%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
-        <%if current_user.present? %>
-          <%= yield %>
-        <% else %>
-          <% if flash[:notice].present? || flash[:alert].present? %>
-            <div class=''>
-              <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
-              <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
-            </div>
-          <% end %>
-          <h1><%= @appTitle %></h1>
-          <div><%= yield %></div>
+  <% if !current_user.present? && @treeTypeRec.code.downcase == 'tfv' %>
+    <%= yield %>
+  <% else %>
+    <body>
+      <div id='outer-container' class="container-fluid">
+        <%= render 'layouts/header' %>
+        <% if current_user.present? && (flash[:notice].present? || flash[:alert].present?) %>
+          <div class=''>
+            <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
+            <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
+          </div>
         <% end %>
+        <div id='main-container' class='<%= current_user.present? ? "": " login-bg login-bg--#{@treeTypeRec.code.downcase}"%><%= content_for?(:page_class) ? " #{yield(:page_class)}" : "" %>' >
+          <%if current_user.present? %>
+            <%= yield %>
+          <% else %>
+            <% if flash[:notice].present? || flash[:alert].present? %>
+              <div class=''>
+                <% if flash[:notice].present? %><p class="notice"><%= flash[:notice] %></p><% end %>
+                <% if flash[:alert].present? %><p class="alert"><%= flash[:alert] %></p><% end %>
+              </div>
+            <% end %>
+            <h1><%= @appTitle %></h1>
+            <div><%= yield %></div>
+          <% end %>
+        </div>
       </div>
-    </div>
-    <% if current_user.present? %>
-      <%= render 'layouts/modal_popup' %>
-    <% end %>
-  </body>
+      <%= render 'layouts/footer_tfv' if @display_tfv_version %>
+      <% if current_user.present? %>
+        <%= render 'layouts/modal_popup' %>
+      <% end %>
+    </body>
+  <% end %>
 
 </html>

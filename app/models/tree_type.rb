@@ -23,6 +23,17 @@ class TreeType < BaseRec
     return "curriculum.#{code}.#{Version.find(version_id).code}.rsrc_page"
   end
 
+  def user_form_label_name(locale_code, version_code, form_field_name)
+    return Translation.find_translation_name(
+      locale_code,
+      user_form_label_key(version_code, form_field_name),
+      nil) || I18n.translate("activerecord.attributes.user.#{form_field_name}", "")
+  end
+
+  def user_form_label_key(version_code, form_field_name)
+    return "#{code}.#{version_code}.user_attr.#{form_field_name}"
+  end
+
   def user_form_option_key(version_code, form_field_name, option_num)
     return "#{code}.#{version_code}.user_attr.#{form_field_name}.no.#{option_num}"
   end

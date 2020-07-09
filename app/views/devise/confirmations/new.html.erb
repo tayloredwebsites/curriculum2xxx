@@ -1,18 +1,20 @@
-<div class="login-form small-right">
-<h2><%= t('.resend_confirmation_instructions') %></h2>
+<%= render "devise/shared/logged_out_header" %>
+	<div class="login-form small-right">
+	<h2 class="small-centered-tfv"><%= t('.resend_confirmation_instructions') %></h2>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+	<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+	  <%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
-  </div>
+	  <div class="field">
+	    <%= f.label :email %>*<br />
+	    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+	  </div>
 
-  <div class="actions">
-    <%= f.submit t('.resend_confirmation_instructions') %>
-  </div>
-<% end %>
+	  <div class="actions">
+	    <%= f.submit t('.resend_confirmation_instructions') %>
+	  </div>
+	<% end %>
 
-<%= render "devise/shared/links" %>
-<div class="login-form">
+	<%= render "devise/shared/links" %>
+	</div>
+<%= render "devise/shared/logged_out_footer" %>

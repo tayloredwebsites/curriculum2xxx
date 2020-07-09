@@ -3,12 +3,11 @@
 <div class="row">
   <span class='col col-md-4 label-col'>
     <%= form.label :password %>
+    <span class='required'>*</span>
   </span>
   <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.password_field :password, autocomplete: "off" %>
+    <%= form.password_field :password, placeholder: (@minimum_password_length ? "#{@minimum_password_length} characters minimum" : ""), autocomplete: "off" %>
     <% if @minimum_password_length %>
-      <span>(<%= @minimum_password_length %> characters minimum)</span>
     <% elsif @user.errors.present? && @user.errors[:password].present? %>
       <span class='ui-error'><%= @user.errors[:password].join(', ') %></span>
     <% end %>
@@ -18,9 +17,9 @@
 <div class="row">
   <span class='col col-md-4 label-col'>
     <%= form.label :password_confirmation %>
+    <span class='required'>*</span>
   </span>
   <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
     <%= form.password_field :password_confirmation, autocomplete: "off" %>
     <% if @user.errors.present? && @user.errors[:password_confirmation].present? %>
       <span class='ui-error'><%= @user.errors[:password_confirmation].join(', ') %></span>

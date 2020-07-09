@@ -3,9 +3,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :given_name %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <%= form.text_field :given_name %>
       <% if @user.errors.present? && @user.errors[:given_name].present? %>
         <span class='ui-error'><%= @user.errors[:given_name].join(', ') %></span>
@@ -20,9 +20,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :family_name %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <%= form.text_field :family_name %>
       <% if @user.errors.present? && @user.errors[:family_name].present? %>
         <span class='ui-error'><%= @user.errors[:family_name].join(', ') %></span>
@@ -33,13 +33,13 @@
   <%= form.hidden_field :family_name, value: "family_name" %>
 <% end %>
 
-<% if form_config.length == 0 || form_config.include?("govt_level") %>
+<% if form_config.length == 0 || form_config.include?("govt_level,") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :govt_level %>
+      <span class='required'>&nbsp;</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <% govt_levels = @treeTypeRec.user_form_options(@versionRec.code, 'govt_level', @locale_code) || User::GOVT_LEVELS %>
       <%=
       form.select :govt_level,
@@ -58,10 +58,12 @@
 <% if form_config.length == 0 || form_config.include?("govt_level_name") %>
   <div class="row">
     <span class='col col-md-4 label-col'>
-      <%= form.label :govt_level_name %>
+      <label for="govt_level_name">
+        <%= @treeTypeRec.user_form_label_name(@locale_code, @versionRec.code, "govt_level_name") %>
+      </label>
+      <span class='required'>&nbsp;</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <%= form.text_field :govt_level_name %>
       <% if @user.errors.present? && @user.errors[:govt_level_name].present? %>
         <span class='ui-error'><%= @user.errors[:govt_level_name].join(', ') %></span>
@@ -76,9 +78,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :municipality %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <%= form.text_field :municipality %>
       <% if @user.errors.present? && @user.errors[:municipality].present? %>
         <span class='ui-error'><%= @user.errors[:municipality].join(', ') %></span>
@@ -93,9 +95,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :institute_type %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <% inst_types = @treeTypeRec.user_form_options(@versionRec.code, 'institute_type', @locale_code) || User::INSTITUTE_TYPE %>
       <%=
       form.select :institute_type,
@@ -132,9 +134,10 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :position_type %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
+
       <% pos_types = @treeTypeRec.user_form_options(@versionRec.code, 'position_type', @locale_code) || User::POSITION_TYPE %>
       <%=
       form.select :position_type,
@@ -194,9 +197,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :gender %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <% gender = @treeTypeRec.user_form_options(@versionRec.code, 'gender', @locale_code) || User::GENDER %>
       <%=
       form.select :gender,
@@ -216,9 +219,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :education_level %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <% edu_level = @treeTypeRec.user_form_options(@versionRec.code, 'education_level', @locale_code) || User::EDUCATION_LEVEL %>
       <%=
       form.select :education_level,
@@ -255,9 +258,9 @@
   <div class="row">
     <span class='col col-md-4 label-col'>
       <%= form.label :work_address %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <%= form.text_area :work_address, cols: 40, rows: 3 %>
       <% if @user.errors.present? && @user.errors[:work_address].present? %>
         <span class='ui-error'><%= @user.errors[:work_address].join(', ') %></span>
@@ -272,9 +275,9 @@
   <div class='row'>
     <span class='col col-md-4 label-col'>
       <%= form.label :terms_accepted %>
+      <span class='required'>*</span>
     </span>
     <span class='col col-md-8 input-col'>
-      <span class='required'>*</span>
       <%= form.check_box :terms_accepted %>
       <% if @user.errors.present? && @user.errors[:terms_accepted].present? %>
         <span class='ui-error'><%= @user.errors[:terms_accepted].join(', ') %></span>
@@ -283,4 +286,8 @@
   </div>
 <% else %>
   <%= form.hidden_field :terms_accepted, value: true %>
+<% end %>
+
+<% if form_config.length == 0 || form_config.include?("role_public") %>
+  <%= form.hidden_field :role_public, value: 1 if !current_user.present? %>
 <% end %>

@@ -57,52 +57,54 @@
             }
         tree_code = tree.format_code(@locale_code)
       %>
-      <% @relatedBySubj.each do |subj, rel|%>
-        <% rel.each do |r|
-           connectionsFound += 1
-           alluvial_nodes << r[:code]
-           alluvial_node_colors << BaseRec.subject_color(r[:subj_code])
-           case r[:rel_code]
-              when TreeTree::DEPENDS_KEY
-                alluvial_links[:source] << connectionsFound
-                alluvial_links[:target] << 0
-                alluvial_links[:color] << "rgb(255, 201, 181)"
-                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
-              when TreeTree::APPLIES_KEY
-                alluvial_links[:source] << 0
-                alluvial_links[:target] << connectionsFound
-                alluvial_links[:color] << "rgb(255, 253, 181)"
-                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
-              else
-                alluvial_links[:source] << connectionsFound
-                alluvial_links[:target] << 0
-                alluvial_links[:color] << "white"
-                alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
-           end
-           alluvial_links[:value] << 1
-        %>
-          <div class='connections-item'>
-            <%= r[:relationship] %>
-          </div>
-          <div class='connections-item'>
-            <%= r[:subj] %>
-          </div>
-          <div class='connections-item'>
-            <%= r[:code] %>
-          </div>
-          <div class='connections-item'>
-            <% if r[:tid] == 0 %>
-              <%= @translations[r[:tkey]] %>
-            <% else %>
-              <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
-            <% end %>
-            <% if @editMe && can_edit %>
-              <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe && can_edit %>
-              <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
-            <% end %>
-          </div>
+      <% if can? :read, TreeTree %>
+        <% @relatedBySubj.each do |subj, rel|%>
+          <% rel.each do |r|
+             connectionsFound += 1
+             alluvial_nodes << r[:code]
+             alluvial_node_colors << BaseRec.subject_color(r[:subj_code])
+             case r[:rel_code]
+                when TreeTree::DEPENDS_KEY
+                  alluvial_links[:source] << connectionsFound
+                  alluvial_links[:target] << 0
+                  alluvial_links[:color] << "rgb(255, 201, 181)"
+                  alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
+                when TreeTree::APPLIES_KEY
+                  alluvial_links[:source] << 0
+                  alluvial_links[:target] << connectionsFound
+                  alluvial_links[:color] << "rgb(255, 253, 181)"
+                  alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
+                else
+                  alluvial_links[:source] << connectionsFound
+                  alluvial_links[:target] << 0
+                  alluvial_links[:color] << "white"
+                  alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
+             end
+             alluvial_links[:value] << 1
+          %>
+            <div class='connections-item'>
+              <%= r[:relationship] %>
+            </div>
+            <div class='connections-item'>
+              <%= r[:subj] %>
+            </div>
+            <div class='connections-item'>
+              <%= r[:code] %>
+            </div>
+            <div class='connections-item'>
+              <% if r[:tid] == 0 %>
+                <%= @translations[r[:tkey]] %>
+              <% else %>
+                <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+              <% end %>
+              <% if @editMe && can_edit %>
+                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe && can_edit %>
+                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
+      <% end # if can view type %>
       <% if connectionsFound == 0 %>
           <div class='connections-item rel-sectors'>
           </div>

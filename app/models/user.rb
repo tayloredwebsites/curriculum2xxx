@@ -6,8 +6,8 @@ class User < BaseRec
 
   validates :given_name, presence: true
   validates :family_name, presence: true
-  validates :govt_level, presence: true
-  validates :govt_level_name, presence: true
+  # validates :govt_level, presence: true
+  # validates :govt_level_name, presence: true
   validates :municipality, presence: true
   validates :institute_type, presence: true
   #validates :institute_name_loc, presence: true
@@ -21,6 +21,11 @@ class User < BaseRec
 
   has_many :user_resources
   has_many :resources, through: :user_resources
+
+  has_many :user_lesson_plans
+  has_many :lesson_plans, through: :user_lesson_plans
+
+  before_create :set_default_role
 
   ADMIN_ROLE = 'admin'
   TEACHER_ROLE = 'teacher'
@@ -95,6 +100,12 @@ class User < BaseRec
   scope :active, -> {
     where(:active => true)
   }
+
+  def set_default_role
+    if self.roles == '' && TreeType.where(:code => 'tfv').count > 0
+      self.roles = PUBLIC_ROLE
+    end
+  end
 
   def active_for_authentication?
     super && active && roles.length > 0
@@ -202,7 +213,7 @@ class User < BaseRec
   end
 
   def is_registered?
-    if is_admin? || is_teacher? || is_public?
+    if is_admin? || is_teacher? || is_counselor? || is_supervisor? || is_public?
       return true
     end
   end

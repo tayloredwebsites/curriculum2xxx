@@ -110,17 +110,19 @@
           <a class="nav-link btn btn-primary" href=<%= sectors_path %>><%= @sectorName %></a>
         </li>
       <% end
-      if controller.controller_name == 'trees' && action_name == 'sequence' %>
-        <li class="nav-item active" aria-selected='true'>
-          <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
-        </li>
-      <%
-      else %>
-        <li class="nav-item" role='menuitem'>
-          <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
-        </li>
-      <%
-      end
+      if can? :read, TreeTree
+        if controller.controller_name == 'trees' && action_name == 'sequence' %>
+          <li class="nav-item active" aria-selected='true'>
+            <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
+          </li>
+        <%
+        else %>
+          <li class="nav-item" role='menuitem'>
+            <a class="nav-link btn btn-primary" href=<%= sequence_trees_path %>><%= translate('nav_bar.relations.name') %></a>
+          </li>
+        <%
+        end
+      end #can_view_type?('treetree')
       if controller.controller_name == 'trees' && action_name == 'maint' && can_edit_any_dims?(@treeTypeRec) %>
           <li class="nav-item active" aria-selected='true'>
             <a class="nav-link btn btn-primary" href=<%= maint_trees_path(editme: true) %>><%= translate('nav_bar.maint.name') %></a>
