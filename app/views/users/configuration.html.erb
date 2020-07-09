@@ -3,18 +3,21 @@
 <%
 if @current_user && @current_user.is_admin? %>
   <div id='users-menu' class='sub-menu'>
-    <div class='row'>
-      <div class='col col-md-3 border-left border-top'>
+    <div class='row flexContainer'>
+      <div class='col border-left border-top'>
         <a class="nav-link btn btn-info" href="<%= edit_user_registration_path %>"><%= translate('users.nav.change_pwd') %></a>
       </div>
-      <div class='col col-md-3 border-left border-top'>
+      <div class='col border-left border-top'>
         <a class="nav-link btn btn-info" href='/users/<%= current_user.id %>'><%= translate('users.nav.my_account') %></a>
       </div>
-      <div class='col col-md-3 border-left border-top'>
+      <div class='col border-left border-top'>
         <a class="nav-link btn btn-info" href='/users/registrations'><%= translate('users.nav.registrations') %></a>
       </div>
-      <div class='col col-md-3 border-left border-top'>
-        <a class="nav-link btn btn-info" href='/users'><%= translate('users.nav.all_users') %></a>
+      <div class='col border-left border-top'>
+        <a class="nav-link btn btn-info" href='/users'><%= translate('users.nav.active_users') %></a>
+      </div>
+      <div class='col border-left border-top'>
+        <a class="nav-link btn btn-info" href='/users?showDeactivated=true'><%= translate('users.nav.all_users') %></a>
       </div>
     </div>
   </div>

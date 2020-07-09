@@ -15,7 +15,12 @@
         <td><%= u.full_name %></td>
         <td><%= u.role_names %></td>
         <td>
-          <%= link_to translate('app.labels.edit'), edit_user_path(id: u.id) %>
+          [<%= link_to translate('app.labels.edit'), edit_user_path(id: u.id), id: "edit-#{u.id}" %>]
+          <% if u.active %>
+            [<%= link_to translate('app.labels.deactivate'), user_path(id: u.id, params: {showDeactivated: @showDeactivated, user: { active: false}}), {id: "deactivate-#{u.id}", 'data-confirm' => I18n.t('app.labels.confirm_deactivate_item', item: u.full_name), method: :put} %>]
+          <% else %>
+            [<%= link_to translate('app.labels.restore'), user_path(id: u.id, params: {showDeactivated: @showDeactivated, user: { active: true}}), {id: "restore-#{u.id}", 'data-confirm' => I18n.t('app.labels.confirm_restore_item', item: u.full_name), method: :put} %>]
+          <% end %>
         </td>
       </tr>
     <% end %>

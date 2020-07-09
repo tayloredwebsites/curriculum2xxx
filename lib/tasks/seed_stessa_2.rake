@@ -585,4 +585,79 @@ namespace :seed_stessa_2 do
     end #trees.each do |t|
   end
 
+  #####################################
+  desc "One-time migration to make db entries for all Tree, Outcome, and Dimension resources"
+  task create_missing_resources: :environment do
+    initial_resource_count = Resource.count
+    initial_resource_join_count = ResourceJoin.count
+    missing_resources_found = 0
+
+    Tree.all.each do |tree|
+      type_map = {}
+      keys = Tree::RESOURCE_TYPES.map do |rt|
+        key = tree.get_resource_key(rt)
+        type_map[key] = rt
+        key
+      end
+      Translation.where(key: keys).each do |transl|
+        key = transl.key
+        type = type_map[key]
+        resource = Resource.find_resource(type, key)
+        if resource.nil?
+          missing_resources_found += 1
+          resource = Resource.create(:resource_code => type, :base_key => key)
+          tree.resources << resource
+          puts "Created and mapped Resource rec for translation key: #{key}"
+        end #if resource.nil?, create and connect
+      end #Translation.where(key: keys).each do |transl|
+    end #Tree.all.each do |tree|
+
+    Outcome.all.each do |outc|
+      type_map = {}
+      keys = Outcome::RESOURCE_TYPES.map do |rt|
+        key = outc.get_resource_key(rt)
+        type_map[key] = rt
+        key
+      end
+      Translation.where(key: keys).each do |transl|
+        key = transl.key
+        type = type_map[key]
+        resource = Resource.find_resource(type, key)
+        if resource.nil?
+          missing_resources_found += 1
+          resource = Resource.create(:resource_code => type, :base_key => key)
+          outc.resources << resource
+          puts "Created and mapped Resource rec for translation key: #{key}"
+        end #if resource.nil?, create and connect
+      end #Translation.where(key: keys).each do |transl|
+    end #Outcome.all.each do |outc|
+
+    Dimension.all.each do |dim|
+      type_map = {}
+      keys = Dimension::RESOURCE_TYPES.map do |rt|
+        key = dim.resource_key(rt)
+        type_map[key] = rt
+        key
+      end
+      Translation.where(key: keys).each do |transl|
+        key = transl.key
+        type = type_map[key]
+        resource = Resource.find_resource(type, key)
+        if resource.nil?
+          missing_resources_found += 1
+          resource = Resource.create(:resource_code => type, :base_key => key)
+          dim.resources << resource
+          puts "Created and mapped Resource rec for translation key: #{key}"
+        end #if resource.nil?, create and connect
+      end #Translation.where(key: keys).each do |transl|
+    end #Dimension.all.each do |dim|
+
+    puts "Finished create_missing_resources."
+    puts "initial resource count: #{initial_resource_count}"
+    puts "initial resource_join count: #{initial_resource_join_count}"
+    puts "missing_resources_found: #{missing_resources_found}"
+    puts "final resource count: #{Resource.count}"
+    puts "final resource_joins count: #{ResourceJoin.count}"
+  end #task create_missing_resources
+
 end

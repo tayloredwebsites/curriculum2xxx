@@ -213,11 +213,13 @@ End Treeview styles- deprecated. These are for the old Curriculum Tree page.
     &.generic-grid--cols-2 { grid-template-columns: 50% 50%; }
     &.generic-grid--cols-3 { grid-template-columns: 33% 33% 33%; }
     &.generic-grid--cols-4 { grid-template-columns: 25% 25% 25% 25%; }
+    &.generic-grid--cols-5 { grid-template-columns: 20% 20% 20% 20% 20%; }
 
     &.generic-grid--labels-1 { grid-template-columns: 100%; }
     &.generic-grid--labels-2 { grid-template-columns: 50% 50%; }
     &.generic-grid--labels-3 { grid-template-columns: 33.33% 33.33% 33.33%; }
     &.generic-grid--labels-4 { grid-template-columns: 25% 25% 25% 25%; }
+    &.generic-grid--labels-5 { grid-template-columns: 20% 20% 20% 20% 20%; }
     p { display: block; width: 100%; }
   }
 }
