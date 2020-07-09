@@ -301,18 +301,20 @@ namespace :seed_turkey_v02 do
 
     ##################################################################
     BaseRec::BASE_SUBJECTS.each do |subjCode|
-      puts "set up library subject for #{subjCode}"
-      # Create the English name and abbreviation for the Subjects in the Library.
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:abbr])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:engName])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+      if @subjectsHash[subjCode]
+        puts "set up library subject for #{subjCode}"
+        # Create the English name and abbreviation for the Subjects in the Library.
+        rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:abbr])
+          throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+          rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:engName])
+          throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
 
-      # Create the Locale's name and abbreviation for the Subjects in the Library.
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:locAbbr])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
-        rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:locName])
-        throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+        # Create the Locale's name and abbreviation for the Subjects in the Library.
+        rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:locAbbr])
+          throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+          rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_TR, Subject.get_default_name_key(subjCode), @subjectsHash[subjCode.to_sym][:locName])
+          throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
+      end
     end
 
   end #create_subjects

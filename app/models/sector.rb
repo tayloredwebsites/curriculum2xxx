@@ -17,6 +17,14 @@ class Sector < BaseRec
     "reduce pollution",
     "recycle",
     "climate change",
+    "industry 4.0",
+    "sensors and imaging",
+    "food tech",
+    "biomedical tech",
+    "nanotechnology",
+    "global warming",
+    "internet",
+    "population"
   ]
 
 # Translation Field

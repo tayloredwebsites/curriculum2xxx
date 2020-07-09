@@ -12,48 +12,51 @@ class SectorsControllerTest < ActionDispatch::IntegrationTest
     @user1.confirm # do a devise confirmation of new user
     sign_in @user1
     Rails.logger.debug("+++ setup completed +++")
-    testing_db_seeds
+    testing_db_tfv_seed
+    @bio_upload = Upload.where(:subject_id => @bio.id).first
   end
 
   test "index listing filter should work" do
-    # load up the 09 file
-    up_file = fixture_file_upload('files/Hem_9_en.csv','text/csv')
-    patch do_upload_upload_path(id: @hem_09.id), params: {upload: {file: up_file}}
+    # load up the bio file
+    up_file = fixture_file_upload('files/tfvV02BioAllEng.csv','text/csv')
+    patch do_upload_upload_path(id: @bio_upload.id), params: {phase: 1, upload: {file: up_file}}
     assert_response :success
-    assert_equal BaseRec::UPLOAD_SUBJ_RELATING, assigns(:upload).status
+    assert_equal BaseRec::UPLOAD_DONE, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
-    assert_equal 186, Tree.count
+    assert_equal 56, Tree.count
 
+    # Old version of this test loaded two files with one gradeband each.
+    #
     # load up the 13 file
-    up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
-    patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
-    assert_response :success
-    assert_equal BaseRec::UPLOAD_SUBJ_RELATING, assigns(:upload).status
-    assert_equal 2, assigns(:errs).count
-    assert_equal 198, Tree.count # 186 + 9 + 4 (?)
+    # up_file = fixture_file_upload('files/Hem_13_en.csv','text/csv')
+    # patch do_upload_upload_path(id: @hem_13.id), params: {upload: {file: up_file}}
+    # assert_response :success
+    # assert_equal BaseRec::UPLOAD_SUBJ_RELATING, assigns(:upload).status
+    # assert_equal 2, assigns(:errs).count
+    # assert_equal 198, Tree.count # 186 + 9 + 4 (?)
 
     get sectors_path
     assert_response :success
     # confirm select options have the right number of items
-    assert_equal 6, assigns(:subjects).count
-    assert_equal 4, assigns(:gbs).count
-    assert_equal 10, assigns(:sectors).count
+    assert_equal 1, assigns(:subjects).count
+    assert_equal 13, assigns(:gbs).count
+    assert_equal 8, assigns(:sectors).count
 
-    post sectors_path, params: { tree: { subject_id: @hem.id } }
+    post sectors_path, params: { tree: { subject_id: @bio.id } }
     assert_response :success
-    assert_equal 135, assigns(:rptRows).count
+    assert_equal 26, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { sector_id: @sector1.id } }
     assert_response :success
-    assert_equal 11, assigns(:rptRows).count
+    assert_equal 3, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { grade_band_id: @gb_09.id } }
     assert_response :success
-    assert_equal 131, assigns(:rptRows).count
+    assert_equal 14, assigns(:rptRows).count
 
     post sectors_path, params: { tree: { subject_id: '', grade_band_id: '', sector_id: '' } }
     assert_response :success
-    assert_equal 135, assigns(:rptRows).count
+    assert_equal 26, assigns(:rptRows).count
 
 
   end
