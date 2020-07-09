@@ -1,7 +1,7 @@
 # seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations]
 
   task setup: :environment do
     @versionNum = 'v02'
@@ -66,6 +66,17 @@ namespace :seed_turkey_v02 do
       # {item} - grid column, single item
       grid_headers: 'grade,unit,subunit,comp,[essq],[bigidea],[pract],{explain},[miscon]',
       dim_display: 'miscon#0#8#1#2#3#4#5#6#7', #To Do: update on server
+            #user_form_config:
+      #_form_other: list fields that should be included in the user form
+        #dropdown selection fields should have the number of selection options
+        #Dropdown categories in views/users/_form_other.html.erb such as institute_type
+        #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
+        #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
+        #keys for the dropdown options.
+      #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
+      #ADD DROPDOWN TRANSLATIONS WITH TASK: user_form_translations
+      user_form_config:'given_name,family_name,municipality,institute_type#5,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone,role_admin,role_teacher',
+
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)
@@ -211,15 +222,15 @@ namespace :seed_turkey_v02 do
     @subjectsHash = {
       bio: {abbr: 'bio', inCurric: true, engName: 'Biology', locAbbr: 'Biy', locName: 'Biyoloji'},
       cap: {abbr: 'cap', inCurric: false, engName: 'Capstones', locAbbr: '', locName: ''},
-      che: {abbr: 'Chem', inCurric: true, engName: 'Chemistry', locAbbr: 'Kim', locName: 'Kimya'},
+      che: {abbr: 'chem', inCurric: true, engName: 'Chemistry', locAbbr: 'Kim', locName: 'Kimya'},
       edu: {abbr: 'edu', inCurric: false, engName: 'Education', locAbbr: '', locName: ''},
       engl: {abbr: 'engl', inCurric: false, engName: 'English', locAbbr: '', locName: ''},
       eng: {abbr: 'eng', inCurric: false, engName: 'Engineering', locAbbr: '', locName: ''},
-      mat: {abbr: 'Math', inCurric: true, engName: 'Mathematics', locAbbr: 'Mat', locName: 'Matematik'},
+      mat: {abbr: 'math', inCurric: true, engName: 'Mathematics', locAbbr: 'Mat', locName: 'Matematik'},
       mec: {abbr: 'mec', inCurric: false, engName: 'Mechanics', locAbbr: '', locName: ''},
       phy: {abbr: 'phy', inCurric: true, engName: 'Physics', locAbbr: 'Fiz', locName: 'Fizik'},
       sci: {abbr: 'sci', inCurric: true, engName: 'Science', locAbbr: 'Bil', locName: 'Bilim'},
-      ear: {abbr: 'Ear', inCurric: true, engName: 'Earth, Space, & Environmental Science', locAbbr: 'Dün', locName: 'Dünya, Uzay ve Çevre Bilimi'},
+      ear: {abbr: 'ear', inCurric: true, engName: 'Earth, Space, & Environmental Science', locAbbr: 'Dün', locName: 'Dünya, Uzay ve Çevre Bilimi'},
       geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: '', locName: ''},
       tech: {abbr: 'tech', inCurric: true, engName: 'Tech Engineering', locAbbr: '', locName: ''}
     }
@@ -245,24 +256,24 @@ namespace :seed_turkey_v02 do
       end
 
       # create english translation for subject name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:engName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:engName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create english translation for subject abbreviation
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:abbr])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:abbr])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       if subjHash[:inCurric]
 
         if subjHash[:locName].present?
           # create locale's translation for subject name
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:locName])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
         if subjHash[:locAbbr].present?
           # create locale's translation for subject abbreviation
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:locAbbr])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
@@ -392,6 +403,33 @@ namespace :seed_turkey_v02 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_uploads
+
+  ####################################################################################
+  desc "Translation for user form dropdown options"
+  task user_form_translations: :environment do
+  #  position_type#6
+  #  @tt.user_form_option_key(version_code, form_field_name, option_num)
+    dropdown_opts = [
+      {ix: 1, field: 'position_type', en: 'Mektebim Management', tr: 'Mektebim Yönetimi'},
+      {ix: 2, field: 'position_type', en: 'School Principal', tr: 'Okul Müdürü'},
+      {ix: 3, field: 'position_type', en: 'School Leader', tr: 'Okul Lideri'},
+      {ix: 4, field: 'position_type', en: 'Subject Supervisor', tr: 'Konu Danışmanı'},
+      {ix: 5, field: 'position_type', en: 'School Teacher', tr: 'Okul Öğretmeni'},
+      {ix: 6, field: 'position_type', en: 'Other', tr: 'Diğer'},
+      {ix: 1, field: 'institute_type', en: 'Mektebim Administration', tr: 'Mektebim Yönetimi'},
+      {ix: 2, field: 'institute_type', en: 'Secondary School', tr: 'Orta okul'},
+      {ix: 3, field: 'institute_type', en: 'Middle School', tr: 'Orta okul'},
+      {ix: 4, field: 'institute_type', en: 'Elementary School', tr: 'İlkokul'},
+      {ix: 5, field: 'institute_type', en: 'Other', tr: 'Diğer'},
+    ]
+    dropdown_opts.each do |opt|
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:tr])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
+
 
   ###################################################################################
   desc "create the upload control files"
