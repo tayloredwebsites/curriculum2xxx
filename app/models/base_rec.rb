@@ -79,6 +79,7 @@ class BaseRec < ActiveRecord::Base
     '#B9343C',
     '#098C49',
     '#9F8D49',
+    '#D1F58C',
   ]
 
   # BASE_PRACTICES = [
