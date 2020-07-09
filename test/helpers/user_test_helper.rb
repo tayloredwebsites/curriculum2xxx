@@ -4,10 +4,12 @@ module UserTestHelper
     setup_admin
     setup_unauthorized_user
     setup_teacher
+    setup_public
   end
 
   def setup_unauthorized_user
     @unauth = FactoryBot.create(:user, roles: '')
+    @unauth.update(:roles => '')
     @unauth.confirm # do a devise confirmation of new user
   end
   def setup_teacher
@@ -21,6 +23,10 @@ module UserTestHelper
   def setup_admin
     @admin = FactoryBot.create(:user, roles: "#{User::ADMIN_ROLE}")
     @admin.confirm # do a devise confirmation of new user
+  end
+  def setup_public
+    @public = FactoryBot.create(:user, roles: "#{User::PUBLIC_ROLE}")
+    @public.confirm # do a devise confirmation of new user
   end
 
 end

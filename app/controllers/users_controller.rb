@@ -28,11 +28,15 @@ class UsersController < ApplicationController
     :last_version_id,
     :refresh_path,
     :admin_subjects,
+    :active,
+    :role_public,
   ]
   ADMIN_USER_PARAMS = [
     :role_admin,
     :role_teacher,
     :role_public,
+    :role_counselor,
+    :role_supervisor,
     :home_page_text,
     :resources_text,
   ]
@@ -74,6 +78,7 @@ class UsersController < ApplicationController
   end
 
   def index
+    @showDeactivated = params[:showDeactivated]
     @users = get_auth_users_list
     if @users.count == 0
       redirect_to root_path
@@ -100,6 +105,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    "CREATE PARAMS: #{params.inspect}"
     unauthorized() and return if !user_is_admin?(current_user)
     @user = User.new(admin_user_params)
     if @user.save
@@ -124,6 +130,7 @@ class UsersController < ApplicationController
   def update
     # admins can edit all, users can edit themselves
     unauthorized() and return if !user_is_admin?(current_user) && !has_same_id?(current_user, @user)
+    render_configuration = regular_user_params[:active].nil?
     if user_is_admin?(current_user)
       # regular user can set user as teacher or admin
       if @user.update(admin_user_params)
@@ -135,7 +142,13 @@ class UsersController < ApplicationController
         flash[:success] = I18n.t('user_updated_email', email: @user.email)
       end
     end
-    render :configuration
+    if render_configuration
+      render :configuration
+    else
+      @showDeactivated = params[:showDeactivated]
+      @users = get_auth_users_list(false)
+      redirect_to users_path(@showDeactivated ? {showDeactivated: @showDeactivated} : {})
+    end
   end
 
   def set_curriculum
@@ -209,6 +222,8 @@ class UsersController < ApplicationController
     if user_is_admin?(current_user)
       if unregistered_only
         @users = User.all_unregistered.all
+      elsif !@showDeactivated
+        @users = User.active.all
       else
         @users = User.all
       end

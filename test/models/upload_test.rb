@@ -7,12 +7,12 @@ include SeedsTestingHelper
 class TreeTest < ActiveSupport::TestCase
 
   setup do
-    testing_db_seeds
+    testing_db_tfv_seed
   end
 
   test "upload missing status should fail" do
     up = Upload.new()
-    up.subject_id = @hem.id
+    up.subject_id = @bio.id
     up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
     up.status = nil
@@ -21,7 +21,7 @@ class TreeTest < ActiveSupport::TestCase
 
   test "upload missing locale should fail" do
     up = Upload.new()
-    up.subject_id = @hem.id
+    up.subject_id = @bio.id
     up.grade_band_id = @gb_09.id
     # up.locale_id = @loc_en.id
     up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
@@ -30,16 +30,16 @@ class TreeTest < ActiveSupport::TestCase
 
   test "upload missing grade band should fail" do
     up = Upload.new()
-    up.subject_id = @hem.id
+    up.subject_id = @bio.id
     # up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
     up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
-    refute up.valid?, 'missing upload grade band should not be valid'
+    assert up.valid?, 'missing upload grade band should still be valid'
   end
 
   test "upload missing subject should fail" do
     up = Upload.new()
-    # up.subject_id = @hem.id
+    # up.subject_id = @bio.id
     up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
     up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]
@@ -48,7 +48,7 @@ class TreeTest < ActiveSupport::TestCase
 
   test "upload with all fields should pass" do
     up = Upload.new()
-    up.subject_id = @hem.id
+    up.subject_id = @bio.id
     up.grade_band_id = @gb_09.id
     up.locale_id = @loc_en.id
     up.status = BaseRec::UPLOAD_STATUS[BaseRec::UPLOAD_NOT_UPLOADED]

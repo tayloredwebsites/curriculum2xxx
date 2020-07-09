@@ -11,7 +11,7 @@
       @locale_code,
       resource_key,
       ""
-      ).html_safe %>
+      ).html_safe if can? :read, Resource %>
     </div>
     <div class="col col-1">
      <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: type_code }, translation: {key: resource_key}), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?('resource') || current_user.subject_admin?(@subject_code)) %>

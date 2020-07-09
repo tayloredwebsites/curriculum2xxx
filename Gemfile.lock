@@ -55,6 +55,7 @@ GEM
       sassc-rails (>= 2.0.0)
     builder (3.2.3)
     byebug (10.0.0)
+    cancancan (3.1.0)
     capistrano (3.10.1)
       airbrussh (>= 1.0.0)
       i18n
@@ -264,6 +265,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap (~> 4.3.1)
   byebug
+  cancancan (= 3.1.0)
   capistrano-rails
   capybara (~> 2.13)
   chromedriver-helper

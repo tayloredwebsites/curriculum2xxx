@@ -51,7 +51,7 @@ class UploadsController < ApplicationController
     unauthorized() and return if !user_is_admin?(current_user)
     @upload = Upload.new(upload_params)
     if @upload.save
-      flash[:success] = "Upload for #{ @upload.subject.code } #{ @upload.grade_band.code } #{ @upload.locale.name } updated."
+      flash[:success] = "Upload for #{ @upload.subject.code } #{ @upload.locale.name } updated."
       redirect_to uploads_path()
     end
   end
@@ -193,7 +193,6 @@ class UploadsController < ApplicationController
   private
 
   def v2FileUpload(filePath, separator)
-
     # if @treeTypeRec.hierarchy_codes != "grade,unit,sub_unit,comp"
     #   @abortRun = abortWithMessage("ERROR - cannot upload this format tree hierarchy yet. #{@treeTypeRec.hierarchy_codes}")
     # end
@@ -204,11 +203,15 @@ class UploadsController < ApplicationController
     @rowNum = 2
     @recordOrder = 0
     @baseKeyRoot = "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}"
-
+    @sectorArrByKeyPhrase = []
+    Sector.where(
+      # Use TreeType::get_sector_set_code(code) to separate sector_set_code from 'hidden' flag
+      sector_set_code: TreeType.get_sector_set_code(@treeTypeRec.sector_set_code)
+    ).each { |s| @sectorArrByKeyPhrase << [s.key_phrase, s] if s.key_phrase != "" }
     # hash of the existing records for this TreeType (curriculum) and subject
     #
     @currentRecs = Hash.new{ |h, k| h[k] = {} }
-    currentCodeRecs = Tree.where(tree_type_id: @treeTypeRec.id, version_id: @versionRec.id, subject_id: @subjectRec.id)
+    currentCodeRecs = Tree.active.where(tree_type_id: @treeTypeRec.id, version_id: @versionRec.id, subject_id: @subjectRec.id)
     currentCodeRecs.each do |rec|
       transl_names = Translation.where(locale: @locale_code, key: "#{rec.base_key}.name")
       if transl_names.count > 0
@@ -375,7 +378,6 @@ class UploadsController < ApplicationController
         ## To Do : add displayLoCode field to Outcome record
         colLoFullCode = rowH['LO Code:']
 
-
         # create the duration_weeks field in the LO Record
         startWeekStr = rowH['Start Week']
         endWeekStr = rowH['End Week']
@@ -399,7 +401,7 @@ class UploadsController < ApplicationController
         end
 
 
-        # class_text resource field to store the Textbook Materials and Resources field
+        # # class_text resource field to store the Textbook Materials and Resources field
         classTextValue = rowH['Textbook Materials and Resources']
         Rails.logger.debug("*** classTextValue: #{classTextValue}")
         if classTextValue.present?
@@ -409,6 +411,7 @@ class UploadsController < ApplicationController
             outRec.get_resource_key('class_text'),
             classTextValue
           )
+
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -470,9 +473,11 @@ class UploadsController < ApplicationController
           Rails.logger.debug("*** explCommentsValue exists: #{explCommentsValue}")
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
-            outRec.get_explain_key,
+            outRec.get_resource_key('explain'),
             explCommentsValue
           )
+          resource = Resource.find_or_create('explain', outRec.get_resource_key('explain'))
+          outRec.resources << resource
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -788,14 +793,29 @@ class UploadsController < ApplicationController
         if !resource_text.blank?
           resource_text = BaseRec.process_resource_content(type, @resource_names['tree'][type], resource_text)
           resource_key = rec.get_resource_key(type)
-          Translation.find_or_update_translation(
-            @locale_code,
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
             resource_key,
             resource_text
           )
+          resource = Resource.find_or_create(type, resource_key)
+          rec.resources << resource if resource
           rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
         end
       end
+      #map connected sectors that have not yet been mapped to this LO
+      if depth == @treeTypeRec[:outcome_depth]
+        colSectors = rowH[@sectorName]
+        if colSectors.present?
+          sectorIds = SectorTree.where(tree_id: rec.id).pluck("sector_id").uniq
+          @sectorArrByKeyPhrase.each do |phrase_and_rec|
+            phrase, sectorRec = phrase_and_rec
+            if colSectors.downcase.include?(phrase) && !sectorIds.include?(sectorRec.id)
+              SectorTree.create(tree_id: rec.id, sector_id: sectorRec.id)
+            end
+          end
+        end
+      end #map connected sectors
       # output the translation record if any changes
       transl_rec, text_status, transl_text = Translation.find_or_update_translation(
         @localeRec.code,
@@ -835,11 +855,13 @@ class UploadsController < ApplicationController
         if resource_text.present?
           resource_text = BaseRec.process_resource_content(type, @resource_names['outcome'][type], resource_text)
           resource_key = outRec.get_resource_key(type)
-          Translation.find_or_update_translation(
-            @locale_code,
+          transl, text_status, text_msg = Translation.find_or_update_translation(
+            @localeRec.code,
             resource_key,
             resource_text
           )
+          resource = Resource.find_or_create(type, resource_key)
+          outRec.resources << resource if resource
         end
       end
     else
@@ -1148,12 +1170,12 @@ class UploadsController < ApplicationController
   # Subject to update the Subject's max_grade and min_grade
   # seems to be not working.  Look at set_min_max_grades.rake
   def updateSubjectGrades(s)
-    subj_gbs = GradeBand.where(:id => Tree.where(:subject_id => s.id).pluck("grade_band_id").uniq)
-    min_grades = subj_gbs.order("min_grade asc").pluck("min_grade").uniq
-    max_grades = subj_gbs.order("max_grade desc").pluck("max_grade").uniq
-    if min_grades.length > 0 && max_grades.length > 0
-      s.min_grade = min_grades[0]
-      s.max_grade = max_grades[0]
+    subj_gbs = GradeBand.where(:id => Tree.where(subject_id: s.id).pluck('grade_band_id').uniq)
+    min_grade = subj_gbs.pluck("min_grade").min
+    max_grade = subj_gbs.pluck("max_grade").max
+    if min_grade && max_grade
+      s.min_grade = min_grade
+      s.max_grade = max_grade
       begin
         s.save!
         Rails.logger.debug("Updated Subject #{s[:code]}: min_grade = #{s[:min_grade]} and max_grade = #{s[:max_grade]}")
@@ -1250,10 +1272,12 @@ class UploadsController < ApplicationController
           currentRec.reload
           resource_key = currentRec.resource_key(type)
           Translation.find_or_update_translation(
-            @locale_code,
+            @localeRec.code,
             resource_key,
             resource_text
           )
+          resource = Resource.find_or_create(type, resource_key)
+          currentRec.resources << resource if resource
           createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
         end
       end

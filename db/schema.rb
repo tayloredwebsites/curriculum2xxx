@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200519031537) do
+ActiveRecord::Schema.define(version: 20200702021329) do
+
+  create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "lesson_plan_id", null: false
+    t.string "base_key"
+    t.integer "sequence"
+    t.integer "time_min"
+    t.string "student_org"
+    t.string "teach_strat"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_plan_id"], name: "activity_lp"
+  end
+
+  create_table "activity_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "dimension_id", null: false
+    t.string "dim_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_activity_dimensions_on_activity_id"
+    t.index ["dimension_id"], name: "index_activity_dimensions_on_dimension_id"
+  end
 
   create_table "dimension_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "dimension_id", null: false
@@ -53,9 +75,33 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.index ["tree_type_id"], name: "index_grade_bands_on_tree_type_id"
   end
 
+  create_table "lesson_plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "tree_id", null: false
+    t.string "base_key"
+    t.integer "sequence"
+    t.boolean "is_exemplar"
+    t.bigint "exemplar_authorizor_id"
+    t.string "gd_owner_email"
+    t.boolean "submit_for_review"
+    t.boolean "is_draft"
+    t.boolean "in_portfolio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exemplar_authorizor_id"], name: "lp_authorizor_id"
+    t.index ["tree_id"], name: "lp_tree_id"
+  end
+
   create_table "locales", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code"
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lookup_tables_options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.string "table_name"
+    t.string "lookup_code"
+    t.string "lookup_translation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -66,6 +112,23 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.datetime "updated_at", null: false
     t.integer "duration_weeks", default: 0, null: false
     t.integer "hours_per_week", default: 0, null: false
+  end
+
+  create_table "resource_joins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "resource_id", null: false
+    t.string "resourceable_type"
+    t.bigint "resourceable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_resource_joins_on_resource_id"
+    t.index ["resourceable_type", "resourceable_id"], name: "resourceable"
+  end
+
+  create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.string "base_key", default: "", null: false
+    t.string "resource_code", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sector_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -87,6 +150,7 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.string "base_key"
     t.boolean "active", default: true
     t.string "sector_set_code", default: "", null: false
+    t.string "key_phrase", default: "", null: false
     t.index ["code"], name: "index_sectors_on_code"
   end
 
@@ -144,6 +208,7 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.string "grid_headers", default: "", null: false
     t.string "dim_codes", default: "bigidea,miscon", null: false
     t.string "dim_display", default: "", null: false
+    t.string "user_form_config", default: "", null: false
     t.index ["code", "version_id"], name: "index_tree_types_on_code_and_version_id", unique: true
   end
 
@@ -190,6 +255,27 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.index ["subject_id"], name: "index_uploads_on_subject_id"
   end
 
+  create_table "user_lesson_plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "lesson_plan_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_plan_id"], name: "user_lp_lp_id"
+    t.index ["user_id"], name: "user_lp_user_id"
+  end
+
+  create_table "user_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "resource_id", null: false
+    t.bigint "user_id", null: false
+    t.string "user_resourceable_type"
+    t.bigint "user_resourceable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_user_resources_on_resource_id"
+    t.index ["user_id"], name: "index_user_resources_on_user_id"
+    t.index ["user_resourceable_type", "user_resourceable_id"], name: "user_resourceable"
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -229,6 +315,7 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.string "last_selected_subject_ids", default: "", null: false
     t.integer "last_version_id"
     t.string "admin_subjects", default: "", null: false
+    t.boolean "active", default: true, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -241,4 +328,5 @@ ActiveRecord::Schema.define(version: 20200519031537) do
     t.boolean "active", default: true
   end
 
+  add_foreign_key "lesson_plans", "users", column: "exemplar_authorizor_id"
 end

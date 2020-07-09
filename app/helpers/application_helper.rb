@@ -8,6 +8,14 @@ module ApplicationHelper
     current_user && current_user.is_teacher?
   end
 
+  def current_is_counselor?
+    current_user && current_user.is_counselor?
+  end
+
+  def current_is_supervisor?
+    current_user && current_user.is_supervisor?
+  end
+
   def current_is_admin?
     user_is_admin?(current_user)
   end
@@ -53,14 +61,18 @@ module ApplicationHelper
   end
 
   def can_edit_type?(type)
-    teachers_can_edit = ['miscon', 'sector', 'connect', 'resource']
-    return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type))
+    teachers_can_edit = [] #['tree-detail-page','miscon', 'sector', 'connect', 'resource']
+    return current_is_admin? || (current_is_teacher? && teachers_can_edit.include?(type)) ||
+      (current_is_counselor? && teachers_can_edit.include?(type)) ||
+      (current_is_supervisor? && teachers_can_edit.include?(type))
   end
 
   def can_edit_any_dims?(treeTypeRec)
+    ret = false
     treeTypeRec.dim_codes.split(',').each do |dtype|
-      return true if can_edit_type?(dtype)
+      ret = true if can_edit_type?(dtype)
     end
+    return ret
   end
 
   #parse the TreeType.dim_display string and
@@ -108,7 +120,10 @@ module ApplicationHelper
               catCodes[1..catCodes.length - 1] #numeric category codes
             ]
           table[:partial] = "resources" if catCodes[0] == "resources"
-          table[:depths] << hierarchy_codes.index(catCodes[0])
+          depth = hierarchy_codes.index(catCodes[0])
+          table[:depths] << depth
+          table[:depth] = depth
+          table[:type] = depth ? 'parent_detail' : 'tree_detail'
           @editTypes[resource_types[catCodes[1].to_i]] = {
             :name => (hierarchy_codes.include?(catCodes[0]) ? "tree_resource" : "resource"),
             :codes => catCodes[1..catCodes.length - 1]
@@ -117,18 +132,21 @@ module ApplicationHelper
         elsif d.first == "[" && d.last == "]" #dimtree
           catCodes = d[1..d.length - 2].split("#")
           table[:title_code_type_action_catsArr] << [
-              @dimTypeTitleByCode[catCodes[0]], #title
-              catCodes[0], #code
+              @dimTypeTitleByCode[catCodes[1]], #title
+              catCodes[1], #code
               "dimtree", #edit_type
               "edit", #action
-              catCodes[1..catCodes.length - 1] #numeric category codes
+              catCodes[2..catCodes.length - 1] #numeric category codes
             ]
-          table[:num_cols] += catCodes.length - 1
-          table[:num_rows] =  [@detailsHash[catCodes[0]].length, table[:num_rows]].max
-          table[:depths] << nil
-          @editTypes[catCodes[0]] = {
+          table[:num_cols] += catCodes.length - 2
+          table[:num_rows] = [@detailsHash[catCodes[0]].length, table[:num_rows]].max
+          depth = hierarchy_codes.index(catCodes[0])
+          table[:depths] << depth
+          table[:depth] = depth
+          table[:type] = depth ? 'parent_detail' : 'tree_detail'
+          @editTypes[catCodes[1]] = {
             :name => "dimtree",
-            :codes => catCodes[1..catCodes.length - 1]
+            :codes => catCodes[2..catCodes.length - 1]
           }
         #table building 'evenly_spaced_details' partial
         elsif d.first == "<" && d.last == ">" #sector
@@ -142,6 +160,7 @@ module ApplicationHelper
             ]
           table[:num_rows] =  [@detailsHash[catCode].length, table[:num_rows]].max
           table[:depths] << nil
+          table[:type] = 'tree_detail'
           @editTypes[catCode] = { :name => "sector"}
         #table uses 'treetree' partial
         elsif d.first == "+" && d.last == "+" #treetree
@@ -159,15 +178,42 @@ module ApplicationHelper
           table[:num_cols] += 3
           table[:partial] = 'treetree' #treetrees have a special partial
           table[:depths] << nil
+          table[:type] = 'tree_detail'
           @editTypes[catCode] = {:name => 'treetree'}
         else
           header_area = true
         end
       end #details in table
       @detailTables << table if !header_area
-      @detail_headers << {type: 'header', name: a, depth: hierarchy_codes.index(a) } if header_area
+      @detailTables << {type: 'header', name: a, depth: hierarchy_codes.index(a) } if header_area
+     # @detail_headers << {type: 'header', name: a, depth: hierarchy_codes.index(a) } if header_area
       #@detail_areas << {type: detail_type, name: detail, codes: category_codes} if detail_type != 'header'
     end
+  end
+
+  def get_category_title(cat, detail_code)
+    category_title = Outcome.get_resource_name(
+      Outcome::RESOURCE_TYPES[cat.to_i],
+      @treeTypeRec.code,
+      @versionRec.code,
+      @locale_code) if @editTypes[detail_code][:name] == "resource"
+    category_title = Translation.find_translation_name(
+        @locale_code,
+        Tree.get_resource_type_key(
+          Tree::RESOURCE_TYPES[cat.to_i],
+          @treeTypeRec.code,
+          @versionRec.code
+        ),
+        Tree::RESOURCE_TYPES[cat.to_i]
+      )  if @editTypes[detail_code][:name] == "tree_resource"
+
+    category_title = Dimension.get_resource_name(
+      Dimension::RESOURCE_TYPES[cat.to_i],
+      @treeTypeRec.code,
+      @versionRec.code,
+      @locale_code,
+      Dimension::RESOURCE_TYPES[cat.to_i]) if @editTypes[detail_code][:name] == "dimtree"
+    return category_title
   end
 
 end

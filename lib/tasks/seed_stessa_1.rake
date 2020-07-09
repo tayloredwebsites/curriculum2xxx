@@ -1,7 +1,7 @@
 # seed_eg_stessa_1rake
 namespace :seed_eg_stem do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :ensure_default_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -26,8 +26,8 @@ namespace :seed_eg_stem do
       code: 'egstemuniv',
       hierarchy_codes: 'grade,sem,unit,lo,indicator',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
-      sector_set_code: 'gr_chall',
-      sector_set_name_key: 'sector.set.gr_chal.name',
+      sector_set_code: 'gr_chall,hide',
+      sector_set_name_key: 'sector.set.gr_chall.name',
       curriculum_title_key: 'curriculum.egstemuniv.title', #'Egypt STEM Teacher Prep Curriculum'
       outcome_depth: 3,
       version_id: @v01.id,
@@ -41,11 +41,12 @@ namespace :seed_eg_stem do
       #
       # Detail headers notation key:
       #   item - HEADER
-      #   [item] - TABLE item, dimension.
-      #   {resource#n} - TABLE item, outcome resource translation
+      #   [r#item] - TABLE item, outcome level connected dimension.
+      #   {r#n} - TABLE item, outcome resource translation
       #   <item> - TABLE item, sectors
       #   +item+ - TABLE item, treetrees
-      #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #   {depthCode#n#...} - TABLE item collection, multiple resource translations for tree at the given depth
+      #                     - depthCode should be 'o' for outcome resources
       #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
@@ -53,12 +54,23 @@ namespace :seed_eg_stem do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,sem,unit,lo,[bigidea],{resource#6},[miscon],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+      #   To Do: standards header on top RIGHT of the show page.
+      detail_headers: 'grade,sem,unit,lo,[o#bigidea],{o#6},[o#miscon],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       grid_headers: 'grade,unit,lo,[bigidea],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
       #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
-      dim_display: 'miscon#0#1#2#3#4#5#6#7',
+      dim_display: 'miscon#0#8#1#2#3#4#5#6#7',
+      #user_form_config:
+      #_form_other: list fields that should be included in the user form
+        #dropdown selection fields should have the number of selection options
+        #Dropdown categories in views/users/_form_other.html.erb such as institute_type
+        #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
+        #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
+        #keys for the dropdown options.
+      #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
+      #ADD DROPDOWN TRANSLATIONS WITH TASK: user_form_translations
+      user_form_config:'given_name,family_name,municipality,institute_type#7,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone,role_admin,role_teacher,role_counselor,role_supervisor',
     }
     if myTreeTypes.count < 1
       TreeType.create(myTreeTypeValues)
@@ -69,7 +81,7 @@ namespace :seed_eg_stem do
     @tt = TreeType.where(code: 'egstemuniv').first
 
     puts "Create Default app title translations in English and Arabic"
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egypt STEM Curriculum')
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egyptian STEM Curriculum App')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
@@ -83,7 +95,7 @@ namespace :seed_eg_stem do
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.hierarchy_name_key('lo'), 'Learning Outcome')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-
+puts "SECTOR SET NAME KEY: #{@tt.sector_set_name_key}"
     # Enter ENGLISH translations for sector_set_name_key
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.sector_set_name_key, 'Grand Challenges')
     throw "ERROR updating #{@tt.sector_set_name_key}: #{message}" if status == BaseRec::REC_ERROR
@@ -121,7 +133,9 @@ namespace :seed_eg_stem do
   desc "load up the locales (created in seeds.rb seed file)"
   task load_locales: :environment do
     @loc_en = Locale.where(code: 'en').first
+    @loc_en = Locale.create(code: 'en', name: 'English') if !@loc_en
     @loc_ar_EG = Locale.where(code: 'ar_EG').first
+    @loc_ar_EG = Locale.create(code: 'ar_EG', name: 'العربية (مصر)') if !@loc_ar_EG
     puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_ar_EG.code}: #{@loc_ar_EG.name}"
     @loc_other = @loc_ar_EG
   end #load_locales
@@ -220,7 +234,7 @@ namespace :seed_eg_stem do
       mec: {abbr: 'mec', inCurric: true, engName: 'Mechanics', locAbbr: 'علم الميكانيكا', locName: 'علم الميكانيكا'},
       phy: {abbr: 'phy', inCurric: true, engName: 'Physics', locAbbr: 'الفيزياء', locName: 'الفيزياء'},
       sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: 'علم', locName: 'علم'},
-      ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: 'علوم الأرض', locName: 'علوم الأرض'},
+      ear: {abbr: 'ear', inCurric: false, engName: 'Earth Science', locAbbr: 'علوم الأرض', locName: 'علوم الأرض'},
       geo: {abbr: 'geo', inCurric: true, engName: 'Geology', locAbbr: 'جيولوجيا', locName: 'جيولوجيا'},
       tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'}
     }
@@ -244,24 +258,24 @@ namespace :seed_eg_stem do
       end
 
       # create english translation for subject name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:engName])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:engName])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create english translation for subject abbreviation
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:abbr])
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:abbr])
       throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
       if subjHash[:inCurric]
 
         if subjHash[:locName].present?
           # create locale's translation for subject name
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.name", subjHash[:locName])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:locName])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
         if subjHash[:locAbbr].present?
           # create locale's translation for subject abbreviation
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "subject.#{@tt.code}.#{@ver.code}.#{subjHash[:abbr]}.abbr", subjHash[:locAbbr])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:locAbbr])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
@@ -361,7 +375,7 @@ namespace :seed_eg_stem do
     ]
 
     dim_resource_types_arr = [
-      ['Second Subject', 'الموضوع الثاني'],
+      ['Second Category', 'الفئة الثانية'],
       ['Correct Understanding', 'الفهم الصحيح'],
       ['Possible Source of Misconception', 'مصدر محتمل للفهم الخاطئ'],
       ['Compiler/Source'],
@@ -369,6 +383,7 @@ namespace :seed_eg_stem do
       ['Website Link References', 'مراجع رابط الموقع'],
       ['Test Distractor Percent', 'اختبار نسبة تشتيت الانتباه'],
       ['Link to Question Item Bank', 'رابط إلى بنك عناصر السؤال'],
+      ['Third Category', 'الفئة الثالثة'],
     ]
     dim_translations_arr.each do |dim|
       dim_name_key = Dimension.get_dim_type_key(
@@ -448,6 +463,34 @@ namespace :seed_eg_stem do
       # throw "ERROR updating tree resource translation: #{message}" if status == BaseRec::REC_ERROR
       # rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
       # throw "ERROR updating tree resource translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
+
+  ####################################################################################
+  desc "Translation for user form dropdown options"
+  task user_form_translations: :environment do
+  #  position_type#6
+  #  @tt.user_form_option_key(version_code, form_field_name, option_num)
+    dropdown_opts = [
+      {ix: 1, field: 'institute_type', en: 'MOE Counselors', ar_EG: 'مستشارو وزارة التربية'},
+      {ix: 2, field: 'institute_type', en: 'STEM Unit', ar_EG: 'وحدة العلوم والتكنولوجيا والهندسة والرياضيات'},
+      {ix: 3, field: 'institute_type', en: 'PAT', ar_EG: 'PAT'},
+      {ix: 4, field: 'institute_type', en: 'Governorate Level Supervisors', ar_EG: 'المشرفون على مستوى المحافظة'},
+      {ix: 5, field: 'institute_type', en: 'STEM School', ar_EG: 'مدرسة STEM'},
+      {ix: 6, field: 'institute_type', en: 'University', ar_EG: 'جامعة'},
+      {ix: 7, field: 'institute_type', en: 'STESSA Project', ar_EG: 'مشروع STESSA'},
+      {ix: 1, field: 'position_type', en: 'School Leader', ar_EG: 'قائد المدرسة'},
+      {ix: 2, field: 'position_type', en: 'Teacher', ar_EG: 'مدرس'},
+      {ix: 3, field: 'position_type', en: 'MOE Counselor', ar_EG: ''},
+      {ix: 4, field: 'position_type', en: 'STEM Unit Member', ar_EG: 'مستشار وزارة التربية'},
+      {ix: 5, field: 'position_type', en: 'Governorate Supervisor', ar_EG: 'مشرف محافظة'},
+      {ix: 6, field: 'position_type', en: 'STESSA Project Staff', ar_EG: 'طاقم مشروع STESSA'},
+    ]
+    dropdown_opts.each do |opt|
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:ar_EG])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end
 

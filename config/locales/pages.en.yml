@@ -9,6 +9,7 @@ en:
     title: "Curriculum Website"
     labels:
       all: "All"
+      alluvial: "Alluvial Diagram"
       save: "Save"
       cancel: "Cancel"
       submit: "Submit"
@@ -17,6 +18,8 @@ en:
       leave_edit_mode: "Leave Edit Mode"
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
+      confirm_deactivate_item: "Are you sure you want to deactivate:\n%{item}"
+      confirm_restore_item: "Restore %{item}?"
       create: "Create"
       create_item: "Create %{item}"
       subject: "Subject"
@@ -43,7 +46,7 @@ en:
       code: "Code"
       description: 'Description'
       message: "Message"
-      gen_list: "Generate List"
+      gen_list: "Show"
       sector: "Sector"
       upload_summary: 'Uploads Summary Report'
       upload_new: 'Add and Do Upload'
@@ -60,8 +63,9 @@ en:
       working_version: "Working"
       final_version: "Final"
       connect_form_title: "Save Connection?"
-      show_details: "Show Details"
+      show_details: "Show Grid"
       last_updated: "Last updated at: %{time}"
+      print: "Print"
     roles:
       name: 'Roles'
       admin:
@@ -73,6 +77,12 @@ en:
       public:
         abbrev: 'Public'
         name: 'Public Access'
+      counselor:
+        abbrev: 'Couns.'
+        name: 'Counselor'
+      supervisor:
+        abbrev: 'Super.'
+        name: 'Supervisor'
     errors:
       too_many_matched_key: "Too many matches for %{key}"
       invalid_grade_band: "Invalid grade band %{grade_band}"
@@ -101,21 +111,22 @@ en:
     home:
       name: "Home"
       hover: "Mektebim STEM Home Page"
+    welcome: "Welcome, %{name}!"
     curriculum:
-      name: "Curriculum Tree"
+      name: "Curriculum"
       hover: "Displays the Curriculum Tree"
     sectors:
       name: "Sectors"
       hover: "Displays the Curriculum by Sectors"
     relations:
-      name: "Relations"
-      hover: "Display the Relations between Curriculum Items"
+      name: "Connections"
+      hover: "Display the Connections between Curriculum Items"
     maint:
       name: "Editing"
       hover: "Page for Editing of Curriculum Items"
     connections:
-      name: "Other"
-      hover: "Other Connections"
+      name: "Views"
+      hover: "Views"
     bigidea:
       name: "Big Ideas"
       hover: "Big Ideas"
@@ -160,7 +171,28 @@ en:
       hover: "Sign in to Curriculum Web App"
     signout:
       name: "Sign Out"
-      hover: "Sign in to Curritulum Web App"
+      hover: "Sign in to Curriculum Web App"
+  footer:
+    contact_us: "Contact Us"
+    unesco_address: "<strong>IBE - UNESCO</strong><br>15, Route des Morillons<br>1218 Le Grand-Saconnex Geneva,<br>Switzerland"
+    unesco_contact: "<strong>T.</strong> +41 22 917 78 00<br><strong>F.</strong> +41 22 917 78 01<br><strong>E.</strong> ibe.info@unesco.org"
+    navigate: "Navigate"
+    terms:
+      header: "Terms & Policies"
+      use: "Terms of Use"
+      cookie: "Cookie Policy"
+    donor:
+      header: "Become a Donor"
+      desc: "Do you want a world where every person has access to relevant, quality education, and lifelong learning? Donor contributions make it possible for the IBE to work towards this goal, by developing its programmes and providing technical support to Member States."
+      button: "Donate"
+    follow:
+      header: "Follow Us"
+      fb: "Facebook"
+      tw: "Twitter"
+      yt: "Youtube"
+      fl: "Flickr"
+      rss: "RSS"
+    copyright: "<span>© 21PSTEM developed the app that hosts this curriculum</span>"
   translations:
     index:
       name: "Translations Listing"
@@ -177,8 +209,10 @@ en:
       locale: "Locale"
       key: "Key"
       value: "Value"
+    add_etc: "%{str} & etc."
     errors:
       missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
+      missing_translation_for_item: "missing translation for item"
       too_many_translations_locale_code: "too many translations for locale: %{locale}, code: %{code}"
       creating_translations_locale_code: "error creating translation for locale: %{locale}, code: %{code}"
       creating_translations_locale_code: "error updating translation for locale: %{locale}, code: %{code}"
@@ -282,6 +316,7 @@ en:
     nav:
       my_account: 'My Account'
       registrations: 'Registrations'
+      active_users: 'Active Users'
       all_users: 'All Users'
       change_pwd: 'Change Password'
     index:
@@ -311,8 +346,8 @@ en:
       user:
         role_public: "Public"
         role_teacher: "Teacher"
-        role_admin: "Future Vision Curriculum Web Admin"
-        email: "E-Mail Address"
+        role_admin: "Web Admin"
+        email: "Email"
         password: "Password"
         password_confirmation: "Password Confirmation"
         current_password: "Current Password"
@@ -326,8 +361,8 @@ en:
         govt_level_val4: 'Republic of Srpska'
         govt_level_val5: 'District (enter name below)'
         govt_level_name: 'Government Level Name'
-        municipality: 'Municipality Name'
-        institute_type: 'Institutiion Type'
+        municipality: 'City Name'
+        institute_type: 'Institution Type'
         institute_type_val0: 'Ministry'
         institute_type_val1: 'Pedagogical Institute (PI)'
         institute_type_val2: 'Faculty'

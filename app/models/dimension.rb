@@ -21,12 +21,20 @@ class Dimension < BaseRec
     'link',
     'distractor',
     'question_bank',
+    'third_subj',
   ]
 
   validate :valid_dim_type
 
   has_many :dim_trees
   has_many :trees, through: :dim_trees
+
+  has_many :resource_joins, as: :resourceable
+  has_many :user_resources, as: :user_resourceable
+  has_many :resources, through: :resource_joins
+
+  has_many :activity_dimensions
+  has_many :activities, through: :activity_dimensions
 
   scope :active, -> { where(:active => true) }
 

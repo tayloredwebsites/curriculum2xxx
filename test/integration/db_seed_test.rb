@@ -9,7 +9,7 @@ class DbSeedTest < ActionDispatch::IntegrationTest
   end
 
   test "confirm db_seed properly loads all tables" do
-    assert_equal(1, Version.count)
+    assert_equal(2, Version.count)
     assert_equal(3, Locale.count)
   end
 

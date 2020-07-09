@@ -1,0 +1,55 @@
+<script type="text/javascript">
+
+  data = {
+    "data": [
+        {
+          "type": "sankey",
+          "domain": {
+            "x": [
+              0,
+              1
+            ],
+            "y": [
+              0,
+              1
+            ]
+          },
+          "node": {
+            "pad": 20,
+            "thickness": 20,
+            "line": {
+              "color": "black",
+              "width": 0.5
+            },
+            "label": JSON.parse('<%= alluvial_nodes.to_json.html_safe %>'),
+            "color": JSON.parse('<%= alluvial_node_colors.to_json.html_safe %>'),
+            "hovertemplate": '<b>%{label}</b>',
+          },
+          "link": JSON.parse('<%= alluvial_links.to_json.html_safe %>')
+        }],
+    "layout": {
+       // "title": "<%= chart_name %>",
+      "showlegend": false,
+      "font": {
+          "size": 10
+      },
+      "margin": {
+        "l": 5,
+        "r": 0,
+        "b": 50,
+        "t": 50,
+        "pad": 4
+      },
+    }
+  }
+
+  var config = {
+    responsive: true,
+    displayModeBar: false,
+    locale: '<%= @locale_code %>',
+    displaylogo: false,
+  }
+
+  Plotly.plot('js-alluvial-container', data.data, data.layout, config);
+
+</script>

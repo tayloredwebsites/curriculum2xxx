@@ -43,6 +43,7 @@ scope "(:locale)", locale: /tr|en|ar_EG/ do
       post 'create_dim_tree'
       patch 'update_dim_tree'
       get 'maint'
+      post 'deactivate'
     end
   end
   match '/dim_tree', :to => "trees#dim_tree_add_edit", :as => :dim_tree_path, :via => [:post, :patch, :put]

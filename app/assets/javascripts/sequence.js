@@ -4,6 +4,23 @@
 
 $(function() {
   /**
+   * Update cookies for the connections page so that
+   * the selected columns/gradebands are remembered
+   * when the page is refreshed.
+  **/
+  set_connections_page_cookie = function () {
+    var arr = [];
+    $(".subj-checkbox").each(function () {
+      var s_input = $(this).find(">input");
+      if (s_input.is(":checked")){arr.push(s_input.attr("id"));}
+      $(this).find(".gradebands-list input").each(function () {
+        if ($(this).is(":checked")){arr.push($(this).attr("id"));}
+      });
+    });
+    document.cookie = "connect_cols_settings=" + encodeURIComponent(JSON.stringify(arr));
+  }
+
+  /**
    * Hide or show a subject column when the corresponding
    * checkbox is checked or unchecked.
    * @param  {String} subj_abbr Abbreviation for a subject.
@@ -31,6 +48,7 @@ $(function() {
     $(".sequence-page .sequence-grid").addClass(
       "cols-" + $(".subj-checkbox>input:checked").length
     );
+    set_connections_page_cookie();
   };
 
   /**
@@ -81,6 +99,7 @@ $(function() {
       }
     }
     if (subj_arr.length > 0) gradeband_visibility(subj_arr, gb_arr, multi);
+    set_connections_page_cookie();
   };
 
   /**
@@ -289,8 +308,8 @@ add_edit_form = function(res) {
     res.relation_values.akin +
     (res.tree_tree.relationship == "akin" ? '" selected>' : '">') +
     res.translations.akin +
-    "</option> \
-          <option value=" +
+    '</option> \
+          <option value="' +
     res.relation_values.applies +
     (res.tree_tree.relationship == "applies" ? '" selected>' : '">') +
     res.translations.applies +

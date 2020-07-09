@@ -212,6 +212,10 @@ $(function() {
         $(this).data("outcome_depth"));
       show_maint_details(true, ($(this).data("resize")));
     })
+    $(".js-show-hide-control").on("click", function() {
+      $($(this).data("showSelector")).show();
+      $($(this).data("hideSelector")).hide();
+    });
   }
 
   init_admin_subjects_editing = function () {
@@ -236,6 +240,13 @@ $(function() {
       $('#user_admin_subjects').val(admin_subjects);
       $('#admin_subjects-selected').remove("#admin-subject-" + subject);
     });
+    $(".print-btn").on("click", function() { window.print(); });
+  }
+
+  init_locale_menu = function () {
+    $('#locale-select').on('change', function () {
+      window.location = $(this).val();
+    })
   }
   //###################################
   //# ADD EVENT BINDINGS
@@ -249,10 +260,12 @@ $(function() {
     readyFontSizes();
     init_hierarchy_show();
     init_admin_subjects_editing();
+    init_locale_menu();
   });
   readyFontSizes();
   init_hierarchy_show();
   init_admin_subjects_editing();
+  init_locale_menu();
 
   $(".fa-bars").on("click", function(event, state) {
     toggleTopNav(this, event);

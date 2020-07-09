@@ -3,9 +3,9 @@
   <li>
     <%= render partial: "maint_filter", locals: {col: "tree"} %>
   </li>
+  <li class="colorful-header colorful-header-0 indent-0"><%= @subjectByCode[@subject_code] ? @subjectByCode[@subject_code][:name] : @subject_code %></li>
   <%
    @treeByParents.each do |tkey, codeh| %>
-    <li class="maint-header indent-0"><%= @translations[tkey] %></li>
     <% codeh.each do |code, h| %>
       <% if h[:outcome] %>
       <%
@@ -41,6 +41,7 @@
         <% if @editing %>
         <div class="pull-right">
           <!-- TO DO: Implement working resequence button and deactivate button -->
+          <%= link_to(fa_icon("times", class: "pull-right"), deactivate_trees_path(id: h[:id]), {'remote' => true, 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: "#{@hierarchies[@treeTypeRec[:outcome_depth]]} - #{h[:text].html_safe}"), method: :post}) %>
           <a class="" href="/<%= @locale_code %>/trees/<%= h[:id] %>?editme=<%= h[:id] %>">
             <i class="fa fa-edit pull-right" data-toggle="tooltip" title="<%= I18n.translate("trees.edit.tooltip", tree_depth_name: @hierarchies[@treeTypeRec[:outcome_depth]], tree_code: h[:formatted_code]) %>"></i>
           </a>
@@ -51,7 +52,7 @@
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
       <% else %>
-        <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item maint-sub-header list-group-item indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>" data-treeid="<%= h[:id] %>">
+        <li id="<%= h[:subj_code] %>_tree_<%= h[:id] %>" class="sequence-item list-group-item indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %> colorful-header colorful-header-<%= h[:depth] %>" data-treeid="<%= h[:id] %>">
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>

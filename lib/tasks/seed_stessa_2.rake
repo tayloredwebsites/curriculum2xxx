@@ -2,7 +2,7 @@
 namespace :seed_stessa_2 do
 
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :ensure_default_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -31,13 +31,13 @@ namespace :seed_stessa_2 do
       code: @curriculumCode,
       hierarchy_codes: 'grade,sem,unit,lo',
       valid_locales: BaseRec::LOCALE_EN+','+BaseRec::LOCALE_AR_EG,
-      sector_set_code: 'gr_chall',
+      sector_set_code: 'gr_chall,hide',
       sector_set_name_key: 'sector.set.gr_chal.name',
       curriculum_title_key: 'curriculum.egstem.title', # 'Egypt STEM Curriculum - deprecated - see treeType.title_key'
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
-      dim_codes: 'bigidea,essq,concept,skill,miscon,standardus,standardeg',
+      dim_codes: 'caps,bigidea,essq,concept,skill,miscon,standardus,standardeg',
       tree_code_format: 'subject,grade,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
@@ -46,11 +46,12 @@ namespace :seed_stessa_2 do
       #
       # Detail headers notation key:
       #   item - HEADER
-      #   [item] - TABLE item, dimension.
-      #   {resource#n} - TABLE item, outcome resource translation
+      #   [r#item] - TABLE item, outcome level connected dimension.
+      #   {r#n} - TABLE item, outcome resource translation
       #   <item> - TABLE item, sectors
       #   +item+ - TABLE item, treetrees
-      #   {item#n#...} - TABLE item collection, multiple outcome resource translations
+      #   {depthCode#n#...} - TABLE item collection, multiple resource translations for tree at the given depth
+      #                     - depthCode should be 'o' for outcome resources
       #                     - unit#n =lookup in Tree::RESOURCE_TYPES, else lookup in Outcome::RESOURCE_TYPES
       #   {resources#n#...} - TABLE item, full width of table,
       #                  with numeric codes identifying which
@@ -58,12 +59,23 @@ namespace :seed_stessa_2 do
       #                  e.g., may use indexes in the
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
-      detail_headers: 'grade,sem,unit,lo,weeks,hours,{resource#6},{sem#4}_{sem#3}_{grade#0}_{unit#2},[bigidea]_[essq],[miscon#2#1],[concept]_[skill],{resource#2}_{resource#7},{resource#8},{resource#13},<sector>,[standardus]_[standardeg],+treetree+,{resources#12#3#2#11#10#9}',
+      #   To Do: standards header on top RIGHT of the show page.
+      detail_headers: 'grade,{grade#0},sem,{sem#4},{sem#3},[sem#caps],unit,{unit#2},lo,weeks,hours,{o#6},<sector>_[o#bigidea]_[o#essq],[o#miscon#2#1],[o#concept]_[o#skill],{o#7},{o#8},[o#standardeg],+treetree+,{resources#12#3#2#11#10#9}',
       grid_headers: 'grade,unit,lo,[bigidea],[essq],[concept],[skill],[miscon]',
       #Display codes are zero-relative indexes in Dimension::RESOURCE_TYPES
       #Dimensions must appear in this string to have a show page
       #E.g., dim_display: 'miscon#0#1#2#3,bigidea#4#5#8,concept#1',
-      dim_display: 'miscon#0#1#2#3#4#5#6#7',
+      dim_display: 'miscon#0#8#1#2#3#4#5#6#7',
+      #user_form_config:
+      #_form_other: list fields that should be included in the user form
+        #dropdown selection fields should have the number of selection options
+        #Dropdown categories in views/users/_form_other.html.erb such as institute_type
+        #should be followed by a sharp (#) and the number of options for this field (not zero-relative).
+        #Use @treeTypeRec.user_form_option_key(version_code, form_field_name, option_index) to set Translation
+        #keys for the dropdown options.
+      #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
+      # ADD DROPDOWN TRANSLATIONS IN TASK: user_form_translations
+      user_form_config:'given_name,family_name,municipality,institute_type#7,institute_name_loc,position_type#6,subject1,subject2,gender,work_phone,role_admin,role_teacher,role_counselor,role_supervisor',
     }
     if myTreeType.count < 1
       TreeType.create(myTreeTypeValues)
@@ -75,7 +87,7 @@ namespace :seed_stessa_2 do
     @tt = treeTypes.first
 
     puts "Create Default app title translations in English and Arabic"
-    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egypt STEM Curriculum')
+    rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'Egyptian STEM Curriculum App')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
     rec, status, message =  Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, 'app.title', 'منهج مصر للعلوم والتكنولوجيا والهندسة والرياضيات')
     throw "ERROR updating default app title translation: #{message}" if status == BaseRec::REC_ERROR
@@ -220,7 +232,10 @@ namespace :seed_stessa_2 do
       sci: {abbr: 'sci', inCurric: false, engName: 'Science', locAbbr: 'علم', locName: 'علم'},
       ear: {abbr: 'Ear', inCurric: false, engName: 'Earth Science', locAbbr: 'علوم الأرض', locName: 'علوم الأرض'},
       geo: {abbr: 'geo', inCurric: false, engName: 'Geology', locAbbr: 'جيولوجيا', locName: 'جيولوجيا'},
-      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'}
+      tech: {abbr: 'tech', inCurric: false, engName: 'Tech Engineering', locAbbr: 'هندسة التكنولوجيا', locName: 'هندسة التكنولوجيا'},
+      adv: {abbr: 'adv', inCurric: true, engName: 'Advisory', locAbbr: 'استشاري', locName: 'استشاري'},
+      ara: {abbr: 'ara', inCurric: true, engName: 'Arabic', locAbbr: 'عربى', locName: 'عربى'},
+      art: {abbr: 'art', inCurric: true, engName: 'Art', locAbbr: 'فن', locName: 'فن'},
     }
 
     @subjectsHash.each do |key, subjHash|
@@ -329,17 +344,17 @@ namespace :seed_stessa_2 do
   task create_sectors: :environment do
 
     @sectorsHash = {
-      '1': {code: '1', engName: 'Deal with population growth and its consequences.',locName: 'التعامل مع النمو السكاني وعواقبه.'},
-      '2': {code: '2', engName: 'Improve the use of alternative energies.', locName: 'تحسين استخدام الطاقات البديلة.'},
-      '3': {code: '3', engName: 'Deal with urban congestion and its consequences.', locName: 'التعامل مع الازدحام الحضري وعواقبه.'},
-      '4': {code: '4', engName: 'Improve the scientific and technological environment for all.', locName: 'تحسين البيئة العلمية والتكنولوجية للجميع.'},
-      '5': {code: '5', engName: 'Work to eradicate public health issues/disease.', locName: 'العمل على القضاء على قضايا / أمراض الصحة العامة.'},
-      '6': {code: '6', engName: 'Improve uses of arid areas.', locName: 'تحسين استخدامات المناطق الجافة.'},
-      '7': {code: '7', engName: 'Manage and increase the sources of clean water.', locName: 'إدارة وزيادة مصادر المياه النظيفة.'},
-      '8': {code: '8', engName: 'Increase the industrial and agricultural bases of Egypt.', locName: 'زيادة القواعد الصناعية والزراعية لمصر.'},
-      '9': {code: '9', engName: 'Address and reduce pollution fouling our air, water and soil.', locName: 'معالجة وتقليل التلوث الناتج عن الهواء والماء والتربة.'},
-      '10': {code: '10', engName: 'Recycle garbage and waste for economic and environmental purposes.', locName: 'إعادة تدوير القمامة والنفايات للأغراض الاقتصادية والبيئية.'},
-      '11': {code: '11', engName: 'Reduce and adapt to the effect of climate change.', locName: 'الحد من تأثير تغير المناخ والتكيف معه.'}
+      '1': {code: '1', engName: 'Deal with population growth and its consequences.',locName: 'التعامل مع النمو السكاني وعواقبه.', keyPhrase: 'population growth'},
+      '2': {code: '2', engName: 'Improve the use of alternative energies.', locName: 'تحسين استخدام الطاقات البديلة.', keyPhrase: 'alternative energies'},
+      '3': {code: '3', engName: 'Deal with urban congestion and its consequences.', locName: 'التعامل مع الازدحام الحضري وعواقبه.', keyPhrase: 'urban congestion'},
+      '4': {code: '4', engName: 'Improve the scientific and technological environment for all.', locName: 'تحسين البيئة العلمية والتكنولوجية للجميع.', keyPhrase: 'scientific and technological environment'},
+      '5': {code: '5', engName: 'Work to eradicate public health issues/disease.', locName: 'العمل على القضاء على قضايا / أمراض الصحة العامة.', keyPhrase: 'public health'},
+      '6': {code: '6', engName: 'Improve uses of arid areas.', locName: 'تحسين استخدامات المناطق الجافة.', keyPhrase: 'arid areas'},
+      '7': {code: '7', engName: 'Manage and increase the sources of clean water.', locName: 'إدارة وزيادة مصادر المياه النظيفة.', keyPhrase: 'clean water'},
+      '8': {code: '8', engName: 'Increase the industrial and agricultural bases of Egypt.', locName: 'زيادة القواعد الصناعية والزراعية لمصر.', keyPhrase: 'industrial' },
+      '9': {code: '9', engName: 'Address and reduce pollution fouling our air, water and soil.', locName: 'معالجة وتقليل التلوث الناتج عن الهواء والماء والتربة.', keyPhrase: 'reduce pollution'},
+      '10': {code: '10', engName: 'Recycle garbage and waste for economic and environmental purposes.', locName: 'إعادة تدوير القمامة والنفايات للأغراض الاقتصادية والبيئية.', keyPhrase: 'recycle'},
+      '11': {code: '11', engName: 'Reduce and adapt to the effect of climate change.', locName: 'الحد من تأثير تغير المناخ والتكيف معه.', keyPhrase: 'climate change'}
     }
     @sectorsHash.each do |key, sectHash|
 
@@ -351,10 +366,12 @@ namespace :seed_stessa_2 do
           sector_set_code: @sectorCode,
           code: sectHash[:code],
           name_key: "sector.#{@sectorCode}.#{sectHash[:code]}.name",
-          base_key: "sector.#{@sectorCode}.#{sectHash[:code]}"
+          base_key: "sector.#{@sectorCode}.#{sectHash[:code]}",
+          key_phrase: sectHash[:keyPhrase]
         )
       else
         sector = sectors.first
+        sector.update(key_phrase: sectHash[:keyPhrase])
       end
 
       # create the English translation for the Sector Name
@@ -374,6 +391,7 @@ namespace :seed_stessa_2 do
   desc "create translations for dimension types"
   task dimension_translations: :environment do
     dim_translations_arr = [
+      ['caps', 'Capstone Challenge', 'تحدي كابستون'],
       ['bigidea', 'Big Idea', 'فكرة هامة'],
       ['essq', 'Essential Question', 'السؤال الجوهري'],
       ['concept', 'Concept', 'مفهوم'],
@@ -384,7 +402,7 @@ namespace :seed_stessa_2 do
     ]
 
     dim_resource_types_arr = [
-      ['Second Subject', 'الموضوع الثاني'],
+      ['Second Category', 'الفئة الثانية'],
       ['Correct Understanding', 'الفهم الصحيح'],
       ['Possible Source of Misconception', 'مصدر محتمل للفهم الخاطئ'],
       ['Compiler/Source'],
@@ -392,6 +410,7 @@ namespace :seed_stessa_2 do
       ['Website Link References', 'مراجع رابط الموقع'],
       ['Test Distractor Percent', 'اختبار نسبة تشتيت الانتباه'],
       ['Link to Question Item Bank', 'رابط إلى بنك عناصر السؤال'],
+      ['Third Category', 'الفئة الثالثة'],
     ]
     dim_translations_arr.each do |dim|
       dim_name_key = Dimension.get_dim_type_key(
@@ -427,7 +446,7 @@ namespace :seed_stessa_2 do
       ["Suggested Assessment Resources and Activities", "موارد وأنشطة التقييم المقترحة"],
       ["Additional Background and Resource Materials for the Teacher", "معلومات أساسية وموارد إضافية للمعلم"],
       ["Goal behaviour (What students will do, Practical learning targets)", "سلوك الهدف (ما سيفعله الطلاب ، أهداف التعلم العملية)"],
-      ["Reviewer Comments", "دعم المعلم"],
+      ["Teacher Notes", "ملاحظات المعلم"],
       ["Evidence of Learning", "دليل التعلم"],
       ["Capstone Connection", "روابط"],
       ["SEC Topic", "موضوع SEC"],
@@ -456,7 +475,7 @@ namespace :seed_stessa_2 do
       ["Course Materials", "مواد الدورة"],
       ["Semester Materials", "مواد الفصل"],
       ["Unit Materials", "مواد الوحدة"],
-      ["Semester Lesson Plans Folder", "مجلد خطط الدرس للفصل الدراسي"],
+      ["Lesson Plans Folder", "مجلد خطط الدرس"],
       ["Semester Theme", "موضوع الفصل"]
     ]
 
@@ -477,7 +496,33 @@ namespace :seed_stessa_2 do
   task ensure_default_translations: :environment do
 
   end #task
-
+  ####################################################################################
+  desc "Translation for user form dropdown options"
+  task user_form_translations: :environment do
+  #  position_type#6
+  #  @tt.user_form_option_key(version_code, form_field_name, option_num)
+    dropdown_opts = [
+      {ix: 1, field: 'institute_type', en: 'MOE Counselors', ar_EG: 'مستشارو وزارة التربية'},
+      {ix: 2, field: 'institute_type', en: 'STEM Unit', ar_EG: 'وحدة العلوم والتكنولوجيا والهندسة والرياضيات'},
+      {ix: 3, field: 'institute_type', en: 'PAT', ar_EG: 'PAT'},
+      {ix: 4, field: 'institute_type', en: 'Governorate Level Supervisors', ar_EG: 'المشرفون على مستوى المحافظة'},
+      {ix: 5, field: 'institute_type', en: 'STEM School', ar_EG: 'مدرسة STEM'},
+      {ix: 6, field: 'institute_type', en: 'University', ar_EG: 'جامعة'},
+      {ix: 7, field: 'institute_type', en: 'STESSA Project', ar_EG: 'مشروع STESSA'},
+      {ix: 1, field: 'position_type', en: 'School Leader', ar_EG: 'قائد المدرسة'},
+      {ix: 2, field: 'position_type', en: 'Teacher', ar_EG: 'مدرس'},
+      {ix: 3, field: 'position_type', en: 'MOE Counselor', ar_EG: ''},
+      {ix: 4, field: 'position_type', en: 'STEM Unit Member', ar_EG: 'مستشار وزارة التربية'},
+      {ix: 5, field: 'position_type', en: 'Governorate Supervisor', ar_EG: 'مشرف محافظة'},
+      {ix: 6, field: 'position_type', en: 'STESSA Project Staff', ar_EG: 'طاقم مشروع STESSA'},
+    ]
+    dropdown_opts.each do |opt|
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:en])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, @tt.user_form_option_key(@ver.code, opt[:field], opt[:ix]), opt[:ar_EG])
+      throw "ERROR updating user dropdown option translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end
   #####################################
   desc "One-time process to convert google folder-ids to google links in Tree Resource Translations"
   task make_google_links: :environment do
@@ -539,5 +584,80 @@ namespace :seed_stessa_2 do
       end
     end #trees.each do |t|
   end
+
+  #####################################
+  desc "One-time migration to make db entries for all Tree, Outcome, and Dimension resources"
+  task create_missing_resources: :environment do
+    initial_resource_count = Resource.count
+    initial_resource_join_count = ResourceJoin.count
+    missing_resources_found = 0
+
+    Tree.all.each do |tree|
+      type_map = {}
+      keys = Tree::RESOURCE_TYPES.map do |rt|
+        key = tree.get_resource_key(rt)
+        type_map[key] = rt
+        key
+      end
+      Translation.where(key: keys).each do |transl|
+        key = transl.key
+        type = type_map[key]
+        resource = Resource.find_resource(type, key)
+        if resource.nil?
+          missing_resources_found += 1
+          resource = Resource.create(:resource_code => type, :base_key => key)
+          tree.resources << resource
+          puts "Created and mapped Resource rec for translation key: #{key}"
+        end #if resource.nil?, create and connect
+      end #Translation.where(key: keys).each do |transl|
+    end #Tree.all.each do |tree|
+
+    Outcome.all.each do |outc|
+      type_map = {}
+      keys = Outcome::RESOURCE_TYPES.map do |rt|
+        key = outc.get_resource_key(rt)
+        type_map[key] = rt
+        key
+      end
+      Translation.where(key: keys).each do |transl|
+        key = transl.key
+        type = type_map[key]
+        resource = Resource.find_resource(type, key)
+        if resource.nil?
+          missing_resources_found += 1
+          resource = Resource.create(:resource_code => type, :base_key => key)
+          outc.resources << resource
+          puts "Created and mapped Resource rec for translation key: #{key}"
+        end #if resource.nil?, create and connect
+      end #Translation.where(key: keys).each do |transl|
+    end #Outcome.all.each do |outc|
+
+    Dimension.all.each do |dim|
+      type_map = {}
+      keys = Dimension::RESOURCE_TYPES.map do |rt|
+        key = dim.resource_key(rt)
+        type_map[key] = rt
+        key
+      end
+      Translation.where(key: keys).each do |transl|
+        key = transl.key
+        type = type_map[key]
+        resource = Resource.find_resource(type, key)
+        if resource.nil?
+          missing_resources_found += 1
+          resource = Resource.create(:resource_code => type, :base_key => key)
+          dim.resources << resource
+          puts "Created and mapped Resource rec for translation key: #{key}"
+        end #if resource.nil?, create and connect
+      end #Translation.where(key: keys).each do |transl|
+    end #Dimension.all.each do |dim|
+
+    puts "Finished create_missing_resources."
+    puts "initial resource count: #{initial_resource_count}"
+    puts "initial resource_join count: #{initial_resource_join_count}"
+    puts "missing_resources_found: #{missing_resources_found}"
+    puts "final resource count: #{Resource.count}"
+    puts "final resource_joins count: #{ResourceJoin.count}"
+  end #task create_missing_resources
 
 end

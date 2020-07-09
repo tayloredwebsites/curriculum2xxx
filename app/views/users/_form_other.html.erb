@@ -1,215 +1,293 @@
+<% form_config = @treeTypeRec.user_form_config %>
+<% if form_config.length == 0 || form_config.include?("given_name") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :given_name %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <%= form.text_field :given_name %>
+      <% if @user.errors.present? && @user.errors[:given_name].present? %>
+        <span class='ui-error'><%= @user.errors[:given_name].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :given_name, value: "given_name" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :given_name %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_field :given_name %>
-    <% if @user.errors.present? && @user.errors[:given_name].present? %>
-      <span class='ui-error'><%= @user.errors[:given_name].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("family_name") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :family_name %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <%= form.text_field :family_name %>
+      <% if @user.errors.present? && @user.errors[:family_name].present? %>
+        <span class='ui-error'><%= @user.errors[:family_name].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :family_name, value: "family_name" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :family_name %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_field :family_name %>
-    <% if @user.errors.present? && @user.errors[:family_name].present? %>
-      <span class='ui-error'><%= @user.errors[:family_name].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("govt_level,") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :govt_level %>
+      <span class='required'>&nbsp;</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <% govt_levels = @treeTypeRec.user_form_options(@versionRec.code, 'govt_level', @locale_code) || User::GOVT_LEVELS %>
+      <%=
+      form.select :govt_level,
+        govt_levels.each_with_index.map { |name,i| [name, i] },
+        { include_blank: true, :selected => @user.govt_level }
+      %>
+      <% if @user.errors.present? && @user.errors[:govt_level].present? %>
+        <span class='ui-error'><%= @user.errors[:govt_level].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :govt_level, value: "1" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :govt_level %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%=
-    form.select :govt_level,
-      User::GOVT_LEVELS.each_with_index.map { |name,i| [name, i] },
-      { include_blank: true, :selected => @user.govt_level }
-    %>
-    <% if @user.errors.present? && @user.errors[:govt_level].present? %>
-      <span class='ui-error'><%= @user.errors[:govt_level].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("govt_level_name") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <label for="govt_level_name">
+        <%= @treeTypeRec.user_form_label_name(@locale_code, @versionRec.code, "govt_level_name") %>
+      </label>
+      <span class='required'>&nbsp;</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <%= form.text_field :govt_level_name %>
+      <% if @user.errors.present? && @user.errors[:govt_level_name].present? %>
+        <span class='ui-error'><%= @user.errors[:govt_level_name].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :govt_level_name, value: "govt_level_name" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :govt_level_name %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_field :govt_level_name %>
-    <% if @user.errors.present? && @user.errors[:govt_level_name].present? %>
-      <span class='ui-error'><%= @user.errors[:govt_level_name].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("municipality") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :municipality %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <%= form.text_field :municipality %>
+      <% if @user.errors.present? && @user.errors[:municipality].present? %>
+        <span class='ui-error'><%= @user.errors[:municipality].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :municipality, value: "municipality" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :municipality %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_field :municipality %>
-    <% if @user.errors.present? && @user.errors[:municipality].present? %>
-      <span class='ui-error'><%= @user.errors[:municipality].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("institute_type") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :institute_type %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <% inst_types = @treeTypeRec.user_form_options(@versionRec.code, 'institute_type', @locale_code) || User::INSTITUTE_TYPE %>
+      <%=
+      form.select :institute_type,
+        inst_types.each_with_index.map { |name,i| [name, i] },
+        { include_blank: true, :selected => @user.institute_type }
+      %>
+      <% if @user.errors.present? && @user.errors[:institute_type].present? %>
+        <span class='ui-error'><%= @user.errors[:institute_type].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :institute_type, value: "0" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :institute_type %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%=
-    form.select :institute_type,
-      User::INSTITUTE_TYPE.each_with_index.map { |name,i| [name, i] },
-      { include_blank: true, :selected => @user.institute_type }
-    %>
-    <% if @user.errors.present? && @user.errors[:institute_type].present? %>
-      <span class='ui-error'><%= @user.errors[:institute_type].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("institute_name_loc") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :institute_name_loc %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
+      <%= form.text_field :institute_name_loc %>
+      <% if @user.errors.present? && @user.errors[:institute_name_loc].present? %>
+        <span class='ui-error'><%= @user.errors[:institute_name_loc].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :institute_name_loc, value: "institute_name_loc" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :institute_name_loc %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_field :institute_name_loc %>
-    <% if @user.errors.present? && @user.errors[:institute_name_loc].present? %>
-      <span class='ui-error'><%= @user.errors[:institute_name_loc].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("position_type") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :position_type %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :position_type %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%=
-    form.select :position_type,
-      User::POSITION_TYPE.each_with_index.map { |name,i| [name, i] },
-      { include_blank: true, :selected => @user.position_type }
-    %>
-    <% if @user.errors.present? && @user.errors[:position_type].present? %>
-      <span class='ui-error'><%= @user.errors[:position_type].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+      <% pos_types = @treeTypeRec.user_form_options(@versionRec.code, 'position_type', @locale_code) || User::POSITION_TYPE %>
+      <%=
+      form.select :position_type,
+        pos_types.each_with_index.map { |name,i| [name, i] },
+        { include_blank: true, :selected => @user.position_type }
+      %>
+      <% if @user.errors.present? && @user.errors[:position_type].present? %>
+        <span class='ui-error'><%= @user.errors[:position_type].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :position_type, value: "0" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :subject1 %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_field :subject1 %>
-    <% if @user.errors.present? && @user.errors[:subject1].present? %>
-      <span class='ui-error'><%= @user.errors[:subject1].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("subject1") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :subject1 %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
+      <%=
+      form.select :subject1,
+        Subject.where(tree_type_id: @treeTypeRec.id).map { |rec| [rec.get_name(@locale_code), rec.code] },
+        { include_blank: true, :selected => @user.subject1 }
+      %>
+      <% if @user.errors.present? && @user.errors[:subject1].present? %>
+        <span class='ui-error'><%= @user.errors[:subject1].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :subject1, value: "subj1" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :subject2 %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>&nbsp;</span>
-    <%= form.text_field :subject2 %>
-    <% if @user.errors.present? && @user.errors[:subject2].present? %>
-      <span class='ui-error'><%= @user.errors[:subject2].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("subject2") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :subject2 %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
+      <%=
+      form.select :subject2,
+        Subject.where(tree_type_id: @treeTypeRec.id).map { |rec| [rec.get_name(@locale_code), rec.code] },
+        { include_blank: true, :selected => @user.subject2 }
+      %>
+      <% if @user.errors.present? && @user.errors[:subject2].present? %>
+        <span class='ui-error'><%= @user.errors[:subject2].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :gender %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%=
-    form.select :gender,
-      User::GENDER.each_with_index.map { |name,i| [name, i] },
-      { include_blank: true, :selected => @user.gender }
-    %>
-    <% if @user.errors.present? && @user.errors[:gender].present? %>
-      <span class='ui-error'><%= @user.errors[:gender].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("gender") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :gender %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <% gender = @treeTypeRec.user_form_options(@versionRec.code, 'gender', @locale_code) || User::GENDER %>
+      <%=
+      form.select :gender,
+        gender.each_with_index.map { |name,i| [name, i] },
+        { include_blank: true, :selected => @user.gender }
+      %>
+      <% if @user.errors.present? && @user.errors[:gender].present? %>
+        <span class='ui-error'><%= @user.errors[:gender].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :gender, value: "1" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :education_level %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%=
-    form.select :education_level,
-      User::EDUCATION_LEVEL.each_with_index.map { |name,i| [name, i] },
-      { include_blank: true, :selected => @user.education_level }
-    %>
-    <% if @user.errors.present? && @user.errors[:education_level].present? %>
-      <span class='ui-error'><%= @user.errors[:education_level].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("education_level") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :education_level %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <% edu_level = @treeTypeRec.user_form_options(@versionRec.code, 'education_level', @locale_code) || User::EDUCATION_LEVEL %>
+      <%=
+      form.select :education_level,
+        edu_level.each_with_index.map { |name,i| [name, i] },
+        { include_blank: true, :selected => @user.education_level }
+      %>
+      <% if @user.errors.present? && @user.errors[:education_level].present? %>
+        <span class='ui-error'><%= @user.errors[:education_level].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :education_level, value: "0" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :work_phone %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>&nbsp;</span>
-    <%= form.text_field :work_phone %>
-    <% if @user.errors.present? && @user.errors[:work_phone].present? %>
-      <span class='ui-error'><%= @user.errors[:work_phone].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("work_phone") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :work_phone %>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <span class='required'>&nbsp;</span>
+      <%= form.text_field :work_phone %>
+      <% if @user.errors.present? && @user.errors[:work_phone].present? %>
+        <span class='ui-error'><%= @user.errors[:work_phone].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :work_phone, value: "work_phone" %>
+<% end %>
 
-<div class="row">
-  <span class='col col-md-4 label-col'>
-    <%= form.label :work_address %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.text_area :work_address, cols: 40, rows: 3 %>
-    <% if @user.errors.present? && @user.errors[:work_address].present? %>
-      <span class='ui-error'><%= @user.errors[:work_address].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("work_address") %>
+  <div class="row">
+    <span class='col col-md-4 label-col'>
+      <%= form.label :work_address %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <%= form.text_area :work_address, cols: 40, rows: 3 %>
+      <% if @user.errors.present? && @user.errors[:work_address].present? %>
+        <span class='ui-error'><%= @user.errors[:work_address].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :work_address, value: "work_address" %>
+<% end %>
 
-<div class='row'>
-  <span class='col col-md-4 label-col'>
-    <%= form.label :terms_accepted %>
-  </span>
-  <span class='col col-md-8 input-col'>
-    <span class='required'>*</span>
-    <%= form.check_box :terms_accepted %>
-    <% if @user.errors.present? && @user.errors[:terms_accepted].present? %>
-      <span class='ui-error'><%= @user.errors[:terms_accepted].join(', ') %></span>
-    <% end %>
-  </span>
-</div>
+<% if form_config.length == 0 || form_config.include?("terms_accepted") %>
+  <div class='row'>
+    <span class='col col-md-4 label-col'>
+      <%= form.label :terms_accepted %>
+      <span class='required'>*</span>
+    </span>
+    <span class='col col-md-8 input-col'>
+      <%= form.check_box :terms_accepted %>
+      <% if @user.errors.present? && @user.errors[:terms_accepted].present? %>
+        <span class='ui-error'><%= @user.errors[:terms_accepted].join(', ') %></span>
+      <% end %>
+    </span>
+  </div>
+<% else %>
+  <%= form.hidden_field :terms_accepted, value: true %>
+<% end %>
+
+<% if form_config.length == 0 || form_config.include?("role_public") %>
+  <%= form.hidden_field :role_public, value: 1 if !current_user.present? %>
+<% end %>

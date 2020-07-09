@@ -1,6 +1,9 @@
 class Outcome < BaseRec
 
   has_one :tree
+  has_many :resource_joins, as: :resourceable
+  has_many :user_resources, as: :user_resourceable
+  has_many :resources, through: :resource_joins
 
   # Do not change existing sequence of
   # RESOURCES_TYPES.
@@ -21,7 +24,7 @@ class Outcome < BaseRec
     "sec_topic",
     "sec_code",
     "cog_demand", #SEC Cognitive Demand
-    "lp_ss_id", #Lesson Plan (expect a Google Spreadsheet Id)
+    "lp_ss_id", #TO DO: change to lp_google_ss_id: Lesson Plan (expect a Google Spreadsheet Id)
     "review_comments" #WL Review Comments
   ]
 

@@ -138,6 +138,7 @@
       padding: 0;
       border-left: 1px solid black;
       border-right: 1px solid black;
+      &.list-group.maint-column {border:none;}
     }
 
     .sequence-header, .dimension-header {
@@ -355,11 +356,16 @@
 
     .connections-grid {
       display: grid;
-      grid-template-columns: 10% 10% 13% 67%;
+      width: 63%;
+      grid-template-columns: 16% 16% 12% 56%;
       /* margin-left: -15px;
       margin-right: -15px; */
       border-top: 1px solid black;
       border-right: 1px solid black;
+      &.connections-grid__diagram {
+        width: 37%;
+        grid-template-columns: 100%;
+      }
     }
     .connections-header {
       border-bottom: 1px solid black;

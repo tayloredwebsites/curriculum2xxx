@@ -1,0 +1,40 @@
+
+<%= render "devise/shared/logged_out_header" %>
+  <div id="loginBgTFV">
+      <div id="loginBoxTVF">
+      </div>
+      <div id="loginOverlayTFV">
+        <div id="Sign_in">
+          <span><%= t('nav_bar.signin.name') %></span>
+        </div>
+        <div id="You_need_to_sign_in_or_sign_up">
+          <div class=''>
+            <% if flash[:notice].present? %>
+              <span><%= flash[:notice] %></span>
+            <% end %>
+            <% if flash[:alert].present? %>
+              <span><%= flash[:alert] %></span>
+            <% end %>
+          </div>
+        </div>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <div id="Email" class="">
+              <%= f.label :email %>*<br />
+              <%= f.email_field :email, type: 'text', autofocus: true  %>
+            </div>
+
+            <div id="Password" class="field">
+              <%= f.label :password %>*<br />
+              <%= f.password_field :password, autocomplete: "off" %>
+            </div>
+
+            <div id="SIGN_IN" class="actions">
+              <%= f.submit t('nav_bar.signin.name') %>
+            </div>
+            <div id="devise_links">
+              <%= render "devise/shared/links" %>
+            </div>
+          <% end %>
+      </div>
+  </div>
+<%= render "devise/shared/logged_out_footer" %>

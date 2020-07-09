@@ -111,12 +111,11 @@ class TreeTreesController < ApplicationController
         :relationship => tree_tree_params[:relationship],
         :explanation_key => explanation_key
         )
-
        #reciprocal_explanation_key = @treeTypeRec.code + "." + @versionRec.code + "." + @referencee.subject.code + "." + @referencee.code + ".tree." + @referencer.id.to_s
       @reciprocal_tree_tree = TreeTree.new(
         :tree_referencer_id => tree_tree_params[:tree_referencee_id],
         :tree_referencee_id => tree_tree_params[:tree_referencer_id],
-        :relationship => TreeTree.reciprocal_relationship(:"#{tree_tree_params[:relationship]}"),
+        :relationship => TreeTree.reciprocal_relationship(tree_tree_params[:relationship]),
         :explanation_key => explanation_key
         )
 

@@ -8,6 +8,7 @@ ar_EG:
     title: "موقع المناهج"
     labels:
       all: "الكل"
+      alluvial: "مخطط رسوبي"
       save: "حفظ"
       cancel: "إلغاء"
       submit: "إرسال"
@@ -15,6 +16,8 @@ ar_EG:
       leave_edit_mode: "غادر وضع التحرير"
       deactivate: "إبطال"
       confirm_deactivate: "هل أنت متأكد من أنك تريد إلغاء تنشيط الاتصال بالعنصر التالي:\n%{item}"
+      confirm_deactivate_item: "هل أنت متأكد من أنك تريد إلغاء التنشيط:\n%{item}"
+      confirm_restore_item: "هل تريد استعادة %{item}؟"
       create: "خلق"
       create_item: "Create %{item}"
       subject: "موضوع"
@@ -40,7 +43,7 @@ ar_EG:
       code: "الشفرة"
       description: 'وصف'
       message: "رسالة"
-      gen_list: "إنشاء قائمة"
+      gen_list: "تبين"
       sector: "التحدي الكبير"
       upload_summary: 'تحميل تقرير ملخص'
       upload_new: 'إضافة وتحميل'
@@ -57,8 +60,9 @@ ar_EG:
       working_version: "العمل"
       final_version: "نهائي"
       connect_form_title: "حفظ الاتصال؟"
-      show_details: "اظهر التفاصيل"
+      show_details: "اظهر الخطوط"
       last_updated: "Last updated at: %{time}"
+      print: "طباعة"
     roles:
       name: 'الأدوار'
       admin:
@@ -70,6 +74,12 @@ ar_EG:
       public:
         abbrev: 'عامة'
         name: 'الوصول العام'
+      counselor:
+        abbrev: 'Couns.'
+        name: 'Counselor'
+      supervisor:
+        abbrev: 'Super.'
+        name: 'Supervisor'
     errors:
       too_many_matched_key: "الكثير من المباريات لـ %{key}"
       invalid_grade_band: "نطاق الدرجات غير صالح %{grade_band}"
@@ -98,6 +108,7 @@ ar_EG:
     home:
       name: "الصفحة الرئيسية"
       hover: "الصفحة الرئيسية STEM في مصر"
+    welcome: "!%{name} مرحبًا"
     curriculum:
       name: "شجرة المناهج"
       hover: "يعرض شجرة المناهج"
@@ -111,8 +122,8 @@ ar_EG:
       name: "التحرير"
       hover: "صفحة تحرير عناصر المناهج"
     connections:
-      name: "آخر"
-      hover: "اتصالات أخرى"
+      name: "الآراء"
+      hover: "الآراء"
     bigidea:
       name: "أفكار كبيرة"
       hover: "أفكار كبيرة"
@@ -174,8 +185,10 @@ ar_EG:
       locale: "لغة"
       key: "مفتاح"
       value: "القيمة"
+    add_etc: "%{str} وما إلى ذلك"
     errors:
       missing_translations_locale_code: "ترجمات مفقودة للغة: %{locale}، الرمز: %{code}"
+      missing_translation_for_item: "ترجمة مفقودة للعنصر"
       too_many_translations_locale_code: "ترجمات كثيرة جدًا للغة: %{locale} ، الرمز: %{code}"
       creating_translations_locale_code: "خطأ في إنشاء الترجمة للغة: %{locale} ، الرمز: %{code}"
       creating_translations_locale_code: "خطأ في تحديث الترجمة للغة: %{locale} ، الكود: %{code}"
@@ -211,7 +224,7 @@ ar_EG:
       related_sectors: 'التحديات ذات الصلة'
       how_sectors_related: 'كيف يرتبط التحدي الكبير'
       indicator_connections: 'اتصالات بتفسيرات أخرى:'
-      outcome_connections: 'اتصالات بـ %{result} أخرى:'
+      outcome_connections: 'اتصالات بـ %{outcome} أخرى:'
       relation: 'الإتصال'
       how_outcome_related: 'كيف يرتبط الإنجاز'
       relation_types:
@@ -277,6 +290,7 @@ ar_EG:
     nav:
       my_account: 'My Account'
       registrations: 'Registrations'
+      active_users: 'المستخدمين النشطين'
       all_users: 'All Users'
       change_pwd: 'Change Password'
     index:
@@ -304,9 +318,11 @@ ar_EG:
   activerecord:
     attributes:
       user:
-        role_public: "Public"
-        role_teacher: "Teacher"
-        role_admin: "Future Vision Curriculum Web Admin"
+        role_public: "عامة"
+        role_teacher: "مدرس"
+        role_admin: "مسؤول الويب"
+        role_counselor: "Counselor"
+        role_supervisor: "Supervisor"
         email: "E-Mail Address"
         password: "Password"
         password_confirmation: "Password Confirmation"
@@ -322,7 +338,7 @@ ar_EG:
         govt_level_val5: 'District (enter name below)'
         govt_level_name: 'Government Level Name'
         municipality: 'Municipality Name'
-        institute_type: 'Institutiion Type'
+        institute_type: 'Institution Type'
         institute_type_val0: 'Ministry'
         institute_type_val1: 'Pedagogical Institute (PI)'
         institute_type_val2: 'Faculty'

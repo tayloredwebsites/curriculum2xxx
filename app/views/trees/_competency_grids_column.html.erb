@@ -1,10 +1,10 @@
-<ul class="list-group maint-column">
+<ul class="list-group maint-column col-lg-7 col-auto">
   <li>
     <%= render partial: "maint_filter", locals: {col: "tree"} %>
   </li>
+  <li class="colorful-header colorful-header-0 indent-0"><%= @subjectByCode[@subject_code]? @subjectByCode[@subject_code][:name] : @subject_code %></li>
   <%
    @treeByParents.each do |tkey, codeh| %>
-    <li class="maint-header indent-0"><%= @translations[tkey] %></li>
     <% codeh.each do |code, h| %>
       <% if h[:outcome] %>
       <%
@@ -16,7 +16,7 @@
            }
          end
        %>
-      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %>" data-loid="<%= h[:id] %>">
+      <li id="<%= h[:subj_code] %>_lo_<%= h[:id] %>" class="maint-item indent-3 <%= h[:selectors_by_parent] %> list-group-item level-<%= h[:depth] - 1 %> sequence-item" data-loid="<%= h[:id] %>">
         <% if true %>
           <% h[:dimtrees].each do |dt|
              dim = dt.dimension
@@ -26,9 +26,9 @@
           end # h[:dimtrees].each do |dt|
           %>
           <div class="related-items-table">
-            <div class="row">
+            <div class="row hide-children">
               <!-- Build competency column -->
-              <div class="col-lg-2 col-11 col-sm-11 comp-col">
+              <div class="col-11 col-sm-11 comp-col">
                 <a href="<%= tree_path(h[:id])%>" title="<%= h[:text] %>"><%= h[:depth_name] %>:
                 <strong><em><%= h[:formatted_code] %></em></strong>
                 </a>
@@ -84,7 +84,7 @@
       <!-- TO DO: Find a different workaround for hiding indicator-level items -->
       <% elsif h[:depth] > @treeTypeRec.outcome_depth+1 %>
       <% else %>
-        <li class="maint-sub-header indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %>">
+        <li class="indent-<%= h[:depth]-1 %> <%= h[:selectors_by_parent] %> level-<%= h[:depth] - 1 %> colorful-header colorful-header-<%= h[:depth] %> sequence-item">
           <a class="" onclick="toggle_visibility('.child-of-<%= code.split(".").join("-") %>', '#trigger-<%= code.split(".").join("-") %>')">
             <i id="trigger-<%= code.split(".").join("-") %>" class="fa fa-compress pull-left option-selected link-blue accordion" title="collapse"></i>
           </a>

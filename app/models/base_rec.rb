@@ -48,6 +48,28 @@ class BaseRec < ActiveRecord::Base
     'ear', #Earth Science
     'geo', #Geology
     'tech', #Technology
+    'adv', #advisory
+    'ara', #Arabic
+    'art', #Art
+    'soc',
+  ]
+  SUBJECT_COLORS = [
+    '#E5FFDE',
+    '#009FFD',
+    '#FCAF58',
+    '#DBCBD8',
+    '#DBCBD8',
+    '#564787',
+    '#564787',
+    '#F26DF9',
+    '#F5EE9E',
+    '#A2E8DD',
+    '#A85751',
+    '#2CA58D',
+    '#9DC5BB',
+    '#414535',
+    '#EDD2E0',
+    '#6F9CEB'
   ]
 
   # BASE_PRACTICES = [
@@ -65,6 +87,10 @@ class BaseRec < ActiveRecord::Base
 
   DIM_CHANGE_LOG_PATH = "#{Rails.root}/log/dimension_changes.out"
 
+  #To Do: add comment
+  # When/why
+  # generic
+  # what happens when returned
   def self.process_resource_content(resource_type, resource_name, content_text)
     convert_id_to_google_folder_url = [
       'depth_0_materials',
@@ -84,5 +110,8 @@ class BaseRec < ActiveRecord::Base
     return ret
   end
 
+  def self.subject_color(subject_code)
+    return SUBJECT_COLORS[BASE_SUBJECTS.index(subject_code)]
+  end
 
 end
