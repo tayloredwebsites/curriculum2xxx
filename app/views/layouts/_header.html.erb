@@ -71,6 +71,17 @@
               </li>
             <% end %>
           <% end %>
+          <% if lc == 'es'%>
+            <% if @locale_code == 'es' %>
+              <li class='cur-locale'>
+                <span>Español</span>
+              </li>
+            <% else %>
+              <li class='locale-opt'>
+                <a href='/users/lang/es<%= "?dim_type=#{@dim_type}" if @dim_type %>'>Español</a>
+              </li>
+            <% end %>
+          <% end %>
         <% end %>
       </ul>
     </div>

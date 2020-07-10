@@ -29,7 +29,7 @@ namespace :seed_haza_1 do
     myTreeTypeValues = {
       code: @curriculumCode,
       hierarchy_codes: 'grade,unit,subunit,comp',
-      valid_locales: BaseRec::LOCALE_EN,
+      valid_locales: BaseRec::LOCALE_EN + "," + BaseRec::LOCALE_ES,
       sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
       curriculum_title_key: 'curriculum.haza.title', # 'Mektebim STEM Curriculum'
@@ -87,7 +87,10 @@ namespace :seed_haza_1 do
     throw "ERROR: Missing haza tree type" if treeTypes.count < 1
     @tt = treeTypes.first
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'HAZLETON COMPETENCE-BASED STEM CURRICULUM')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'HAZLETON COMPETENCE-BASED CHANGE MAKER STEAM CURRICULUM')
+    throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, 'app.title', '
+CAMBIADOR BASADO EN COMPETENCIAS HAZLETON STEAM PLAN DE ESTUDIOS')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
 
@@ -108,7 +111,7 @@ namespace :seed_haza_1 do
     throw "ERROR updating sector.set.fut.sect.name: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for curriculum_title_key
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.haza.title', 'Hazleton STEM Curriculum')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.haza.title', 'Hazleton STEAM Curriculum')
     throw "ERROR updating curriculum.haza.title translation: #{message}" if status == BaseRec::REC_ERROR
 
     puts "Curriculum (Tree Type) is created for haza "
@@ -120,7 +123,12 @@ namespace :seed_haza_1 do
   desc "load up the locales (created in seeds.rb seed file)"
   task load_locales: :environment do
     @loc_en = Locale.where(code: 'en').first
-    puts "Locales: #{@loc_en.code}: #{@loc_en.name}"
+    @loc_es = Locale.where(code: BaseRec::LOCALE_ES).first
+    @loc_es = Locale.create(
+      code: 'es',
+      name: 'Español'
+      ) if @loc_es.nil?
+    puts "Locales: #{@loc_en.code}: #{@loc_en.name}, #{@loc_es.code}: #{@loc_es.name}"
   end #load_locales
 
 

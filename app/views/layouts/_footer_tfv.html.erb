@@ -2,7 +2,7 @@
 <div class="margin-top padding-top">
   <div id="footerTFV">
     <div id="footerTitle"><%= @appTitle %></div>
-    <div class="generic-grid generic-grid--cols-4">
+    <div class="generic-grid generic-grid--cols-<%= tfv_links?(@treeTypeRec.code) ? 4 : 3 %>">
       <div class="">
         <div class="footerTFV__col-header">
           <%= t('footer.contact_us') %>
@@ -28,17 +28,19 @@
           <%= t('footer.terms.cookie') %>
         </div>
       </div>
-      <div class="">
-        <div class="footerTFV__col-header">
-          <%= t('footer.donor.header') %>
+      <% if tfv_links?(@treeTypeRec.code) %>
+        <div class="">
+          <div class="footerTFV__col-header">
+            <%= t('footer.donor.header') %>
+          </div>
+          <div class="footerTFV__col-box">
+            <%= tfv_links?(@treeTypeRec.code) ? t('footer.donor.desc') : t('footer.donor.pstem_desc').html_safe %>
+          </div>
+          <button>
+            <%= t('footer.donor.button') %>
+          </button>
         </div>
-        <div class="footerTFV__col-box">
-          <%= tfv_links?(@treeTypeRec.code) ? t('footer.donor.desc') : t('footer.donor.pstem_desc').html_safe %>
-        </div>
-        <button>
-          <%= t('footer.donor.button') %>
-        </button>
-      </div>
+      <% end %>
       <div>
         <div class="footerTFV__col-header">
           <%= t('footer.follow.header') %>

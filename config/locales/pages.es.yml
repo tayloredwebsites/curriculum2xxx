@@ -1,0 +1,398 @@
+
+es:
+  subjects:
+    Bio: "Biology"
+    Phy: "Physics"
+    Che: "Chemistry"
+    Mat: "Mathematics"
+  app:
+    title: "Curriculum Website"
+    labels:
+      all: "All"
+      alluvial: "Alluvial Diagram"
+      save: "Save"
+      cancel: "Cancel"
+      submit: "Submit"
+      edit: "Edit"
+      title: "Title"
+      leave_edit_mode: "Leave Edit Mode"
+      deactivate: "Deactivate"
+      confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
+      confirm_deactivate_item: "Are you sure you want to deactivate:\n%{item}"
+      confirm_restore_item: "Restore %{item}?"
+      create: "Create"
+      create_item: "Create %{item}"
+      subject: "Subject"
+      grade_band: "Grade"
+      min_grade: "Minimum Grade"
+      max_grade: "Maximum Grade"
+      grade_band_show: "Show Grade"
+      grade_band_num: "Grade %{num}"
+      show_indicators: "Show %{name}"
+      hide_indicators: "Hide %{name}"
+      action: "Action"
+      actions: "Actions"
+      language: "Language"
+      row: "Row Number"
+      row_num: "Row: %{num} - "
+      semester: "Semester"
+      area: "Unit"
+      component: "Chapter"
+      outcome: "Attainment"
+      outcomes: "Attainments"
+      indicator: "Explanation"
+      indicators: "Explanations"
+      comments: "Teacher Support"
+      code: "Code"
+      description: 'Description'
+      message: "Message"
+      gen_list: "Show"
+      sector: "Sector"
+      upload_summary: 'Uploads Summary Report'
+      upload_new: 'Add and Do Upload'
+      upload_file: "Upload File"
+      upload_status_errors: "Upload Status / Errors"
+      related_to_sectors: "Related to sectors: %{sectors}"
+      new_sector_relations: "Newly related sectors: %{sectors}"
+      future_vision: "Knowledge Based Education (KBE) Sectors"
+      sector_related_explain: "Sectors Related Explanation"
+      subject_related_explain: "Subjects Related Explanation"
+      explanation: "Reason for Relation"
+      sector_num: "Sector %{num}"
+      show: "Show"
+      working_version: "Working"
+      final_version: "Final"
+      connect_form_title: "Save Connection?"
+      show_details: "Show Grid"
+      last_updated: "Last updated at: %{time}"
+      print: "Print"
+    roles:
+      name: 'Roles'
+      admin:
+        abbrev: 'Admin.'
+        name: 'Administrator'
+      teacher:
+        abbrev: 'Teacher'
+        name: 'Teacher'
+      public:
+        abbrev: 'Public'
+        name: 'Public Access'
+      counselor:
+        abbrev: 'Couns.'
+        name: 'Counselor'
+      supervisor:
+        abbrev: 'Super.'
+        name: 'Supervisor'
+    errors:
+      too_many_matched_key: "Too many matches for %{key}"
+      invalid_grade_band: "Invalid grade band %{grade_band}"
+      invalid_code: "invalid code: %{code}"
+      invalid_indicator: "invalid explanation: %{indicator}"
+      skipped_code: "Warning - skipped this indicator"
+      unsaved_rec: "cannot update unsaved record"
+      missing_base_key: "cannot update translation without base key"
+      invalid_lang: "Invalid language %{lang}"
+      unauthorized: "You are not authorized to access requested page."
+      invalid_sheetID: "Row number does not match sheetID"
+      missing_req_field: "Row is missing required field"
+      missing_tree_type_record: "error - missing Tree Type Record"
+      missing_tree_type_code: "error - invalid Tree Type Code"
+      missing_version_record: "error - missing Version Record"
+      missing_version_code: "error - invalid Version Code"
+      max_subj_display_count: "A maximum of %{num} subjects can be displayed at once."
+    notice:
+      saved_relationship: "Saved relationship: %{item_type_1} [%{item_desc_1}] is related to the %{item_type_2} [%{item_desc_2}]"
+      saved_item: "Saved %{item_type}: %{item}"
+  home:
+    name: "Curriculum Home Page"
+    title: "Curriculum Home Page"
+    additional_ref: "Additional Resources"
+  nav_bar:
+    home:
+      name: "Home"
+      hover: "Mektebim STEM Home Page"
+    welcome: "Welcome, %{name}!"
+    curriculum:
+      name: "Curriculum"
+      hover: "Displays the Curriculum Tree"
+    sectors:
+      name: "Sectors"
+      hover: "Displays the Curriculum by Sectors"
+    relations:
+      name: "Connections"
+      hover: "Display the Connections between Curriculum Items"
+    maint:
+      name: "Editing"
+      hover: "Page for Editing of Curriculum Items"
+    connections:
+      name: "Views"
+      hover: "Views"
+    bigidea:
+      name: "Big Ideas"
+      hover: "Big Ideas"
+    miscon:
+      name: "Misconceptions"
+      hover: "Displays Misconceptions"
+    essq:
+      name: "Essential Questions"
+      hover: "Displays Essential Questions"
+    pract:
+      name: "Practices"
+      hover: "Displays Practices"
+    questions:
+      name: "Essential Questions"
+      hover: "Displays Essential Questions"
+    concepts:
+      name: "Concepts"
+      hover: "Displays Concepts"
+    competencies:
+      name: "Competencies"
+      hover: "Displays Competencies"
+    standards:
+      name: "Standards"
+      hover: "Displays Standards"
+    documents:
+      name: "Documents"
+      hover: "Documents Management for Administrators"
+    uploads:
+      name: "Uploads"
+      hover: "Curriculum Spreadsheet Uploads"
+    translations:
+      name: "Translations"
+      hover: "Translations Management for Administrators"
+    users:
+      name: "Users"
+      hover: "User Management"
+    my_account:
+      name: "My Account"
+      hover: "Change my account information"
+    signin:
+      name: "Sign In"
+      hover: "Sign in to Curriculum Web App"
+    signout:
+      name: "Sign Out"
+      hover: "Sign in to Curriculum Web App"
+  footer:
+    contact_us: "Contact Us"
+    unesco_address: "<strong>IBE - UNESCO</strong><br>15, Route des Morillons<br>1218 Le Grand-Saconnex Geneva,<br>Switzerland"
+    unesco_contact: "<strong>T.</strong> +41 22 917 78 00<br><strong>F.</strong> +41 22 917 78 01<br><strong>E.</strong> ibe.info@unesco.org"
+    pstem_address: "<strong>21PSTEM</strong><br>375 East Elm Street<br>Suite 215<br>Conshohocken, PA 19428"
+    pstem_contact: "<strong>T.</strong> 610.825.5644<br><strong>E. </strong>info@21pstem.org"
+    support: "<strong>Request help with this site:</strong><br>techinfo@21pstem.org"
+    navigate: "Navigate"
+    terms:
+      header: "Terms & Policies"
+      use: "Terms of Use"
+      cookie: "Cookie Policy"
+    donor:
+      header: "Become a Donor"
+      desc: "Do you want a world where every person has access to relevant, quality education, and lifelong learning? Donor contributions make it possible for the IBE to work towards this goal, by developing its programmes and providing technical support to Member States."
+      pstem_desc: "The 21st Century Partnership for STEM Education is a <strong>non-profit</strong> organization that works both nationally and internationally with governments, institutions of higher education, school districts and other educational entities to transform education, empower learners, and improve lives by advancing literacy and achievement in purpose driven science, technology, engineering and mathematics (STEM)"
+      button: "Donate"
+    follow:
+      header: "Follow Us"
+      fb: "Facebook"
+      tw: "Twitter"
+      yt: "Youtube"
+      fl: "Flickr"
+      rss: "RSS"
+    copyright: "<span>© 21PSTEM developed the app that hosts this curriculum</span>"
+  translations:
+    index:
+      name: "Translations Listing"
+    index_by_code:
+      name: "Translations Listing by Code"
+    edit:
+      name: "Edit Translation"
+    create:
+      name: "Create Translation"
+    labels:
+      save_translation: 'Save Translation'
+      listing: "Translation Listing"
+      listing_by_key: "Translation Listing by Key"
+      locale: "Locale"
+      key: "Key"
+      value: "Value"
+    add_etc: "%{str} & etc."
+    errors:
+      missing_translations_locale_code: "missing translations for locale: %{locale}, code: %{code}"
+      missing_translation_for_item: "missing translation for item"
+      too_many_translations_locale_code: "too many translations for locale: %{locale}, code: %{code}"
+      creating_translations_locale_code: "error creating translation for locale: %{locale}, code: %{code}"
+      creating_translations_locale_code: "error updating translation for locale: %{locale}, code: %{code}"
+      is_same_as_default: "Your new translation is the same as the default."
+      updated_key: "Translation for %{key} updated."
+      error_creating_code_val: "error creating translation #{code} to: #{val}"
+  trees:
+    index:
+      name: "Mektebim STEM Curriculum"
+      title: "Mektebim STEM Curriculum"
+    sequencing:
+      title: "Relations"
+      tooltip: "Click and drag to resequence this %{tree_depth_name}"
+    maint:
+      title: "Editing"
+    dimension:
+      textlabel: "%{dim_name} Text"
+    miscon:
+      title: "Misconceptions"
+      singular: "Misconception"
+    bigidea:
+      title: "Big Ideas"
+      singular: "Big Idea"
+      relates_to: "relates to"
+    show:
+      name: "Curriculum Detail Page"
+    edit:
+      tooltip: "Edit %{tree_depth_name}: %{tree_code}"
+    labels:
+      filter_by_subject_grade: "Filter by Subject & Grade"
+      future_vision: "Future Vision"
+      future_vision_hover: "Future Vision"
+      related_sectors: 'Related Sectors'
+      how_sectors_related: 'How Sector is Related'
+      indicator_connections: 'Connections to Other Explanations:'
+      outcome_connections: 'Connections to Other %{outcome}:'
+      relation: 'Connection'
+      how_outcome_related: 'How Attainment is Related'
+      relation_types:
+        applies: 'Applies to:'
+        depends: 'Depends on:'
+        akin: 'Connects to:'
+      current_subject: "This Subject"
+      bio: "Biology"
+      che: "Chemistry"
+      mat: "Mathematics"
+      phy: "Physics"
+      sci: "Science"
+      ear: "Earth, Space, & Environmental Science"
+      dimension_resources: "%{dim_name} Resources"
+      teacher_header: "Supporting Resources"
+      teacher_field_1: "Multi, inter or trans disciplinary Grand Challenges based projects"
+      teacher_field_2: "Rough Learning Progression - When to teach"
+      teacher_field_3: "Textbook and Resource Materials to Use in Class"
+      teacher_field_4: "Suggested Assessment Resources and Activities"
+      teacher_field_5: "Additional Background and Resource Materials for the Teacher"
+      teacher_field_6: "Goal behaviour (What students will do, Practical learning targets)"
+      duration_weeks_html: "<strong>Duration:</strong> %{weeks} weeks"
+      duration_weeks: "Duration in weeks"
+      hours_per_week_html: "<strong>Hours Per Week</strong>: %{hours} hours"
+      hours_per_week: "Hours per week"
+    errors:
+      missing_grade_in_tree: "error: missing grade in report tree."
+      missing_area_in_tree: "error: missing area in report tree."
+      missing_component_in_tree: "error: missing component in report tree."
+      missing_outcome_in_tree: "error: missing attainment in report tree."
+      tree_too_deep_id: "error: treeview depth > 4 at id: %{id}"
+      save_curriculum_code_error: "saving Curriculum code %{code} returned errors: "
+      too_many_match_subject_gb_code: "too many items match subject: %{subject}, grade band: %{gb}, code: %{code}"
+  tree_trees:
+      labels:
+        explanation: "Reason for Relation"
+  sectors:
+    index:
+      name: "Mektebim STEM Curriculum for Future Competencies"
+      title: "Mektebim STEM Curriculum for Future Competencies"
+    labels:
+      future_vision_filter: "Mektebim STEM Curriculum for Future Competencies"
+  uploads:
+    index:
+      name: "Uploads Listing"
+    upload:
+      name: "Upload Curriculum"
+      h2: "Spreadsheet file for:"
+    labels:
+      new_upload: "Create new Upload"
+      upload: "Upload"
+      status: "Status"
+      last_errors: "Errors from prior uploads"
+      uploaded: "Uploaded"
+      num_added_sector_of_numall: "%{num} relations added to "
+      saved_code: 'Saved code: %{code}'
+    errors:
+      invalid_sector_code_for_sector: "Invalid Future Vision code %{code} for Future Vision %{sector}"
+      no_matching_sector: "No matching Future Vision found for %{sector}"
+      exception_relating_sector_to_tree: "Exception occurred relating sector to tree: %{e}"
+      incorrect_filename: "Incorrect filename for this Upload, it should be %{filename}"
+    warnings:
+      already_completed: "The upload for  %{filename} has already been completed."
+  users:
+    nav:
+      my_account: 'My Account'
+      registrations: 'Registrations'
+      active_users: 'Active Users'
+      all_users: 'All Users'
+      change_pwd: 'Change Password'
+    index:
+      name: "Users Listing"
+      title: "Users Listing Page"
+    registrations:
+      name: 'Registrations'
+      label: 'User Registration Requests Page'
+    my_account:
+      name: 'My Account'
+      label: 'My Account Page'
+    edit:
+      name: 'Edit User'
+      label: 'Edit User Page'
+    labels:
+      signup_form: "Signup Information Form"
+      web_admin: 'Web Admin:'
+      teacher: 'Teacher:'
+      fill_signup_form: "Please fill out this form to continue the signup process."
+      req_teacher: "Teacher Request:"
+      public_user: "Registered Public User"
+    messages:
+      user_created_email: "user %{email} created."
+      user_updated_email: "user %{email} updated."
+  activerecord:
+    attributes:
+      user:
+        role_public: "Public"
+        role_teacher: "Teacher"
+        role_admin: "Web Admin"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password Confirmation"
+        current_password: "Current Password"
+        given_name: "First (Given) Name"
+        family_name: "Last (Family) Name"
+        govt_level: 'Government Level'
+        govt_level_val0: 'State'
+        govt_level_val1: 'Entity'
+        govt_level_val2: 'Federation of BiH'
+        govt_level_val3: 'Canton (enter name below)'
+        govt_level_val4: 'Republic of Srpska'
+        govt_level_val5: 'District (enter name below)'
+        govt_level_name: 'Government Level Name'
+        municipality: 'City Name'
+        institute_type: 'Institution Type'
+        institute_type_val0: 'Ministry'
+        institute_type_val1: 'Pedagogical Institute (PI)'
+        institute_type_val2: 'Faculty'
+        institute_type_val3: 'Secondary school'
+        institute_type_val4: 'Primary school'
+        institute_type_val5: 'Preschool education'
+        institute_type_val6: 'Other'
+        institute_name_loc: 'Institution Name'
+        position_type: 'Position Type'
+        position_type_val0: 'School management'
+        position_type_val1: 'Educational professional'
+        position_type_val2: 'University professor'
+        position_type_val3: 'Secondary school teacher'
+        position_type_val4: 'Primary school subject teacher'
+        position_type_val5: 'Upper grade'
+        position_type_val6: 'Lower grade'
+        position_type_val7: 'University student'
+        subject1: 'Subject Teaching'
+        subject2: 'Other Subject Teaching'
+        gender: 'Gender'
+        gender_val0: 'Male'
+        gender_val1: 'Female'
+        education_level: 'Education Level Attained'
+        education_level_val0: 'PhD'
+        education_level_val1: 'MA/MSc'
+        education_level_val2: 'BA/BSc'
+        work_phone: 'Work Phone'
+        work_address: 'Work Address'
+        terms_accepted: 'Terms and condition of use'
