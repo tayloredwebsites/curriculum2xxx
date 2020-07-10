@@ -19,7 +19,7 @@ class DbSeedTest < ActionDispatch::IntegrationTest
   test "confirm seed_eg_stem properly loads all tables" do
     assert_equal(2, Version.count)
     assert_equal(2, TreeType.count)
-    assert_equal(3, Locale.count)
+    assert_equal(4, Locale.count)
     @ttTFV = TreeType.where(:code => 'tfv').first
     @ttEgstemUniv = TreeType.where(:code => 'egstemuniv').first
     assert_equal(4, GradeBand.where(:tree_type_id => @ttEgstemUniv.id).count)
