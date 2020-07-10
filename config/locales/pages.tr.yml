@@ -100,6 +100,31 @@ tr:
     signout:
       name: "Oturumu Kapat"
       hover: "Web Sitesinden Çıkış Yap"
+  footer:
+    contact_us: "Contact Us"
+    unesco_address: "<strong>IBE - UNESCO</strong><br>15, Route des Morillons<br>1218 Le Grand-Saconnex Geneva,<br>Switzerland"
+    unesco_contact: "<strong>T.</strong> +41 22 917 78 00<br><strong>F.</strong> +41 22 917 78 01<br><strong>E.</strong> ibe.info@unesco.org"
+    pstem_address: "<strong>21PSTEM</strong><br>375 East Elm Street<br>Suite 215<br>Conshohocken, PA 19428"
+    pstem_contact: "<strong>T.</strong> 610.825.5644<br><strong>E.</strong>info@21pstem.org"
+    support: "<strong>Request help with this site:</strong><br>techinfo@21pstem.org"
+    navigate: "Navigate"
+    terms:
+      header: "Terms & Policies"
+      use: "Terms of Use"
+      cookie: "Cookie Policy"
+    donor:
+      header: "Become a Donor"
+      desc: "Do you want a world where every person has access to relevant, quality education, and lifelong learning? Donor contributions make it possible for the IBE to work towards this goal, by developing its programmes and providing technical support to Member States."
+      pstem_desc: "The 21st Century Partnership for STEM Education is a <strong>non-profit</strong> organization that works both nationally and internationally with governments, institutions of higher education, school districts and other educational entities to transform education, empower learners, and improve lives by advancing literacy and achievement in purpose driven science, technology, engineering and mathematics (STEM)"
+      button: "Donate"
+    follow:
+      header: "Follow Us"
+      fb: "Facebook"
+      tw: "Twitter"
+      yt: "Youtube"
+      fl: "Flickr"
+      rss: "RSS"
+    copyright: "<span>© 21PSTEM developed the app that hosts this curriculum</span>"
   trees:
     index:
       name: "Mektebim STEM Müfredatı"

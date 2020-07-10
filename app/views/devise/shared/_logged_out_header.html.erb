@@ -1,4 +1,4 @@
-<% if @treeTypeRec.code.downcase == 'tfv' %>
+<% if tfv_design?(@treeTypeRec.code) %>
 <% content_for(:page_class, 'tfv') %>
 <!-- First div (.tfv-page) closed in devise/shared/_logged_out_footer -->
 <div class="tfv-page">
@@ -9,7 +9,11 @@
     </div>
     <div class='flex-row nav-item justify-content-between navbar'>
       <div id="ibeunescoorg" class='nav-item'>
-        <a href="http://www.ibe.unesco.org/en">ibe.unesco.org</a>
+        <% if tfv_links?(@treeTypeRec.code) %>
+          <a href="http://www.ibe.unesco.org/en">ibe.unesco.org</a>
+        <% else %>
+          <a href="http://21pstem.org/">21pstem.org</a>
+        <% end %>
       </div>
       <div class="vl"></div>
       <select id='locale-select' class='nav-item'>

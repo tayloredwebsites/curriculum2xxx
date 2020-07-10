@@ -75,7 +75,7 @@ namespace :seed_haza_1 do
         #keys for the dropdown options.
       #_form_flag: role_rolename (e.g., role_admin,role_counselor,...)
       #ADD DROPDOWN TRANSLATIONS WITH TASK: user_form_translations
-      user_form_config:'given_name,family_name,govt_level_name,municipality,institute_type#6,institute_name_loc,position_type#9,subject1,subject2,gender,work_phone,role_admin,role_teacher,role_public',
+      user_form_config:'given_name,family_name,govt_level_name,municipality,institute_type#6,institute_name_loc,position_type#9,subject1,subject2,gender#3,work_phone,role_admin,role_teacher,role_public',
 
     }
     if myTreeTypes.count < 1
@@ -397,6 +397,9 @@ namespace :seed_haza_1 do
       {ix: 4, field: 'institute_type', en: 'University'},
       {ix: 5, field: 'institute_type', en: 'K-12 School'},
       {ix: 6, field: 'institute_type', en: 'Other'},
+      {ix: 1, field: 'gender', en: 'Male'},
+      {ix: 2, field: 'gender', en: 'Female'},
+      {ix: 3, field: 'gender', en: 'Other'},
     ]
 
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, @tt.user_form_label_key(@ver.code, "govt_level_name"), "Country")
