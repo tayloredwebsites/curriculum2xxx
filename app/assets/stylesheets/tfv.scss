@@ -10,7 +10,7 @@
       font-family: Averta;
       font-style: normal;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 14pt;
       color: rgba(0,21,68,1);
       letter-spacing: 0.5px;
     }
@@ -22,7 +22,7 @@
       font-family: Averta;
       font-style: normal;
       font-weight: normal;
-      font-size: 12px;
+      font-size: 14pt;
       color: rgba(0,21,68,1);
       margin: 0;
     padding: 0;
@@ -58,7 +58,7 @@
     font-family: Averta;
     font-style: normal;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20pt;
     color: rgba(0,21,68,1);
     letter-spacing: 0.2px;
   }
@@ -87,6 +87,7 @@
       margin: auto;
       border: 0;
       outline: 0;
+      font-size: 14pt;
       background: transparent !important;
       border-bottom: 1px solid rgb(91, 196, 241);
     }
@@ -112,7 +113,7 @@
       font-family: Lyon Display;
       font-style: normal;
       font-weight: lighter;
-      font-size: 52px;
+      font-size: 52pt;
       color: rgba(0,21,68,1);
       letter-spacing: 0.25px;
     }
@@ -128,7 +129,7 @@
       font-family: Averta;
       font-style: normal;
       font-weight: normal;
-      font-size: 12px;
+      font-size: 14px;
       color: rgba(91,196,241,1);
       letter-spacing: 0.3px;
     }
@@ -146,7 +147,7 @@
       font-family: Averta;
       font-style: normal;
       font-weight: normal;
-      font-size: 16px;
+      font-size: 16pt;
       color: rgba(0,21,68,1);
       letter-spacing: 0.1px;
     }
@@ -161,7 +162,7 @@
       font-family: Averta;
       font-style: normal;
       font-weight: normal;
-      font-size: 16px;
+      font-size: 16pt;
       color: rgba(0,21,68,1);
       letter-spacing: 0.1px;
     }
@@ -179,7 +180,7 @@
         font-family: Averta;
         font-style: normal;
         font-weight: normal;
-        font-size: 14px;
+        font-size: 14pt;
         color: rgba(0,21,68,1);
         letter-spacing: 0.1px;
         text-decoration: underline;
@@ -192,7 +193,7 @@
       font-family: Averta;
       font-style: normal;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 14pt;
       color: rgba(0,21,68,1);
       letter-spacing: 0.5px;
     }
@@ -217,23 +218,23 @@
       margin: 4em 0;
     }
     #footerTitle {
-      max-width: 220px;
+      max-width: 350px;
       color: rgba(91, 194, 241, 1);
-      line-height: 22px;
+      line-height: 100%;
       font-style: normal;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 20pt;
       letter-spacing: 0.2px;
     }
     .footerTFV__col-header {
-      font-size: 18px;
+      font-size: 18pt;
     }
     .footerTFV__col-box {
       display: inline-block;
       max-width: 90%;
       min-width: 50%;
       margin-top: 25px;
-      font-size: 14px;
+      font-size: 14pt;
       padding-bottom: 15px;
       border-bottom: 1px solid rgba(91,196,241,1);
       text-align: left;
@@ -263,7 +264,7 @@
     font-family: Averta;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 12pt;
     color: rgba(0,21,68,1);
     letter-spacing: 0.2px;
   }
@@ -337,7 +338,7 @@
         font-family: Averta;
         font-style: normal;
         font-weight: normal;
-        font-size: 12px;
+        font-size: 12pt;
         background-color: #eff9fd;
         margin: 0;
         margin-left: -10%;
@@ -350,7 +351,7 @@
         font-family: Averta;
         font-style: normal;
         font-weight: normal;
-        font-size: 14px;
+        font-size: 14pt;
         color: rgba(0,21,68,1);
         letter-spacing: 0.1px;
         text-decoration: underline;

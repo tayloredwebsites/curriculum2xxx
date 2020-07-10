@@ -1,4 +1,4 @@
-<% @display_tfv_version = @treeTypeRec.code.downcase == 'tfv'%>
+<% @display_tfv_version = tfv_design?(@treeTypeRec.code) %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,7 +10,7 @@
     <%= javascript_include_tag "https://cdn.plot.ly/plotly-1.54.3.min.js" %>
 
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <% if @treeTypeRec.code.downcase == 'tfv' %>
+    <% if @display_tfv_version %>
       <style>
         @font-face {
           font-family: 'Averta';
@@ -44,7 +44,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
-  <% if !current_user.present? && @treeTypeRec.code.downcase == 'tfv' %>
+  <% if !current_user.present? && @display_tfv_version %>
     <%= yield %>
   <% else %>
     <body>

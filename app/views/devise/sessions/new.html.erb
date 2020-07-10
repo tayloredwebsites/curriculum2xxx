@@ -1,4 +1,4 @@
-<% if @treeTypeRec.code.downcase == "tfv" %>
+<% if tfv_design?(@treeTypeRec.code) %>
   <%= render "devise/sessions/mektebim_new" %>
 <% else %>
   <div class="login-form small-right">

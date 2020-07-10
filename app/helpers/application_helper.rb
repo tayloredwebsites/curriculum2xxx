@@ -92,6 +92,13 @@ module ApplicationHelper
     return ret
   end
 
+  def tfv_design?(tt_code)
+    return ['tfv', 'haza'].include?(tt_code.downcase)
+  end
+  def tfv_links?(tt_code)
+    return ['tfv'].include?(tt_code.downcase)
+  end
+
   #################
   #Build data for tree/show partials
   #'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#7},<sector>,+treetree+,{resources#1#3#2}'

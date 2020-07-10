@@ -28,9 +28,14 @@ if Locale.count < 3
     code: 'ar_EG',
     name: 'العربية (مصر)'
   )
+  loc_es = Locale.create(
+    code: 'es',
+    name: 'Español'
+  )
+
 end
 puts "Locales: #{Locale.all.inspect}"
-throw "Invalid Locale Count" if Locale.count != 3
+throw "Invalid Locale Count" if Locale.count != 4
 
 # Titles of (Default) English Dimension Pages
 rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'trees.bigidea.title', 'Big Ideas')

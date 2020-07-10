@@ -2,16 +2,19 @@
 <div class="margin-top padding-top">
   <div id="footerTFV">
     <div id="footerTitle"><%= @appTitle %></div>
-    <div class="generic-grid generic-grid--cols-4">
+    <div class="generic-grid generic-grid--cols-<%= tfv_links?(@treeTypeRec.code) ? 4 : 3 %>">
       <div class="">
         <div class="footerTFV__col-header">
           <%= t('footer.contact_us') %>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.unesco_address').html_safe %>
+          <%= tfv_links?(@treeTypeRec.code) ? t('footer.unesco_address').html_safe : t('footer.pstem_address').html_safe %>
         </div>
         <div class="footerTFV__col-box">
-          <%= t('footer.unesco_contact').html_safe %>
+          <%= tfv_links?(@treeTypeRec.code) ? t('footer.unesco_contact').html_safe : t('footer.pstem_contact').html_safe %>
+        </div>
+        <div class="footerTFV__col-box">
+          <%= t('footer.support').html_safe %>
         </div>
       </div>
       <div class="">
@@ -25,35 +28,37 @@
           <%= t('footer.terms.cookie') %>
         </div>
       </div>
-      <div class="">
-        <div class="footerTFV__col-header">
-          <%= t('footer.donor.header') %>
+      <% if tfv_links?(@treeTypeRec.code) %>
+        <div class="">
+          <div class="footerTFV__col-header">
+            <%= t('footer.donor.header') %>
+          </div>
+          <div class="footerTFV__col-box">
+            <%= tfv_links?(@treeTypeRec.code) ? t('footer.donor.desc') : t('footer.donor.pstem_desc').html_safe %>
+          </div>
+          <button>
+            <%= t('footer.donor.button') %>
+          </button>
         </div>
-        <div class="footerTFV__col-box">
-          <%= t('footer.donor.desc') %>
-        </div>
-        <button>
-          <%= t('footer.donor.button') %>
-        </button>
-      </div>
+      <% end %>
       <div>
         <div class="footerTFV__col-header">
           <%= t('footer.follow.header') %>
         </div>
         <div class="footerTFV__col-box">
-          <a href="https://www.facebook.com/IBEUNESCO" title="<%= t('footer.follow.fb') %>" target="_blank"><%= t('footer.follow.fb') %></a>
+          <a href="<%= tfv_links?(@treeTypeRec.code) ? 'https://www.facebook.com/IBEUNESCO' : '#' %>" title="<%= t('footer.follow.fb') %>" target="_blank"><%= t('footer.follow.fb') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <a href="https://twitter.com/IBE_UNESCO" title="<%= t('footer.follow.tw') %>" target="_blank"><%= t('footer.follow.tw') %></a>
+          <a href="<%= tfv_links?(@treeTypeRec.code) ? 'https://twitter.com/IBE_UNESCO' : '#' %>" title="<%= t('footer.follow.tw') %>" target="_blank"><%= t('footer.follow.tw') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <a href="https://www.youtube.com/user/UnescoIBE" title="<%= t('footer.follow.yt') %>" target="_blank"><%= t('footer.follow.yt') %></a>
+          <a href="<%= tfv_links?(@treeTypeRec.code) ? 'https://www.youtube.com/user/UnescoIBE' : '#' %>" title="<%= t('footer.follow.yt') %>" target="_blank"><%= t('footer.follow.yt') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <a href="https://www.flickr.com/photos/ibe-unesco/" title="<%= t('footer.follow.fl') %>" target="_blank"><%= t('footer.follow.fl') %></a>
+          <a href="<%= tfv_links?(@treeTypeRec.code) ? 'https://www.flickr.com/photos/ibe-unesco/' : '#' %>" title="<%= t('footer.follow.fl') %>" target="_blank"><%= t('footer.follow.fl') %></a>
         </div>
         <div class="footerTFV__col-box">
-          <a href="http://www.ibe.unesco.org/en/news.rss" title="<%= t('footer.follow.rss') %>" target="_blank"><%= t('footer.follow.rss') %></a>
+          <a href="<%= tfv_links?(@treeTypeRec.code) ? 'http://www.ibe.unesco.org/en/news.rss' : '#' %>" title="<%= t('footer.follow.rss') %>" target="_blank"><%= t('footer.follow.rss') %></a>
         </div>
       </div>
     </div>

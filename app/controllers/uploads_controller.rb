@@ -286,7 +286,7 @@ class UploadsController < ApplicationController
 
         # confirm we have a valid grade before starting
         @gradeCodeIn = rowH['Grade'] || rowH['Proposed Grade']
-        @gradeCode = minTwoDigCode(@gradeCodeIn, ' ', '')
+        @gradeCode = minTwoDigCode(@gradeCodeIn, '', '')
         Rails.logger.debug("### @gradeCodeIn: #{@gradeCodeIn}, @gradeCode: #{@gradeCode}")
         Rails.logger.debug("### @treeTypeRec.id: #{@treeTypeRec.id}")
         @gradeBandRec = GradeBand.where(tree_type_id: @treeTypeRec.id, code: noLeadingZeros(@gradeCode)).first
