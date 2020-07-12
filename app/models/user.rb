@@ -102,7 +102,7 @@ class User < BaseRec
   }
 
   def set_default_role
-    if self.roles == '' && TreeType.where(:code => 'tfv').count > 0
+    if self.roles == '' && (TreeType.where(:code => 'tfv').count > 0 || TreeType.where(:code => 'haza').count > 0)
       self.roles = PUBLIC_ROLE
     end
   end

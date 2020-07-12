@@ -262,24 +262,24 @@ CAMBIADOR BASADO EN COMPETENCIAS HAZLETON STEAM PLAN DE ESTUDIOS')
       end
 
       # create english translation for subject name
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:engName])
-      throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, subj.get_versioned_name_key, subjHash[:engName])
+      throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
 
       # create english translation for subject abbreviation
-      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:abbr])
-      throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, subj.get_versioned_abbr_key, subjHash[:abbr])
+      throw "ERROR updating subject translation: #{message}" if status == BaseRec::REC_ERROR
 
       if subjHash[:inCurric]
 
         if subjHash[:locName].present?
           # create locale's translation for subject name
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:locName])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, "subject.#{@tt.code}.#{@ver.code}.#{key}.name", subjHash[:locName])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
         if subjHash[:locAbbr].present?
           # create locale's translation for subject abbreviation
-          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:locAbbr])
+          rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, "subject.#{@tt.code}.#{@ver.code}.#{key}.abbr", subjHash[:locAbbr])
           throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
         end
 
@@ -303,7 +303,7 @@ CAMBIADOR BASADO EN COMPETENCIAS HAZLETON STEAM PLAN DE ESTUDIOS')
 
     ##################################################################
     BaseRec::BASE_SUBJECTS.each do |subjCode|
-      if @subjectsHash[subjCode]
+      if @subjectsHash[:"#{subjCode}"]
         puts "set up library subject for #{subjCode}"
         # Create the English name and abbreviation for the Subjects in the Library.
         rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, Subject.get_default_abbr_key(subjCode), @subjectsHash[subjCode.to_sym][:abbr])
