@@ -87,10 +87,9 @@ namespace :seed_haza_1 do
     throw "ERROR: Missing haza tree type" if treeTypes.count < 1
     @tt = treeTypes.first
 
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'HAZLETON COMPETENCE-BASED CHANGE MAKER STEAM CURRICULUM')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'app.title', 'THE HAZLETON INTEGRATION PROJECT CHANGE MAKER STEAM CURRICULUM')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, 'app.title', '
-CAMBIADOR BASADO EN COMPETENCIAS HAZLETON STEAM PLAN DE ESTUDIOS')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, 'app.title', 'EL PROYECTO DE INTEGRACIÓN HAZLETON CAMBIO CURRICULAR DE VAPOR')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
 
