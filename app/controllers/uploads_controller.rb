@@ -476,8 +476,8 @@ class UploadsController < ApplicationController
             outRec.get_resource_key('explain'),
             explCommentsValue
           )
-          resource = Resource.find_or_create('explain', outRec.get_resource_key('explain'))
-          outRec.resources << resource
+          # resource = Resource.find_or_create('explain', outRec.get_resource_key('explain'))
+          # outRec.resources << resource
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -798,8 +798,8 @@ class UploadsController < ApplicationController
             resource_key,
             resource_text
           )
-          resource = Resource.find_or_create(type, resource_key)
-          rec.resources << resource if resource
+          # resource = Resource.find_or_create(type, resource_key)
+          # rec.resources << resource if resource
           rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
         end
       end
@@ -860,8 +860,8 @@ class UploadsController < ApplicationController
             resource_key,
             resource_text
           )
-          resource = Resource.find_or_create(type, resource_key)
-          outRec.resources << resource if resource
+          # resource = Resource.find_or_create(type, resource_key)
+          # outRec.resources << resource if resource
         end
       end
     else
@@ -1276,8 +1276,8 @@ class UploadsController < ApplicationController
             resource_key,
             resource_text
           )
-          resource = Resource.find_or_create(type, resource_key)
-          currentRec.resources << resource if resource
+          # resource = Resource.find_or_create(type, resource_key)
+          # currentRec.resources << resource if resource
           createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
         end
       end
