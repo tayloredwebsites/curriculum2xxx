@@ -17,7 +17,7 @@
       </div>
       <div class="vl"></div>
       <select id='locale-select' class='nav-item'>
-        <% Locale.all.each do |lc|
+        <% Locale.where(:code => @treeTypeRec.valid_locales.split(",")).each do |lc|
               lc_selected = lc.code == @locale_code
         %>
         http://localhost:3000/users/lang/tr
