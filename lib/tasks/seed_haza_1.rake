@@ -65,7 +65,7 @@ namespace :seed_haza_1 do
       # [item] - grid column, may have multiple connected items
       # {item} - grid column, single item
       grid_headers: 'grade,unit,subunit,lo,[essq],[bigidea],[pract],{explain},[miscon]',
-      dim_display: 'miscon#0#8#1#2#3#4#5#6#7,space#8', #To Do: update on server
+      dim_display: 'miscon#0#8#1#2#3#4#5#6#7,space#9', #To Do: update on server
             #user_form_config:
       #_form_other: list fields that should be included in the user form
         #dropdown selection fields should have the number of selection options
