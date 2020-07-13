@@ -28,7 +28,7 @@ namespace :seed_haza_1 do
     myTreeTypes = TreeType.where(code: @curriculumCode, version_id: @ver.id)
     myTreeTypeValues = {
       code: @curriculumCode,
-      hierarchy_codes: 'grade,unit,subunit,comp',
+      hierarchy_codes: 'grade,unit,subunit,lo',
       valid_locales: BaseRec::LOCALE_EN + "," + BaseRec::LOCALE_ES,
       sector_set_code: 'future,hide',
       sector_set_name_key: 'sector.set.future.name',
@@ -36,8 +36,8 @@ namespace :seed_haza_1 do
       outcome_depth: 3,
       version_id: @ver.id,
       working_status: true,
-      dim_codes: 'essq,bigidea,pract,miscon',
-      tree_code_format: 'subject,grade,unit,subunit,comp',
+      dim_codes: 'essq,bigidea,pract,miscon,space,occup',
+      tree_code_format: 'subject,grade,unit,subunit,lo',
       # To Do: Write documentation on obtaining translation keys
       # - for dimension translation use dim.get_dim_resource_key
       # NOTE: Please avoid underscores (_) and commas (,)
@@ -59,13 +59,13 @@ namespace :seed_haza_1 do
       #                  Outcome::RESOURCE_TYPES array.
       #   tableItem_tableItem_... - up to 4 columns table items allowed in one row.
       #   To Do: standards header on top RIGHT of the show page.
-      detail_headers: 'grade,unit,subunit,comp,[o#bigidea]_[o#essq],[o#pract],{o#6},[o#miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+      detail_headers: 'grade,unit,subunit,lo,[o#bigidea]_[o#essq],[o#pract],[o#space]_[o#occup],{o#6},[o#miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
       # Grid headers notation key:
       # item or (item) - Ignored for now
       # [item] - grid column, may have multiple connected items
       # {item} - grid column, single item
-      grid_headers: 'grade,unit,subunit,comp,[essq],[bigidea],[pract],{explain},[miscon]',
-      dim_display: 'miscon#0#8#1#2#3#4#5#6#7', #To Do: update on server
+      grid_headers: 'grade,unit,subunit,lo,[essq],[bigidea],[pract],{explain},[miscon]',
+      dim_display: 'miscon#0#8#1#2#3#4#5#6#7,space#8', #To Do: update on server
             #user_form_config:
       #_form_other: list fields that should be included in the user form
         #dropdown selection fields should have the number of selection options
@@ -102,7 +102,7 @@ namespace :seed_haza_1 do
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.haza.hierarchy.subunit', 'Sub-Unit')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
     STDOUT.puts 'Create translation record for Sub-Unit.'
-    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.haza.hierarchy.comp', 'Competence')
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.haza.hierarchy.lo', 'Learning Outcome')
     throw "ERROR updating sector translation: #{message}" if status == BaseRec::REC_ERROR
 
     #To Do - Enter translations for sector_set_name_key
@@ -207,6 +207,7 @@ namespace :seed_haza_1 do
     # put in translations for Grade Names
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'grades.haza.k.name', 'Kindergarten')
     throw "ERROR creating kindergarten translation: #{message}" if status == BaseRec::REC_ERROR
+
     [1..12].each do |g|
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, "grades.haza.#{g}.name", "Grade #{g}")
       throw "ERROR creating grade #{g} translation: #{message}" if status == BaseRec::REC_ERROR
@@ -324,6 +325,8 @@ namespace :seed_haza_1 do
       ['bigidea', 'Specific Big Idea', ''],
       ['pract', 'Associated Practice', ''],
       ['miscon', 'Misconception', ''],
+      ['space', 'Learning Space', ''],
+      ['occup', 'Occupation', ''],
     ]
     #TO DO: update on server
     dim_resource_types_arr = [
@@ -336,6 +339,7 @@ namespace :seed_haza_1 do
       ['Test Distractor Percent', ''],
       ['Link to Question Item Bank', ''],
       ['Third Category', ''],
+      ['Directions', ''],
     ]
     dim_translations_arr.each do |dim|
       dim_name_key = Dimension.get_dim_type_key(
