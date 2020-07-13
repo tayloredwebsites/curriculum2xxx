@@ -33,12 +33,12 @@
             <% sel_code = @subject_code %>
             <%- selectedStr = (s.code == sel_code) ? ' selected = "selected"' : '' %>
             <%= Rails.logger.debug(" +++ index match output: #{selectedStr}") %>
-            <option value=<%= s.id %><%= selectedStr %>><%= @translations[Subject.get_default_abbr_key(s.code)] %></option>
+            <option value=<%= s.id %><%= selectedStr %>><%= @translations[Subject.get_default_name_key(s.code)] %></option>
           <% end %>
         <% else # if col != "tree"
            Subject.where(tree_type_id: @treeTypeRec.id).pluck('code').each do |s| %>
             <% sel_code = @dim_filters[dim_key][:subj]
-               opt_name = @translations[Subject.get_default_abbr_key(s)]
+               opt_name = @translations[Subject.get_default_name_key(s)]
             %>
             <%- selectedStr = (s == sel_code) ? ' selected = "selected"' : '' %>
             <option value=<%= s %><%= selectedStr %>><%= opt_name %></option>
