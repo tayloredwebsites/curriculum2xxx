@@ -18,8 +18,9 @@
 <% if content
     is_xl_xs_grid = (@editMe && can?(:manage, content[:rec]))
 %>
-  <div class="dark-border--left <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
+  <div class="dark-border--left dark-border--top <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
     <div class="padding-left padding-right padding-top padding-bottom">
+      <% puts "line25 content: #{content.inspect}" %>
       <% if content[:detail_href] %>
       <!-- display content translation as a link to its own detail page -->
         <a href="<%= content[:detail_href] %>">
@@ -38,7 +39,7 @@
     <% end %>
   </div><!-- close outer div-->
 <% else %>
-   <div class="dark-border--left">
+   <div class="dark-border--left dark-border--top">
     <div class="padding-left padding-right padding-top padding-bottom"></div>
   </div><!-- close outer div-->
 <% end %>

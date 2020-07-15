@@ -24,14 +24,21 @@
   header = table[:headers_array][0]
   content = table[:content_array][0]
   user_can_edit = @editMe && can?(:manage, content[:rec])
+
+  #clone the content translation for this header, and check if it is just a tree code. if code_is_translation, printing  @translation[content[:transl_key]] is redundant
+  name_translation = html_safe_translations(@translations[content[:transl_key]]) if content[:transl_key]
+  code_is_transl = name_translation ? (name_translation.delete('0-9').length == 0) : false
 %>
 <div class="row">
   <div class='col col-6 text-left'>
     <%= link_to(fa_icon("edit"), content[:edit][:path], content[:edit][:options]) if content[:edit] && user_can_edit %>
     <%= html_safe_translations(header[:text]) if header[:text] %>
   	<strong>
-  		<%= "#{@translations[header[:transl_key]]}:" if header[:transl_key] %>
+  		<% subcode = content[:rec] && content[:rec][:code] ? " #{content[:rec].subCode}" : ""
+  			 subcode += ":" if !code_is_transl
+  		 %>
+  		<%= "#{@translations[header[:transl_key]]}#{subcode}" if header[:transl_key] %>
   	</strong>
-  	<%= html_safe_translations(@translations[content[:transl_key]]) if content[:transl_key] %>
+  	<%= html_safe_translations(@translations[content[:transl_key]]) if content[:transl_key] && !code_is_transl %>
   </div>
 </div>

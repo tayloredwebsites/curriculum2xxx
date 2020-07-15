@@ -153,13 +153,22 @@ class TreeTypeConfig < BaseRec
     }
     urls = Rails.application.routes.url_helpers
     no_content = false
-
+    dim_item_lookup = item_lookup ? item_lookup.split("&")[0] : item_lookup
+    if resource_code
+      #building data for Resources attached to any Resourceable.
+      #Could be attached directly to a Tree on the TREE DETAIL page,
+      #or could be attached to a Dimension/Outcome displayed on
+      #that page.
+      resource_title_key = Resource.get_type_key(treeTypeRec.code, versionRec.code, resource_code)
+      header[:resource_code] = resource_code
+      translKeys << resource_title_key
+    end
     if tree_depth
-      if resource_code && sourceData
-        header[:transl_key] = Resource.get_type_key(treeTypeRec.code, versionRec.code, resource_code)
+    #everything on the TREE_DETAIL_PAGE will have a tree depth
+      if (item_lookup == 'ResourceJoin') && resource_code && sourceData
+      #build data for Resource attached directly to a Tree
+        header[:transl_key] = resource_title_key
         # header[:add] = { path: "#" }
-        header[:resource_code] = resource_code
-        translKeys << header[:transl_key]
         sourceData[:resourcesByCode][resource_code].each do |r|
           content << {
               rec: sourceData[:joinByResourceId][r.id],
@@ -170,22 +179,45 @@ class TreeTypeConfig < BaseRec
           translKeys << r.name_key
         end #sourceData[:resourcesByCode][resource_code].each do |r|
         content << nil if (content.length == 0)
-      elsif sourceData && treeTypeRec.dim_codes.split(',').include?(item_lookup)
-            header[:transl_key] = Dimension.get_dim_type_key(item_lookup, treeTypeRec.code, versionRec.code)
-            # header[:add] = { path: "#" }
-            translKeys << header[:transl_key]
-            sourceData[:dimsByCode][item_lookup].each do |r|
+      elsif sourceData && treeTypeRec.dim_codes.split(',').include?(dim_item_lookup)
+      #build data for Dimensions attached to a tree
+      #also build data for Resources attached to a tree through the Dimensions
+        dim_type_name = Dimension.get_dim_type_key(dim_item_lookup, treeTypeRec.code, versionRec.code)
+        header[:transl_key] = resource_code ? resource_title_key : dim_type_name
+        header[:parent_transl_key] = dim_type_name if resource_code
+        # header[:add] = { path: "#" }
+        translKeys << header[:transl_key]
+        translKeys << header[:parent_transl_key] if resource_code
+        sourceData[:dimsByCode][dim_item_lookup].each do |r|
+          if resource_code
+          # build data for the Resources attached to the Dimensions,
+          # rather than the Dimensions themselves
+            r.resources.where(resource_code: resource_code).each do |res|
               content << {
-                  rec: sourceData[:dimTreeByDimId][r.id],
-                  transl_key: r.get_dim_name_key,
-                  delete: {
-                    path: urls.tree_path(id: treeRec.id, tree: { edit_type: 'dimtree', attr_id: sourceData[:dimTreeByDimId][r.id].id, active: false}, sector_tree: {active: false}),
-                    options: link_options[:confirm_patch]
-                  },
-                }
-              translKeys << r.get_dim_name_key
-            end #sourceData[:resourcesByCode][resource_code].each do |r|
-            content << nil if (content.length == 0)
+                rec: res,
+                transl_key: res.name_key
+              }
+              translKeys << res.name_key
+            end
+          else
+          # build Data for the Dimensions attached to the tree
+          # stored as sourceData[:rec]
+            content << {
+                rec: sourceData[:dimTreeByDimId][r.id],
+                transl_key: r.get_dim_name_key,
+                detail_href: item_lookup.split("&").length > 1 ? urls.dimension_path(id: r.id) : nil,
+                delete: {
+                  path: urls.tree_path(id: treeRec.id, tree: { edit_type: 'dimtree', attr_id: sourceData[:dimTreeByDimId][r.id].id, active: false}, sector_tree: {active: false}),
+                  options: link_options[:confirm_patch]
+                },
+              }
+            translKeys << r.get_dim_name_key
+          end
+        end #sourceData[:resourcesByCode][resource_code].each do |r|
+        # if no Dimensions or Dimension Resources are attached to
+        # the sourceData[:rec] tree, add nil to the content array as a
+        # spacer.
+        content << nil if (content.length == 0)
       elsif item_lookup && sourceData
         case item_lookup
         when WEEKS
@@ -219,6 +251,7 @@ class TreeTypeConfig < BaseRec
         tree_params = (sourceData[:rec].id == treeRec.id) ? { edit_type: 'outcome' } : { edit_type: 'tree', attr_id: sourceData[:rec].id }
         header[:transl_key] = treeTypeRec.hierarchy_name_key(hierarchies[tree_depth])
         content = {
+          rec: sourceData[:rec],
           transl_key: sourceData[:rec].name_key,
           edit: {
             path: urls.edit_tree_path(id: treeRec.id, tree: tree_params),
@@ -249,12 +282,11 @@ class TreeTypeConfig < BaseRec
     pageJSON = Hash.new { |h, k| h[k] =  {}}
     translKeys = []
     treesDataByDepth = treeRec ? self.tree_and_parents_data_by_depth(treeRec) : {}
-    puts "!!!!DATA: treesDataByDepth #{treesDataByDepth.inspect}"
     hierarchies = treeTypeRec.hierarchy_codes.split(",")
     configArray.each do |c|
       contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, treesDataByDepth[c.tree_depth], hierarchies, treeRec)
       translKeys.concat(keys) if !keys.nil?
-      self.add_to_pageJSON(pageJSON, c, contentArr, header, treeRec) if !contentArr.nil?
+      self.add_to_pageJSON(pageJSON, c, contentArr, header, treeRec) if !header.nil?
     end
     return [pageJSON, translKeys]
   end

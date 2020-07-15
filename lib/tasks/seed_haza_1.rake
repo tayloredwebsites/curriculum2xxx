@@ -545,10 +545,46 @@ namespace :seed_haza_1 do
         table_sequence: 7,
         col_sequence: 0,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: nil,
+        item_lookup: "ResourceJoin",
         resource_code: "explain", #teacher support/explanatory comments
         table_partial_name: "generic_table"
       },
+      #Misconceptions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 10,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "miscon&href",
+        resource_code: nil,
+        table_partial_name: "generic_table"
+      },
+      #Misconceptions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 10,
+        col_sequence: 1,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "miscon",
+        resource_code: "poss_source_miscon",
+        table_partial_name: "generic_table"
+      },
+      #Misconceptions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 10,
+        col_sequence: 2,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "miscon",
+        resource_code: "correct_understanding",
+        table_partial_name: "generic_table"
+      }
     ]
     tree_type_config.each do |config|
       configRec = TreeTypeConfig.where(
