@@ -51,10 +51,14 @@ body {
 .colorful-header {
   text-align: left;
   min-height: 40px;
+  font-weight: bold;
   &.colorful-header-0 { background-color: #d2ccf5; }
   &.colorful-header-1 { background-color: #ffedc1; }
   &.colorful-header-2 { background-color: #ffcaca; }
   &.colorful-header-3 { background-color: #c8e5ff; }
+  div {
+    min-height: 40px;
+  }
 }
 .sequence-item:not(.colorful-header) + .sequence-item.colorful-header {
  margin-top:4vh;

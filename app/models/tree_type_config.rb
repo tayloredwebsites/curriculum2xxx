@@ -125,6 +125,10 @@ class TreeTypeConfig < BaseRec
   HEADERS = "headers"
   TABLES = "tables"
 
+  #recognized values for item_lookup
+  WEEKS = "weeks"
+  HOURS = "hours"
+
   #TreeTypeConfig fields:
   # tree_type_id
   # version_id
@@ -148,41 +152,92 @@ class TreeTypeConfig < BaseRec
       popup: {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
     }
     urls = Rails.application.routes.url_helpers
+    no_content = false
 
     if tree_depth
-      if resource_code
+      if resource_code && sourceData
         header[:transl_key] = Resource.get_type_key(treeTypeRec.code, versionRec.code, resource_code)
-        header[:add] = { path: "#" }
+        # header[:add] = { path: "#" }
         header[:resource_code] = resource_code
+        translKeys << header[:transl_key]
         sourceData[:resourcesByCode][resource_code].each do |r|
-          name_key = r.name_key
           content << {
               rec: sourceData[:joinByResourceId][r.id],
-              transl_key: name_key,
-              delete: { path: "#" },
-              edit: { path: "#" }
+              transl_key: r.name_key,
+              # delete: { path: "#" },
+              edit: { path: urls.edit_resource_path(id: r.id), options: link_options[:popup] }
             }
-          translKeys << name_key
+          translKeys << r.name_key
         end #sourceData[:resourcesByCode][resource_code].each do |r|
-      elsif item_lookup
-      else
-        header_key = treeTypeRec.hierarchy_name_key(hierarchies[tree_depth])
-        content_key = sourceData[:rec].name_key
+        content << nil if (content.length == 0)
+      elsif sourceData && treeTypeRec.dim_codes.split(',').include?(item_lookup)
+            header[:transl_key] = Dimension.get_dim_type_key(item_lookup, treeTypeRec.code, versionRec.code)
+            # header[:add] = { path: "#" }
+            translKeys << header[:transl_key]
+            sourceData[:dimsByCode][item_lookup].each do |r|
+              content << {
+                  rec: sourceData[:dimTreeByDimId][r.id],
+                  transl_key: r.get_dim_name_key,
+                  delete: {
+                    path: urls.tree_path(id: treeRec.id, tree: { edit_type: 'dimtree', attr_id: sourceData[:dimTreeByDimId][r.id].id, active: false}, sector_tree: {active: false}),
+                    options: link_options[:confirm_patch]
+                  },
+                }
+              translKeys << r.get_dim_name_key
+            end #sourceData[:resourcesByCode][resource_code].each do |r|
+            content << nil if (content.length == 0)
+      elsif item_lookup && sourceData
+        case item_lookup
+        when WEEKS
+          if sourceData[:outcomeRec]
+            header[:text] = I18n.t('trees.labels.duration_weeks_html', weeks: sourceData[:outcomeRec].duration_weeks)
+            content = {
+              rec: sourceData[:outcomeRec],
+              edit: {
+                path: urls.edit_tree_path(id: treeRec.id, tree: { edit_type: WEEKS }),
+                options: link_options[:popup]
+              }
+            }
+          else
+            no_content = true
+          end
+        when 'hours'
+          if sourceData[:outcomeRec]
+            header[:text] = I18n.t('trees.labels.hours_per_week_html', hours: sourceData[:outcomeRec].hours_per_week)
+            content = {
+              rec: sourceData[:outcomeRec],
+              edit: {
+                path: urls.edit_tree_path(id: treeRec.id, tree: { edit_type: HOURS }),
+                options: link_options[:popup]
+              }
+            }
+          else
+            no_content = true
+          end
+        end
+      elsif sourceData
         tree_params = (sourceData[:rec].id == treeRec.id) ? { edit_type: 'outcome' } : { edit_type: 'tree', attr_id: sourceData[:rec].id }
-        header[:transl_key] = header_key
+        header[:transl_key] = treeTypeRec.hierarchy_name_key(hierarchies[tree_depth])
         content = {
-          transl_key: content_key,
+          transl_key: sourceData[:rec].name_key,
           edit: {
             path: urls.edit_tree_path(id: treeRec.id, tree: tree_params),
             options: link_options[:popup]
           }
         }
-        translKeys << header_key
-        translKeys << content_key
+        translKeys << header[:transl_key]
+        translKeys << content[:transl_key]
+      else
+      # no sourceData means there is no parent tree at this depth
+      # e.g., may be skipping an optional sub-unit
+      no_content = true
       end #if resource_code or item_lookup or else
     end #if tree_depth && resource_code
-
-    return [content, header, translKeys]
+    if no_content
+      return [nil, nil, nil]
+    else
+      return [content, header, translKeys]
+    end
   end
 
 
@@ -194,11 +249,12 @@ class TreeTypeConfig < BaseRec
     pageJSON = Hash.new { |h, k| h[k] =  {}}
     translKeys = []
     treesDataByDepth = treeRec ? self.tree_and_parents_data_by_depth(treeRec) : {}
+    puts "!!!!DATA: treesDataByDepth #{treesDataByDepth.inspect}"
     hierarchies = treeTypeRec.hierarchy_codes.split(",")
     configArray.each do |c|
       contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, treesDataByDepth[c.tree_depth], hierarchies, treeRec)
-      translKeys.concat(keys)
-      self.add_to_pageJSON(pageJSON, c, contentArr, header, treeRec)
+      translKeys.concat(keys) if !keys.nil?
+      self.add_to_pageJSON(pageJSON, c, contentArr, header, treeRec) if !contentArr.nil?
     end
     return [pageJSON, translKeys]
   end
@@ -223,7 +279,7 @@ class TreeTypeConfig < BaseRec
     end
 
     def self.is_table_expandable?(config)
-      return (config.config_div_name == 'headers' && config.table_partial_name == 'generic_table')
+      return (config.config_div_name == HEADERS && config.table_partial_name == 'generic_table')
     end
 
     def self.tree_and_parents_data_by_depth(treeRec)
@@ -248,10 +304,11 @@ class TreeTypeConfig < BaseRec
             treeTrees = TreeTree.where(tree_referencer_id: t.id)
             treeTrees.map { |tt| temp[:tTreeByReferenceeId][tt.tree_referencee_id] = tt }
             temp[:treeReferenceesAssoc] = Tree.where(id: treeTrees.pluck('tree_referencee_id')) if (treeTrees.count > 0)
+            temp[:outcomeRec] = t.outcome
           end
-          t.dimensions.map { |d| temp[:dimsByCode][d.dim_code] << d } if temp[:dimTreesByDimId].present?
-          t.resources.map { |r| temp[:resourcesByCode][r.resource_code] << r } if temp[:joinsByResourceId].present?
-          temp[:sectorTreesAssoc] = t.sectors if temp[:sectTreesBySectId].present?
+          t.dimensions.map { |d| temp[:dimsByCode][d.dim_code] << d } if temp[:dimTreeByDimId].present?
+          t.resources.map { |r| temp[:resourcesByCode][r.resource_code] << r } if temp[:joinByResourceId].present?
+          temp[:sectorTreesAssoc] = t.sectors if temp[:sectTreeBySectId].present?
 
           treesByDepth[t[:depth]] = temp
         end

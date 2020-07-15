@@ -355,10 +355,10 @@ namespace :seed_haza_1 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
     dim_resource_types_arr.each_with_index do |resource, i|
-      resource_name_key = Dimension.get_resource_key(
-        Dimension::RESOURCE_TYPES[i],
+      resource_name_key = Resource.get_type_key(
         @tt.code,
-        @ver.code
+        @ver.code,
+        Dimension::RESOURCE_TYPES[i],
       )
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
@@ -381,10 +381,10 @@ namespace :seed_haza_1 do
     ]
 
     outc_resource_types_arr.each_with_index do |resource, i|
-      resource_name_key = Outcome.get_resource_key(
-        Outcome::RESOURCE_TYPES[i],
+      resource_name_key = Resource.get_type_key(
         @tt.code,
-        @ver.code
+        @ver.code,
+        Outcome::RESOURCE_TYPES[i],
       )
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
@@ -443,22 +443,106 @@ namespace :seed_haza_1 do
   #  }
     #grade,unit,subunit,lo,[o#bigidea]_[o#essq],[o#pract],[o#space]_[o#occup],{o#6},[o#miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
     tree_type_config = [
+      #grade header
       { tree_type_id: @tt.id,
         version_id: @ver.id,
         page_name: TreeTypeConfig::TREE_DETAIL_NAME,
         config_div_name: TreeTypeConfig::HEADERS,
         table_sequence: 0,
         col_sequence: 0,
+        tree_depth: 0,
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #unit header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 1,
+        col_sequence: 0,
+        tree_depth: 1,
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #subunit header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 2,
+        col_sequence: 0,
+        tree_depth: 2,
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #Learning Outcome header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 3,
+        col_sequence: 0,
         tree_depth: @tt[:outcome_depth],
         item_lookup: nil,
         resource_code: nil,
         table_partial_name: "simple_header"
       },
+      #duration weeks header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 4,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: TreeTypeConfig::WEEKS,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #Hours per week header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 5,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: TreeTypeConfig::HOURS,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #Big Idea & Essential Questions Table
       { tree_type_id: @tt.id,
         version_id: @ver.id,
         page_name: TreeTypeConfig::TREE_DETAIL_NAME,
         config_div_name: TreeTypeConfig::TABLES,
-        table_sequence: 1,
+        table_sequence: 6,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "bigidea",
+        table_partial_name: "generic_table"
+      },
+      #Big Idea & Essential Questions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 6,
+        col_sequence: 1,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "essq",
+        table_partial_name: "generic_table"
+      },
+      #Teacher Support Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 7,
         col_sequence: 0,
         tree_depth: @tt[:outcome_depth],
         item_lookup: nil,
@@ -471,7 +555,7 @@ namespace :seed_haza_1 do
           tree_type_id: config[:tree_type_id],
           version_id: config[:version_id],
           page_name: config[:page_name],
-          config_div_name: config[:config_div_name],
+          # config_div_name: config[:config_div_name],
           tree_depth: config[:tree_depth],
           item_lookup: config[:item_lookup],
           resource_code: config[:resource_code],

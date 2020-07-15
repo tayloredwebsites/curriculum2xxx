@@ -1,0 +1,21 @@
+<div class="modal-header">
+   <h3 id="myModalLabel"><%= @resource_type %></h3>
+</div>
+<div class="modal-body">
+
+  <%= form_for(@resource, remote: true, data: { type: 'script' }) do |f| %>
+    <div class="hidden_fields">
+      <%= f.hidden_field :resource_id, name: 'resource[id]', value: @resource.id %>
+      <%= f.hidden_field :translation_id, name: 'translation[id]', value: @translation.id %>
+    </div>
+    <!--feilds for editing the Outcome and Indicator text-->
+  	<fieldset>
+    	<%= f.cktext_area :translation_value, name: 'translation[value]', id: 'translation_value', style: {className: "pull-left"}, value: @translation.value, ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'}  %>
+    </fieldset>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary">Save changes</button>
+    </div>
+  <% end %>
+
+</div>

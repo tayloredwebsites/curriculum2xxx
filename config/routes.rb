@@ -67,6 +67,12 @@ scope "(:locale)", locale: /tr|en|ar_EG|es/ do
     end
   end
 
+  resources :resources,
+    only: [:edit, :update] do
+    collection do
+    end
+  end
+
 
   devise_for :users
   devise_scope :user do
