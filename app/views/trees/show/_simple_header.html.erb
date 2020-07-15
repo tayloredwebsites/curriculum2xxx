@@ -23,12 +23,12 @@
 <%
   header = table[:headers_array][0]
   content = table[:content_array][0]
-  user_can_edit = @editMe && can? :manage, content[:rec]
+  user_can_edit = @editMe && can?(:manage, content[:rec])
 %>
 <div class="row">
   <div class='col col-6 text-left'>
   	<strong>
-  		<%= @translations[content[:label_key]] %>
+  		<%= @translations[header[:transl_key]] %>:
   	</strong>
   	<%= html_safe_translations(@translations[content[:transl_key]]) %>
   </div>

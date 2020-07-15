@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200702021329) do
+ActiveRecord::Schema.define(version: 20200714223753) do
 
   create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "lesson_plan_id", null: false
@@ -125,7 +125,6 @@ ActiveRecord::Schema.define(version: 20200702021329) do
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.string "base_key", default: "", null: false
     t.string "resource_code", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -188,6 +187,23 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.boolean "active", default: true
     t.index ["tree_referencee_id"], name: "index_tree_trees_on_tree_referencee_id"
     t.index ["tree_referencer_id"], name: "index_tree_trees_on_tree_referencer_id"
+  end
+
+  create_table "tree_type_configs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "tree_type_id"
+    t.bigint "version_id"
+    t.string "page_name"
+    t.string "config_div_name"
+    t.integer "table_sequence"
+    t.integer "col_sequence"
+    t.integer "tree_depth"
+    t.string "item_lookup"
+    t.string "resource_code"
+    t.string "table_partial_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tree_type_id"], name: "index_tree_type_configs_on_tree_type_id"
+    t.index ["version_id"], name: "index_tree_type_configs_on_version_id"
   end
 
   create_table "tree_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

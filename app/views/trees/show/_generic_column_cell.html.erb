@@ -16,7 +16,7 @@
 -->
 <!-- Generic Column Cell -->
 <% if content
-    is_xl_xs_grid = (@editMe && can? :manage, content[:rec])
+    is_xl_xs_grid = (@editMe && can?(:manage, content[:rec]))
 %>
   <div class="dark-border--left <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
     <div class="padding-left padding-right padding-top padding-bottom">
@@ -34,5 +34,9 @@
         <%= link_to(fa_icon("times"), content[:delete][:path], content[:delete][:options]) if content[:delete] %>
       </div><!--close edit/delete div -->
     <% end %>
+  </div><!-- close outer div-->
+<% else %>
+   <div class="dark-border--left">
+    <div class="padding-left padding-right padding-top padding-bottom"></div>
   </div><!-- close outer div-->
 <% end %>

@@ -1,7 +1,7 @@
 # seed_haza_1.rake
 namespace :seed_haza_1 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations, :create_config]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -426,7 +426,65 @@ namespace :seed_haza_1 do
     end
   end
 
-
+  ##################################################################################
+  desc "create tree type config"
+  task create_config: :environment do
+  # {
+  #   tree_type_id: @tt.id,
+  #   version_id: @ver.id,
+  #   page_name: ,
+  #   config_div_name: ,
+  #   table_sequence: ,
+  #   col_sequence: ,
+  #   tree_depth: ,
+  #   item_lookup: ,
+  #   resource_code: ,
+  #   table_partial_name:
+  #  }
+    #grade,unit,subunit,lo,[o#bigidea]_[o#essq],[o#pract],[o#space]_[o#occup],{o#6},[o#miscon#2#1],<sector>,+treetree+,{resources#0#1#2#3#4#5}',
+    tree_type_config = [
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 0,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 1,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: nil,
+        resource_code: "explain", #teacher support/explanatory comments
+        table_partial_name: "generic_table"
+      },
+    ]
+    tree_type_config.each do |config|
+      configRec = TreeTypeConfig.where(
+          tree_type_id: config[:tree_type_id],
+          version_id: config[:version_id],
+          page_name: config[:page_name],
+          config_div_name: config[:config_div_name],
+          tree_depth: config[:tree_depth],
+          item_lookup: config[:item_lookup],
+          resource_code: config[:resource_code],
+          table_partial_name: config[:table_partial_name]
+        ).first
+      if configRec
+        TreeTypeConfig.update(configRec.id, config)
+      else
+        myConfig = TreeTypeConfig.create(config)
+        puts "Created config for page: #{myConfig.page_name}, section: #{myConfig.config_div_name}, table_num: #{myConfig.table_sequence}"
+      end
+    end # create or update config records
+  end
   ###################################################################################
   desc "create the upload control files"
   task create_uploads: :environment do

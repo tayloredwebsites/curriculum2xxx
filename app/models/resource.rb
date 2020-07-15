@@ -28,5 +28,16 @@ class Resource < BaseRec
  #  		:base_key => base_key
  #  	  )
  #  end
+ #
+
+  def name_key
+    return "resource.#{id}.name"
+  end
+
+  # return translation key for name of resource type for the
+  # given resourceCode. E.g., "Comments", "Goal Behavior", etc
+  def self.get_type_key(treeTypeCode, versionCode, resourceCode)
+    return "#{treeTypeCode}.#{versionCode}.resources.#{resourceCode}"
+  end
 
 end

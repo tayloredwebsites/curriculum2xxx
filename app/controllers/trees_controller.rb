@@ -836,111 +836,129 @@ class TreesController < ApplicationController
   end
 
   def show
-    process_tree = false
-    Rails.logger.debug("*** depth: #{@tree.depth}")
-    case @tree.depth
-      # process this tree item, is at proper depth to show detail
-    when  @treeTypeRec[:outcome_depth] + 1
-      # get the Tree Item for this Learning Outcome
-      # only detail page currently is at LO level
-      # Indicators are listed in the LO Detail page
-      # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
-      @trees = [@tree]
-      process_tree = true
+    process_tree = (@tree[:depth] == @treeTypeRec[:outcome_depth])
+    if process_tree
+      @editMe = (params['editme'] == @tree.id.to_s) && can?(:update, @tree)
+      config = TreeTypeConfig.where(
+          tree_type_id: @treeTypeRec.id,
+          version_id: @versionRec.id,
+          page_name: TreeTypeConfig::TREE_DETAIL_NAME
+      ).order('table_sequence', 'col_sequence')
+      @detailTables, translKeys = TreeTypeConfig.build_page(config, @tree, @treeTypeRec, @versionRec, nil, nil)
+      @translations = Translation.translationsByKeys(@locale_code, translKeys)
     else
       # not a detail page, go back to index page
       index_prep
       render :index
     end
+  end
 
-    if process_tree
-      editMe = params['editme']
-      @editMe = false
-      @updated_at = @tree.updated_at
-      # turn off detail editing page for now
-      if editMe && editMe == @tree.id.to_s && current_user.present?
-        @editMe = true
-      end
-      @indicator_name = @hierarchies.count > @treeTypeRec[:outcome_depth] + 1 ? @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize : nil
-      # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
-      # prepare to output detail page
-      @tree_items_to_display = []
-      @subjects = Subject.all.order(:code)
-      subjById = @subjects.map{ |rec| [rec.id, rec.code]}
-      @subjById = Hash[subjById]
-      Rails.logger.debug("*** @subjById: #{@subjById.inspect}")
-      relatedBySubj = @subjects.map{ |rec| [rec.code, []]}
-      @relatedBySubj = Hash[relatedBySubj]
-      Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
-      # get all translation keys for this learning outcome
-      treeKeys = @tree.getAllTransNameKeys
-      @detailsHash = Hash.new { |hash, key| hash[key] = [] } #{code: [{edit_type, details, category_codes}, {}, ....]}
-      @editTypes = {}
-      detail_areas = @treeTypeRec.detail_headers.split(",")
-      @detail_headers = []
-      @detailTables = [] #[{num_cols, num_rows, title_type_action_catsArr}]
-      hierarchy_codes = @treeTypeRec.hierarchy_codes.split(",").map { |h| h.split("_").join("") }
-      if @tree.depth == 4
-        # when outcome level, get children (indicators), to in outcome page
-        @tree.getAllChildren.each do |c|
-          treeKeys << c.buildNameKey
-        end
+  # def old_show
+  #   process_tree = false
+  #   Rails.logger.debug("*** depth: #{@tree.depth}")
+  #   case @tree.depth
+  #     # process this tree item, is at proper depth to show detail
+  #   when  @treeTypeRec[:outcome_depth] + 1
+  #     # get the Tree Item for this Learning Outcome
+  #     # only detail page currently is at LO level
+  #     # Indicators are listed in the LO Detail page
+  #     # @trees = Tree.where('depth = 3 AND tree_type_id = ? AND version_id = ? AND subject_id = ? AND grade_band_id = ? AND code LIKE ?', @tree.tree_type_id, @tree.version_id, @tree.subject_id, @tree.grade_band_id, "#{@tree.code}%")
+  #     @trees = [@tree]
+  #     process_tree = true
+  #   else
+  #     # not a detail page, go back to index page
+  #     index_prep
+  #     render :index
+  #   end
 
-      end
-      Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
-      @trees.each do |t|
-        @parents_by_depth = Hash.new { |hash, key| hash[key] = {} }
-        t.getAllParents.each do |p|
-          @parents_by_depth[t.id][p[:depth]] = p if p
-          @parents_by_depth["p#{p.id}"]["dims"] = p.dimensions.includes(:dim_trees).group_by(&:dim_code) if (p && p[:depth] != @treeTypeRec[:outcome_depth])
-          @parents_by_depth["p#{p.id}"]["dims"].each { |k,arr| arr.map { |rec| treeKeys << rec.dim_name_key}} if (p && @parents_by_depth["p#{p.id}"]["dims"])
-        end
-        # get translation key for this item
-        treeKeys << t.buildNameKey
-        # get translation key for each sector, big idea and misconception for this item
-        if treeKeys
-          t.sector_trees.active.each do |st|
-            if st.sector
-              treeKeys << st.sector.name_key
-              @detailsHash['sector'] << st
-              #treeKeys << st.explanation_key
-            end
-          end
-          t.dim_trees.active.each do |dt|
-            if dt.dimension
-              treeKeys << dt.dimension.dim_name_key
-              @detailsHash[dt.dimension.dim_code] << dt
-              #treeKeys << dt.dim_explanation_key
-            end
-          end
-        end
-        # get translation key for each related item for this item
-        t.tree_referencers.each do |r|
-          rTree = r.tree_referencee
-          rTreeSubj = rTree.subject
-          treeKeys << rTree.buildNameKey
-          treeKeys << r.explanation_key
-          subCode = @subjById[rTree.subject_id]
-          @relatedBySubj[subCode] << {
-            code: rTree.format_code(@locale_code),
-            relationship: I18n.translate("trees.labels.relation_types.#{r.relationship}"),
-            rel_code: r.relationship,
-            subj_code: rTreeSubj.code,
-            tkey: rTree.buildNameKey,
-            subj: rTreeSubj.get_name(@locale_code),
-           # explanation: r.explanation_key,
-            tid: (rTree.depth < 2) ? 0 : rTree.id,
-            ttid: r.id
-          } if (!@relatedBySubj[subCode].include?(rTree.code) && r.active)
-        end
-        treeKeys << "#{t.base_key}.explain"
-        @tree_items_to_display << t
-      end
-      @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+  #   if process_tree
+  #     editMe = params['editme']
+  #     @editMe = false
+  #     @updated_at = @tree.updated_at
+  #     # turn off detail editing page for now
+  #     if editMe && editMe == @tree.id.to_s && current_user.present?
+  #       @editMe = true
+  #     end
+  #     @indicator_name = @hierarchies.count > @treeTypeRec[:outcome_depth] + 1 ? @hierarchies[@treeTypeRec[:outcome_depth] + 1].pluralize : nil
+  #     # Rails.logger.debug("*** @editMe: #{@editMe.inspect}")
+  #     # prepare to output detail page
+  #     @tree_items_to_display = []
+  #     @subjects = Subject.all.order(:code)
+  #     subjById = @subjects.map{ |rec| [rec.id, rec.code]}
+  #     @subjById = Hash[subjById]
+  #     Rails.logger.debug("*** @subjById: #{@subjById.inspect}")
+  #     relatedBySubj = @subjects.map{ |rec| [rec.code, []]}
+  #     @relatedBySubj = Hash[relatedBySubj]
+  #     Rails.logger.debug("*** @relatedBySubj: #{@relatedBySubj.inspect}")
+  #     # get all translation keys for this learning outcome
+  #     treeKeys = @tree.getAllTransNameKeys
+  #     @detailsHash = Hash.new { |hash, key| hash[key] = [] } #{code: [{edit_type, details, category_codes}, {}, ....]}
+  #     @editTypes = {}
+  #     detail_areas = @treeTypeRec.detail_headers.split(",")
+  #     @detail_headers = []
+  #     @detailTables = [] #[{num_cols, num_rows, title_type_action_catsArr}]
+  #     hierarchy_codes = @treeTypeRec.hierarchy_codes.split(",").map { |h| h.split("_").join("") }
+  #     if @tree.depth == 4
+  #       # when outcome level, get children (indicators), to in outcome page
+  #       @tree.getAllChildren.each do |c|
+  #         treeKeys << c.buildNameKey
+  #       end
 
-      parse_detail_headers(detail_areas, hierarchy_codes)
-    end
-  end # def show
+  #     end
+  #     Rails.logger.debug("*** treeKeys: #{treeKeys.inspect}")
+  #     @trees.each do |t|
+  #       @parents_by_depth = Hash.new { |hash, key| hash[key] = {} }
+  #       t.getAllParents.each do |p|
+  #         @parents_by_depth[t.id][p[:depth]] = p if p
+  #         @parents_by_depth["p#{p.id}"]["dims"] = p.dimensions.includes(:dim_trees).group_by(&:dim_code) if (p && p[:depth] != @treeTypeRec[:outcome_depth])
+  #         @parents_by_depth["p#{p.id}"]["dims"].each { |k,arr| arr.map { |rec| treeKeys << rec.dim_name_key}} if (p && @parents_by_depth["p#{p.id}"]["dims"])
+  #       end
+  #       # get translation key for this item
+  #       treeKeys << t.buildNameKey
+  #       # get translation key for each sector, big idea and misconception for this item
+  #       if treeKeys
+  #         t.sector_trees.active.each do |st|
+  #           if st.sector
+  #             treeKeys << st.sector.name_key
+  #             @detailsHash['sector'] << st
+  #             #treeKeys << st.explanation_key
+  #           end
+  #         end
+  #         t.dim_trees.active.each do |dt|
+  #           if dt.dimension
+  #             treeKeys << dt.dimension.dim_name_key
+  #             @detailsHash[dt.dimension.dim_code] << dt
+  #             #treeKeys << dt.dim_explanation_key
+  #           end
+  #         end
+  #       end
+  #       # get translation key for each related item for this item
+  #       t.tree_referencers.each do |r|
+  #         rTree = r.tree_referencee
+  #         rTreeSubj = rTree.subject
+  #         treeKeys << rTree.buildNameKey
+  #         treeKeys << r.explanation_key
+  #         subCode = @subjById[rTree.subject_id]
+  #         @relatedBySubj[subCode] << {
+  #           code: rTree.format_code(@locale_code),
+  #           relationship: I18n.translate("trees.labels.relation_types.#{r.relationship}"),
+  #           rel_code: r.relationship,
+  #           subj_code: rTreeSubj.code,
+  #           tkey: rTree.buildNameKey,
+  #           subj: rTreeSubj.get_name(@locale_code),
+  #          # explanation: r.explanation_key,
+  #           tid: (rTree.depth < 2) ? 0 : rTree.id,
+  #           ttid: r.id
+  #         } if (!@relatedBySubj[subCode].include?(rTree.code) && r.active)
+  #       end
+  #       treeKeys << "#{t.base_key}.explain"
+  #       @tree_items_to_display << t
+  #     end
+  #     @translations = Translation.translationsByKeys(@locale_code, treeKeys)
+
+  #     parse_detail_headers(detail_areas, hierarchy_codes)
+  #   end
+  # end # def show
 
   def edit
     process_tree = false

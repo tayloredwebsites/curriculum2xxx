@@ -6,23 +6,24 @@
         code: Integer,
         depth: nil || Integer,
         num_rows: Integer,
-        by_resource_code: {
-          resourceCode1 : {
-            label_transl_key: str,
-            content_array : [
-              {
-                rec: rec,
-                label_key: nil,
-                transl_key: str,
-                detail_href: nil || path
-                edit: nil || { path, options: {} },
-                delete: nil || { path, options: {} },
-              },
-              {...}
-            ],
-            add: nil || {path, options: {}},
-          }
+        headers_arr: {
+          transl_key: str,
+          add: nil || {path, options: {}},
+          resource_code
         }
+        content_array : [
+          {
+            rec: rec,
+            label_key: nil,
+            transl_key: str,
+            detail_href: nil || path
+            edit: nil || { path, options: {} },
+            delete: nil || { path, options: {} },
+          },
+          {...}
+        ]
+
+
             - shuffle contents_array into left-to-right order while building data.
             e.g., if col_nums = 3, we alternate content types (each type has its own column) in the content_array:
             [{type1 item}, {type2 item}, {type3 item}, {type1 item}, {...}, ...]
@@ -37,15 +38,17 @@
   </div>
 </div>
 <div class='teacher-grid'>
-  <% table[:by_resource_code].each do |code, data| %>
+  <% table[:content_array].each_with_index do |content, ix|
+    header = table[:headers_arr][ix]
+    %>
     <div>
       <div class="teacher-label">
-        <%= @translations[data[:label_transl_key]] %>
-        <%= link_to(fa_icon("plus"), data[:add][:path], data[:add][:options]) if @editMe && can? :create, Resource.new(resource_code: code) %>
+        <%= @translations[header[:transl_key]] %>
+        <%= link_to(fa_icon("plus"), header[:add][:path], header[:add][:options]) if @editMe && can? :create, Resource.new(resource_code: header[:resource_code]) %>
       </div>
-      <% data[:content_array].each do |content| %>
+      <% content.each do |c| %>
         <%= render partial: "/trees/show/generic_column_cell", locals: {
-              content: content
+              content: c
               }
         %>
       <% end %>
