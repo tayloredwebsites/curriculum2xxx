@@ -2,6 +2,20 @@ class ResourcesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_resource, only: [:edit]
 
+  def new
+    @resource = Resource.create(resource_code: resource_params[:resource_code])
+    ResourceJoin.create(
+        resource_id: @resource.id,
+        resourceable_id: resource_params[:resourceable_id],
+        resourceable_type: resource_params[:resourceable_type]
+      )
+    @translation = Translation.create(
+        locale: @locale_code,
+        key: @resource.name_key
+      )
+    render :edit
+  end
+
   def edit
     @resource_type = Translation.find_translation_name(
         @locale_code,
@@ -37,6 +51,8 @@ class ResourcesController < ApplicationController
       params.require(:resource).permit(
         :id,
         :resource_code,
+        :resourceable_id,
+        :resourceable_type,
       )
       else
         nil

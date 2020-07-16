@@ -34,10 +34,17 @@
     <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
 	</div>
   <div class="dimension-grid cols-2">
-  	<% @dimDisplayHash[@dimension.dim_code].each do |resource| %>
-  	  <%=
-  	  	render partial: "resource", locals: { resource: resource }
-  	  %>
+  	<% @dimDisplayHash[@dimension.dim_code].each do |resource_code| %>
+      <% @resourcesByCode[resource_code].each do |resource| %>
+    	  <%=
+    	  	render partial: "resource", locals: { resource: resource }
+    	  %>
+      <% end %>
+      <% if @resourcesByCode[resource_code].length == 0 %>
+        <%=
+          render partial: "resource", locals: { resource: Resource.new(resource_code: resource_code) }
+        %>
+      <% end %>
   	<% end %>
   </div>
 </div>

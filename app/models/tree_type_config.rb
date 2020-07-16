@@ -339,16 +339,18 @@ class TreeTypeConfig < BaseRec
   # Build the json object that will feed the partials of the page, and collect
   # translation keys for all translations that will be needed to display the data.
   # return an array with the page JSON object and the array of translation keys.
-  def self.build_page(configArray, treeRec, treeTypeRec, versionRec, subjectRec, gradeBandRec)
+  def self.build_page(configArray, rec, treeTypeRec, versionRec, subjectRec, gradeBandRec)
     pageJSON = Hash.new { |h, k| h[k] =  {}}
     translKeys = []
-    treesDataByDepth = treeRec ? self.tree_and_parents_data_by_depth(treeRec) : {}
+    treesDataByDepth = rec.class.to_s == "Tree" ? self.tree_and_parents_data_by_depth(rec) : {}
+    resourcesByCode = rec.class.to_s == "Dimension" ? self.resources_by_code(rec) : {}
     hierarchies = treeTypeRec.hierarchy_codes.split(",")
     subjectsById = Hash[Subject.where(tree_type_id: treeTypeRec.id).map { |s| [s.id, s] }]
     configArray.each do |c|
-      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, treesDataByDepth[c.tree_depth], hierarchies, subjectsById, treeRec)
+      data = (rec.class.to_s == "Tree") ? treesDataByDepth[c.tree_depth] : resourcesByCode
+      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, data, hierarchies, subjectsById, rec)
       translKeys.concat(keys) if !keys.nil?
-      self.add_to_pageJSON(pageJSON, c, contentArr, header, treeRec) if !header.nil?
+      self.add_to_pageJSON(pageJSON, c, contentArr, header, rec) if !header.nil?
     end
     return [pageJSON, translKeys]
   end
@@ -375,6 +377,16 @@ class TreeTypeConfig < BaseRec
 
     def self.is_table_expandable?(config)
       return (config.config_div_name == HEADERS && config.table_partial_name == 'generic_table')
+    end
+
+    def self.resources_by_code(resourceableRec)
+      temp = Hash.new { |h, k| h[k] = [] }
+      temp[:joinByResourceId] = {}
+      joins = resourceableRec.resource_joins.active
+      resource_ids = joins.pluck('resource_id')
+      joins.map { |j| temp[:joinByResourceId][j.resource_id] =  j }
+      Resource.where(id: resource_ids).map { |r| temp[r.resource_code] = r }
+      return temp
     end
 
     def self.tree_and_parents_data_by_depth(treeRec)
