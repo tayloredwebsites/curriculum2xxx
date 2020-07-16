@@ -95,7 +95,7 @@ class ResourcesController < ApplicationController
 
     def find_resourceable
       if resource_params && resource_params[:resourceable_type] &&
-resource_params[:resourceable_id]
+      resource_params[:resourceable_id]
         @resourceable = resource_params[:resourceable_type].constantize.find(resource_params[:resourceable_id])
       end
     end
