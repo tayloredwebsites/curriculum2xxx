@@ -1024,10 +1024,17 @@ class TreesController < ApplicationController
         @translation_key = translation_params[:key]
       elsif @edit_type.split("#")[0] == "ref_settings"
         resource_types = @edit_type.split("#")
-        if resource_types.length > 1
-          resource_types = resource_types[1..resource_types.length].map { |n| Outcome::RESOURCE_TYPES[n.to_i] }
+        @ref_titles = resource_types[1..resource_types.length-1].map do |t|
+          type_key = Resource.get_type_key(@treeTypeRec.code, @versionRec.code, t)
+          {
+            key: type_key,
+            name: Translation.find_translation_name(
+                @locale_code,
+                type_key,
+                t
+              )
+          }
         end
-        @ref_titles = resource_types.map { |t| Outcome.get_resource_hash(t, @treeTypeRec.code, @versionRec.code, @locale_code) }
       elsif @edit_type == "treetree"
         @rel = TreeTree.find(tree_params[:attr_id])
         @attr_id = @rel.id

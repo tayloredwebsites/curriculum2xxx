@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.string "teach_strat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["lesson_plan_id"], name: "activity_lp"
   end
 
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.string "dim_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["activity_id"], name: "index_activity_dimensions_on_activity_id"
     t.index ["dimension_id"], name: "index_activity_dimensions_on_dimension_id"
   end
@@ -87,6 +89,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.boolean "in_portfolio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["exemplar_authorizor_id"], name: "lp_authorizor_id"
     t.index ["tree_id"], name: "lp_tree_id"
   end
@@ -104,6 +107,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.string "lookup_translation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
   end
 
   create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
@@ -120,6 +124,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.bigint "resourceable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["resource_id"], name: "index_resource_joins_on_resource_id"
     t.index ["resourceable_type", "resourceable_id"], name: "resourceable"
   end
@@ -128,6 +133,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.string "resource_code", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
   end
 
   create_table "sector_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -276,6 +282,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["lesson_plan_id"], name: "user_lp_lp_id"
     t.index ["user_id"], name: "user_lp_user_id"
   end
@@ -287,6 +294,7 @@ ActiveRecord::Schema.define(version: 20200714223753) do
     t.bigint "user_resourceable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["resource_id"], name: "index_user_resources_on_resource_id"
     t.index ["user_id"], name: "index_user_resources_on_user_id"
     t.index ["user_resourceable_type", "user_resourceable_id"], name: "user_resourceable"

@@ -56,7 +56,7 @@
 		  <div class='dark-border--left padding-right padding-left'>
 		  	<!-- Header Text -->
 		  	<% if col_header[:add] && @editMe && can?(:manage, col_header[:class]) %>
-	  	 		 <%= link_to(fa_icon("plus-square"), col_header[:path], col_header[:options]) %>
+	  	 		 <%= link_to(fa_icon("plus-square"), col_header[:add][:path], col_header[:add][:options]) %>
 		  	<% end # if col_header[:add] && ... && ... %>
 		  	<%= "#{header_prefix}#{@translations[col_header[:transl_key]]}" %>
 				<% if table[:expandable] && ix == table[:headers_array].length - 1 %>

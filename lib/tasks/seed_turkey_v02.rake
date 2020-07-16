@@ -1,7 +1,7 @@
 # seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations, :create_config]
 
   task setup: :environment do
     @versionNum = 'v02'
@@ -365,10 +365,10 @@ namespace :seed_turkey_v02 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
     dim_resource_types_arr.each_with_index do |resource, i|
-      resource_name_key = Dimension.get_resource_key(
-        Dimension::RESOURCE_TYPES[i],
+      resource_name_key = Resource.get_type_key(
         @tt.code,
-        @ver.code
+        @ver.code,
+        Dimension::RESOURCE_TYPES[i],
       )
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
@@ -393,10 +393,10 @@ namespace :seed_turkey_v02 do
     ]
 
     outc_resource_types_arr.each_with_index do |resource, i|
-      resource_name_key = Outcome.get_resource_key(
-        Outcome::RESOURCE_TYPES[i],
+      resource_name_key = Resource.get_type_key(
         @tt.code,
-        @ver.code
+        @ver.code,
+        Outcome::RESOURCE_TYPES[i],
       )
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
@@ -445,7 +445,267 @@ namespace :seed_turkey_v02 do
     end
   end
 
-
+  ##################################################################################
+  desc "create tree type config"
+  task create_config: :environment do
+    tree_type_config = [
+      #grade header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 0,
+        col_sequence: 0,
+        tree_depth: 0, #hierarchy depth 0 == grade
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #unit header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 1,
+        col_sequence: 0,
+        tree_depth: 1,
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #subunit header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 2,
+        col_sequence: 0,
+        tree_depth: 2,
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #Learning Outcome header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 3,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: nil,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #duration weeks header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 4,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: TreeTypeConfig::WEEKS,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #Hours per week header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 5,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: TreeTypeConfig::HOURS,
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
+      #Big Idea & Essential Questions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 6,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "bigidea",
+        table_partial_name: "generic_table"
+      },
+      #Big Idea & Essential Questions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 6,
+        col_sequence: 1,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "essq",
+        table_partial_name: "generic_table"
+      },
+      #Associated Practices Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 7,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "pract",
+        table_partial_name: "generic_table"
+      },
+      #Teacher Support Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 8,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "Outcome",
+        resource_code: "explain", #teacher support/explanatory comments
+        table_partial_name: "generic_table"
+      },
+      #Misconceptions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 9,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "miscon&href",
+        resource_code: nil,
+        table_partial_name: "generic_table"
+      },
+      #Misconceptions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 9,
+        col_sequence: 1,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "miscon",
+        resource_code: "poss_source_miscon",
+        table_partial_name: "generic_table"
+      },
+      #Misconceptions Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 9,
+        col_sequence: 2,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "miscon",
+        resource_code: "correct_understanding",
+        table_partial_name: "generic_table"
+      },
+      #Sectors Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 10,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "Sector",
+        table_partial_name: "generic_table"
+      },
+      #Connected Learning Outcomes Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 11,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "TreeTree",
+        table_partial_name: "treetree"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 12,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'proj_ref',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 12,
+        col_sequence: 1,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'learn_prog',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 12,
+        col_sequence: 2,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'class_text',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 12,
+        col_sequence: 3,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'activity',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 12,
+        col_sequence: 4,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'teacher_ref',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 12,
+        col_sequence: 5,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'goal',
+        table_partial_name: "resources"
+      },
+    ]
+    TreeTypeConfig.where(
+        tree_type_id: @tt.id,
+        version_id: @ver.id,
+      ).delete_all
+    tree_type_config.each do |config|
+      myConfig = TreeTypeConfig.create(config)
+      puts "Created config for page: #{myConfig.page_name}, section: #{myConfig.config_div_name}, table_num: #{myConfig.table_sequence}"
+    end # create or update config records
+  end
   ###################################################################################
   desc "create the upload control files"
   task create_uploads: :environment do

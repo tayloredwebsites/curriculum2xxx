@@ -125,9 +125,11 @@ class TreeTypeConfig < BaseRec
   HEADERS = "headers"
   TABLES = "tables"
 
-  #recognized values for item_lookup
-  WEEKS = "weeks"
-  HOURS = "hours"
+  # recognized values for item_lookup,
+  # other than model names.
+  WEEKS = "duration_weeks"
+  HOURS = "hours_per_week"
+
 
   #TreeTypeConfig fields:
   # tree_type_id
@@ -143,13 +145,14 @@ class TreeTypeConfig < BaseRec
   # table_partial_name
   #
 
-  def build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, sourceData, hierarchies, treeRec)
+  def build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, sourceData, hierarchies, subjectsById, treeRec)
     #if looking up a resource, headerObj should contain resource_code
     content = []
     header = {}
     translKeys = []
     link_options = {
-      popup: {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
+      popup: {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'},
+      popup_pull_right: {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
     }
     urls = Rails.application.routes.url_helpers
     no_content = false
@@ -165,7 +168,7 @@ class TreeTypeConfig < BaseRec
     end
     if tree_depth
     #everything on the TREE_DETAIL_PAGE will have a tree depth
-      if (item_lookup == 'ResourceJoin') && resource_code && sourceData
+      if (item_lookup == 'ResourceJoin' || item_lookup == 'Outcome') && resource_code && sourceData
       #build data for Resource attached directly to a Tree
         header[:transl_key] = resource_title_key
         # header[:add] = { path: "#" }
@@ -219,7 +222,56 @@ class TreeTypeConfig < BaseRec
         # spacer.
         content << nil if (content.length == 0)
       elsif item_lookup && sourceData
+      #non-dimension ITEM LOOKUPS
         case item_lookup
+        when "Sector"
+          #build data for Sectors attached directly to a Tree
+          header[:transl_key] = treeTypeRec.sector_set_name_key
+          translKeys << header[:transl_key]
+          header[:add] = {
+              path: urls.edit_tree_path(id: treeRec.id, tree: { edit_type: 'sector', attr_id: 'new'}),
+              options: link_options[:popup]
+            }
+          sourceData[:sectorsAssoc].each do |r|
+            content << {
+                rec: sourceData[:sectTreeBySectId][r.id],
+                transl_key: r.get_name_key,
+                delete: {
+                  path: urls.tree_path(id: treeRec.id, tree: { edit_type: 'sector', attr_id: sourceData[:sectTreeBySectId][r.id].id, active: false}, sector_tree: {active: false})
+                },
+                # edit: { path: urls.edit_resource_path(id: r.id), options: link_options[:popup] }
+              }
+            translKeys << r.get_name_key
+          end #sourceData[:sectorTreesAssoc].each do |r|
+          content << nil if (content.length == 0)
+        when "TreeTree"
+          #build data for Learning Outcome (Trees) attached to this Tree
+          header[:transl_key] = "not used"
+          sourceData[:treeReferenceesAssoc].each do |r|
+            tt = sourceData[:tTreeByReferenceeId][r.id]
+            subj = subjectsById[r.subject_id]
+            format_code = r.format_code
+            content << {
+                rec: r,
+                format_code: format_code,
+                subj_code: subj.code,
+                subj_key: subj.get_versioned_name_key,
+                rel_code: tt.relationship,
+                rel: I18n.translate("trees.labels.relation_types.#{tt.relationship}"),
+                transl_key: r.name_key,
+                delete: {
+                  path: urls.tree_path(id: treeRec.id, tree: { edit_type: 'treetree', attr_id: tt.id, active: false}, tree_tree: {active: false}),
+                  options: {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj.code}") + ": " + format_code), method: :patch}
+                },
+                edit: {
+                  path: urls.edit_tree_path(id: treeRec.id, tree: { edit_type: 'treetree', attr_id: tt.id}),
+                  options: link_options[:popup_pull_right]
+                }
+              }
+            translKeys << r.name_key
+            translKeys << subjectsById[r.subject_id].get_versioned_name_key
+          end #sourceData[:sectorTreesAssoc].each do |r|
+          content << nil if (content.length == 0)
         when WEEKS
           if sourceData[:outcomeRec]
             header[:text] = I18n.t('trees.labels.duration_weeks_html', weeks: sourceData[:outcomeRec].duration_weeks)
@@ -233,7 +285,7 @@ class TreeTypeConfig < BaseRec
           else
             no_content = true
           end
-        when 'hours'
+        when HOURS
           if sourceData[:outcomeRec]
             header[:text] = I18n.t('trees.labels.hours_per_week_html', hours: sourceData[:outcomeRec].hours_per_week)
             content = {
@@ -283,8 +335,9 @@ class TreeTypeConfig < BaseRec
     translKeys = []
     treesDataByDepth = treeRec ? self.tree_and_parents_data_by_depth(treeRec) : {}
     hierarchies = treeTypeRec.hierarchy_codes.split(",")
+    subjectsById = Hash[Subject.where(tree_type_id: treeTypeRec.id).map { |s| [s.id, s] }]
     configArray.each do |c|
-      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, treesDataByDepth[c.tree_depth], hierarchies, treeRec)
+      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, treesDataByDepth[c.tree_depth], hierarchies, subjectsById, treeRec)
       translKeys.concat(keys) if !keys.nil?
       self.add_to_pageJSON(pageJSON, c, contentArr, header, treeRec) if !header.nil?
     end
@@ -303,6 +356,7 @@ class TreeTypeConfig < BaseRec
           num_cols: 0,
           headers_array: [],
           content_array: [],
+          tree: tree,
         }
       end
       pageJSON[config.config_div_name][config.table_sequence][:num_cols] += 1
@@ -326,21 +380,27 @@ class TreeTypeConfig < BaseRec
           treeReferenceesAssoc: [],
           dimsByCode: Hash.new { |h, k| h[k] = [] },
           resourcesByCode: Hash.new { |h, k| h[k] = [] },
-          sectorTreesAssoc: [],
+          sectorsAssoc: [],
         }
         if t
+          tree_joins = t.resource_joins.active
+          resource_ids = tree_joins.pluck("resource_id")
           t.dim_trees.map { |dt| temp[:dimTreeByDimId][dt.dimension_id] = dt }
-          t.resource_joins.map { |rj| temp[:joinByResourceId][rj.resource_id] = rj }
-          t.sector_trees.map { |st| temp[:sectTreeBySectId][st.sector_id] = st }
+          tree_joins.map { |rj| temp[:joinByResourceId][rj.resource_id] = rj }
+          sectorTrees = t.sector_trees.active
+          sectorTrees.map { |st| temp[:sectTreeBySectId][st.sector_id] = st }
           if t[:id] == treeRec[:id]
-            treeTrees = TreeTree.where(tree_referencer_id: t.id)
+            treeTrees = TreeTree.active.where(tree_referencer_id: t.id)
+            outc_joins = t.outcome.resource_joins.active
+            resource_ids.concat(outc_joins.pluck("resource_id"))
             treeTrees.map { |tt| temp[:tTreeByReferenceeId][tt.tree_referencee_id] = tt }
             temp[:treeReferenceesAssoc] = Tree.where(id: treeTrees.pluck('tree_referencee_id')) if (treeTrees.count > 0)
             temp[:outcomeRec] = t.outcome
+            outc_joins.map { |rj| temp[:joinByResourceId][rj.resource_id] = rj }
           end
           t.dimensions.map { |d| temp[:dimsByCode][d.dim_code] << d } if temp[:dimTreeByDimId].present?
-          t.resources.map { |r| temp[:resourcesByCode][r.resource_code] << r } if temp[:joinByResourceId].present?
-          temp[:sectorTreesAssoc] = t.sectors if temp[:sectTreeBySectId].present?
+          Resource.where(id: resource_ids).map { |r| temp[:resourcesByCode][r.resource_code] << r } if temp[:joinByResourceId].present?
+          temp[:sectorsAssoc] = Sector.where(id: sectorTrees.pluck("sector_id")) if temp[:sectTreeBySectId].present?
 
           treesByDepth[t[:depth]] = temp
         end

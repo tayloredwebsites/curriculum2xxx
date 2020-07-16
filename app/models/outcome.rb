@@ -12,20 +12,20 @@ class Outcome < BaseRec
   # See special processing behavior for specific
   # resource types in BaseRec.process_resource_content(type, content)
   RESOURCE_TYPES = [
-    "proj_ref",
-    "learn_prog", #lesson plans
-    "class_text",
-    "activity",
-    "teacher_ref",
-    "goal",
-    "explain", #teacher support/explanatory comments
-    "evid_learning",
-    "connections", #capstone connections
-    "sec_topic",
-    "sec_code",
-    "cog_demand", #SEC Cognitive Demand
-    "lp_ss_id", #TO DO: change to lp_google_ss_id: Lesson Plan (expect a Google Spreadsheet Id)
-    "review_comments" #WL Review Comments
+    "proj_ref",  #0
+    "learn_prog", #1- lesson plans
+    "class_text", #2
+    "activity", #3
+    "teacher_ref", #4
+    "goal", #5
+    "explain", #6- teacher support/explanatory comments
+    "evid_learning", #7
+    "connections", #8 - capstone connections
+    "sec_topic", #9
+    "sec_code", #10
+    "cog_demand", #11 - SEC Cognitive Demand
+    "lp_ss_id", #12- TO DO: change to lp_google_ss_id: Lesson Plan (expect a Google Spreadsheet Id)
+    "review_comments" #13 - WL Review Comments
   ]
 
   # Field Translations
