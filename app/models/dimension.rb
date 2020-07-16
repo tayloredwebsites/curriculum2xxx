@@ -121,6 +121,7 @@ class Dimension < BaseRec
     return ret
   end
 
+  #Deprecated - use Resource#get_type_key instead
   def self.get_resource_key(
     resourceType,
     treeTypeCode,
@@ -129,36 +130,42 @@ class Dimension < BaseRec
     return "curriculum.#{treeTypeCode}.#{versionCode}.dim.#{resourceType}"
   end
 
-  def self.get_resource_name(
-    resourceType,
-    treeTypeCode,
-    versionCode,
-    localeCode,
-    default
-  )
-    return Translation.find_translation_name(
-      localeCode,
-      "curriculum.#{treeTypeCode}.#{versionCode}.dim.#{resourceType}",
-      default
-    )
-  end
+  # Deprecated - no longer uses accurate resource keys
+  # def self.get_resource_name(
+  #   resourceType,
+  #   treeTypeCode,
+  #   versionCode,
+  #   localeCode,
+  #   default
+  # )
+  #   return Translation.find_translation_name(
+  #     localeCode,
+  #     "curriculum.#{treeTypeCode}.#{versionCode}.dim.#{resourceType}",
+  #     default
+  #   )
+  # end
 
+  # Deprecated - Use Resource#name_key instance method instead
+  #    Retain for migrating old resource translations to
+  #    the new format for keys (new format uses the Resource id
+  #    in the name key).
   def resource_key(resourceType)
     return "dimension.#{id}.#{resourceType}"
   end
 
-  def resource_name(
-    localeCode,
-    resourceType,
-    default
-  )
-    key = resource_key(resourceType)
-    return Translation.find_translation_name(
-      localeCode,
-      key,
-      default
-    )
-  end
+  # Deprecated- no longer uses valid key
+  # def resource_name(
+  #   localeCode,
+  #   resourceType,
+  #   default
+  # )
+  #   key = resource_key(resourceType)
+  #   return Translation.find_translation_name(
+  #     localeCode,
+  #     key,
+  #     default
+  #   )
+  # end
 
   private
 
