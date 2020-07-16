@@ -186,7 +186,15 @@ class TreeTypeConfig < BaseRec
             }
           translKeys << r.name_key
         end #sourceData[:resourcesByCode][resource_code].each do |r|
-        content << nil if (content.length == 0)
+        if (content.length == 0)
+          r = Resource.create(resource_code: resource_code)
+          join = ResourceJoin.create(resource: r, resourceable: sourceData[:rec])
+          content << {
+            rec: join,
+            transl_key: nil,
+            edit: { path: urls.edit_resource_path(id: r.id), options: link_options[:popup] }
+          }
+        end
       elsif sourceData && treeTypeRec.dim_codes.split(',').include?(dim_item_lookup)
       #build data for Dimensions attached to a tree
       #also build data for Resources attached to a tree through the Dimensions
