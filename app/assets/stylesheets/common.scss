@@ -64,7 +64,7 @@ body {
 }
 
 /* special styling for headers of tables appearing in the header section of the page */
-.col-8 .colorful-header { text-align: left; }
+.col-8 .colorful-header, .maint-page .colorful-header { text-align: left; }
 
 .sequence-item:not(.colorful-header) + .sequence-item.colorful-header {
  margin-top:4vh;
