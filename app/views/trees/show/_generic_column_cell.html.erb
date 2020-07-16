@@ -20,7 +20,6 @@
 %>
   <div class="min-height dark-border <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
     <div class="padding-left padding-right padding-top padding-bottom">
-      <% puts "line25 content: #{content.inspect}" %>
       <% if content[:detail_href] %>
       <!-- display content translation as a link to its own detail page -->
         <a href="<%= content[:detail_href] %>">

@@ -15,9 +15,6 @@
 					  },
 					  {...}
 					]
-					  - shuffle contents_array into left-to-right order while building data.
-					  e.g., if col_nums = 3, we alternate content types (each type has its own column) in the content_array:
-					  [{type1 item}, {type2 item}, {type3 item}, {type1 item}, {...}, ...]
 			}
 -->
 <%
@@ -29,15 +26,15 @@
   rec_is_tree = content[:rec].class.to_s == "Tree"
   name_translation = html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key]
   code_is_transl = name_translation && rec_is_tree ? (name_translation == content[:rec].subCode) : false
+
+  subcode = rec_is_tree ? " #{content[:rec].subCode}:" : ""
+  subcode = ":" if code_is_transl
 %>
 <div class="row">
   <div class='col col-6 text-left'>
     <%= link_to(fa_icon("edit"), content[:edit][:path], content[:edit][:options]) if content[:edit] && user_can_edit %>
     <%= html_safe_translations(header[:text], false) if header[:text] %>
   	<strong>
-  		<% subcode = rec_is_tree ? " #{content[:rec].subCode}:" : ""
-  			 subcode = ":" if code_is_transl
-  		 %>
   		<%= "#{@translations[header[:transl_key]]}#{subcode}" if header[:transl_key] %>
   	</strong>
   	<%= html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key] %>

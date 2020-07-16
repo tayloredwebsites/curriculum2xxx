@@ -22,15 +22,9 @@
           },
           {...}
         ]
-
-
-            - shuffle contents_array into left-to-right order while building data.
-            e.g., if col_nums = 3, we alternate content types (each type has its own column) in the content_array:
-            [{type1 item}, {type2 item}, {type3 item}, {type1 item}, {...}, ...]
       }
 -->
 <!-- Supporting Resources Table -->
-<% puts "resources PARTIAL: #{table.inspect}" %>
 <% resource_codes = table[:headers_array].map { |e| e[:resource_code]  } %>
 <div class= 'dark-border margin-top'>
   <div class='row dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth %>'>

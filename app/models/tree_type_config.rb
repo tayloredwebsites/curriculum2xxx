@@ -135,21 +135,30 @@ class TreeTypeConfig < BaseRec
   def self.dim_page_name(dim_code)
     return "#{DIM_DETAIL_PREFIX}#{dim_code}"
   end
-  #TreeTypeConfig fields:
-  # tree_type_id
-  # version_id
-  # page_name
-  # config_div_name
-  # table_sequence
-  # col_sequence
-  # field_header_key
-  # tree_depth (nil if source_class != tree)
-  # item_lookup (nil if not looking up connected items)
-  # resource_code (nil if not looking up a resource)
-  # table_partial_name
-  #
 
+  # Take an array of all of the TreeTypeConfig recs with matching 'page_name'
+  # Build the json object that will feed the partials of the page, and collect
+  # translation keys for all translations that will be needed to display the data.
+  # return an array with the page JSON object and the array of translation keys.
+  def self.build_page(configArray, rec, treeTypeRec, versionRec, subjectRec, gradeBandRec)
+    pageJSON = Hash.new { |h, k| h[k] =  {}}
+    translKeys = []
+    treesDataByDepth = rec.class.to_s == "Tree" ? self.tree_and_parents_data_by_depth(rec) : {}
+    resourcesByCode = rec.class.to_s == "Dimension" ? self.resources_by_code(rec) : {}
+    hierarchies = treeTypeRec.hierarchy_codes.split(",")
+    subjectsById = Hash[Subject.where(tree_type_id: treeTypeRec.id).map { |s| [s.id, s] }]
+    configArray.each do |c|
+      data = (rec.class.to_s == "Tree") ? treesDataByDepth[c.tree_depth] : resourcesByCode
+      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, data, hierarchies, subjectsById, rec)
+      translKeys.concat(keys) if !keys.nil?
+      self.add_to_pageJSON(pageJSON, c, contentArr, header, rec) if !header.nil?
+    end
+    return [pageJSON, translKeys]
+  end
 
+  # Used by self.build_page to build the content and
+  # header data, and collect translation keys
+  # for a particular type of data in the config
   def build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, sourceData, hierarchies, subjectsById, treeRec)
     #if looking up a resource, headerObj should contain resource_code
     content = []
@@ -171,10 +180,13 @@ class TreeTypeConfig < BaseRec
       header[:resource_code] = resource_code
       translKeys << resource_title_key
     end
+
+    # build data relative to a Tree record
     if tree_depth
-    #everything on the TREE_DETAIL_PAGE will have a tree depth
-      if (item_lookup == 'ResourceJoin' || item_lookup == 'Outcome') && resource_code && sourceData
+    #everything on the TREE_DETAIL_PAGE will have tree_depth != nil
+
       #build data for Resource attached directly to a Tree
+      if (item_lookup == 'ResourceJoin' || item_lookup == 'Outcome') && resource_code && sourceData
         header[:transl_key] = resource_title_key
         # header[:add] = { path: "#" }
         sourceData[:resourcesByCode][resource_code].each do |r|
@@ -186,6 +198,8 @@ class TreeTypeConfig < BaseRec
             }
           translKeys << r.name_key
         end #sourceData[:resourcesByCode][resource_code].each do |r|
+        # No resources with this resource_code
+        # currently attached to the Tree at tree_depth
         if (content.length == 0)
           # r = Resource.create(resource_code: resource_code)
           # join = ResourceJoin.create(resource: r, resourceable: sourceData[:rec])
@@ -199,8 +213,9 @@ class TreeTypeConfig < BaseRec
             options: link_options[:popup] }
           }
         end
-      elsif sourceData && treeTypeRec.dim_codes.split(',').include?(dim_item_lookup)
+
       #build data for Dimensions attached to a tree
+      elsif sourceData && treeTypeRec.dim_codes.split(',').include?(dim_item_lookup)
       #also build data for Resources attached to a tree through the Dimensions
         dim_type_name = Dimension.get_dim_type_key(dim_item_lookup, treeTypeRec.code, versionRec.code)
         header[:transl_key] = resource_code ? resource_title_key : dim_type_name
@@ -238,11 +253,13 @@ class TreeTypeConfig < BaseRec
         # the sourceData[:rec] tree, add nil to the content array as a
         # spacer.
         content << nil if (content.length == 0)
-      elsif item_lookup && sourceData
+
       #non-dimension ITEM LOOKUPS
+      elsif item_lookup && sourceData
         case item_lookup
+
+        #build data for Sectors attached directly to a Tree
         when "Sector"
-          #build data for Sectors attached directly to a Tree
           header[:transl_key] = treeTypeRec.sector_set_name_key
           translKeys << header[:transl_key]
           header[:add] = {
@@ -261,8 +278,9 @@ class TreeTypeConfig < BaseRec
             translKeys << r.get_name_key
           end #sourceData[:sectorTreesAssoc].each do |r|
           content << nil if (content.length == 0)
+
+        #build data for Learning Outcome (Trees) attached to this Tree
         when "TreeTree"
-          #build data for Learning Outcome (Trees) attached to this Tree
           header[:transl_key] = "not used"
           sourceData[:treeReferenceesAssoc].each do |r|
             tt = sourceData[:tTreeByReferenceeId][r.id]
@@ -289,10 +307,14 @@ class TreeTypeConfig < BaseRec
             translKeys << subjectsById[r.subject_id].get_versioned_name_key
           end #sourceData[:sectorTreesAssoc].each do |r|
           content << nil if (content.length == 0)
+
+        # build data for Subject of treeRec
         when "Subject"
           header[:text] = "<strong>#{I18n.t('app.labels.subject')}:</strong>"
           content = { rec: subjectsById[treeRec.subject_id], transl_key: subjectsById[treeRec.subject_id].get_versioned_name_key }
           translKeys << content[:transl_key]
+
+        # build data for duration of Outcome in weeks
         when WEEKS
           if sourceData[:outcomeRec]
             header[:text] = I18n.t('trees.labels.duration_weeks_html', weeks: sourceData[:outcomeRec].duration_weeks)
@@ -306,6 +328,8 @@ class TreeTypeConfig < BaseRec
           else
             no_content = true
           end
+
+        # build data for duration of Outcome in hours
         when HOURS
           if sourceData[:outcomeRec]
             header[:text] = I18n.t('trees.labels.hours_per_week_html', hours: sourceData[:outcomeRec].hours_per_week)
@@ -316,6 +340,9 @@ class TreeTypeConfig < BaseRec
                 options: link_options[:popup]
               }
             }
+
+          # do not display config item
+          # e.g. if optional sub-unit Tree is absent
           else
             no_content = true
           end
@@ -347,25 +374,6 @@ class TreeTypeConfig < BaseRec
   end
 
 
-  # Take an array of all of the TreeTypeConfig recs with matching 'page_name'
-  # Build the json object that will feed the partials of the page, and collect
-  # translation keys for all translations that will be needed to display the data.
-  # return an array with the page JSON object and the array of translation keys.
-  def self.build_page(configArray, rec, treeTypeRec, versionRec, subjectRec, gradeBandRec)
-    pageJSON = Hash.new { |h, k| h[k] =  {}}
-    translKeys = []
-    treesDataByDepth = rec.class.to_s == "Tree" ? self.tree_and_parents_data_by_depth(rec) : {}
-    resourcesByCode = rec.class.to_s == "Dimension" ? self.resources_by_code(rec) : {}
-    hierarchies = treeTypeRec.hierarchy_codes.split(",")
-    subjectsById = Hash[Subject.where(tree_type_id: treeTypeRec.id).map { |s| [s.id, s] }]
-    configArray.each do |c|
-      data = (rec.class.to_s == "Tree") ? treesDataByDepth[c.tree_depth] : resourcesByCode
-      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, data, hierarchies, subjectsById, rec)
-      translKeys.concat(keys) if !keys.nil?
-      self.add_to_pageJSON(pageJSON, c, contentArr, header, rec) if !header.nil?
-    end
-    return [pageJSON, translKeys]
-  end
 
   private
 

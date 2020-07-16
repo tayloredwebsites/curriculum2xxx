@@ -4,7 +4,6 @@
 <div class='container'>
   <!--  loop through config obj for the headers -->
   <div class='detail-page'>
-    <% puts "@detailTables: #{@detailTables.inspect}" %>
     <% @detailTables[TreeTypeConfig::HEADERS].each do |key, table| %>
       <%= render partial: "trees/show/#{table[:table_partial_name]}", locals: { table: table } %>
     <% end %>

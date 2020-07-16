@@ -12,7 +12,7 @@
 						add: nil || {path, options: {}},
 						class: Class # (for cancan)
 			    }]
-				content_array: [ //multidimensional
+				content_array: [ // this is a multidimensional array
 				  [...],
 				  [
 				    {
@@ -29,9 +29,6 @@
 				  ...
 
 					]
-					  - shuffle contents_array into left-to-right order while building data.
-					  e.g., if col_nums = 3, we alternate content types (each type has its own column) in the content_array:
-					  [{type1 item}, {type2 item}, {type3 item}, {type1 item}, {...}, ...]
 			}
 -->
 
@@ -76,8 +73,6 @@
   <!--Start table content-->
   <div class='row dark-border generic-grid generic-grid--cols-<%= table[:headers_array].length %>'>
   	<% num_rows = table[:content_array].map { |c| c.length if !c.nil? }.max %>
-  	  <% puts "num_rows: #{num_rows}" %>
-  	  <% puts "#{table.inspect}" %>
   		<% num_rows.times do %>
   		  <% table[:content_array].each do |content| %>
   		  	<% c = content.shift() %>
