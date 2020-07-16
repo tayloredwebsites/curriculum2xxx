@@ -528,7 +528,7 @@ namespace :seed_stessa_2 do
     end
   end
 
-    ##################################################################################
+  ##################################################################################
   desc "create tree type config"
   task create_config: :environment do
     tree_type_config = [

@@ -555,7 +555,7 @@ namespace :seed_haza_1 do
         table_sequence: 8,
         col_sequence: 0,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: "space",
+        item_lookup: "space&href",
         table_partial_name: "generic_table"
       },
       #Learning Spaces and Occupations Table
@@ -710,6 +710,174 @@ namespace :seed_haza_1 do
         item_lookup: 'Outcome',
         resource_code: 'goal',
         table_partial_name: "resources"
+      },
+      #################################
+      # Misconceptions Detail page config
+      # ##############################
+      # Misconception Name Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 0,
+        col_sequence: 0,
+        table_partial_name: "simple_header"
+      },
+      # Subject Name Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 1,
+        col_sequence: 0,
+        item_lookup: "Subject",
+        table_partial_name: "simple_header"
+      },
+      # Grades Name Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 2,
+        col_sequence: 0,
+        item_lookup: "min_max_grade",
+        table_partial_name: "simple_header"
+      },
+      # Second Category Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 3,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "second_subj",
+        table_partial_name: "generic_table"
+      },
+      # Third Category Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "third_subj",
+        table_partial_name: "generic_table"
+      },
+      # Correct Understanding Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "correct_understanding",
+        table_partial_name: "generic_table"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "poss_source_miscon",
+        table_partial_name: "generic_table"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "compiler",
+        table_partial_name: "generic_table"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "citation",
+        table_partial_name: "generic_table"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "link",
+        table_partial_name: "generic_table"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "distractor",
+        table_partial_name: "generic_table"
+      },
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('miscon'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 4,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "question_bank",
+        table_partial_name: "generic_table"
+      },
+      #####################################
+      # LEARNING SPACES CONFIG
+      # ###################################
+      # Learning Spaces Name Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('space'),
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 0,
+        col_sequence: 0,
+        table_partial_name: "simple_header"
+      },
+      # Subject Name Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('space'),
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 1,
+        col_sequence: 0,
+        item_lookup: "Subject",
+        table_partial_name: "simple_header"
+      },
+      # Grades Name Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('space'),
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: 2,
+        col_sequence: 0,
+        item_lookup: "min_max_grade",
+        table_partial_name: "simple_header"
+      },
+      # Second Category Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig.dim_page_name('space'),
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 3,
+        col_sequence: 0,
+        item_lookup: "ResourceJoin",
+        resource_code: "directions",
+        table_partial_name: "generic_table"
       },
     ]
     TreeTypeConfig.where(
