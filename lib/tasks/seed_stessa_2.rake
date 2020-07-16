@@ -554,7 +554,7 @@ namespace :seed_stessa_2 do
         tree_depth: 0, #hierarchy depth 0 == grade
         item_lookup: 'ResourceJoin',
         resource_code: 'depth_0_materials',
-        table_partial_name: "simple_header"
+        table_partial_name: "generic_table"
       },
       #semester header
       { tree_type_id: @tt.id,
@@ -578,7 +578,7 @@ namespace :seed_stessa_2 do
         tree_depth: 1,
         item_lookup: 'ResourceJoin',
         resource_code: 'theme',
-        table_partial_name: "simple_header"
+        table_partial_name: "generic_table"
       },
       #semester lesson plans header
       { tree_type_id: @tt.id,
@@ -590,7 +590,7 @@ namespace :seed_stessa_2 do
         tree_depth: 1,
         item_lookup: 'ResourceJoin',
         resource_code: 'lp_folder',
-        table_partial_name: "simple_header"
+        table_partial_name: "generic_table"
       },
       #semester lesson plans header
       { tree_type_id: @tt.id,
@@ -601,7 +601,7 @@ namespace :seed_stessa_2 do
         col_sequence: 0,
         tree_depth: 1,
         item_lookup: 'caps',
-        table_partial_name: "simple_header"
+        table_partial_name: "generic_table"
       },
       #unit header
       { tree_type_id: @tt.id,
@@ -625,7 +625,7 @@ namespace :seed_stessa_2 do
         tree_depth: 2,
         item_lookup: 'ResourceJoin',
         resource_code: 'depth_2_materials',
-        table_partial_name: "simple_header"
+        table_partial_name: "generic_table"
       },
       #Learning Outcome header
       { tree_type_id: @tt.id,
