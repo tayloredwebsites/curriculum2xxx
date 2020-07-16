@@ -430,6 +430,18 @@ namespace :seed_haza_1 do
   desc "create tree type config"
   task create_config: :environment do
     tree_type_config = [
+      #subject_header
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::HEADERS,
+        table_sequence: -1,
+        col_sequence: 0,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: "Subject",
+        resource_code: nil,
+        table_partial_name: "simple_header"
+      },
       #grade header
       { tree_type_id: @tt.id,
         version_id: @ver.id,

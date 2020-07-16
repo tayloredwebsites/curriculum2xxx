@@ -272,6 +272,10 @@ class TreeTypeConfig < BaseRec
             translKeys << subjectsById[r.subject_id].get_versioned_name_key
           end #sourceData[:sectorTreesAssoc].each do |r|
           content << nil if (content.length == 0)
+        when "Subject"
+          header[:text] = "<strong>#{I18n.t('app.labels.subject')}:</strong>"
+          content = { rec: subjectsById[treeRec.subject_id], transl_key: subjectsById[treeRec.subject_id].get_versioned_name_key }
+          translKeys << content[:transl_key]
         when WEEKS
           if sourceData[:outcomeRec]
             header[:text] = I18n.t('trees.labels.duration_weeks_html', weeks: sourceData[:outcomeRec].duration_weeks)

@@ -34,7 +34,7 @@
     <%= link_to(fa_icon("edit"), content[:edit][:path], content[:edit][:options]) if content[:edit] && user_can_edit %>
     <%= html_safe_translations(header[:text]) if header[:text] %>
   	<strong>
-  		<% subcode = content[:rec] && content[:rec][:code] ? " #{content[:rec].subCode}" : ""
+  		<% subcode = content[:rec].class.to_s == "Tree" ? " #{content[:rec].subCode}" : ""
   			 subcode += ":" if !code_is_transl
   		 %>
   		<%= "#{@translations[header[:transl_key]]}#{subcode}" if header[:transl_key] %>
