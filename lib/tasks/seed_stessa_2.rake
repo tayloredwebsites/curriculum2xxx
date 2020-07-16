@@ -899,18 +899,6 @@ namespace :seed_stessa_2 do
         resource_code: 'sec_topic',
         table_partial_name: "resources"
       },
-      #Resources Table
-      { tree_type_id: @tt.id,
-        version_id: @ver.id,
-        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
-        config_div_name: TreeTypeConfig::TABLES,
-        table_sequence: 20,
-        col_sequence: 5,
-        tree_depth: @tt[:outcome_depth],
-        item_lookup: 'Outcome',
-        resource_code: 'sec_topic',
-        table_partial_name: "resources"
-      },
     ]
     TreeTypeConfig.where(
         tree_type_id: @tt.id,

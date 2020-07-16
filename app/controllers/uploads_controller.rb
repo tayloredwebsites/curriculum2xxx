@@ -200,6 +200,14 @@ class UploadsController < ApplicationController
     #   @abortRun = abortWithMessage("ERROR - cannot upload this format tree code yet. #{@treeTypeRec.tree_code_format}")
     # end
 
+    @resourceCodesForModel = Hash.new { |h, k| h[k] = [] }
+    resourceConfigs = TreeTypeConfig.where(
+        tree_type_id: @treeTypeRec.id,
+        version_id: @versionRec.id
+      ).where.not( resource_code: nil )
+
+    resourceConfigs.each { |c| @resourceCodesForModel["#{c[:page_name]}.#{c[:item_lookup]}"] << {resource_code: c[:resource_code], tree_depth: c[:tree_depth]} }
+
     @rowNum = 2
     @recordOrder = 0
     @baseKeyRoot = "#{@treeTypeRec.code}.#{@versionRec.code}.#{@subjectRec.code}"
@@ -406,9 +414,11 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** classTextValue: #{classTextValue}")
         if classTextValue.present?
           Rails.logger.debug("*** classTextValue is present: #{classTextValue}")
+          resource = Resource.create(resource_code: 'class_text')
+          outRec.resources << resource
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
-            outRec.get_resource_key('class_text'),
+            resource.name_key,
             classTextValue
           )
 
@@ -438,12 +448,14 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** evidLearningValue: #{evidLearningValue}")
         if evidLearningValue.present?
           Rails.logger.debug("*** evidLearningValue exists: #{evidLearningValue}")
+          resource = Resource.create(resource_code: 'evid_learning')
           Translation.find_or_update_translation(@localeRec.code, outRec.get_evidence_of_learning_key, evidLearningValue)
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
-            outRec.get_evidence_of_learning_key,
-            evidLearningValue
+            resource.name_key,
+            evidLearningValue,
           )
+          outRec.resources << resource
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -471,11 +483,13 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** explCommentsValue: #{explCommentsValue}")
         if explCommentsValue.present?
           Rails.logger.debug("*** explCommentsValue exists: #{explCommentsValue}")
+          resource = Resource.create(resource_code: 'explain')
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
-            outRec.get_resource_key('explain'),
+            resource.name_key,
             explCommentsValue
           )
+          outRec.resources << resource
           # resource = Resource.find_or_create('explain', outRec.get_resource_key('explain'))
           # outRec.resources << resource
           if text_status == BaseRec::REC_ERROR
@@ -788,19 +802,23 @@ class UploadsController < ApplicationController
       end
     end
     if wroteRecord
-      Tree::RESOURCE_TYPES.each do |type|
-        resource_text = rowH["#{@hierarchies[depth]}::#{type}"]
-        if !resource_text.blank?
-          resource_text = BaseRec.process_resource_content(type, @resource_names['tree'][type], resource_text)
-          resource_key = rec.get_resource_key(type)
-          transl, text_status, text_msg = Translation.find_or_update_translation(
-            @localeRec.code,
-            resource_key,
-            resource_text
-          )
-          # resource = Resource.find_or_create(type, resource_key)
-          # rec.resources << resource if resource
-          rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
+      @resourceCodesForModel["#{TreeTypeConfig::TREE_DETAIL_NAME}.ResourceJoin"].each do |type|
+        resource_code = type[:resource_code]
+        resource_text = rowH["#{@hierarchies[depth]}::#{resource_code}"]
+        if depth == type[:tree_depth]
+          resource = Resource.create(resource_code: resource_code)
+          rec.resources << resource
+          if !resource_text.blank?
+            resource_text = BaseRec.process_resource_content(resource_code, @resource_names['tree'][resource_code], resource_text)
+            transl, text_status, text_msg = Translation.find_or_update_translation(
+              @localeRec.code,
+              resource.name_key,
+              resource_text
+            )
+            # resource = Resource.find_or_create(type, resource_key)
+            # rec.resources << resource if resource
+            rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{resource_code}"
+          end
         end
       end
       #map connected sectors that have not yet been mapped to this LO
@@ -850,11 +868,14 @@ class UploadsController < ApplicationController
         Rails.logger.debug("*** created outrec: #{outRec.inspect}")
       end
       outRecId = outRec.id
-      Outcome::RESOURCE_TYPES.each do |type|
-        resource_text = rowH["Learning Outcome::#{type}"]
+      @resourceCodesForModel["#{TreeTypeConfig::TREE_DETAIL_NAME}.Outcome"].each do |type|
+        resource_code = type[:resource_code]
+        resource_text = rowH["Learning Outcome::#{resource_code}"]
+        resource = Resource.create(resource_code: resource_code)
+        outRec.resources << resource
         if resource_text.present?
-          resource_text = BaseRec.process_resource_content(type, @resource_names['outcome'][type], resource_text)
-          resource_key = outRec.get_resource_key(type)
+          resource_text = BaseRec.process_resource_content(resource_code, @resource_names['outcome'][resource_code], resource_text)
+          resource_key = resource.name_key
           transl, text_status, text_msg = Translation.find_or_update_translation(
             @localeRec.code,
             resource_key,
@@ -1265,12 +1286,14 @@ class UploadsController < ApplicationController
       end #if treeRec
     end
     if currentRec && rowH
-      Dimension::RESOURCE_TYPES.each do |type|
-        resource_text = rowH["#{@dimTypeTitleByCode[dim_type]}::#{type}"]
+      @resourceCodesForModel["#{TreeTypeConfig.dim_page_name(dim_type)}.ResourceJoin"].each do |type|
+        resource_code = type[:resource_code]
+        resource_text = rowH["#{@dimTypeTitleByCode[dim_type]}::#{resource_code}"]
+        resource = Resource.create(resource_code: resource_code)
+        currentRec.resources << resource
         if !resource_text.blank?
-          resource_text = BaseRec.process_resource_content(type, @resource_names['dim'][type], resource_text)
-          currentRec.reload
-          resource_key = currentRec.resource_key(type)
+          resource_text = BaseRec.process_resource_content(resource_code, @resource_names['dim'][resource_code], resource_text)
+          resource_key = resource.name_key
           Translation.find_or_update_translation(
             @localeRec.code,
             resource_key,
@@ -1278,7 +1301,7 @@ class UploadsController < ApplicationController
           )
           # resource = Resource.find_or_create(type, resource_key)
           # currentRec.resources << resource if resource
-          createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
+          createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{resource_code}"
         end
       end
     end
@@ -1304,17 +1327,17 @@ class UploadsController < ApplicationController
     resource_types_by_key = {}
     lookupkeys = []
     Outcome::RESOURCE_TYPES.each do |t|
-      key = Outcome.get_resource_key(t, @treeTypeRec.code, @versionRec.code)
+      key = Resource.get_type_key(@treeTypeRec.code, @versionRec.code, t)
       resource_types_by_key[key] = ['outcome', t]
       lookupkeys << key
     end
     Tree::RESOURCE_TYPES.map do |t|
-      key = Tree.get_resource_type_key(t, @treeTypeRec.code, @versionRec.code)
+      key = Resource.get_type_key(@treeTypeRec.code, @versionRec.code, t)
       resource_types_by_key[key] = ['tree', t]
       lookupkeys << key
     end
     Dimension::RESOURCE_TYPES.map do |t|
-      key = Dimension.get_dim_type_key(t, @treeTypeRec.code, @versionRec.code)
+      key = Resource.get_type_key(@treeTypeRec.code, @versionRec.code, t)
       resource_types_by_key[key] = ['dim', t]
       lookupkeys << key
     end

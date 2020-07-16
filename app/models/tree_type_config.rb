@@ -120,6 +120,7 @@ class TreeTypeConfig < BaseRec
 
   #recognized values for the TreeTypeConfig.page_name field
   TREE_DETAIL_NAME = 'tree_detail_page' #this is the tree show page
+  DIM_DETAIL_PREFIX = 'dim_detail_' #add dim_code to end: e.g., "dim_detail_miscon"
 
   #recognized values for the TreeTypeConfig.config_div_name field
   HEADERS = "headers"
@@ -131,6 +132,9 @@ class TreeTypeConfig < BaseRec
   HOURS = "hours_per_week"
 
 
+  def self.dim_page_name(dim_code)
+    return "#{DIM_DETAIL_PREFIX}#{dim_code}"
+  end
   #TreeTypeConfig fields:
   # tree_type_id
   # version_id
@@ -144,6 +148,7 @@ class TreeTypeConfig < BaseRec
   # resource_code (nil if not looking up a resource)
   # table_partial_name
   #
+
 
   def build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, sourceData, hierarchies, subjectsById, treeRec)
     #if looking up a resource, headerObj should contain resource_code
