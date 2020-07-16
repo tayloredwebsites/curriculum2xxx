@@ -1,34 +1,27 @@
 class ResourcesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_resource, only: [:edit]
+  before_action :find_resourceable, only: [:create]
 
   def new
-    @resource = Resource.create(resource_code: resource_params[:resource_code])
-    ResourceJoin.create(
-        resource_id: @resource.id,
+    @resource = Resource.new(resource_code: resource_params[:resource_code])
+    find_resource_type_translation
+    @join = ResourceJoin.new(
         resourceable_id: resource_params[:resourceable_id],
         resourceable_type: resource_params[:resourceable_type]
       )
-    @translation = Translation.create(
-        locale: @locale_code,
-        key: @resource.name_key
-      )
+    @translation = Translation.new()
     render :edit
   end
 
   def edit
-    @resource_type = Translation.find_translation_name(
-        @locale_code,
-        Resource.get_type_key(@treeTypeRec.code, @versionRec.code, @resource.resource_code),
-        @resource.resource_code
-      )
     @translation = Translation.where(
         locale: @locale_code,
         key: @resource.name_key
       ).first || Translation.create(
         locale: @locale_code,
         key: @resource.name_key
-      )
+      ) if @resource.id
     respond_to do |format|
       format.js
     end
@@ -42,6 +35,21 @@ class ResourcesController < ApplicationController
       format.html
       format.js
     end
+  end
+
+  def create
+    ActiveRecord::Base.transaction do
+      resource = Resource.create(resource_code: resource_params[:resource_code])
+      @resourceable.resources << resource if @resourceable
+      if translation_params
+        Translation.create(
+          :locale => @locale_code,
+          :key => resource.name_key,
+          :value => translation_params[:value],
+        )
+      end
+    end
+    render :update
   end
 
   private
@@ -74,5 +82,21 @@ class ResourcesController < ApplicationController
 
     def find_resource
       @resource = Resource.find(params[:id])
+      find_resource_type_translation
+    end
+
+    def find_resource_type_translation
+      @resource_type = Translation.find_translation_name(
+        @locale_code,
+        Resource.get_type_key(@treeTypeRec.code, @versionRec.code, @resource.resource_code),
+        @resource.resource_code
+      )
+    end
+
+    def find_resourceable
+      if resource_params && resource_params[:resourceable_type] &&
+resource_params[:resourceable_id]
+        @resourceable = resource_params[:resourceable_type].constantize.find(resource_params[:resourceable_id])
+      end
     end
 end

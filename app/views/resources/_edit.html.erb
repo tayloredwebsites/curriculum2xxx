@@ -5,8 +5,11 @@
 
   <%= form_for(@resource, remote: true, data: { type: 'script' }) do |f| %>
     <div class="hidden_fields">
-      <%= f.hidden_field :resource_id, name: 'resource[id]', value: @resource.id %>
-      <%= f.hidden_field :translation_id, name: 'translation[id]', value: @translation.id %>
+      <%= f.hidden_field :id, name: 'resource[id]', value: @resource.id if @resource.id %>
+       <%= f.hidden_field :resource_code, name: 'resource[resource_code]', value: @resource.resource_code %>
+      <%= f.hidden_field :resource_resourceable_type, name: 'resource[resourceable_type]', value: @join.resourceable_type if @join %>
+      <%= f.hidden_field :resource_resourceable_type, name: 'resource[resourceable_id]', value: @join.resourceable_id if @join %>
+      <%= f.hidden_field :translation_id, name: 'translation[id]', value: @translation.id if @translation.id %>
     </div>
     <!--feilds for editing the Outcome and Indicator text-->
   	<fieldset>

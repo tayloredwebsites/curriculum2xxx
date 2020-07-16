@@ -24,17 +24,17 @@
       <% if content[:detail_href] %>
       <!-- display content translation as a link to its own detail page -->
         <a href="<%= content[:detail_href] %>">
-          <%= html_safe_translations(@translations[content[:transl_key]]) %>
+          <%= html_safe_translations(@translations[content[:transl_key]], true) %>
         </a>
       <% else %>
       <!-- display content translation as simple text -->
-        <%= html_safe_translations(@translations[content[:transl_key]]) %>
+        <%= html_safe_translations(@translations[content[:transl_key]], true) %>
       <% end %>
     </div><!-- close translation div -->
     <% if is_xl_xs_grid %>
       <div class="padding-right padding-top padding-bottom">
         <%= link_to(fa_icon("edit"), content[:edit][:path], content[:edit][:options]) if content[:edit] %>
-        <%= link_to(fa_icon("times"), content[:delete][:path], {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: html_safe_translations(@translations[content[:transl_key]]) ), method: :patch}) if content[:delete] %>
+        <%= link_to(fa_icon("times"), content[:delete][:path], {:class => "fa-lg", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: html_safe_translations(@translations[content[:transl_key]], false) ), method: :patch}) if content[:delete] %>
       </div><!--close edit/delete div -->
     <% end %>
   </div><!-- close outer div-->

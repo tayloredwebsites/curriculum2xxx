@@ -68,7 +68,7 @@ scope "(:locale)", locale: /tr|en|ar_EG|es/ do
   end
 
   resources :resources,
-    only: [:new, :edit, :update] do
+    only: [:new, :create, :edit, :update] do
     collection do
     end
   end

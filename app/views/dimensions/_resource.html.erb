@@ -6,7 +6,8 @@
           @locale_code,
           Resource.get_type_key(@treeTypeRec.code, @versionRec.code, resource.resource_code),
           nil
-        )
+        ),
+        false
       )
 
     %>
@@ -20,7 +21,8 @@
           @locale_code,
           resource.name_key,
           '--'
-        )
+        ),
+        false
       )
     %>
 
