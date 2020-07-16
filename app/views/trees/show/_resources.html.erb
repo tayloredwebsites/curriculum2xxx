@@ -26,31 +26,33 @@
 -->
 <!-- Supporting Resources Table -->
 <% resource_codes = table[:headers_array].map { |e| e[:resource_code]  } %>
-<div class= 'dark-border margin-top'>
-  <div class='row dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth %>'>
-    <div class='col col-lg-12'>
-      <%= I18n.t('trees.labels.teacher_header') %>
-      <%= link_to(fa_icon("gear"), edit_tree_path(@tree.id, tree: {edit_type: "ref_settings##{resource_codes.join('#')}"}), {:class => "fa-lg", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can?(:manage, Translation) %>
-    </div>
-  </div>
-  <div class='generic-grid generic-grid--cols-2'>
-    <% table[:content_array].each_with_index do |content, ix|
-      puts "INDEX: #{ix}, headers: #{table[:headers_array].count}"
-      header = table[:headers_array][ix]
-      puts "header: #{header.inspect}"
-      %>
-      <div>
-        <div class="dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth %> sub-header-margin">
-          <%= @translations[header[:transl_key]] %>
-          <%= link_to(fa_icon("plus"), header[:add][:path], header[:add][:options]) if @editMe && header[:add] && can?(:create, Resource.new(resource_code: header[:resource_code])) %>
-        </div>
-        <% content.each do |c| %>
-          <%= render partial: "/trees/show/generic_column_cell", locals: {
-                content: c
-                }
-          %>
-        <% end %>
+<div class="related-items-table ">
+  <div class= 'dark-border margin-top'>
+    <div class='row dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth %>'>
+      <div class='col col-lg-12'>
+        <%= I18n.t('trees.labels.teacher_header') %>
+        <%= link_to(fa_icon("gear"), edit_tree_path(@tree.id, tree: {edit_type: "ref_settings##{resource_codes.join('#')}"}), {:class => "fa-lg", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can?(:manage, Translation) %>
       </div>
-    <% end %>
+    </div>
+    <div class='generic-grid generic-grid--cols-2'>
+      <% table[:content_array].each_with_index do |content, ix|
+        puts "INDEX: #{ix}, headers: #{table[:headers_array].count}"
+        header = table[:headers_array][ix]
+        puts "header: #{header.inspect}"
+        %>
+        <div>
+          <div class="dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth %> sub-header-margin">
+            <%= @translations[header[:transl_key]] %>
+            <%= link_to(fa_icon("plus"), header[:add][:path], header[:add][:options]) if @editMe && header[:add] && can?(:create, Resource.new(resource_code: header[:resource_code])) %>
+          </div>
+          <% content.each do |c| %>
+            <%= render partial: "/trees/show/generic_column_cell", locals: {
+                  content: c
+                  }
+            %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
