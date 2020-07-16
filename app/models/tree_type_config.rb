@@ -189,10 +189,13 @@ class TreeTypeConfig < BaseRec
         if (content.length == 0)
           # r = Resource.create(resource_code: resource_code)
           # join = ResourceJoin.create(resource: r, resourceable: sourceData[:rec])
+          resourceable = item_lookup == 'ResourceJoin' ? sourceData[:rec] : sourceData[:rec].outcome
+          resourceable_id = resourceable ? resourceable.id : sourceData[:rec].id
+          resourceable_type = resourceable ? resourceable.class.to_s : sourceData[:rec].class.to_s
           content << {
             rec: ResourceJoin.new(resourceable: sourceData[:rec]),
             transl_key: nil,
-            edit: { path: urls.new_resource_path(resource: { resource_code: resource_code, resourceable_id: sourceData[:rec].id, resourceable_type: sourceData[:rec].class.to_s }),
+            edit: { path: urls.new_resource_path(resource: { resource_code: resource_code, resourceable_id: resourceable_id, resourceable_type: resourceable_type }),
             options: link_options[:popup] }
           }
         end

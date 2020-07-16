@@ -304,11 +304,9 @@ class TreesController < ApplicationController
       @translations[tkey] = tkeyTrans
       selectors_by_parent = tree.parentCodes.map { |pc| "child-of-#{pc.split(".").join("-")}" if pc != "" }
       selectors_by_parent = selectors_by_parent.length > 1 ? "collapsable " + selectors_by_parent.join(" ") : "top-selector" + selectors_by_parent.join(" ")
-      explanation = tree.outcome ? Translation.find_translation_name(
-          @locale_code,
-          tree.outcome.get_explain_key,
-          nil
-        ) : nil
+      explanation = tree.outcome_id ? tree.outcome.resources.where(
+          resource_code: 'explain'
+        ).first : nil
       gb_code = tree.grade_band.code
 
       newHash = {
@@ -332,7 +330,7 @@ class TreesController < ApplicationController
         selectors_by_parent: selectors_by_parent,
         depth_name: @hierarchies[tree.depth-1],
         text: "#{translation}",
-        explanation: explanation,
+        explanation_key: explanation ? explanation.name_key : explanation,
         dimtrees: @dimtrees_by_tree_id[tree.id]
         #connections: @relations[tree.id]
       }
@@ -1356,17 +1354,29 @@ class TreesController < ApplicationController
       @relations[rel.tree_referencer_id] << rel
     end
 
+    outcomeIds = []
     # Translations table no longer belonging to I18n Active record gem.
     # note: Active Record had problems with placeholder conditions in join clause.
     # Consider having Translations belong_to trees and sectors.
     # Current solution: get translation from hash of pre-cached translations.
-    base_keys= @trees.map { |t| t.buildNameKey }
+    base_keys= @trees.map do |t|
+      outcomeIds << t.outcome_id if t.outcome_id
+      t.buildNameKey(@treeTypeRec.code, @versionRec.code, subjIds[t.subject_id.to_s].code )
+    end
+
+    resourceIds = ResourceJoin.where(
+        resourceable_type: 'Outcome',
+        resourceable_id: outcomeIds
+      ).pluck('resource_id')
+
+    tempArray = []
+    Resource.where(id: resourceIds).each { |r| tempArray << r.name_key }
 
     hierarchiesInTrees = @trees.pluck('depth').uniq.map {|d| @hierarchies[d] if d <= @treeTypeRec[:outcome_depth] }
     @hierarchiesInTrees = []
     @hierarchies[0 .. 3].each { |h| @hierarchiesInTrees << h if hierarchiesInTrees.include?(h) }
 
-    tempArray = []
+
     @subjects.each { |k, v| tempArray << "#{v.base_key}.name" }
     @subjects.each { |s, v| tempArray << "#{v.base_key}.abbr" }
     relations.each { |r| tempArray << r.explanation_key }

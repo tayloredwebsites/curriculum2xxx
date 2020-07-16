@@ -4,15 +4,15 @@ module TranslationsHelper
 		return str.gsub('<br>', '').gsub('<p>', '<br>').gsub('</p>', '')
 	end
 
-	def html_safe_translations(translation)
+	def html_safe_translations(translation, skip_error_message)
 		if translation
 			return translation.html_safe
 		else
-			return I18n.translate('translations.errors.missing_translation_for_item')
+			return skip_error_message ? "" : I18n.translate('translations.errors.missing_translation_for_item')
 		end
 	end
 
 	def etcetera(str)
-    return I18n.translate('translations.add_etc', str: str)
+    return skip_error_message ? "" : I18n.translate('translations.add_etc', str: str)
 	end
 end
