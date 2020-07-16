@@ -187,12 +187,13 @@ class TreeTypeConfig < BaseRec
           translKeys << r.name_key
         end #sourceData[:resourcesByCode][resource_code].each do |r|
         if (content.length == 0)
-          r = Resource.create(resource_code: resource_code)
-          join = ResourceJoin.create(resource: r, resourceable: sourceData[:rec])
+          # r = Resource.create(resource_code: resource_code)
+          # join = ResourceJoin.create(resource: r, resourceable: sourceData[:rec])
           content << {
-            rec: join,
+            rec: ResourceJoin.new(resourceable: sourceData[:rec]),
             transl_key: nil,
-            edit: { path: urls.edit_resource_path(id: r.id), options: link_options[:popup] }
+            edit: { path: urls.new_resource_path(resource: { resource_code: resource_code, resourceable_id: sourceData[:rec].id, resourceable_type: sourceData[:rec].class.to_s }),
+            options: link_options[:popup] }
           }
         end
       elsif sourceData && treeTypeRec.dim_codes.split(',').include?(dim_item_lookup)
