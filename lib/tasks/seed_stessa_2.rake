@@ -1102,12 +1102,7 @@ namespace :seed_stessa_2 do
     initial_resource_count = Resource.count
     initial_resource_join_count = ResourceJoin.count
     missing_resources_found = 0
-    resourceConfigs = TreeTypeConfig.where(
-        tree_type_id: @tt.id,
-        version_id: @tt.id
-      ).where.not(
-      resource_code: nil
-      ).pluck("item_lookup", "resource_code")
+    failed_to_create = 0
 
     Tree.all.each do |tree|
       type_map = {}
@@ -1119,12 +1114,19 @@ namespace :seed_stessa_2 do
       Translation.where(key: keys).each do |transl|
         key = transl.key
         type = type_map[key]
-        resource = Resource.find_resource(type, key)
+        resource = tree.resources.where(resource_code: type).first
         if resource.nil?
           missing_resources_found += 1
-          resource = Resource.create(:resource_code => type, :base_key => key)
-          tree.resources << resource
-          puts "Created and mapped Resource rec for translation key: #{key}"
+          begin
+            ActiveRecord::Base.transaction do
+              resource = Resource.create(:resource_code => type)
+              tree.resources << resource
+              transl.update(key: resource.name_key)
+              puts "Created and mapped Resource rec for translation key: #{key}"
+            end
+          rescue
+            failed_to_create += 1
+          end
         end #if resource.nil?, create and connect
       end #Translation.where(key: keys).each do |transl|
     end #Tree.all.each do |tree|
@@ -1139,12 +1141,19 @@ namespace :seed_stessa_2 do
       Translation.where(key: keys).each do |transl|
         key = transl.key
         type = type_map[key]
-        resource = Resource.find_resource(type, key)
+        resource = outc.resources.where(resource_code: type).first
         if resource.nil?
           missing_resources_found += 1
-          resource = Resource.create(:resource_code => type, :base_key => key)
-          outc.resources << resource
-          puts "Created and mapped Resource rec for translation key: #{key}"
+          begin
+            ActiveRecord::Base.transaction do
+              resource = Resource.create(:resource_code => type)
+              outc.resources << resource
+              transl.update(key: resource.name_key)
+              puts "Created and mapped Resource rec for translation key: #{key}"
+            end
+          rescue
+            failed_to_create += 1
+          end
         end #if resource.nil?, create and connect
       end #Translation.where(key: keys).each do |transl|
     end #Outcome.all.each do |outc|
@@ -1159,12 +1168,19 @@ namespace :seed_stessa_2 do
       Translation.where(key: keys).each do |transl|
         key = transl.key
         type = type_map[key]
-        resource = Resource.find_resource(type, key)
+        resource = dim.resources.where(resource_code: type).first
         if resource.nil?
           missing_resources_found += 1
-          resource = Resource.create(:resource_code => type, :base_key => key)
-          dim.resources << resource
-          puts "Created and mapped Resource rec for translation key: #{key}"
+          begin
+            ActiveRecord::Base.transaction do
+              resource = Resource.create(:resource_code => type)
+              dim.resources << resource
+              transl.update(key: resource.name_key)
+              puts "Created and mapped Resource rec for translation key: #{key}"
+            end
+          rescue
+            failed_to_create += 1
+          end
         end #if resource.nil?, create and connect
       end #Translation.where(key: keys).each do |transl|
     end #Dimension.all.each do |dim|
@@ -1175,6 +1191,7 @@ namespace :seed_stessa_2 do
     puts "missing_resources_found: #{missing_resources_found}"
     puts "final resource count: #{Resource.count}"
     puts "final resource_joins count: #{ResourceJoin.count}"
+    puts "failed to create #{failed_to_create} missing resource records"
   end #task create_missing_resources
 
 end
