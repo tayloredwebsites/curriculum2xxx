@@ -416,7 +416,7 @@ class UploadsController < ApplicationController
             resource.name_key,
             classTextValue
           )
-          create_loc_translations(resource.name_key, ['Textbook Materials and Resources'])
+          create_loc_translations(resource.name_key, rowH, ['Textbook Materials and Resources'])
 
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
@@ -455,7 +455,7 @@ class UploadsController < ApplicationController
             evidLearningValue
           )
 
-          create_loc_translations(resource.name_key, ['Evidence of Learning'])
+          create_loc_translations(resource.name_key, rowH, ['Evidence of Learning'])
 
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
@@ -495,7 +495,7 @@ class UploadsController < ApplicationController
             explCommentsValue
           )
 
-          create_loc_translations(resource.name_key, ['Explanatory Comments'])
+          create_loc_translations(resource.name_key, rowH, ['Explanatory Comments'])
 
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
@@ -822,7 +822,7 @@ class UploadsController < ApplicationController
             resource.name_key,
             resource_text
           )
-          create_loc_translations(resource.name_key, ["#{@hierarchies[depth]}::#{type}"])
+          create_loc_translations(resource.name_key, rowH, ["#{@hierarchies[depth]}::#{type}"])
           # resource = Resource.find_or_create(type, resource_key)
           # rec.resources << resource if resource
           rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
@@ -848,7 +848,7 @@ class UploadsController < ApplicationController
         thisCodeTransl
       )
 
-      create_loc_translations("#{@baseKeyRoot}.#{codeA.join('.')}.name", rowHNames)
+      create_loc_translations("#{@baseKeyRoot}.#{codeA.join('.')}.name", rowH, rowHNames)
 
       # update hashes
       Rails.logger.debug("+++ codeA.joined: #{codeA.join('.')}")
@@ -893,7 +893,7 @@ class UploadsController < ApplicationController
             resource_text
           )
 
-          create_loc_translations(resource.name_key, ["Learning Outcome::#{type}"])
+          create_loc_translations(resource.name_key, rowH, ["Learning Outcome::#{type}"])
 
         end
       end
@@ -1256,7 +1256,7 @@ class UploadsController < ApplicationController
         dim_name
       )
 
-      create_loc_translations(currentRec.get_dim_name_key, rowHNames)
+      create_loc_translations(currentRec.get_dim_name_key, rowH, rowHNames)
 
       createdOrUpdated = 'Created'
       if treeRec
@@ -1315,7 +1315,7 @@ class UploadsController < ApplicationController
             resource.name_key,
             resource_text
           )
-          create_loc_translations(resource.name_key, "#{@dimTypeTitleByCode[dim_type]}::#{type}")
+          create_loc_translations(resource.name_key, rowH, "#{@dimTypeTitleByCode[dim_type]}::#{type}")
           createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
         end
       end
@@ -1370,7 +1370,7 @@ class UploadsController < ApplicationController
 
   # Create translations in different locales,
   # if provided in the upload file.
-  def create_loc_translations(key, rowHNames)
+  def create_loc_translations(key, rowH, rowHNames)
     @locale_codes.each do |loc|
       translations = []
       rowHNames.map { |n| translations << rowH["#{loc}::#{n}"] }

@@ -53,6 +53,14 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal BaseRec::UPLOAD_DONE, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
     assert_equal 56, Tree.count
+    assert_equal 47, Dimension.count
+    #check that the correct translations are being recorded for both valid locales
+    #for this treeTypeRec
+    tree_name_en = Translation.find_translation_name('en', Tree.active.third.name_key, 'xxx')
+    tree_name_tr = Translation.find_translation_name('tr', Tree.active.third.name_key, 'xxx')
+    assert_equal tree_name_tr, "Turkish Locale::#{tree_name_en}"
+    puts "########TREE NAME EN: #{tree_name_en}"
+    puts "########TREE NAME TR: #{tree_name_tr}"
     assert_equal 29, Resource.count
     assert_equal 29, ResourceJoin.count
     assert_equal 1, ResourceJoin.where(:resourceable_type => 'Tree').count
