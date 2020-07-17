@@ -540,7 +540,7 @@ class UploadsController < ApplicationController
             createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload', rowH, ['Big Idea', 'Specific big idea'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'essq' && colEssq
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload', rowH, ['Essential Questions', 'K-12 Big Idea'])
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload', rowH, ['Essential Questions', 'K-12 Big Idea '])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'concept' && colConcepts
             createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload', rowH, ['Concepts'])
@@ -1256,8 +1256,6 @@ class UploadsController < ApplicationController
         dim_name
       )
 
-      create_loc_translations(currentRec.get_dim_name_key, rowH, rowHNames)
-
       createdOrUpdated = 'Created'
       if treeRec
         dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
@@ -1300,6 +1298,10 @@ class UploadsController < ApplicationController
         end
       end #if treeRec
     end
+    #update locale translations whether
+    #the dimension already existed
+    #or not.
+    create_loc_translations(currentRec.get_dim_name_key, rowH, rowHNames)
     if currentRec && rowH
       Dimension::RESOURCE_TYPES.each do |type|
         resource_text = rowH["#{@dimTypeTitleByCode[dim_type]}::#{type}"]
