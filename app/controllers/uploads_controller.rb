@@ -1372,13 +1372,15 @@ class UploadsController < ApplicationController
   # if provided in the upload file.
   def create_loc_translations(key, rowH, rowHNames)
     @locale_codes.each do |loc|
-      translations = []
-      rowHNames.map { |n| translations << rowH["#{loc}::#{n}"] }
-      loc_translation = translations[0]
+      loc_translation = nil
+      rowHNames.each do |n|
+        temp = rowH["#{loc}::#{n}"]
+        loc_translation = temp if temp.present?
+      end
       if loc_translation.present?
         Translation.find_or_update_translation(
           loc,
-          resource.name_key,
+          key,
           loc_translation
         )
       end
