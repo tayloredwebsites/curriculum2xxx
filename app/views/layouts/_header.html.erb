@@ -1,7 +1,9 @@
 <header id='pageHeader' class='d-flex flex-row navbar justify-content-between'>
   <div class="col-12 navbar navbar-expand-sm flexContainer">
     <a id='pageHeaderLogo' class='' href='#'>
-      <div class='logoImage nav-item'></div>
+      <% if !tfv_design?(@treeTypeRec.code) %>
+        <div class='logoImage nav-item'></div>
+      <% end %>
     </a>
     <div id='pageHeaderTitle--mobile' class='nav-item'>
       <h1 class='text-center'><%= @appTitle if current_user.present? %></h1>

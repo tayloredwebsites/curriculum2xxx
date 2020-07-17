@@ -112,6 +112,10 @@ namespace :seed_haza_1 do
     #To Do - Enter translations for curriculum_title_key
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, 'curriculum.haza.title', 'Hazleton STEAM Curriculum')
     throw "ERROR updating curriculum.haza.title translation: #{message}" if status == BaseRec::REC_ERROR
+    #To Do - Enter translations for curriculum_title_key
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, 'curriculum.haza.title', 'Hazleton STEAM Plan de estudios')
+    throw "ERROR updating curriculum.haza.title translation: #{message}" if status == BaseRec::REC_ERROR
+
 
     puts "Curriculum (Tree Type) is created for haza "
     puts "  Created Curriculum: #{@tt.code} with Hierarchy: #{@tt.hierarchy_codes}"
