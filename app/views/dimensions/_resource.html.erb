@@ -1,15 +1,29 @@
 <ul class='grid-item'>
   <div class='dimension-header'>
-    <%= Dimension.get_resource_name(resource, @treeTypeRec.code, @versionRec.code, @locale_code, 'Missing Category Title') %>
-  </div>
-  <li class="dimension-item padding-left padding-right min-height">
-    <%= link_to(fa_icon("edit"), edit_dimension_path(@dimension.id, dimension: { resource_code: resource }), {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(@dimension.dim_code) %>
     <%=
-      @dimension.resource_name(
-        @locale_code,
-        resource,
-        ""
-      ).html_safe
+      html_safe_translations(
+        Translation.find_translation_name(
+          @locale_code,
+          Resource.get_type_key(@treeTypeRec.code, @versionRec.code, resource.resource_code),
+          nil
+        ),
+        false
+      )
+
+    %>
+  </div>
+  <% path = resource.id ? edit_resource_path(resource.id) : new_resource_path(resource: { resource_code: resource.resource_code, resourceable_id: @dimension.id, resourceable_type: 'Dimension' }) %>
+  <li class="dimension-item padding-left padding-right min-height">
+    <%= link_to(fa_icon("edit"), path, {:class => "fa-lg pull-right", :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit_type?(@dimension.dim_code) %>
+    <%=
+      html_safe_translations(
+        Translation.find_translation_name(
+          @locale_code,
+          resource.name_key,
+          '--'
+        ),
+        false
+      )
     %>
 
   </li>

@@ -122,5 +122,4 @@ class SectorsController < ApplicationController
   end
 
 
-
 end

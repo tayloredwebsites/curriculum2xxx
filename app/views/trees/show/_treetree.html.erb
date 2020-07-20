@@ -1,41 +1,70 @@
+<!--
+  TreeTree Table
+    locals:
+      table: {
+        tree: treeRec,
+        num_rows: Integer,
+        headers_array: [{
+            parent_transl_key: nil || str,
+            transl_key: str,
+            add: nil || {path, options: {}}, //only set for first header
+            class: Class # (for cancan)
+          }]
+        content_array: [ //should be sorted by subject_id of rec
+            {
+              rec: rec, #build this info, don't just pass a record
+              edit: nil || {
+                path: edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}),
+                options: {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'},
+              },
+              delete: {
+                path: tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}),
+                options: {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}
+              }
+            },
+            {...}
+          ]
+      }
+-->
+
 <!-- Connections to Other Outcomes Table -->
-<div class='related-items-table'>
-  <div class='row subject-relations center-label-bold top-label'>
+<% detail_title = I18n.t('trees.labels.outcome_connections', outcome: @hierarchies[@treeTypeRec[:outcome_depth]].pluralize) %>
+<div class='margin-top related-items-table'>
+  <div class='row dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth%>'>
     <div class='col col-lg-12'>
       <%= detail_title %>
-        <% if @editMe && can_edit && false %>
-          <a href="#"><span class="pull-right">
-            <i class="fa fa-plus-square fa-lg"></i>
-          </span></a>
+        <% add_action_defs = table[:headers_array][0][:add]
+           if @editMe && can?(:manage, TreeTree) && add_action_defs %>
+           <%= link_to(fa_icon("plus-square"), add_action_defs[:path], add_action_defs[:options]) %>
         <% end %>
     </div>
   </div>
   <div class="row">
     <div class='connections-grid'>
       <div class='connections-header'>
-        <div class='center-label sub-header-margin'>
+        <div class='colorful-header colorful-header-<%= @treeTypeRec.outcome_depth%> sub-header-margin'>
           <%= I18n.t('trees.labels.relation') %>
         </div>
       </div>
       <div class='connections-header'>
-        <div class='center-label sub-header-margin'>
+        <div class='colorful-header colorful-header-<%= @treeTypeRec.outcome_depth%> sub-header-margin'>
           <%= I18n.t('app.labels.subject') %>
         </div>
       </div>
       <div class='connections-header'>
-        <div class='center-label sub-header-margin'>
+        <div class='colorful-header colorful-header-<%= @treeTypeRec.outcome_depth%> sub-header-margin'>
           <%= I18n.t('app.labels.code') %>
         </div>
       </div>
       <div class='connections-header'>
-        <div class='center-label sub-header-margin'>
+        <div class='colorful-header colorful-header-<%= @treeTypeRec.outcome_depth%> sub-header-margin'>
           <%= I18n.t('app.labels.description') %>
         </div>
       </div>
     </div>
     <div class="connections-grid connections-grid__diagram">
       <div class='connections-header'>
-        <div class='center-label sub-header-margin'>
+        <div class='colorful-header colorful-header-<%= @treeTypeRec.outcome_depth%> sub-header-margin'>
           <%= I18n.t('app.labels.alluvial') %>
         </div>
       </div>
@@ -44,6 +73,7 @@
   <div class="row">
     <div class='connections-grid'>
       <%
+        tree = table[:tree]
         connectionsFound = 0
         alluvial_nodes = [tree.format_code(@locale_code)]
         alluvial_node_colors = [BaseRec.subject_color(tree.subject.code)]
@@ -57,53 +87,56 @@
             }
         tree_code = tree.format_code(@locale_code)
       %>
-      <% if can? :read, TreeTree %>
-        <% @relatedBySubj.each do |subj, rel|%>
-          <% rel.each do |r|
-             connectionsFound += 1
-             alluvial_nodes << r[:code]
-             alluvial_node_colors << BaseRec.subject_color(r[:subj_code])
-             case r[:rel_code]
-                when TreeTree::DEPENDS_KEY
-                  alluvial_links[:source] << connectionsFound
-                  alluvial_links[:target] << 0
-                  alluvial_links[:color] << "rgb(255, 201, 181)"
-                  alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
-                when TreeTree::APPLIES_KEY
-                  alluvial_links[:source] << 0
-                  alluvial_links[:target] << connectionsFound
-                  alluvial_links[:color] << "rgb(255, 253, 181)"
-                  alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
-                else
-                  alluvial_links[:source] << connectionsFound
-                  alluvial_links[:target] << 0
-                  alluvial_links[:color] << "white"
-                  alluvial_links[:label] << "#{tree_code}<br>#{r[:relationship].downcase}<br>#{r[:code]}"
-             end
-             alluvial_links[:value] << 1
-          %>
+      <% if can?(:read, TreeTree) %>
+        <% #remember table[:content_array] is multidimensional, to accomodate generic tables, which may have multiple columns for multiple types of data.
+        # the content_array for this partial, on the other hand, should only have one type of data (which is then displayed across several columns), and therefore should always have a length of 1, and it should hold an array of connected LOs
+        table[:content_array][0].each do |content|
+          if content
+            r = content[:rec]
+               connectionsFound += 1
+               alluvial_nodes << content[:format_code]
+               alluvial_node_colors << BaseRec.subject_color(content[:subj_code])
+               case content[:rel_code]
+                  when TreeTree::DEPENDS_KEY
+                    alluvial_links[:source] << connectionsFound
+                    alluvial_links[:target] << 0
+                    alluvial_links[:color] << "rgb(255, 201, 181)"
+                    alluvial_links[:label] << "#{tree_code}<br>#{content[:rel].downcase}<br>#{content[:format_code]}"
+                  when TreeTree::APPLIES_KEY
+                    alluvial_links[:source] << 0
+                    alluvial_links[:target] << connectionsFound
+                    alluvial_links[:color] << "rgb(255, 253, 181)"
+                    alluvial_links[:label] << "#{tree_code}<br>#{content[:rel].downcase}<br>#{content[:format_code]}"
+                  else
+                    alluvial_links[:source] << connectionsFound
+                    alluvial_links[:target] << 0
+                    alluvial_links[:color] << "white"
+                    alluvial_links[:label] << "#{tree_code}<br>#{content[:rel].downcase}<br>#{content[:format_code]}"
+               end
+               alluvial_links[:value] << 1
+            %>
             <div class='connections-item'>
-              <%= r[:relationship] %>
+              <%= content[:rel] %>
             </div>
             <div class='connections-item'>
-              <%= r[:subj] %>
+              <%= @translations[content[:subj_key]] %>
             </div>
             <div class='connections-item'>
-              <%= r[:code] %>
+              <%= content[:format_code] %>
             </div>
             <div class='connections-item'>
-              <% if r[:tid] == 0 %>
-                <%= @translations[r[:tkey]] %>
+              <% if r.id == 0 %>
+                <%= @translations[content[:transl_key]] %>
               <% else %>
-                <a href='/<%= @locale_code %>/trees/<%= r[:tid] %>'><%= @translations[r[:tkey]] %></a>
+                <a href='/<%= @locale_code %>/trees/<%= r.id %>'><%= @translations[content[:transl_key]] %></a>
               <% end %>
-              <% if @editMe && can_edit %>
-                <%= link_to(fa_icon("times"), tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid], active: false}, tree_tree: {active: false}), {:class => "fa-lg pull-right", 'data-confirm' => I18n.t('app.labels.confirm_deactivate', item: I18n.t("trees.labels.#{subj}") + ": " + r[:code]), method: :patch}) if @editMe && can_edit %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'treetree', attr_id: r[:ttid]}), {:remote => true, :class => "fa-lg pull-right", 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can_edit %>
+              <% if @editMe && can?(:manage, TreeTree) %>
+                <%= link_to(fa_icon("times"), content[:delete][:path], content[:delete][:options]) %>
+                <%= link_to(fa_icon("edit"), content[:edit][:path], content[:edit][:options]) %>
               <% end %>
             </div>
-          <% end %>
-        <% end %>
+        <% end # if content
+          end # table[:content_array].each do |content| %>
       <% end # if can view type %>
       <% if connectionsFound == 0 %>
           <div class='connections-item rel-sectors'>

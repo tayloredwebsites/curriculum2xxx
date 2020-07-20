@@ -14,6 +14,9 @@ class DimensionsController < ApplicationController
         Subject.get_default_name_key(@dimension.subject_code),
         @dimension.subject_code
       )
+
+      @resourcesByCode = Hash.new { |h, k| h[k] = [] }
+      joins = @dimension.resources.map { |r| @resourcesByCode[r.resource_code] << r }
   end
 
   def edit

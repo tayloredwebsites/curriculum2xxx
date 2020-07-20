@@ -12,20 +12,20 @@ class Outcome < BaseRec
   # See special processing behavior for specific
   # resource types in BaseRec.process_resource_content(type, content)
   RESOURCE_TYPES = [
-    "proj_ref",
-    "learn_prog", #lesson plans
-    "class_text",
-    "activity",
-    "teacher_ref",
-    "goal",
-    "explain", #teacher support/explanatory comments
-    "evid_learning",
-    "connections", #capstone connections
-    "sec_topic",
-    "sec_code",
-    "cog_demand", #SEC Cognitive Demand
-    "lp_ss_id", #TO DO: change to lp_google_ss_id: Lesson Plan (expect a Google Spreadsheet Id)
-    "review_comments" #WL Review Comments
+    "proj_ref",  #0
+    "learn_prog", #1- lesson plans
+    "class_text", #2
+    "activity", #3
+    "teacher_ref", #4
+    "goal", #5
+    "explain", #6- teacher support/explanatory comments
+    "evid_learning", #7
+    "connections", #8 - capstone connections
+    "sec_topic", #9
+    "sec_code", #10
+    "cog_demand", #11 - SEC Cognitive Demand
+    "lp_ss_id", #12- TO DO: change to lp_google_ss_id: Lesson Plan (expect a Google Spreadsheet Id)
+    "review_comments" #13 - WL Review Comments
   ]
 
   # Field Translations
@@ -35,12 +35,12 @@ class Outcome < BaseRec
     return base_key + ".evid_learning"
   end
 
-  # deprecated
+  # deprecated - no longer uses valid key
   def get_connections_key
     return base_key + ".connections"
   end
 
-  #deprecated
+  #deprecated - no longer uses valid key
   def get_explain_key
     return base_key + ".explain"
   end
@@ -55,6 +55,12 @@ class Outcome < BaseRec
 
   ######
   # Field Translations: Outcome Resources
+
+
+  # Deprecated - Use Resource#name_key instance method instead
+  #    Retain for migrating old resource translations to
+  #    the new format for keys (new format uses the Resource id
+  #    in the name key).
   def get_resource_key(resource_type)
     if RESOURCE_TYPES.include?(resource_type)
       return "#{base_key}.#{resource_type}"
@@ -63,6 +69,7 @@ class Outcome < BaseRec
     end
   end
 
+  # Deprecated - no longer uses valid key
   # To Do: deprecate the Translation Table for Resource Names (ensure seed file provides these)
   # To Do: provide a default value in call to find_translation_name indicating missing resource name in Seed file
   def self.get_resource_name(resource_type, tree_type_code, version_code, locale_code)
@@ -78,10 +85,12 @@ class Outcome < BaseRec
     return name
   end
 
+  # Deprecated - use Resource#get_type_key model method instead
   def self.get_resource_key(resource_type, tree_type_code, version_code)
     return "curriculum.#{tree_type_code}.#{version_code}.resource_type_name.#{resource_type}"
   end
 
+  # Deprecated - no longer uses valid key
   # To Do: deprecate the Translation Table for Resource Names (ensure seed file provides these)
   # To Do: provide a default value in call to find_translation_name indicating missing resource name in Seed file
   def self.get_resource_hash(resource_type, tree_type_code, version_code, locale_code)
@@ -100,10 +109,12 @@ class Outcome < BaseRec
     }
   end
 
+  # deprecated
   def list_translation_keys
     RESOURCE_TYPES.map { |type| get_resource_key(type) }
   end
 
+  #deprecated
   def list_instance_translation_keys(outc_base_key)
     RESOURCE_TYPES.map { |type| "#{outc_base_key}.#{type}" }
   end

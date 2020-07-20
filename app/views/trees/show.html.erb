@@ -1,146 +1,23 @@
 <% content_for(:title_code, 'trees.show.name') %>
 <% content_for(:page_class, 'trees') %>
 
-<%
-  # to do - refactor this somehow?
-  outcome = @tree
-  component = outcome.present? ? outcome.getParentRec : nil
-  area = component.present? ? component.getParentRec : nil
-  active_dim_trees = @tree.dim_trees.where(:active => true)
-%>
-
 <div class='container'>
-  <!--  loop through all tree items to display (to display multimle LOs when asked to display detail for higher Level tree item) -->
-  <% @tree_items_to_display.each do |tree| %>
-    <%
-      detail_lookup = {
-        "explanation": {tree: tree, indicator: true}, #indicator
-        "explain": {tree: tree, comment: true}, #explanatory comment
-        "sector": {title: @sectorName, expl: I18n.t('trees.labels.how_sectors_related'), details: tree.sector_trees.active, sector: true },
-        "connect": {title: I18n.t('trees.labels.outcome_connections', outcome: (@hierarchies[tree.depth - 1].pluralize if @hierarchies.length > tree.depth - 1)), outcomes: true }
-      }
-      @dimsArray.each do |dim|
-        detail_lookup[:"#{dim[:code]}"] = {
-          title: dim[:name],
-          details: tree.dim_trees.where(:active => true),
-          dim_code: dim[:code],
-          dim: true
-        }
-      end
-    %>
-    <div class='detail-page'>
-      <%
-        @parents_by_depth[tree.id][@treeTypeRec[:outcome_depth]] = tree
-      %>
-
-      <!-- Display the translated descriptions of all parents for this item (Grade, Unit, Chapter, Outcome)  -->
-      <% @detailTables.each_with_index do |h,ix| %>
-        <% rec = @parents_by_depth[tree.id][h[:depth]] if h[:type] == 'header' %>
-        <% if rec
-            name_translation = html_safe_translations(@translations[rec.buildNameKey])
-            code_is_transl = name_translation.delete('0-9').length == 0
-          %>
-          <div class='row subject-<%= h[:name] %>-row'>
-            <div class='col col-6 text-left'>
-              <strong>
-              <%= "#{@subjectByCode[tree.subject.code][:name] if h[:depth] == 0 }#{" #{@hierarchies[h[:depth]]}#{" #{rec.codeArray.last}" if !code_is_transl}:" if h[:depth] > 0}" %>
-              <% if h[:depth] > 0 %>
-                </strong>
-              <% end %>
-              <%= html_safe_translations(@translations[rec.buildNameKey]) %>
-              <% if h[:depth] == 0 %>
-                </strong>
-              <% end %>
-              <% if h[:depth] == @treeTypeRec[:outcome_depth] %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'outcome'}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
-              <% else %>
-                <%= link_to(fa_icon("edit"), edit_tree_path(@tree.id, tree: { edit_type: 'tree', attr_id: rec.id}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
-              <% end %>
-            </div>
-          </div>
-        <% elsif h[:name] == 'weeks' || h[:name] == 'hours' %>
-          <div class='row subject-<%= h[:name] %>-row'>
-            <div class='col col-6 text-left'>
-              <%
-                durations = {
-                  weeks: tree.outcome.duration_weeks == 1 ? I18n.translate('trees.labels.duration_weeks_html', weeks: tree.outcome.duration_weeks).singularize.html_safe : I18n.translate('trees.labels.duration_weeks_html', weeks: tree.outcome.duration_weeks).html_safe,
-                  hours: tree.outcome.hours_per_week == 1 ? I18n.translate('trees.labels.hours_per_week_html', hours: tree.outcome.hours_per_week).singularize.html_safe : I18n.translate('trees.labels.hours_per_week_html', hours: tree.outcome.hours_per_week).html_safe,
-                }
-              %>
-              <%= durations[:"#{h[:name]}"] %>
-              <%= link_to(fa_icon("edit"), edit_tree_path(tree.id, tree: { edit_type: h[:name]}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && (can_edit_type?(h[:name]) || current_user.subject_admin?(@subject_code)) %>
-            </div>
-          </div>
-        <% elsif h[:type] == 'parent_detail'
-            title, code, type, action, cats = h[:title_code_type_action_catsArr][0]
-        %>
-          <%=
-            render partial: "trees/show/#{h[:partial]}", locals: {
-              num_cols: h[:num_cols],
-              num_rows: h[:num_rows],
-              title_code_type_action_catsArr: h[:title_code_type_action_catsArr],
-              detailsHash: @detailsHash,
-              can_edit: can_edit_type?(type) || current_user.subject_admin?(@subject_code),
-              detail_title: title,
-              tree: @tree,
-              indicator: h[:indicator],
-              resource_codes: cats,
-              parents: (h[:depth] ? [@parents_by_depth[tree.id][h[:depth]]] : nil) ,
-              table_depth: h[:depth],
-              table_code: "table#{ix}"
-            }
-          %>
-        <% end #if rec %>
-      <% end #@detail_headers.each_with_index do |h, i| %>
-
-      <div class='col col-lg-12 text-right'>
-          <% if @editMe %>
-            <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", tree_path(@tree.id) ) %>)</span>
-          <% else %>
-            <%= link_to("Edit #{@hierarchies[@treeTypeRec[:outcome_depth]]}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? && (current_is_admin? || can_edit_type?('tree-detail-page')) %>
-            <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
-          <% end %>
-          <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
-        </div>
-
-
-        <% @detailTables.each do |table|
-          title, code, type, action, cats = table[:title_code_type_action_catsArr][0] if table[:type] == 'tree_detail'
-          puts "tableINSPECT: #{table.inspect}"
-          %>
-          <%=
-            render partial: "trees/show/#{table[:partial]}", locals: {
-              num_cols: table[:num_cols],
-              num_rows: table[:num_rows],
-              title_code_type_action_catsArr: table[:title_code_type_action_catsArr],
-              detailsHash: @detailsHash,
-              can_edit: can_edit_type?(type) || current_user.subject_admin?(@subject_code),
-              detail_title: title,
-              tree: tree,
-              indicator: table[:indicator],
-              resource_codes: cats,
-              parents: (table[:depths].length > 0 ? table[:depths].map { |d| @parents_by_depth[tree.id][d]} : nil) ,
-              table_depth: table[:depth],
-              table_code: nil
-            } if table[:type] == 'tree_detail'
-          %>
-        <% end %>
-
-
-
-      <div class='row outcome-row'>
-        <div class='col col-lg-6 text-right'>
-          <% if @editMe && (can_edit_type?('resource') || current_user.subject_admin?(@subject_code)) %>
-            <span class='font-weight-bold'>Editing</span>
-          <% else %>
-            <!-- %= # link_to("Edit LO", tree_path(@tree.id, editme: @tree.id) ) % -->
-          <% end %>
-        </div>
-      </div>
+  <!--  loop through config obj for the headers -->
+  <div class='detail-page'>
+    <% @detailTables[TreeTypeConfig::HEADERS].each do |key, table| %>
+      <%= render partial: "trees/show/#{table[:table_partial_name]}", locals: { table: table } %>
+    <% end %>
+    <div class='col col-lg-12 text-right'>
+      <% if @editMe %>
+        <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", tree_path(@tree.id) ) %>)</span>
+      <% else %>
+        <%= link_to("Edit #{@hierarchies[@treeTypeRec[:outcome_depth]]}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? && can?(:edit, Tree.new(depth: @treeTypeRec.outcome_depth)) %>
+        <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
+      <% end %>
+      <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
     </div>
-  <% end %>
-  <br>
-  <div class="pull-left">
-    <%= I18n.translate("app.labels.last_updated", time: @updated_at) %>
+    <% @detailTables[TreeTypeConfig::TABLES].each do |key, table| %>
+      <%= render partial: "trees/show/#{table[:table_partial_name]}", locals: { table: table } %>
+    <% end %>
   </div>
 </div>

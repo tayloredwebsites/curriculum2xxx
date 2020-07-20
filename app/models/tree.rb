@@ -108,6 +108,10 @@ class Tree < BaseRec
     return "#{self.tree_type.code}.#{self.version.code}.#{self.subject.code}.#{self.grade_band.code}"
   end
 
+  # Deprecated - Use Resource#name_key instance method instead
+  #    Retain for migrating old resource translations to
+  #    the new format for keys (new format uses the Resource id
+  #    in the name key).
   def get_resource_key(resource_type)
     if RESOURCE_TYPES.include?(resource_type)
       return "#{base_key}.#{resource_type}"
@@ -116,6 +120,7 @@ class Tree < BaseRec
     end
   end
 
+  # Deprecated - Use Resource#get_type_key instead
   def self.get_resource_type_key(resource_type, tree_type_code, version_code)
     if RESOURCE_TYPES.include?(resource_type)
       return "curriculum.#{tree_type_code}.#{version_code}.tree_resource_type_name.#{resource_type}"

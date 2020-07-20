@@ -49,13 +49,23 @@ body {
     }
   }
 .colorful-header {
-  text-align: left;
-  min-height: 40px;
+  text-align: center;
+  &:not(.sub-header-margin) {
+    min-height: 40px;
+    font-weight: bold;
+  }
   &.colorful-header-0 { background-color: #d2ccf5; }
   &.colorful-header-1 { background-color: #ffedc1; }
   &.colorful-header-2 { background-color: #ffcaca; }
   &.colorful-header-3 { background-color: #c8e5ff; }
+  div {
+    min-height: 40px;
+  }
 }
+
+/* special styling for headers of tables appearing in the header section of the page */
+.col-8 .colorful-header, .maint-page .colorful-header { text-align: left; }
+
 .sequence-item:not(.colorful-header) + .sequence-item.colorful-header {
  margin-top:4vh;
 }
@@ -207,11 +217,12 @@ End Treeview styles- deprecated. These are for the old Curriculum Tree page.
     display: grid;
     width: 100%;
     overflow-wrap: anywhere;
+    min-height: 70px;
     align-content: space-between;
     &.generic-grid--xl-xs { grid-template-columns: 89% 4%; }
     &.generic-grid--cols-1 { grid-template-columns: 100% }
     &.generic-grid--cols-2 { grid-template-columns: 50% 50%; }
-    &.generic-grid--cols-3 { grid-template-columns: 33% 33% 33%; }
+    &.generic-grid--cols-3 { grid-template-columns: 33.3% 33.4% 33.4%; }
     &.generic-grid--cols-4 { grid-template-columns: 25% 25% 25% 25%; }
     &.generic-grid--cols-5 { grid-template-columns: 20% 20% 20% 20% 20%; }
     &.generic-grid--cols-3-1-1 { grid-template-columns: 18% 18% 18% 28% 18%; }
@@ -228,6 +239,8 @@ End Treeview styles- deprecated. These are for the old Curriculum Tree page.
 .dark-border {
   border: 1px solid black;
 }
+.dark-border--top {border-top: 1px solid black;}
+.dark-border--bottom {border-bottom: 1px solid black;}
 .dark-border--left {border-left: 1px solid black;}
 .dark-border--right {border-right: 1px solid black;}
 

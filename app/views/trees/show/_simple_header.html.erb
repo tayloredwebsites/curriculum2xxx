@@ -1,0 +1,42 @@
+<!--
+	Simple header Table, can be used to build expandable header tables (set expandable to true), or tables as part of the main section of the detail page.
+	  local:
+	    table: {
+		    headers_array: [{  //should only have one entry for partial
+						transl_key: str,
+			    }]
+				content_array: [ //should only have one entry for partial
+					  {
+					    rec: rec,
+			        transl_key: str,
+			        detail_href: nil || path
+			        edit: nil || { path, options: {} },
+			        delete: nil || { path, options: {} },
+					  },
+					  {...}
+					]
+			}
+-->
+<%
+  header = table[:headers_array][0]
+  content = table[:content_array][0]
+  user_can_edit = @editMe && can?(:manage, content[:rec])
+
+  #clone the content translation for this header, and check if it is just a tree code. if code_is_translation, printing  @translation[content[:transl_key]] is redundant
+  rec_is_tree = content[:rec].class.to_s == "Tree"
+  name_translation = html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key]
+  code_is_transl = name_translation && rec_is_tree ? (name_translation == content[:rec].subCode) : false
+
+  subcode = rec_is_tree ? " #{content[:rec].subCode}:" : ""
+  subcode = ":" if code_is_transl
+%>
+<div class="row">
+  <div class='col col-6 text-left'>
+    <%= link_to(fa_icon("edit"), content[:edit][:path], content[:edit][:options]) if content[:edit] && user_can_edit %>
+    <%= html_safe_translations(header[:text], false) if header[:text] %>
+  	<strong>
+  		<%= "#{@translations[header[:transl_key]]}#{subcode}" if header[:transl_key] %>
+  	</strong>
+  	<%= html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key] %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200702021329) do
+ActiveRecord::Schema.define(version: 20200714223753) do
 
   create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "lesson_plan_id", null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.string "teach_strat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["lesson_plan_id"], name: "activity_lp"
   end
 
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.string "dim_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["activity_id"], name: "index_activity_dimensions_on_activity_id"
     t.index ["dimension_id"], name: "index_activity_dimensions_on_dimension_id"
   end
@@ -87,6 +89,7 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.boolean "in_portfolio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["exemplar_authorizor_id"], name: "lp_authorizor_id"
     t.index ["tree_id"], name: "lp_tree_id"
   end
@@ -104,6 +107,7 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.string "lookup_translation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
   end
 
   create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
@@ -120,15 +124,16 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.bigint "resourceable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["resource_id"], name: "index_resource_joins_on_resource_id"
     t.index ["resourceable_type", "resourceable_id"], name: "resourceable"
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.string "base_key", default: "", null: false
     t.string "resource_code", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
   end
 
   create_table "sector_trees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -188,6 +193,23 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.boolean "active", default: true
     t.index ["tree_referencee_id"], name: "index_tree_trees_on_tree_referencee_id"
     t.index ["tree_referencer_id"], name: "index_tree_trees_on_tree_referencer_id"
+  end
+
+  create_table "tree_type_configs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "tree_type_id"
+    t.bigint "version_id"
+    t.string "page_name"
+    t.string "config_div_name"
+    t.integer "table_sequence"
+    t.integer "col_sequence"
+    t.integer "tree_depth"
+    t.string "item_lookup"
+    t.string "resource_code"
+    t.string "table_partial_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tree_type_id"], name: "index_tree_type_configs_on_tree_type_id"
+    t.index ["version_id"], name: "index_tree_type_configs_on_version_id"
   end
 
   create_table "tree_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -260,6 +282,7 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["lesson_plan_id"], name: "user_lp_lp_id"
     t.index ["user_id"], name: "user_lp_user_id"
   end
@@ -271,6 +294,7 @@ ActiveRecord::Schema.define(version: 20200702021329) do
     t.bigint "user_resourceable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "active", default: true, null: false
     t.index ["resource_id"], name: "index_user_resources_on_resource_id"
     t.index ["user_id"], name: "index_user_resources_on_user_id"
     t.index ["user_resourceable_type", "user_resourceable_id"], name: "user_resourceable"

@@ -1,0 +1,87 @@
+<!--
+	Generic Table, can be used to build expandable header tables (set expandable to true), or tables as part of the main section of the detail page.
+	  locals:
+	    table: {
+		    expandable : Boolean,
+		    code: Integer,
+		    depth: nil || Integer,
+		    num_rows: Integer,
+		    headers_array: [{
+		    		parent_transl_key: nil || str,
+						transl_key: str,
+						add: nil || {path, options: {}},
+						class: Class # (for cancan)
+			    }]
+				content_array: [ // this is a multidimensional array
+				  [...],
+				  [
+				    {
+					    rec: rec,
+					    label_key: nil,
+			        transl_key: str,
+			        detail_href: nil || path
+			        edit: nil || { path, options: {} },
+			        delete: nil || { path, options: {} },
+					  },
+					  {...}
+				  ],
+				  [...],
+				  ...
+
+					]
+			}
+-->
+
+<% if table[:expandable] %>
+  <!-- If table is expandable/collapsable render expand button -->
+  <%
+    table_name = @translations[table[:headers_array][0][:transl_key]]
+    table_name = etcetera(table_name) if table[:headers_array].length > 1
+  %>
+	<button class="margin-left btn btn-link block show-btn <%= table[:code] %> js-show-hide-control"
+		data-show-selector='.js-show-hide-table.<%= table[:code] %>'
+		data-hide-selector='.show-btn.<%= table[:code] %>'
+	>
+		[  <%= I18n.translate('app.labels.show_indicators', name: table_name) %>]
+	</button>
+<% end # if table[:expandable] %>
+<!-- Main table. Hidden by default if table[:expandable] is true -->
+<div class='margin-top related-items-table js-show-hide-table <%= table[:expandable] ? " hidden #{table[:code]} col-8" : "" %>'>
+	<div class='row dark-border <%= table[:depth] ? "colorful-header colorful-header-#{table[:depth]}" : "center-label-bold top-label" %> generic-grid generic-grid--cols-<%= table[:headers_array].length %>'>
+		<% table[:headers_array].each_with_index do |col_header, ix| %>
+		  <% header_prefix = col_header[:parent_transl_key] ? "#{@translations[col_header[:parent_transl_key]]}::" : ""  %>
+		  <div class='dark-border--left padding-right padding-left'>
+		  	<!-- Header Text -->
+		  	<% if col_header[:add] && @editMe && can?(:manage, col_header[:class]) %>
+	  	 		 <%= link_to(fa_icon("plus-square"), col_header[:add][:path], col_header[:add][:options]) %>
+		  	<% end # if col_header[:add] && ... && ... %>
+		  	<%= "#{header_prefix}#{@translations[col_header[:transl_key]]}" %>
+				<% if table[:expandable] && ix == table[:headers_array].length - 1 %>
+					<!-- Render collapse button (if table is expandable)-->
+					<button class="margin-left btn btn-link hide-btn <%= table[:code] %> js-show-hide-control"
+						data-hide-selector='.js-show-hide-table.<%= table[:code] %>'
+						data-show-selector='.show-btn.<%= table[:code] %>'
+					>
+						[<%= I18n.translate('app.labels.hide_indicators', name: table_name) %>]
+					</button>
+				<% end %>
+		  </div>
+		<% end # table[:headers_array].each do |col_header| %>
+
+	</div>
+	<!--End of headers-->
+  <!--Start table content-->
+  <div class='row dark-border generic-grid generic-grid--cols-<%= table[:headers_array].length %>'>
+  	<% num_rows = table[:content_array].map { |c| c.length if !c.nil? }.max %>
+  		<% num_rows.times do %>
+  		  <% table[:content_array].each do |content| %>
+  		  	<% c = content.shift() %>
+		  		<%= render partial: "trees/show/generic_column_cell", locals: {
+		  			content: c
+		  		} %>
+		  	<% end %>
+  		<% end %>
+  <!-- end content -->
+  </div>
+<!--close main table-->
+</div>
