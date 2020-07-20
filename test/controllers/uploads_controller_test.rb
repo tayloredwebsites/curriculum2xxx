@@ -53,6 +53,14 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal BaseRec::UPLOAD_DONE, assigns(:upload).status
     assert_equal 0, assigns(:errs).count
     assert_equal 56, Tree.count
+    assert_equal 47, Dimension.count
+    #check that the correct translations are being recorded for both valid locales
+    #for this treeTypeRec
+    tree_name_key = Tree.active.third.name_key
+    tree_name_en = Translation.find_translation_name('en', tree_name_key, 'xxx')
+    tree_name_tr = Translation.find_translation_name('tr', tree_name_key, 'xxx')
+    puts "tree_name_key: #{tree_name_key}"
+    assert_equal tree_name_tr, "Turkish Locale #{tree_name_en}"
     assert_equal 29, Resource.count
     assert_equal 29, ResourceJoin.count
     assert_equal 1, ResourceJoin.where(:resourceable_type => 'Tree').count
@@ -61,7 +69,14 @@ class UploadsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, outc_resources.count
     assert_equal 'explain', outc_resources.first.resource_code
     explain_str = "Examples of mathematical representations could include graphs, charts, histograms, and population changes gathered from simulations or historical data sets. Examples of classroom activities could include providing peer feedback on arguments about whether organisms would have the capacity to produce populations of great size were it not for the fact that environments and resources are finite, or defining problems related to carrying capacity in ecosystems."
-    assert_equal explain_str, Translation.find_translation_name(@loc_en.code, outc_res_key, 'xxx')
+    explain_name_en = Translation.find_translation_name(@loc_en.code, outc_res_key, 'xxx')
+    explain_name_tr = Translation.find_translation_name(@loc_tr.code, outc_res_key, 'xxx')
+    assert_equal explain_str, explain_name_en
+    assert_equal explain_name_tr, "Turkish Locale #{explain_name_en}"
+    idea = Dimension.where(dim_code: 'bigidea').first
+    idea_name_en = Translation.find_translation_name(@loc_en.code, idea.get_dim_name_key, 'xxx')
+    idea_name_tr = Translation.find_translation_name(@loc_tr.code, idea.get_dim_name_key, 'xxx')
+    assert_equal idea_name_tr, "Turkish Locale #{idea_name_en}"
   end
 
 

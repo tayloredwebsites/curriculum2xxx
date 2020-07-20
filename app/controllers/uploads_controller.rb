@@ -314,28 +314,28 @@ class UploadsController < ApplicationController
             Rails.logger.debug("*** Process Grade field: #{hierarchyCodeArray.join('.')} - #{@gradeCode}")
             # use the grade number as the code
             gradeCode = lookupItemCodeForName(@gradeCode, hierarchyCodeArray.join('.'))
-            hierarchyCodeArray = processField(hierarchyCodeArray, @gradeCode, @gradeCode, ix, rowH)
+            hierarchyCodeArray = processField(hierarchyCodeArray, @gradeCode, @gradeCode, ix, rowH, ['Grade', 'Proposed Grade'])
           elsif hCode == 'sem' && colSemesterCode
             # if semester code is numeric, use that for the code
             minCode = minTwoDigCode(colSemesterCode, ' ', '')
             Rails.logger.debug("*** minCode: #{minCode}")
             semCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
             Rails.logger.debug("*** semCode: #{semCode}")
-            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, semCode, ix, rowH)
+            hierarchyCodeArray = processField(hierarchyCodeArray, semCode, semCode, ix, rowH, ['Semester'])
             Rails.logger.debug("*** Process Semester field: #{hierarchyCodeArray.join('.')} - #{colSemesterCode}")
           elsif hCode == 'unit' && colUnitName
             # get a code for the unit name (assigned sequentially as found)
             Rails.logger.debug("*** Process Unit field: #{hierarchyCodeArray.join('.')} - #{colUnitName}")
             minCode = minTwoDigCode(colUnitName, ' ', '')
             unitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
-            hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix, rowH)
+            hierarchyCodeArray = processField(hierarchyCodeArray, unitCode, colUnitName, ix, rowH, ['Unit', 'Unit Name'])
           elsif hCode == 'subunit' #  if no sub_unit value passed in, write a special record to allow attaching competencies below it
             # get a code for the sub-unit name, if given (assigned sequentially as found)
             # optional records look like: <code: "<grade>.<unit>.", name_key: nil, base_key: "">
             Rails.logger.debug("*** Process Sub Unit field: #{hierarchyCodeArray.join('.')} - #{colSubUnitName}")
             minCode = minTwoDigCode(colSubUnitName, ' ', '')
             subUnitCode = lookupItemCodeForName(minCode, hierarchyCodeArray.join('.'))
-            hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix, rowH)
+            hierarchyCodeArray = processField(hierarchyCodeArray, subUnitCode, colSubUnitName, ix, rowH, ['Sub unit'])
           elsif (hCode == 'lo' || hCode == 'comp') && colLoDesc
             Rails.logger.debug("*** colLoDesc: #{colLoDesc}, colLoDesc: #{colLoDesc}, colFullLoCode: #{colFullLoCode}")
             if colFullLoCode.present?
@@ -345,7 +345,7 @@ class UploadsController < ApplicationController
               colLoCode = lookupItemCodeForName(minTwoDigCode(colLoDesc, ' ', ''), hierarchyCodeArray.join('.'))
             end
             Rails.logger.debug("*** colLoCode: #{colLoCode}")
-            hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix, rowH)
+            hierarchyCodeArray = processField(hierarchyCodeArray, colLoCode, colLoDesc, ix, rowH, ['Learning Outcome', 'Proposed Student Competences'])
             Rails.logger.debug("*** To Do - Process LO field: #{hierarchyCodeArray.join('.')} - #{colLoDesc}")
           else
             Rails.logger.debug("*** skip this code")
@@ -416,6 +416,7 @@ class UploadsController < ApplicationController
             resource.name_key,
             classTextValue
           )
+          create_loc_translations(resource.name_key, rowH, ['Textbook Materials and Resources'])
 
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
@@ -453,6 +454,9 @@ class UploadsController < ApplicationController
             resource.name_key,
             evidLearningValue
           )
+
+          create_loc_translations(resource.name_key, rowH, ['Evidence of Learning'])
+
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -490,6 +494,9 @@ class UploadsController < ApplicationController
             resource.name_key,
             explCommentsValue
           )
+
+          create_loc_translations(resource.name_key, rowH, ['Explanatory Comments'])
+
           if text_status == BaseRec::REC_ERROR
             @rowErrs << text_msg
             rptMessage = "ERROR: #{text_msg}"
@@ -530,28 +537,28 @@ class UploadsController < ApplicationController
           currentRec = @currentRecs[loCodeString] # tree rec for the learning outcome / competency
 
           if dCode == 'bigidea' && colBigIdea
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'bigidea', 0, 12, @subjectRec.code, colBigIdea, 'From Upload', rowH, ['Big Idea', 'Specific big idea'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{bigideaDimTypeName}: #{colBigIdea}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'essq' && colEssq
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'essq', 0, 12, @subjectRec.code, colEssq, 'From Upload', rowH, ['Essential Questions', 'K-12 Big Idea '])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{essqDimTypeName}: #{colEssq}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'concept' && colConcepts
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'concept', 0, 12, @subjectRec.code, colConcepts, 'From Upload', rowH, ['Concepts'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{conceptsDimTypeName}: #{colConcepts}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'skill' && colSkills
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'skill', 0, 12, @subjectRec.code, colSkills, 'From Upload', rowH, ['Skills'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{skillDimTypeName}: #{colSkills}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'miscon' && colMiscon
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'miscon', 0, 12, @subjectRec.code, colMiscon, 'From Upload', rowH, ['Misconceptions'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{misconDimTypeName}: #{colMiscon}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'pract' && colPractice
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'pract', 0, 12, @subjectRec.code, colPractice, 'From Upload', rowH, ['Associated Practices'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colPractice}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'standardus' && colUsStandard
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'standardus', 0, 12, @subjectRec.code, colUsStandard, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'standardus', 0, 12, @subjectRec.code, colUsStandard, 'From Upload', rowH, ['US Standard'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colUsStandard}", createdOrUpdated]) if createdOrUpdated.present?
           elsif dCode == 'standardeg' && colEgStandard
-            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'standardeg', 0, 12, @subjectRec.code, colEgStandard, 'From Upload', rowH)
+            createdOrUpdated = createOrUpdateDimRecs(currentRec, @subjectRec.id, 'standardeg', 0, 12, @subjectRec.code, colEgStandard, 'From Upload', rowH, ['Egyptian Standard'])
             @rptRecs << [@rowNum.to_s,'','','','',''].concat([loCodeString, "#{practDimTypeName}: #{colEgStandard}", createdOrUpdated]) if createdOrUpdated.present?
           else
             Rails.logger.debug("*** skip the '#{dCode}' dimension")
@@ -583,7 +590,8 @@ class UploadsController < ApplicationController
               @subjectRec.code,
               dim_text,
               'From Upload',
-              rowH
+              rowH,
+              [dim_name]
             )
             @rptRecs << [@rowNum.to_s,'','','','',''].concat(["", "#{dim_name}: #{dim_text}", createdOrUpdated]) if createdOrUpdated.present?
           end
@@ -614,7 +622,7 @@ class UploadsController < ApplicationController
     @rptRecs << ['','','','','','','','','End of Report']
   end
 
-  def processField(parentCodeArray, code, codeName, ix, rowH)
+  def processField(parentCodeArray, code, codeName, ix, rowH, rowHColNames)
     ######################################################
     # Write the Grade level tree record (create or update)
     hierarchyCodeArray = parentCodeArray.clone()
@@ -623,7 +631,7 @@ class UploadsController < ApplicationController
     Rails.logger.debug("*** hierarchyCodeArray: #{hierarchyCodeArray.inspect}")
     currentRec = @currentRecs[hierarchyCodeArray.join('.')]
     Rails.logger.debug("*** currentRec: #{currentRec.inspect}")
-    rptRec = writeTreeRecord(ix, parentCodeArray, hierarchyCodeArray, code, codeName, currentRec, '', rowH)
+    rptRec = writeTreeRecord(ix, parentCodeArray, hierarchyCodeArray, code, codeName, currentRec, '', rowH, rowHColNames)
     @rptRecs <<  rptRec if rptRec.present?
     @recordOrder += 1
 
@@ -730,7 +738,7 @@ class UploadsController < ApplicationController
     end
   end
 
-  def writeTreeRecord(depth, parentCodeA, codeA, thisCode, thisCodeTransl, currentRec, explainText, rowH)
+  def writeTreeRecord(depth, parentCodeA, codeA, thisCode, thisCodeTransl, currentRec, explainText, rowH, rowHNames)
     codeStr = codeA.join('.')
     Rails.logger.debug("*** writeTreeRecord codeStr: #{codeStr}, thisCode: #{thisCode}, thisCodeTransl: #{thisCodeTransl}")
     codeA2 = codeA.clone
@@ -814,6 +822,7 @@ class UploadsController < ApplicationController
             resource.name_key,
             resource_text
           )
+          create_loc_translations(resource.name_key, rowH, ["#{@hierarchies[depth]}::#{type}"])
           # resource = Resource.find_or_create(type, resource_key)
           # rec.resources << resource if resource
           rptErrorMsg += "#{rptErrorMsg.length > 0 ? ", " : "" }Updated Resource Type: #{type}"
@@ -838,6 +847,9 @@ class UploadsController < ApplicationController
         "#{@baseKeyRoot}.#{codeA.join('.')}.name",
         thisCodeTransl
       )
+
+      create_loc_translations("#{@baseKeyRoot}.#{codeA.join('.')}.name", rowH, rowHNames)
+
       # update hashes
       Rails.logger.debug("+++ codeA.joined: #{codeA.join('.')}")
       @currentRecs[codeA.join('.')] = {updated: true, rec: rec, transl_name: thisCodeTransl, transl_id: transl_rec.id}
@@ -880,8 +892,9 @@ class UploadsController < ApplicationController
             resource.name_key,
             resource_text
           )
-          # resource = Resource.find_or_create(type, resource_key)
-          # outRec.resources << resource if resource
+
+          create_loc_translations(resource.name_key, rowH, ["Learning Outcome::#{type}"])
+
         end
       end
     else
@@ -1206,7 +1219,7 @@ class UploadsController < ApplicationController
   end
 
 
-  def createOrUpdateDimRecs(treeRec, subject_id, dim_type, min_grade, max_grade, subject_code, dim_name, dim_tree_expl, rowH)
+  def createOrUpdateDimRecs(treeRec, subject_id, dim_type, min_grade, max_grade, subject_code, dim_name, dim_tree_expl, rowH, rowHNames)
     # be able to update Dimension, DimTree (for the tree passed in), and their Translations
     # no updates to Tree
     # note: we are not using dim_desc_key!!!  this is not used.
@@ -1242,6 +1255,7 @@ class UploadsController < ApplicationController
         currentRec.get_dim_name_key,
         dim_name
       )
+
       createdOrUpdated = 'Created'
       if treeRec
         dimExplKey = DimTree.getDimExplanationKey(treeRec[:rec].id, dim_type, currentRec.id)
@@ -1284,6 +1298,10 @@ class UploadsController < ApplicationController
         end
       end #if treeRec
     end
+    #update locale translations whether
+    #the dimension already existed
+    #or not.
+    create_loc_translations(currentRec.get_dim_name_key, rowH, rowHNames)
     if currentRec && rowH
       Dimension::RESOURCE_TYPES.each do |type|
         resource_text = rowH["#{@dimTypeTitleByCode[dim_type]}::#{type}"]
@@ -1299,8 +1317,7 @@ class UploadsController < ApplicationController
             resource.name_key,
             resource_text
           )
-          # resource = Resource.find_or_create(type, resource_key)
-          # currentRec.resources << resource if resource
+          create_loc_translations(resource.name_key, rowH, "#{@dimTypeTitleByCode[dim_type]}::#{type}")
           createdOrUpdated += "#{", " if createdOrUpdated.length > 0}updated resource type: #{type}"
         end
       end
@@ -1349,6 +1366,25 @@ class UploadsController < ApplicationController
       rtArr = resource_types_by_key[rec.key]
       if rtArr
         @resource_names[rtArr[0]][rtArr[1]] = rec.value
+      end
+    end
+  end
+
+  # Create translations in different locales,
+  # if provided in the upload file.
+  def create_loc_translations(key, rowH, rowHNames)
+    @locale_codes.each do |loc|
+      loc_translation = nil
+      rowHNames.each do |n|
+        temp = rowH["#{loc}::#{n}"]
+        loc_translation = temp if temp.present?
+      end
+      if loc_translation.present?
+        Translation.find_or_update_translation(
+          loc,
+          key,
+          loc_translation
+        )
       end
     end
   end

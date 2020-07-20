@@ -92,6 +92,7 @@ module ApplicationHelper
     return ret
   end
 
+  # TO DO: COMMENTS
   def tfv_design?(tt_code)
     return ['tfv', 'haza'].include?(tt_code.downcase)
   end
