@@ -40,15 +40,16 @@
         header = table[:headers_array][ix]
         puts "header: #{header.inspect}"
         %>
-        <div>
+        <div class="min-height dark-border">
           <div class="dark-border colorful-header colorful-header-<%= @treeTypeRec.outcome_depth %> sub-header-margin">
             <%= @translations[header[:transl_key]] %>
             <%= link_to(fa_icon("plus"), header[:add][:path], header[:add][:options]) if @editMe && header[:add] && can?(:create, Resource.new(resource_code: header[:resource_code])) %>
           </div>
           <% content.each do |c| %>
             <%= render partial: "/trees/show/generic_column_cell", locals: {
-                  content: c
-                  }
+                  content: c,
+                  border: false
+                }
             %>
           <% end %>
         </div>

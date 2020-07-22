@@ -77,7 +77,8 @@
   		  <% table[:content_array].each do |content| %>
   		  	<% c = content.shift() %>
 		  		<%= render partial: "trees/show/generic_column_cell", locals: {
-		  			content: c
+		  			content: c,
+		  			border: true
 		  		} %>
 		  	<% end %>
   		<% end %>

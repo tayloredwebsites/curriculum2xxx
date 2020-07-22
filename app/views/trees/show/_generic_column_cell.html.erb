@@ -18,7 +18,7 @@
 <% if content
     is_xl_xs_grid = (@editMe && can?(:manage, content[:rec]))
 %>
-  <div class="min-height dark-border <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
+  <div class="<%= border ? "min-height dark-border" : "" %> <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
     <div class="padding-left padding-right padding-top padding-bottom">
       <% if content[:detail_href] %>
       <!-- display content translation as a link to its own detail page -->
@@ -38,7 +38,7 @@
     <% end %>
   </div><!-- close outer div-->
 <% else %>
-   <div class="min-height dark-border">
+   <div class="<%= border ? "min-height dark-border" : "" %>">
     <div class="padding-left padding-right padding-top padding-bottom"></div>
   </div><!-- close outer div-->
 <% end %>
