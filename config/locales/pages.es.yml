@@ -226,6 +226,8 @@ es:
   lesson_plan:
     title: "Plan de estudios"
     authors: "Autores"
+    segment: "Segmento del plan de lección"
+    segment_with_num: "Plan de Lección Segmento #%{sequence}"
   activity:
     title: "Actividad"
     title_with_num: "Actividad %{sequence}"

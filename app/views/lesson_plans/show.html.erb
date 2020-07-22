@@ -14,7 +14,12 @@
 -->
 <% content_for(:title_code, 'trees.show.name') %>
 <% content_for(:page_class, 'trees') %>
-
+<h2>
+  <% if @lesson_plan.is_exemplar %>
+    <i class="fa fa-star"></i>
+  <% end %>
+  <%= I18n.translate('lesson_plan.title') %>
+</h2>
 <div class="container">
   <div class="detail-page">
     <% @detailTables[:headers].each do |table| %>

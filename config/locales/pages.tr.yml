@@ -128,6 +128,8 @@ tr:
   lesson_plan:
     title: "Ders planı"
     authors: "Yazarlar"
+    segment: "Ders Planı Bölümü"
+    segment_with_num: "Ders Planı Bölüm #%{sequence}"
   activity:
     title: "Aktivite"
     title_with_num: "%{sequence}. Aktivite"

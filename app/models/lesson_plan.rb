@@ -84,7 +84,8 @@ class LessonPlan < BaseRec
   # end #def build_show_page_data
 
   def build_header_table
-   text = "#{is_exemplar ? "<i title='Exemplar Lesson Plan' class='fa fa-star'></i> " : ""}<strong>#{I18n.t('lesson_plan.title')}:</strong>"
+   text = "<strong>#{I18n.t('app.labels.title')}:</strong>"
+   edit_text = "#{I18n.t('lesson_plan.title')} - #{I18n.t('app.labels.title')}"
    urls = Rails.application.routes.url_helpers
    popup_options = {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
    return {
@@ -92,7 +93,7 @@ class LessonPlan < BaseRec
       headers_array: [{text: text }],
       content_array: [{
       	transl_key: name_key,
-      	edit: {path: urls.edit_translation_path(id: 'nil', translation: {key: name_key, title: I18n.t('lesson_plan.title') } ), options: popup_options }
+      	edit: {path: urls.edit_translation_path(id: 'nil', translation: {key: name_key, title: edit_text } ), options: popup_options }
       }]
     }
   end

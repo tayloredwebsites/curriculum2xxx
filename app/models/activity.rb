@@ -28,7 +28,7 @@ class Activity < BaseRec
   def build_header_table(header_type, resourcesByCode, joins, treeType, version)
     urls = Rails.application.routes.url_helpers
     popup_options = {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
-    activity_title = "#{I18n.translate('activity.title_with_num', sequence: sequence)} - #{I18n.t('app.labels.title')}"
+    activity_title = "#{I18n.translate('lesson_plan.segment_with_num', sequence: sequence)} - #{I18n.t('app.labels.title')}"
     header_types = {
       title: {
         text: "<strong>#{I18n.t('app.labels.title')}:</strong>",

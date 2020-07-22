@@ -223,6 +223,8 @@ ar_EG:
   lesson_plan:
     title: "خطة الدرس"
     authors: "المؤلفون"
+    segment: "جزء خطة الدرس"
+    segment_with_num: "الجزء رقم %{sequence} من خطة الدرس"
   activity:
     title: "نشاط"
     title_with_num: "نشاط %{sequence}"
