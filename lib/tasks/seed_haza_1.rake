@@ -400,6 +400,18 @@ namespace :seed_haza_1 do
       ["Notes and Reflections", "Notas y reflexiones"],
     ]
 
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(false), "Exemplar Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, LessonPlan.lp_table_header_key(false), "Exemplar Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+
+
     lp_resource_codes_arr.each_with_index do |resource, i|
       resource_name_key = Resource.get_type_key(
         @tt.code,

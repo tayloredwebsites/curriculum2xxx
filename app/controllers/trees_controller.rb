@@ -847,7 +847,7 @@ class TreesController < ApplicationController
           version_id: @versionRec.id,
           page_name: TreeTypeConfig::TREE_DETAIL_NAME
       ).order('table_sequence', 'col_sequence')
-      @detailTables, translKeys = TreeTypeConfig.build_page(config, @tree, @treeTypeRec, @versionRec, nil, nil)
+      @detailTables, translKeys = TreeTypeConfig.build_page(config, @tree, @treeTypeRec, @versionRec, nil, nil, current_user)
       @translations = Translation.translationsByKeys(@locale_code, translKeys)
     else
       # not a detail page, go back to index page

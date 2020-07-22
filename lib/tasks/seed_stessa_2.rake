@@ -481,6 +481,16 @@ namespace :seed_stessa_2 do
       ["Notes and Reflections", "ملاحظات وتأملات"],
     ]
 
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(false), "Exemplar Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, LessonPlan.lp_table_header_key(false), "Exemplar Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+
     lp_resource_codes_arr.each_with_index do |resource, i|
       resource_name_key = Resource.get_type_key(
         @tt.code,
@@ -945,6 +955,28 @@ namespace :seed_stessa_2 do
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
         resource_code: 'sec_topic',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 20,
+        col_sequence: 6,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'LessonPlan',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 20,
+        col_sequence: 7,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'UserLessonPlan',
         table_partial_name: "resources"
       },
       #################################

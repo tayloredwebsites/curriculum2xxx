@@ -18,6 +18,56 @@ class LessonPlan < BaseRec
   	return "lesson_plan.#{id}.name"
   end
 
+  def self.lp_table_header_key(working)
+  	return "lesson_plan.title.#{working ? 'working' : 'exemplar'}"
+  end
+
+
+  # {
+  #   rec: rec,
+  #   label_key: nil,
+  #   transl_key: str,
+  #   detail_href: nil || path
+  #   edit: nil || { path, options: {} },
+  #   delete: nil || { path, options: {} },
+  # },
+  def self.build_listing_table(tree, user_for_joins)
+  	urls = Rails.application.routes.url_helpers
+  	translKeys = []
+  	header = {transl_key: lp_table_header_key(user_for_joins.present?)}
+  	content = []
+  	translKeys << header[:transl_key]
+  	if user_for_joins
+  	# Looking up working LPs for the current user
+  	  lps = []
+  	  lpsForTree = where(tree: tree).order('sequence')
+  	  lpIds = lpsForTree.pluck('id')
+  	  joins = UserLessonPlan.where(user: user_for_joins, lesson_plan_id: lpIds).group_by(&:lesson_plan_id)
+  	  lpsForTree.each { |lp| lps << lp if joins[lp.id] }
+  	else
+  	# Looking up exemplar LPs for the given tree
+  	  lps = where(tree: tree, is_exemplar: true).order('sequence')
+  	end
+
+  	lps.each do |lp|
+  		content << {
+  			rec: lp,
+  			transl_key: lp.name_key,
+  			detail_href: urls.lesson_plan_path(id: lp.id)
+  		}
+  		translKeys << lp.name_key
+  	end
+
+  	if content.length == 0
+  		content << {
+  			rec: LessonPlan.new,
+  			transl_key: 'nil',
+  		}
+  	end
+
+  	return [header, content, translKeys]
+  end
+
   # def build_show_page_data
   # 	tablesHash = {}
   # 	tablesHash[:headers] = []
@@ -35,10 +85,15 @@ class LessonPlan < BaseRec
 
   def build_header_table
    text = "#{is_exemplar ? "<i title='Exemplar Lesson Plan' class='fa fa-star'></i> " : ""}<strong>#{I18n.t('lesson_plan.title')}:</strong>"
+   urls = Rails.application.routes.url_helpers
+   popup_options = {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
    return {
       table_partial_name: 'trees/show/simple_header',
       headers_array: [{text: text }],
-      content_array: [{transl_key: name_key}]
+      content_array: [{
+      	transl_key: name_key,
+      	edit: {path: urls.edit_translation_path(id: 'nil', translation: {key: name_key, title: I18n.t('lesson_plan.title') } ), options: popup_options }
+      }]
     }
   end
 

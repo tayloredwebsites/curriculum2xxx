@@ -24,7 +24,7 @@
       <% if @editMe %>
         <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", lesson_plan_path(@lesson_plan.id) ) %>)</span>
       <% else %>
-        <%= link_to("Edit #{@translations[@lesson_plan.name_key]}", lesson_plan_path(@lesson_plan.id, editme: @lesson_plan.id) ) if current_user.present? && can?(:edit, @lesson_plan) %>
+        <%= link_to("Edit #{I18n.translate('lesson_plan.title')}", lesson_plan_path(@lesson_plan.id, editme: @lesson_plan.id) ) if current_user.present? && can?(:edit, @lesson_plan) %>
         <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
       <% end %>
       <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
