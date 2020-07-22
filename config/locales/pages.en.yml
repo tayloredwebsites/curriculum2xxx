@@ -223,6 +223,14 @@ en:
       is_same_as_default: "Your new translation is the same as the default."
       updated_key: "Translation for %{key} updated."
       error_creating_code_val: "error creating translation #{code} to: #{val}"
+  lesson_plan:
+    title: "Lesson Plan"
+    authors: "Authors"
+  activity:
+    title: "Activity"
+    title_with_num: "Activity #%{sequence}"
+    time_min: "<strong>Estimated Time:</strong> %{min} minutes"
+    desc: "Description of Activity"
   trees:
     index:
       name: "Mektebim STEM Curriculum"

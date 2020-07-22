@@ -6,9 +6,13 @@ class ResourcesController < ApplicationController
   def new
     @resource = Resource.new(resource_code: resource_params[:resource_code])
     find_resource_type_translation
-    @join = ResourceJoin.new(
+    @join = resource_params[:user_id] ? UserResource.new(
+        user_id: resource_params[:user_id],
+        user_resourceable_id: resource_params[:resourceable_id],
+        user_resourceable_type: resource_params[:resourceable_type]
+      ) : ResourceJoin.new(
         resourceable_id: resource_params[:resourceable_id],
-        resourceable_type: resource_params[:resourceable_type]
+        resourceable_type: resource_params[:resourceable_type],
       )
     @translation = Translation.new()
     render :edit
@@ -40,7 +44,12 @@ class ResourcesController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       resource = Resource.create(resource_code: resource_params[:resource_code])
-      @resourceable.resources << resource if @resourceable
+      if resource_params[:user_id]
+        user_for_join = User.find(resource_params[:user_id])
+        UserResource.create( user_resourceable: @resourceable, resource: resource, user: user_for_join ) if @resourceable
+      else
+        @resourceable.resources << resource if @resourceable
+      end
       if translation_params
         Translation.create(
           :locale => @locale_code,
@@ -61,6 +70,7 @@ class ResourcesController < ApplicationController
         :resource_code,
         :resourceable_id,
         :resourceable_type,
+        :user_id,
       )
       else
         nil

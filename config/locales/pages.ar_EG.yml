@@ -220,6 +220,14 @@ ar_EG:
       is_same_as_default: "ترجمتك الجديدة هي نفس الترجمة الافتراضية."
       updated_key: "تم تحديث ترجمة %{key}."
       error_creating_code_val: "خطأ في إنشاء الترجمة %{code} إلى: %{val}"
+  lesson_plan:
+    title: "خطة الدرس"
+    authors: "المؤلفون"
+  activity:
+    title: "نشاط"
+    title_with_num: "نشاط %{sequence}"
+    time_min: "<strong>الوقت المقدر:</strong> %{min} دقيقة"
+    desc: "وصف النشاط"
   trees:
     index:
       name: "منهاج مصر للعلوم والتكنولوجيا والهندسة والرياضيات"

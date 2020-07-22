@@ -37,6 +37,12 @@
   	<strong>
   		<%= "#{@translations[header[:transl_key]]}#{subcode}" if header[:transl_key] %>
   	</strong>
-  	<%= html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key] %>
+  	<% if content && content[:detail_href] %>
+  	  <a href="<%= content[:detail_href] %>">
+  	    <%= html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key] %>
+  	  </a>
+  	<% else %>
+  	  <%= html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key] %>
+  	<% end %>
   </div>
 </div>

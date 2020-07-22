@@ -73,6 +73,12 @@ scope "(:locale)", locale: /tr|en|ar_EG|es/ do
     end
   end
 
+  resources :lesson_plans,
+    only: [:show] do
+    collection do
+    end
+  end
+
   devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions', passwords: 'passwords' }
   devise_scope :user do
     get '/users/sign_out' => 'sessions#destroy'
@@ -81,7 +87,7 @@ scope "(:locale)", locale: /tr|en|ar_EG|es/ do
     get '/log_out' => 'sessions#destroy'
     get '/logout' => 'sessions#destroy'
   end
-  
+
   get '/users/lang/:locale', to: 'users#lang', as: :lang_user
   resources :users,
     only: [:index, :new, :create, :show, :edit, :update ] do

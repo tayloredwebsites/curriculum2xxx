@@ -1,7 +1,7 @@
 # seed_turkey_v02.rake
 namespace :seed_turkey_v02 do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :create_uploads, :create_sectors, :user_form_translations, :create_config]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :dimension_translations, :outcome_translations, :lesson_plan_translations, :activity_translations, :create_uploads, :create_sectors, :user_form_translations, :create_config]
 
   task setup: :environment do
     @versionNum = 'v02'
@@ -402,6 +402,53 @@ namespace :seed_turkey_v02 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
       rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, resource_name_key, resource[1])
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
+
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task lesson_plan_translations: :environment do
+    lp_resource_codes_arr = [
+      ["Evidence of Achievement of Lesson Plan", "Ders Planına Ulaştığının Kanıtı"],
+      ["Objective of This Day's Lesson", "Bugünün Dersinin Amacı"],
+      ["Notes and Reflections", "Notlar ve Yansımalar"],
+    ]
+
+    lp_resource_codes_arr.each_with_index do |resource, i|
+      resource_name_key = Resource.get_type_key(
+        @tt.code,
+        @ver.code,
+        LessonPlan::RESOURCE_CODES[i],
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, resource_name_key, resource[1])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
+
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task activity_translations: :environment do
+    act_resource_codes_arr = [
+      ['Purpose of Activity', 'Purpose of Activity'],
+      ['Student Organization', 'Student Organization'],
+      ['Teaching Strategy', 'Teaching Strategy'],
+      ['Connections to Projects, Future Sectors, and Other Subjects?', 'Connections to Projects, Future Sectors, and Other Subjects?'],
+      ['Formative Assessment During Learning', 'Formative Assessment During Learning'],
+      ['Description of Activity', 'Description of Activity'],
+    ]
+
+    act_resource_codes_arr.each_with_index do |resource, i|
+      resource_name_key = Resource.get_type_key(
+        @tt.code,
+        @ver.code,
+        Activity::RESOURCE_CODES[i],
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_TR, resource_name_key, resource[1])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end #create_uploads
 

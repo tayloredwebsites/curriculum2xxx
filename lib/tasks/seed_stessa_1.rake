@@ -1,7 +1,7 @@
 # seed_eg_stessa_1rake
 namespace :seed_eg_stem do
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations, :create_config]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :lesson_plan_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations, :create_config]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -441,6 +441,28 @@ puts "SECTOR SET NAME KEY: #{@tt.sector_set_name_key}"
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end
+
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task lesson_plan_translations: :environment do
+    lp_resource_codes_arr = [
+      ["Evidence of Achievement of Lesson Plan", "دليل على تحقيق خطة الدرس"],
+      ["Objective of This Day's Lesson", "الهدف من درس هذا اليوم"],
+      ["Notes and Reflections", "ملاحظات وتأملات"],
+    ]
+
+    lp_resource_codes_arr.each_with_index do |resource, i|
+      resource_name_key = Resource.get_type_key(
+        @tt.code,
+        @ver.code,
+        LessonPlan::RESOURCE_CODES[i],
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
 
   ###################################################################################
   desc "create translations for outcome resources"

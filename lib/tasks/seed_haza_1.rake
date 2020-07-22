@@ -391,6 +391,28 @@ namespace :seed_haza_1 do
     end
   end #create_uploads
 
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task lesson_plan_translations: :environment do
+    lp_resource_codes_arr = [
+      ["Evidence of Achievement of Lesson Plan", "Evidencia de Logro del Plan de Lección"],
+      ["Objective of This Day's Lesson", "Objetivo de la lección de este día"],
+      ["Notes and Reflections", "Notas y reflexiones"],
+    ]
+
+    lp_resource_codes_arr.each_with_index do |resource, i|
+      resource_name_key = Resource.get_type_key(
+        @tt.code,
+        @ver.code,
+        LessonPlan::RESOURCE_CODES[i],
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_ES, resource_name_key, resource[1])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
+
   ####################################################################################
   desc "Translation for user form dropdown options"
   task user_form_translations: :environment do

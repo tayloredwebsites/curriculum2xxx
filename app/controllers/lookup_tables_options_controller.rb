@@ -1,4 +1,5 @@
 class LookupTablesOptionsController < ApplicationController
+  before_action :authenticate_user!
 
 	def bulk_edit
 		@options, translKeys = LookupTablesOption.get_table_array_and_keys(

@@ -125,6 +125,14 @@ tr:
       fl: "Flickr"
       rss: "RSS"
     copyright: "<span>© 21PSTEM developed the app that hosts this curriculum</span>"
+  lesson_plan:
+    title: "Ders planı"
+    authors: "Yazarlar"
+  activity:
+    title: "Aktivite"
+    title_with_num: "%{sequence}. Aktivite"
+    time_min: "<strong>Tahmini Süre:</strong> %{min} dakika"
+    desc: "Aktivitenin tanımı"
   trees:
     index:
       name: "Mektebim STEM Müfredatı"
