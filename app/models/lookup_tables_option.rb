@@ -4,7 +4,7 @@ class LookupTablesOption < BaseRec
 		return "#{treeTypeCode}.#{versionCode}.table.#{table_name}"
 	end
 
-	def lookup_translation_key
+	def name_key
 		return "table.#{table_name}.opt_id.#{id}"
 	end
 

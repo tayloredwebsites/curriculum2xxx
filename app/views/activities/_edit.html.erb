@@ -1,0 +1,24 @@
+<% title_translation_lookup = @activity.id ? 'app.labels.edit_item' : 'app.labels.create_item'%>
+<div class="modal-header">
+   <h3 id="myModalLabel"><%= I18n.translate(title_translation_lookup, item: I18n.translate('lesson_plan.segment'))  %></h3>
+</div>
+<div class="modal-body">
+
+  <%= form_for(@activity, remote: true, data: { type: 'script' }) do |f| %>
+    <!--feilds for editing the Outcome and Indicator text-->
+    <div class="aria-hidden">
+      <%= f.hidden_field :lesson_plan_id, value: @activity.lesson_plan_id %>
+      <%= f.hidden_field :sequence, value: @activity.sequence %>
+    </div>
+    <fieldset>
+      <label for='translation[value]'><%= I18n.translate('app.labels.title') %></label>
+      <input type="text" name="translation[value]">
+    </fieldset>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary">Save changes</button>
+    </div>
+  <% end %>
+
+</div>

@@ -66,6 +66,8 @@ es:
       show_details: "Show Grid"
       last_updated: "Last updated at: %{time}"
       print: "Print"
+    settings:
+      add_options: "Settings: Add Menu Options"
     roles:
       name: 'Roles'
       admin:

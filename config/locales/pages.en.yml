@@ -22,6 +22,7 @@ en:
       confirm_restore_item: "Restore %{item}?"
       create: "Create"
       create_item: "Create %{item}"
+      edit_item: "Edit %{item}"
       subject: "Subject"
       grade_band: "Grade"
       min_grade: "Minimum Grade"
@@ -66,6 +67,8 @@ en:
       show_details: "Show Grid"
       last_updated: "Last updated at: %{time}"
       print: "Print"
+    settings:
+      add_options: "Settings: Add Menu Options"
     roles:
       name: 'Roles'
       admin:

@@ -59,6 +59,8 @@ class LessonPlansController < ApplicationController
     )
   end
 
+
+
   private
 
     def translation_params

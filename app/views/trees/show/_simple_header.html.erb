@@ -27,7 +27,7 @@
   name_translation = html_safe_translations(@translations[content[:transl_key]], false) if content[:transl_key]
   code_is_transl = name_translation && rec_is_tree ? (name_translation == content[:rec].subCode) : false
 
-  subcode = rec_is_tree ? " #{content[:rec].subCode}:" : ""
+  subcode = rec_is_tree ? " #{content[:rec].subCode}:" : ":"
   subcode = ":" if code_is_transl
 %>
 <div class="row">

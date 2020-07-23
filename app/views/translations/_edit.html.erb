@@ -10,7 +10,11 @@
     </div>
     <!--feilds for editing the Outcome and Indicator text-->
   	<fieldset>
-    	<%= f.cktext_area :resource_text, name: 'translation[value]', id: 'resource_text', style: {className: "pull-left"}, value: @translation.value, ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'}  %>
+      <% if @disable_ckeditor %>
+        <%= f.text_area :resource_text, name: 'translation[value]', id: 'resource_text', value: @translation.value %>
+      <% else %>
+    	  <%= f.cktext_area :resource_text, name: 'translation[value]', id: 'resource_text', style: {className: "pull-left"}, value: @translation.value, ckeditor: {toolbar: 'mini', language: @locale_code, uiColor: '#b0e0e6'}  %>
+      <% end %>
     </fieldset>
     <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

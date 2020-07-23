@@ -45,6 +45,8 @@ tr:
       print: "Yazdır"
       errors:
         max_subj_display_count: "Bir defada en fazla %{num} konu görüntülenebilir."
+    settings:
+      add_options: "Settings: Add Menu Options"
   nav_bar:
     home:
       name: "Ev"

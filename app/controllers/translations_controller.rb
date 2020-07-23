@@ -59,6 +59,7 @@ class TranslationsController < ApplicationController
 
   def edit
     @title = translation_params[:title]
+    @disable_ckeditor = translation_params[:disable_ckeditor]
     respond_to do |format|
      format.html
      format.js { render 'shared/edit', :locals => {:edit_partial => 'translations/edit' } }
@@ -113,7 +114,7 @@ class TranslationsController < ApplicationController
 
   def translation_params
     params.require(TRANSLATION_PARAMS).permit(:locale,
-      :key, :value, :title)
+      :key, :value, :title, :disable_ckeditor)
   end
 
 end

@@ -63,6 +63,8 @@ ar_EG:
       show_details: "اظهر الخطوط"
       last_updated: "Last updated at: %{time}"
       print: "طباعة"
+    settings:
+      add_options: "Settings: Add Menu Options"
     roles:
       name: 'الأدوار'
       admin:
