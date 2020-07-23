@@ -41,6 +41,8 @@ gem 'foreman'
 # devise for authentication
 gem 'devise', '~> 4.7.1'
 gem 'devise-i18n'
+gem 'jwt'
+gem 'httparty'
 
 # control permissions by role
 gem 'cancancan', '3.1.0'

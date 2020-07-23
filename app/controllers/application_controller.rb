@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  include Sso::Application
+
+
   protect_from_forgery with: :exception
   before_action :getLocaleCode
   before_action :initTypeCode
@@ -8,6 +11,12 @@ class ApplicationController < ActionController::Base
   before_action :config_devise_params, if: :devise_controller?
 
   include ApplicationHelper
+
+  ### sso_before_actions
+  before_action :set_token_data, unless: -> { is_intercomponent_request? }
+  before_action :verify_token, unless: -> { is_intercomponent_request? }
+  before_action :handle_intercomponent_request, if: -> { is_intercomponent_request? }
+
 
   # put locale in url
   # - see: http://guides.rubyonrails.org/i18n.html#setting-the-locale-from-url-params
