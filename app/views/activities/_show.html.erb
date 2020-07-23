@@ -1,0 +1,38 @@
+<!--
+  ACTIVITIES SHOW PARTIAL - views/activities/_show.html.erb
+  table: {
+    table_partial_name: 'activities/show',
+    activities: [
+      {
+        sequence: 1, # integer- sequence of activity in LP
+        tables: [
+          {
+            table_partial_name: '...',
+            headers_array: [...],
+            content_array: [...],
+          },
+          {...},
+          ...
+        ]
+      },
+      {...},
+      ...
+    ]
+  }
+-->
+<% table[:activities].each do |activity| %>
+  <div class='row margin-top dark-border colorful-header colorful-header-1 generic-grid generic-grid--cols-1'>
+    <%= I18n.translate('lesson_plan.segment_with_num', sequence: activity[:sequence]) %>
+    <%= "- #{@translations[activity[:name_key]]}" if activity[:name_key] %>
+  </div>
+  <div class='row padding-left padding-right padding-top padding-bottom dark-border generic-grid generic-grid--cols-1'>
+    <% activity[:tables].each do |t| %>
+      <%= render partial: t[:table_partial_name], locals: { table: t } %>
+    <% end %>
+  </div>
+<% end %>
+<%
+  segment_name = I18n.translate('lesson_plan.segment')
+  create_segment = "<strong>#{I18n.translate('app.labels.create_item', item: segment_name ) }</strong>"
+%>
+<%= link_to(create_segment.html_safe, new_activity_path(activity: {lesson_plan_id: @lesson_plan.id }), {:class => 'pull-left margint-top margin-bottom', :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if can?(:manage, LookupTablesOption.new) if @editMe && can?(:manage, @lesson_plan) %>

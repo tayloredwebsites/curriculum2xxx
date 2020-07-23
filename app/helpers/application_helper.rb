@@ -100,6 +100,19 @@ module ApplicationHelper
     return ['tfv'].include?(tt_code.downcase)
   end
 
+  # get link_to options to confirm the create action for
+  # 'item_name' before completing the create action.
+  def create_options(item_name)
+    return {
+      :class => "fa-lg",
+      'data-confirm' => I18n.t(
+        'app.labels.confirm_create_item',
+        item_name: item_name
+        ),
+      method: :post
+    }
+  end
+
   #################
   #Build data for tree/show partials
   #'grade,unit,lo,weeks,hours,[bigidea]_[essq],[concept]_[skill],[miscon#2#1],{resource#7},<sector>,+treetree+,{resources#1#3#2}'

@@ -838,6 +838,7 @@ class TreesController < ApplicationController
     token = JWT.encode({email: current_user.email}, JWT_PASSWORD)
     response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
     @sections = response['sections']
+    @sections = [] if @sections.nil?
 
     process_tree = (@tree[:depth] == @treeTypeRec[:outcome_depth])
     if process_tree
@@ -847,7 +848,7 @@ class TreesController < ApplicationController
           version_id: @versionRec.id,
           page_name: TreeTypeConfig::TREE_DETAIL_NAME
       ).order('table_sequence', 'col_sequence')
-      @detailTables, translKeys = TreeTypeConfig.build_page(config, @tree, @treeTypeRec, @versionRec, nil, nil)
+      @detailTables, translKeys = TreeTypeConfig.build_page(config, @tree, @treeTypeRec, @versionRec, nil, nil, current_user)
       @translations = Translation.translationsByKeys(@locale_code, translKeys)
     else
       # not a detail page, go back to index page

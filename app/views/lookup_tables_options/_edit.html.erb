@@ -1,0 +1,24 @@
+<div class="modal-header">
+   <h3 id="myModalLabel"><%= I18n.translate('app.settings.add_options') %></h3>
+</div>
+<div class="modal-body">
+
+  <%= form_for(@options, remote: true, data: { type: 'script' }) do |f| %>
+    <!--feilds for editing the Outcome and Indicator text-->
+
+    <fieldset>
+      <% @tableNameTranslations.each do |table_name, table_translation| %>
+        <input type="hidden" name="option[table_names][]" multiple="multiple" value="<%= table_name %>">
+        <label><%= table_translation %></label>
+        <%= @optionsByTable[table_name] %>
+        <textarea multiple='multiple' name='translation[values][]'></textarea>
+      <% end %>
+    </fieldset>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary">Save changes</button>
+    </div>
+  <% end %>
+
+</div>

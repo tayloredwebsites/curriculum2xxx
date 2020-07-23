@@ -47,7 +47,7 @@
 <% end # if table[:expandable] %>
 <!-- Main table. Hidden by default if table[:expandable] is true -->
 <div class='margin-top related-items-table js-show-hide-table <%= table[:expandable] ? " hidden #{table[:code]} col-8" : "" %>'>
-	<div class='row dark-border <%= table[:depth] ? "colorful-header colorful-header-#{table[:depth]}" : "center-label-bold top-label" %> generic-grid generic-grid--cols-<%= table[:headers_array].length %>'>
+	<div class='row dark-border colorful-header <%= table[:depth] ? " colorful-header-#{table[:depth]}" : "center-label-bold top-label" %> generic-grid generic-grid--cols-<%= table[:headers_array].length %>'>
 		<% table[:headers_array].each_with_index do |col_header, ix| %>
 		  <% header_prefix = col_header[:parent_transl_key] ? "#{@translations[col_header[:parent_transl_key]]}::" : ""  %>
 		  <div class='dark-border--left padding-right padding-left'>
@@ -77,7 +77,8 @@
   		  <% table[:content_array].each do |content| %>
   		  	<% c = content.shift() %>
 		  		<%= render partial: "trees/show/generic_column_cell", locals: {
-		  			content: c
+		  			content: c,
+		  			border: true
 		  		} %>
 		  	<% end %>
   		<% end %>

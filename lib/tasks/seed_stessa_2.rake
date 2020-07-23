@@ -2,7 +2,7 @@
 namespace :seed_stessa_2 do
 
 
-  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations, :create_config]
+  task populate: [:setup, :create_tree_type, :load_locales, :create_admin_user, :create_grade_bands, :create_subjects, :create_uploads, :create_sectors, :dimension_translations, :outcome_translations, :lesson_plan_translations, :activity_translations, :tree_resource_translations, :user_form_translations, :ensure_default_translations, :create_config]
 
   task setup: :environment do
     @versionNum = 'v01'
@@ -471,6 +471,64 @@ namespace :seed_stessa_2 do
       throw "ERROR updating dimension code translation: #{message}" if status == BaseRec::REC_ERROR
     end
   end
+
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task lesson_plan_translations: :environment do
+    lp_resource_codes_arr = [
+      ["Evidence of Achievement of Lesson Plan", "دليل على تحقيق خطة الدرس"],
+      ["Objective of This Day's Lesson", "الهدف من درس هذا اليوم"],
+      ["Notes and Reflections", "ملاحظات وتأملات"],
+    ]
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+
+    rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(false), "Exemplar Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, LessonPlan.lp_table_header_key(false), "Exemplar Lesson Plans")
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+
+    lp_resource_codes_arr.each_with_index do |resource, i|
+      resource_name_key = Resource.get_type_key(
+        @tt.code,
+        @ver.code,
+        LessonPlan::RESOURCE_CODES[i],
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
+
+  ###################################################################################
+  desc "create translations for outcome resources"
+  task activity_translations: :environment do
+    act_resource_codes_arr = [
+      ['Purpose of Activity', 'Purpose of Activity'],
+      ['Student Organization', 'Student Organization'],
+      ['Teaching Strategy', 'Teaching Strategy'],
+      ['Connections to Capstones, Grand Challenges, and Other Subjects?', 'Connections to Capstones, Grand Challenges, and Other Subjects?'],
+      ['Formative Assessment During Learning', 'Formative Assessment During Learning'],
+      ['Description of Activity', 'Description of Activity'],
+    ]
+
+    act_resource_codes_arr.each_with_index do |resource, i|
+      resource_name_key = Resource.get_type_key(
+        @tt.code,
+        @ver.code,
+        Activity::RESOURCE_CODES[i],
+      )
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, resource_name_key, resource[0])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+      rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_AR_EG, resource_name_key, resource[1])
+      throw "ERROR updating lp code translation: #{message}" if status == BaseRec::REC_ERROR
+    end
+  end #create_uploads
+
   ###################################################################################
   desc "create translations for outcome resources"
   task tree_resource_translations: :environment do
@@ -827,7 +885,7 @@ namespace :seed_stessa_2 do
         item_lookup: "TreeTree",
         table_partial_name: "treetree"
       },
-      #Resources Table #11#10#9
+      #Resources Table
       { tree_type_id: @tt.id,
         version_id: @ver.id,
         page_name: TreeTypeConfig::TREE_DETAIL_NAME,
@@ -835,8 +893,7 @@ namespace :seed_stessa_2 do
         table_sequence: 20,
         col_sequence: 0,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: 'Outcome',
-        resource_code: 'lp_ss_id',
+        item_lookup: 'LessonPlan',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -847,8 +904,7 @@ namespace :seed_stessa_2 do
         table_sequence: 20,
         col_sequence: 1,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: 'Outcome',
-        resource_code: 'activity',
+        item_lookup: 'UserLessonPlan',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -860,7 +916,7 @@ namespace :seed_stessa_2 do
         col_sequence: 2,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'class_text',
+        resource_code: 'activity',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -872,7 +928,7 @@ namespace :seed_stessa_2 do
         col_sequence: 3,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'cog_demand',
+        resource_code: 'class_text',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -884,7 +940,7 @@ namespace :seed_stessa_2 do
         col_sequence: 4,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'sec_code',
+        resource_code: 'cog_demand',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -894,6 +950,18 @@ namespace :seed_stessa_2 do
         config_div_name: TreeTypeConfig::TABLES,
         table_sequence: 20,
         col_sequence: 5,
+        tree_depth: @tt[:outcome_depth],
+        item_lookup: 'Outcome',
+        resource_code: 'sec_code',
+        table_partial_name: "resources"
+      },
+      #Resources Table
+      { tree_type_id: @tt.id,
+        version_id: @ver.id,
+        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
+        config_div_name: TreeTypeConfig::TABLES,
+        table_sequence: 20,
+        col_sequence: 6,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
         resource_code: 'sec_topic',

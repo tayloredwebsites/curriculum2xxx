@@ -1,21 +1,50 @@
+<!--
+  @lesson_plan = <LessonPlan>
+  @editMe #boolean
+  @detailTables = {
+    headers,
+    body,
+    activities: [
+      {
+        tables
+      },
+      {...}
+    ]
+  }
+-->
 <% content_for(:title_code, 'trees.show.name') %>
 <% content_for(:page_class, 'trees') %>
-
+<h2>
+  <% if @lesson_plan.is_exemplar %>
+    <i class="fa fa-star"></i>
+  <% end %>
+  <%= I18n.translate('lesson_plan.title') %>
+  <%= link_to(fa_icon("gears"), new_lookup_tables_option_path(option: {table_names: ['student_org', 'teach_strat']}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if can?(:manage, LookupTablesOption.new) %>
+</h2>
 <div class="container">
   <div class="detail-page">
     <% @detailTables[:headers].each do |table| %>
-      <%= render partial: "lesson_plans/show/#{table[:table_partial_name]}", locals: { table: table } %>
+      <%= render partial: table[:table_partial_name], locals: { table: table } %>
     <% end %>
     <div class='col col-lg-12 text-right'>
       <% if @editMe %>
         <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", lesson_plan_path(@lesson_plan.id) ) %>)</span>
       <% else %>
-        <%= link_to("Edit #{@hierarchies[@treeTypeRec[:outcome_depth]]}", tree_path(@lesson_plan.id, editme: @lesson_plan.id) ) if current_user.present? && can? :edit, Tree.new(depth: @treeTypeRec.outcome_depth) %>
+        <%= link_to("Edit #{I18n.translate('lesson_plan.title')}", lesson_plan_path(@lesson_plan.id, editme: @lesson_plan.id) ) if current_user.present? && can?(:edit, @lesson_plan) %>
         <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
+      <% end %>
+      <% if can?(:create, LessonPlan.new(is_exemplar: true)) %>
+        <%= link_to(
+          "<button class='btn btn-info'>#{I18n.translate('lesson_plan.create_exemplar')}</button>".html_safe,
+          make_exemplar_lesson_plans_path(lesson_plan: {id: @lesson_plan}),
+          create_options(I18n.translate('lesson_plan.exemplar_from_lp'))
+        ) %>
       <% end %>
       <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
     </div>
     <% @detailTables[:body].each do |table| %>
-      <%= render partial: "trees/show/#{table[:table_partial_name]}", locals: { table: table } %>
-    <% end %>  </div>
+      <%= render partial: table[:table_partial_name], locals: { table: table } %>
+    <% end %>
+
+  </div>
 </div>

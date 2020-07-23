@@ -28,7 +28,12 @@ class TranslationsController < ApplicationController
   end
 
   def create
-    @translation = Translation.new(translation_params)
+    convert_p_text = translation_params[:value].gsub('<p>', '').split('</p>').join('<br>')
+    @translation = Translation.new(
+      locale: translation_params[:locale],
+      key: translation_params[:key],
+      value: convert_p_text,
+    )
     if @translation.value == I18n.t(@translation.key, locale: @translation.locale)
       flash[:alert] = I18n.t('translations.errors.is_same_as_default')
       render :new
@@ -36,9 +41,15 @@ class TranslationsController < ApplicationController
       if @translation.save
         flash[:success] = I18n.t('translations.errors.updated_key', key: @key)
         # I18n.backend.reload!
-        redirect_to translations_path(@locale_code)
+        #redirect_to translations_path(@locale_code)
+        respond_to do |format|
+         format.js { render 'shared/update' }
+        end
       else
-        render :new
+        #render :new
+        respond_to do |format|
+         format.js { render 'shared/update' }
+        end
       end
     end
   end
@@ -47,15 +58,30 @@ class TranslationsController < ApplicationController
   end
 
   def edit
+    @title = translation_params[:title]
+    @disable_ckeditor = translation_params[:disable_ckeditor]
+    respond_to do |format|
+     format.html
+     format.js { render 'shared/edit', :locals => {:edit_partial => 'translations/edit' } }
+    end
   end
 
   def update
-    if @translation.update(translation_params)
-      flash[:notice] = I18n.t('translations.errors.updated_key', key: @key)
-      # I18n.backend.reload!
-      redirect_to translations_path(@locale_code)
-    else
-      render :edit
+    # if @translation.update(translation_params)
+    #   flash[:notice] = I18n.t('translations.errors.updated_key', key: @key)
+    #   # I18n.backend.reload!
+    #   redirect_to translations_path(@locale_code)
+    # else
+    #   render :edit
+    # end
+    convert_p_text = translation_params[:value].gsub('<p>', '').split('</p>').join('<br>')
+    @translation.update(
+      locale: translation_params[:locale],
+      key: translation_params[:key],
+      value: convert_p_text,
+    )
+    respond_to do |format|
+     format.js { render 'shared/update' }
     end
   end
 
@@ -73,12 +99,22 @@ class TranslationsController < ApplicationController
   private
 
   def find_translation
-    @translation = Translation.find(params[:id])
+    if params[:id] && params[:id] != 'nil'
+      @translation = Translation.find(params[:id])
+    elsif translation_params[:key]
+      @translation = Translation.where(
+        key: translation_params[:key],
+        locale: @locale_code
+      ).first || Translation.new(
+        key: translation_params[:key],
+        locale: @locale_code
+      )
+    end
   end
 
   def translation_params
     params.require(TRANSLATION_PARAMS).permit(:locale,
-      :key, :value)
+      :key, :value, :title, :disable_ckeditor)
   end
 
 end

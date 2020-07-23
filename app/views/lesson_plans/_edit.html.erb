@@ -1,0 +1,30 @@
+<!-- ADD/EDIT Lesson Plans Partial -->
+<%
+  title_translation_lookup = @lesson_plan.id ? 'app.labels.edit_item' : 'app.labels.create_item'
+  lesson_plan_transl = I18n.translate('lesson_plan.title')
+%>
+<div class="modal-header">
+   <h3 id="myModalLabel"><%= I18n.translate(title_translation_lookup, item: lesson_plan_transl)  %></h3>
+</div>
+<div class="modal-body">
+
+  <%= form_for(@lesson_plan, remote: true, data: { type: 'script' }) do |f| %>
+    <div class="aria-hidden">
+      <%= f.hidden_field :tree_id, value: @lp_tree.id %>
+      <%= f.hidden_field :sequence, value: @lesson_plan.sequence %>
+      <%= f.hidden_field :base_key, value: @lesson_plan.base_key %>
+      <%= f.hidden_field :is_exemplar, value: @lesson_plan.is_exemplar %>
+      <%= f.hidden_field :user_id, name: 'user_lesson_plan[user_id]', value: @user_lesson_plan.user_id %>
+    </div>
+    <fieldset>
+      <label for='translation[value]'><%= I18n.translate('app.labels.title_with_type_and_encoding', item_type: lesson_plan_transl, code: @lesson_plan.base_key) %></label>
+      <%= f.text_field :value, name: "translation[value]", value: @translation.value %>
+    </fieldset>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary">Save changes</button>
+    </div>
+  <% end %>
+
+</div>

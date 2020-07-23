@@ -22,7 +22,7 @@ class TreeTypeConfig < BaseRec
   # Build the json object that will feed the partials of the page, and collect
   # translation keys for all translations that will be needed to display the data.
   # return an array with the page JSON object and the array of translation keys.
-  def self.build_page(configArray, rec, treeTypeRec, versionRec, subjectRec, gradeBandRec)
+  def self.build_page(configArray, rec, treeTypeRec, versionRec, subjectRec, gradeBandRec, current_user)
     pageJSON = Hash.new { |h, k| h[k] =  {}}
     translKeys = []
     treesDataByDepth = rec.class.to_s == "Tree" ? self.tree_and_parents_data_by_depth(rec) : {}
@@ -31,7 +31,7 @@ class TreeTypeConfig < BaseRec
     subjectsById = Hash[Subject.where(tree_type_id: treeTypeRec.id).map { |s| [s.id, s] }]
     configArray.each do |c|
       data = (rec.class.to_s == "Tree") ? treesDataByDepth[c.tree_depth] : resourcesByCode
-      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, data, hierarchies, subjectsById, rec)
+      contentArr, header, keys = c.build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, data, hierarchies, subjectsById, rec, current_user)
       translKeys.concat(keys) if !keys.nil?
       self.add_to_pageJSON(pageJSON, c, contentArr, header, rec) if !header.nil?
     end
@@ -41,7 +41,7 @@ class TreeTypeConfig < BaseRec
   # Used by self.build_page to build the content and
   # header data, and collect translation keys
   # for a particular type of data in the config
-  def build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, sourceData, hierarchies, subjectsById, treeRec)
+  def build_detail(treeTypeRec, versionRec, subjectRec, gradeBandRec, sourceData, hierarchies, subjectsById, treeRec, current_user)
     #if looking up a resource, headerObj should contain resource_code
     content = []
     header = {}
@@ -195,6 +195,18 @@ class TreeTypeConfig < BaseRec
           header[:text] = "<strong>#{I18n.t('app.labels.subject')}:</strong>"
           content = { rec: subjectsById[treeRec.subject_id], transl_key: subjectsById[treeRec.subject_id].get_versioned_name_key }
           translKeys << content[:transl_key]
+
+        when "LessonPlan"
+          h, c, k = LessonPlan.build_listing_table(treeRec, nil)
+          header = h
+          content = c
+          translKeys.concat(k)
+
+        when "UserLessonPlan"
+          h, c, k = LessonPlan.build_listing_table(treeRec, current_user)
+          header = h
+          content = c
+          translKeys.concat(k)
 
         # build data for duration of Outcome in weeks
         when WEEKS

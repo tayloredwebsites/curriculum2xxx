@@ -15,13 +15,16 @@ en:
       submit: "Submit"
       edit: "Edit"
       title: "Title"
+      title_with_type_and_encoding: "Title for %{item_type}: %{code}"
       leave_edit_mode: "Leave Edit Mode"
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
       confirm_deactivate_item: "Are you sure you want to deactivate:\n%{item}"
+      confirm_create_item: "Create %{item_name}?"
       confirm_restore_item: "Restore %{item}?"
       create: "Create"
       create_item: "Create %{item}"
+      edit_item: "Edit %{item}"
       subject: "Subject"
       grade_band: "Grade"
       min_grade: "Minimum Grade"
@@ -66,6 +69,8 @@ en:
       show_details: "Show Grid"
       last_updated: "Last updated at: %{time}"
       print: "Print"
+    settings:
+      add_options: "Settings: Add Menu Options"
     roles:
       name: 'Roles'
       admin:
@@ -223,6 +228,18 @@ en:
       is_same_as_default: "Your new translation is the same as the default."
       updated_key: "Translation for %{key} updated."
       error_creating_code_val: "error creating translation #{code} to: #{val}"
+  lesson_plan:
+    title: "Lesson Plan"
+    authors: "Authors"
+    segment: "Lesson Plan Segment"
+    segment_with_num: "Lesson Plan Segment #%{sequence}"
+    create_exemplar: "Create Exemplar"
+    exemplar_from_lp: "new exemplar lesson plan from current lesson plan"
+  activity:
+    title: "Activity"
+    title_with_num: "Activity #%{sequence}"
+    time_min: "<strong>Estimated Time:</strong> %{min} minutes"
+    desc: "Description of Activity"
   trees:
     index:
       name: "Mektebim STEM Curriculum"

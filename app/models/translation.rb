@@ -111,4 +111,14 @@ class Translation < BaseRec
     return ret
   end
 
+  def self.copy_translations_for_key(old_key, new_key)
+    where(key: old_key).each do |t|
+      create(
+          locale: t.locale,
+          key: new_key,
+          value: t.value
+        )
+    end
+  end
+
 end

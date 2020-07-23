@@ -740,4 +740,14 @@ class Tree < BaseRec
     return ret
   end
 
+
+  def build_header_table(hierarchies)
+    urls = Rails.application.routes.url_helpers
+     return {
+        table_partial_name: 'trees/show/simple_header',
+        headers_array: [{text: "<strong>#{hierarchies[self[:depth]]} [#{format_code}]:</strong> " }],
+        content_array: [{rec: self, detail_href: urls.tree_path(id: self.id), transl_key: name_key}]
+      }
+  end
+
 end
