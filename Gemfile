@@ -83,6 +83,8 @@ group :development do
   gem 'rvm-capistrano'
   # this may be needed for developers with rvm?
   # gem 'capistrano-rvm'
+
+  gem 'colorize'
 end
 
 group :test do

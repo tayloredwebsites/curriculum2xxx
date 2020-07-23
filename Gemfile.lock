@@ -82,6 +82,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    colorize (0.8.1)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
     devise (4.7.2)
@@ -269,6 +270,7 @@ DEPENDENCIES
   chromedriver-helper
   ckeditor (= 5.1.0)
   coffee-rails (~> 4.2)
+  colorize
   devise (~> 4.7.1)
   devise-i18n
   factory_bot_rails

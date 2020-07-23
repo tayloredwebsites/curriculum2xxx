@@ -1,8 +1,8 @@
 module Sso::Application
 
-  def handle_intercomponent_request
+  def sso_handle_intercomponent_request
     session[:jwt_token] = params[:jwt_token]
-    set_token_data
+    sso_set_token_data
     if verify_token
       if @current_user.nil?
         password = SecureRandom.urlsafe_base64(16)
@@ -20,8 +20,8 @@ module Sso::Application
     port != APP_PORT && params[:jwt_token].present? 
   end
 
-  def verify_token
-    return true if is_valid_token?
+  def sso_verify_token
+    return true if sso_is_valid_token?
     
     unless @payload.nil?
       user = User.find_by_email @payload['email']
@@ -31,7 +31,7 @@ module Sso::Application
     false
   end
 
-  def is_valid_token?
+  def sso_is_valid_token?
     return false if session[:jwt_token].nil?
 
     return false if @payload['invalid'].present?
@@ -39,7 +39,7 @@ module Sso::Application
     @payload['expires_at'] > Time.now
   end
 
-  def set_token_data
+  def sso_set_token_data
     begin
       token_data = JWT.decode(session[:jwt_token], JWT_PASSWORD, true, algorithm: 'HS256')
     rescue JWT::DecodeError
