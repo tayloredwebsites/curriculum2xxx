@@ -838,6 +838,7 @@ class TreesController < ApplicationController
     token = JWT.encode({email: current_user.email}, JWT_PASSWORD)
     response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
     @sections = response['sections']
+    @sections = [] if @sections.nil?
 
     process_tree = (@tree[:depth] == @treeTypeRec[:outcome_depth])
     if process_tree
