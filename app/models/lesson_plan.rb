@@ -14,6 +14,9 @@ class LessonPlan < BaseRec
   	'reflections',
   ]
 
+  scope :active, -> { where(:active => true) }
+  scope :working, -> { active.where(:is_exemplar => false) }
+
   def name_key
   	return "lesson_plan.#{id}.name"
   end
@@ -35,6 +38,10 @@ class LessonPlan < BaseRec
   	urls = Rails.application.routes.url_helpers
   	translKeys = []
   	header = {transl_key: lp_table_header_key(user_for_joins.present?)}
+  	header[:add] = {
+  		path: urls.new_lesson_plan_path(lesson_plan: {tree_id: tree.id}, user_lesson_plan: {user_id: user_for_joins.id}),
+  		options: {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'},
+  	} if user_for_joins.present?
   	content = []
   	translKeys << header[:transl_key]
   	if user_for_joins

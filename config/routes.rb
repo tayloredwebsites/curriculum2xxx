@@ -74,7 +74,7 @@ scope "(:locale)", locale: /tr|en|ar_EG|es/ do
   end
 
   resources :lesson_plans,
-    only: [:show] do
+    only: [:show, :new, :create] do
     collection do
     end
   end
