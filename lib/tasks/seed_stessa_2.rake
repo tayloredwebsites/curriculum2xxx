@@ -885,7 +885,7 @@ namespace :seed_stessa_2 do
         item_lookup: "TreeTree",
         table_partial_name: "treetree"
       },
-      #Resources Table #11#10#9
+      #Resources Table
       { tree_type_id: @tt.id,
         version_id: @ver.id,
         page_name: TreeTypeConfig::TREE_DETAIL_NAME,
@@ -893,8 +893,7 @@ namespace :seed_stessa_2 do
         table_sequence: 20,
         col_sequence: 0,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: 'Outcome',
-        resource_code: 'lp_ss_id',
+        item_lookup: 'LessonPlan',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -905,8 +904,7 @@ namespace :seed_stessa_2 do
         table_sequence: 20,
         col_sequence: 1,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: 'Outcome',
-        resource_code: 'activity',
+        item_lookup: 'UserLessonPlan',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -918,7 +916,7 @@ namespace :seed_stessa_2 do
         col_sequence: 2,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'class_text',
+        resource_code: 'activity',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -930,7 +928,7 @@ namespace :seed_stessa_2 do
         col_sequence: 3,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'cog_demand',
+        resource_code: 'class_text',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -942,7 +940,7 @@ namespace :seed_stessa_2 do
         col_sequence: 4,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'sec_code',
+        resource_code: 'cog_demand',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -954,7 +952,7 @@ namespace :seed_stessa_2 do
         col_sequence: 5,
         tree_depth: @tt[:outcome_depth],
         item_lookup: 'Outcome',
-        resource_code: 'sec_topic',
+        resource_code: 'sec_code',
         table_partial_name: "resources"
       },
       #Resources Table
@@ -965,18 +963,8 @@ namespace :seed_stessa_2 do
         table_sequence: 20,
         col_sequence: 6,
         tree_depth: @tt[:outcome_depth],
-        item_lookup: 'LessonPlan',
-        table_partial_name: "resources"
-      },
-      #Resources Table
-      { tree_type_id: @tt.id,
-        version_id: @ver.id,
-        page_name: TreeTypeConfig::TREE_DETAIL_NAME,
-        config_div_name: TreeTypeConfig::TABLES,
-        table_sequence: 20,
-        col_sequence: 7,
-        tree_depth: @tt[:outcome_depth],
-        item_lookup: 'UserLessonPlan',
+        item_lookup: 'Outcome',
+        resource_code: 'sec_topic',
         table_partial_name: "resources"
       },
       #################################
