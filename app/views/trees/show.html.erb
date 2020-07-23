@@ -19,5 +19,15 @@
     <% @detailTables[TreeTypeConfig::TABLES].each do |key, table| %>
       <%= render partial: "trees/show/#{table[:table_partial_name]}", locals: { table: table } %>
     <% end %>
+   <div id="tracker-sections-table" class="margin-top related-items-table">
+      <div class='row dark-border colorful-header colorful-header-0  generic-grid generic-grid--cols-1'>
+        Tracker Sections (for subject/grade?)
+      </div>
+      <div id="tracker-sections-data" class="padding-left padding-right dark-border generic-grid generic-grid--cols-1">
+        <% @sections.each do |section| %>
+          <%= intercomponent_link("#{section['section_name']} #{section['section_line_number']}", "http://localhost:3006/sections/#{section['section_id']}") %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

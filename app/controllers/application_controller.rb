@@ -12,10 +12,9 @@ class ApplicationController < ActionController::Base
 
   include ApplicationHelper
 
-  ### sso_before_actions
-  before_action :set_token_data, unless: -> { is_intercomponent_request? }
-  before_action :verify_token, unless: -> { is_intercomponent_request? }
-  before_action :handle_intercomponent_request, if: -> { is_intercomponent_request? }
+  before_action :sso_set_token_data, unless: -> { is_intercomponent_request? }
+  before_action :sso_verify_token, unless: -> { is_intercomponent_request? }
+  before_action :sso_handle_intercomponent_request, if: -> { is_intercomponent_request? }
 
 
   # put locale in url
