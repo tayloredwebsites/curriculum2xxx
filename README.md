@@ -25,8 +25,8 @@ Note: to update existing records, see create_tree_type
     > bundle exec rake set_min_max_grades:run 
 
 ### Run server
-ToDo: update when integrating with SSO
-    > bundle exec rails server
+Note: Use port 3005 when integrating with SSO in dev
+    > bundle exec rails server (-p 3005)
 
 ### Upload TFV curriculum data
     - Go to http://localhost:3000 (3005 when integrating with SSO)
