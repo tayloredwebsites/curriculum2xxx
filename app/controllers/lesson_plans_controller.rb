@@ -95,6 +95,42 @@ class LessonPlansController < ApplicationController
   end
 
 
+  def make_exemplar
+    unauthorized() and return if !can?(:create, LessonPlan.new(is_exemplar: true))
+    @working_lp = LessonPlan.find(lesson_plan_params[:id])
+    @lp_tree = @working_lp.tree
+    @lesson_plan = nil
+    ActiveRecord::Base.transaction do
+
+      @lesson_plan = LessonPlan.create(
+          tree_id: @working_lp.tree_id,
+          sequence: @lp_tree.lesson_plans.exemplar.count + 1,
+          base_key: "#{@working_lp.base_key}.exemplar",
+          is_exemplar: true,
+          exemplar_authorizor_id: current_user.id,
+          gd_owner_email: @working_lp.gd_owner_email,
+          in_portfolio: @working_lp.in_portfolio,
+        )
+      Translation.copy_translations_for_key(@working_lp.name_key, @lesson_plan.name_key)
+      @working_lp.users.each { |user| @lesson_plan.users << user }
+
+      resource_ids = @working_lp.user_resources.pluck('resource_id')
+
+      @lesson_plan.clone_and_join_resources(Resource.where(id: resource_ids), nil)
+
+      @working_lp.activities.each { |activity| @lesson_plan.clone_and_join_activity(activity, nil) }
+
+    end #Transaction
+
+    if @lesson_plan && @lesson_plan.id
+      redirect_to lesson_plan_path({id: @lesson_plan.id})
+    else
+      flash[:notice] = 'failed to save exemplar version of lesson plan'
+      redirect_to lesson_plan_path({id: @working_lp.id})
+    end
+
+  end
+
 
   private
 

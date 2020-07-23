@@ -16,6 +16,7 @@ class LessonPlan < BaseRec
 
   scope :active, -> { where(:active => true) }
   scope :working, -> { active.where(:is_exemplar => false) }
+  scope :exemplar, -> { active.where(:is_exemplar => true) }
 
   def name_key
   	return "lesson_plan.#{id}.name"
@@ -145,6 +146,18 @@ class LessonPlan < BaseRec
   	end
 
   	return [table, translKeys]
+  end
+
+
+  def clone_and_join_activity(old_activity, user_for_joins)
+  	ActiveRecord::Base.transaction do
+  		activity_clone = old_activity.dup
+  		activity_clone.lesson_plan_id = self.id
+  		activity_clone.save
+	    resource_ids = old_activity.user_resources.pluck('resource_id')
+	    activity_clone.clone_and_join_resources(Resource.where(id: resource_ids), nil)
+	    activity_clone.bulk_join_dimensions(old_activity.dimensions)
+  	end
   end
 
 end

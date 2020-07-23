@@ -40,6 +40,7 @@ class Ability
       can :manage, :all
     elsif user.is_teacher? || user.is_counselor? || user.is_supervisor?
       can :read, :all
+      can :create, LessonPlan.new(is_exemplar: false)
     end
   end
 end

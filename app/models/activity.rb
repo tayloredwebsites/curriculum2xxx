@@ -163,4 +163,9 @@ class Activity < BaseRec
     return [activity, translKeys]
   end
 
+
+  def bulk_join_dimensions(dimensions_to_join)
+    dimensions_to_join.each { |dim| self.dimensions << dim }
+  end
+
 end

@@ -91,4 +91,14 @@ class Resource < BaseRec
     return [table, translKeys]
   end
 
+  def clone_with_translations
+    #dup creates a shallow copy with a nil id
+    r = dup
+    ActiveRecord::Base.transaction do
+      r.save
+      Translation.copy_translations_for_key(name_key, r.name_key)
+    end
+    return r
+  end
+
 end

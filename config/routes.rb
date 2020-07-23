@@ -76,6 +76,19 @@ scope "(:locale)", locale: /tr|en|ar_EG|es/ do
   resources :lesson_plans,
     only: [:show, :new, :create] do
     collection do
+      post 'make_exemplar'
+    end
+  end
+
+  resources :activities,
+    only: [:new, :create] do
+    collection do
+    end
+  end
+
+  resources :lookup_tables_options,
+    only: [:new, :create] do
+    collection do
     end
   end
 

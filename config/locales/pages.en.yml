@@ -20,6 +20,7 @@ en:
       deactivate: "Deactivate"
       confirm_deactivate: "Are you sure you want to deactivate connection to the following item:\n%{item}"
       confirm_deactivate_item: "Are you sure you want to deactivate:\n%{item}"
+      confirm_create_item: "Create %{item_name}?"
       confirm_restore_item: "Restore %{item}?"
       create: "Create"
       create_item: "Create %{item}"
@@ -232,6 +233,8 @@ en:
     authors: "Authors"
     segment: "Lesson Plan Segment"
     segment_with_num: "Lesson Plan Segment #%{sequence}"
+    create_exemplar: "Create Exemplar"
+    exemplar_from_lp: "new exemplar lesson plan from current lesson plan"
   activity:
     title: "Activity"
     title_with_num: "Activity #%{sequence}"

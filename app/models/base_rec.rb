@@ -124,4 +124,26 @@ class BaseRec < ActiveRecord::Base
     return SUBJECT_COLORS[BASE_SUBJECTS.index(subject_code)]
   end
 
+
+  # Clone a list of resource records, and attach them to the current rec.
+  # If a user_for_joins is provided, join with a UserResources rec,
+  # else join with a ResourceJoin rec.
+  def clone_and_join_resources(resources, user_for_joins)
+    if self.class.reflect_on_association(:resource_joins).present? &&
+      self.class.reflect_on_association(:resource_joins).present?
+      resources.each do |r|
+        resource = r.clone_with_translations
+        if user_for_joins.present? && resource.id
+          UserResource.create(
+              resource: resource,
+              user_resourceable: self,
+              user: user_for_joins
+            )
+        elsif resource.id
+          self.resources << resource
+        end #if block: user_for_joins.present?
+      end #resources.each do |r|
+    end #self is resourceable and user_resourceable
+  end #def copy_resources(resources, user_for_joins)
+
 end

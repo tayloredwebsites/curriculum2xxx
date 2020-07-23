@@ -33,6 +33,13 @@
         <%= link_to("Edit #{I18n.translate('lesson_plan.title')}", lesson_plan_path(@lesson_plan.id, editme: @lesson_plan.id) ) if current_user.present? && can?(:edit, @lesson_plan) %>
         <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
       <% end %>
+      <% if can?(:create, LessonPlan.new(is_exemplar: true)) %>
+        <%= link_to(
+          "<button class='btn btn-info'>#{I18n.translate('lesson_plan.create_exemplar')}</button>".html_safe,
+          make_exemplar_lesson_plans_path(lesson_plan: {id: @lesson_plan}),
+          create_options(I18n.translate('lesson_plan.exemplar_from_lp'))
+        ) %>
+      <% end %>
       <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
     </div>
     <% @detailTables[:body].each do |table| %>
