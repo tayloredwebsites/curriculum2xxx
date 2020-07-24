@@ -26,7 +26,7 @@ class Activity < BaseRec
     "activities.#{id}.desc"
   end
 
-  def build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version)
+  def build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version, permissionsRec)
     urls = Rails.application.routes.url_helpers
     popup_options = {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
     activity_title = "#{I18n.translate('lesson_plan.segment_with_num', sequence: sequence)} - #{I18n.t('app.labels.title')}"
@@ -63,6 +63,7 @@ class Activity < BaseRec
           {
             transl_key: header_types[header_type][:key],
             edit: header_types[header_type][:edit],
+            rec: permissionsRec,
           }
         ]
       },
@@ -120,7 +121,7 @@ class Activity < BaseRec
 
     #activity headers
     [:title, :time_min, :student_org, :teach_strat].each do |header_type|
-      table, keys = build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version)
+      table, keys = build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version, lp)
       activity[:tables] << table
       translKeys.concat(keys)
     end

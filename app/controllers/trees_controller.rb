@@ -850,7 +850,7 @@ class TreesController < ApplicationController
 
     process_tree = (@tree[:depth] == @treeTypeRec[:outcome_depth])
     if process_tree
-      @editMe = (params['editme'] == @tree.id.to_s) && can?(:update, @tree)
+      @editMe = (params['editme'] == @tree.id.to_s) && can?(:create, LessonPlan.new(is_exemplar: false))
       config = TreeTypeConfig.where(
           tree_type_id: @treeTypeRec.id,
           version_id: @versionRec.id,

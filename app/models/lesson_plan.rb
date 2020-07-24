@@ -28,6 +28,11 @@ class LessonPlan < BaseRec
   	return "lesson_plan.title.#{working ? 'working' : 'exemplar'}"
   end
 
+  # used by cancancan to determine if the user should have
+  # :edit access to a working lesson plan
+  def authored_by?(user)
+  	self.users.pluck('id').include?(user.id)
+  end
 
   # {
   #   rec: rec,
@@ -102,6 +107,7 @@ class LessonPlan < BaseRec
       table_partial_name: 'trees/show/simple_header',
       headers_array: [{text: text }],
       content_array: [{
+      	rec: self,
       	transl_key: name_key,
       	edit: {path: urls.edit_translation_path(id: 'nil', translation: {key: name_key, title: edit_text } ), options: popup_options }
       }]

@@ -16,7 +16,7 @@
 -->
 <!-- Generic Column Cell -->
 <% if content
-    is_xl_xs_grid = (@editMe && can?(:manage, content[:rec]))
+    is_xl_xs_grid = (@editMe && can?(:edit, content[:rec]))
 %>
   <div class="<%= border ? "min-height dark-border" : "" %> <%= is_xl_xs_grid ? "generic-grid generic-grid--xl-xs" : "" %>">
     <div class="padding-left padding-right padding-top padding-bottom">
