@@ -24,7 +24,7 @@ class PasswordsController < Devise::PasswordsController
   def update_sso_password(email)
     body = { user: { email: email, password: params[:user][:password] } }
     token = JWT.encode({email: email}, JWT_PASSWORD)
-    response = HTTParty.put('http://localhost:3000/users/password', body: body, headers: sso_headers(token)).parsed_response
+    response = HTTParty.put('http://localhost:3000/users/passwords', body: body, headers: sso_headers(token)).parsed_response
     response['status']
     Rails.logger.debug("Response - #{response.inspect}".yellow)
   end
