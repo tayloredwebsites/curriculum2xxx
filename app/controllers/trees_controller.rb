@@ -835,12 +835,22 @@ class TreesController < ApplicationController
 
   def show
     token = JWT.encode({email: current_user.email}, JWT_PASSWORD)
-    response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
-    response['sections'] ? @sections = response['sections'] : @sections = []
-    
+
+    # response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
+    # response['sections'] ? @sections = response['sections'] : @sections = []
+
+    @sections = []
+    begin
+      response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
+    rescue
+    end
+    if response && response['sections']
+      @sections = response['sections']
+    end
+
     process_tree = (@tree[:depth] == @treeTypeRec[:outcome_depth])
     if process_tree
-      @editMe = (params['editme'] == @tree.id.to_s) && can?(:update, @tree)
+      @editMe = (params['editme'] == @tree.id.to_s) && can?(:create, LessonPlan.new(is_exemplar: false))
       config = TreeTypeConfig.where(
           tree_type_id: @treeTypeRec.id,
           version_id: @versionRec.id,

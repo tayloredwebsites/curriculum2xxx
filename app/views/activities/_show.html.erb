@@ -29,10 +29,16 @@
     <% activity[:tables].each do |t| %>
       <%= render partial: t[:table_partial_name], locals: { table: t } %>
     <% end %>
+    <% activity[:activity_tables].each do |t| %>
+      <%= render partial: t[:table_partial_name], locals: { table: t } %>
+    <% end %>
+    <% activity[:activity_footer].each do |t| %>
+      <%= render partial: t[:table_partial_name], locals: { table: t } %>
+    <% end %>
   </div>
 <% end %>
 <%
   segment_name = I18n.translate('lesson_plan.segment')
   create_segment = "<strong>#{I18n.translate('app.labels.create_item', item: segment_name ) }</strong>"
 %>
-<%= link_to(create_segment.html_safe, new_activity_path(activity: {lesson_plan_id: @lesson_plan.id }), {:class => 'pull-left margint-top margin-bottom', :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if can?(:manage, LookupTablesOption.new) if @editMe && can?(:manage, @lesson_plan) %>
+<%= link_to(create_segment.html_safe, new_activity_path(activity: {lesson_plan_id: @lesson_plan.id }), {:class => 'pull-left margint-top margin-bottom', :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if @editMe && can?(:manage, @lesson_plan) %>

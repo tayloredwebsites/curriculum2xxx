@@ -12,11 +12,10 @@ class Activity < BaseRec
   # items.
   RESOURCE_CODES = [
     'purpose',
-    'student_org', #lookup table
-    'teach_strat', #lookup table
     'connections',
     'formative_assessment',
     'desc_activity',
+    'trans_to_next',
   ]
 
   def name_key
@@ -27,7 +26,7 @@ class Activity < BaseRec
     "activities.#{id}.desc"
   end
 
-  def build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version)
+  def build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version, permissionsRec)
     urls = Rails.application.routes.url_helpers
     popup_options = {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}
     activity_title = "#{I18n.translate('lesson_plan.segment_with_num', sequence: sequence)} - #{I18n.t('app.labels.title')}"
@@ -35,7 +34,7 @@ class Activity < BaseRec
       title: {
         text: "<strong>#{I18n.t('app.labels.title')}:</strong>",
         key: name_key,
-        edit: { path: urls.edit_translation_path(id: 'nil', translation: {key: name_key, title: activity_title, disable_ckeditor: true } ), options: popup_options },
+        edit: { path: urls.edit_activity_path(id: self.id), options: popup_options },
       },
       time_min: {
         text: I18n.t('activity.time_min', min: self.time_min.to_i),
@@ -64,6 +63,7 @@ class Activity < BaseRec
           {
             transl_key: header_types[header_type][:key],
             edit: header_types[header_type][:edit],
+            rec: permissionsRec,
           }
         ]
       },
@@ -99,7 +99,7 @@ class Activity < BaseRec
   #     },
   def build_activity_tables(treeType, version, lp, user_for_joins)
     #(treeType, version, resource_codes, resourceable, joins, resourcesByCode, user_for_joins)
-    activity = { sequence: sequence, name_key: name_key, tables: [] }
+    activity = { sequence: sequence, name_key: name_key, tables: [], activity_tables: [], activity_footer: [] }
     resourcesByCode = Hash.new { |h, k| h[k] = [] }
     dimensionsByCode = Hash.new { |h, k| h[k] = [] }
     selectOptionsById = Hash[
@@ -121,28 +121,7 @@ class Activity < BaseRec
 
     #activity headers
     [:title, :time_min, :student_org, :teach_strat].each do |header_type|
-      table, keys = build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version)
-      activity[:tables] << table
-      translKeys.concat(keys)
-    end
-
-    #activity resources
-    # resource_codes.each do |code|
-    #   header, content, keys = build_generic_column(treeType, version, code, resourceable, joins, resourcesByCode[code], user_for_joins)
-    #   table[:headers_array] << header
-    #   table[:content_array] << content
-    #   translKeys.concat(keys)
-    # end
-    ['desc_activity', 'connections', 'formative_assessment'].each do |r_code|
-      table, keys = Resource.build_generic_table(
-        treeType,
-        version,
-        [r_code],
-        self,
-        joins,
-        resourcesByCode,
-        user_for_joins
-      )
+      table, keys = build_header_table(header_type, resourcesByCode, selectOptionsById, joins, treeType, version, lp)
       activity[:tables] << table
       translKeys.concat(keys)
     end
@@ -156,9 +135,36 @@ class Activity < BaseRec
         activity_dimensions,
         dimensionsByCode
       )
-      activity[:tables] << table if table
-      translKeys.concat(keys) if keys
+    activity[:tables] << table if table
+    translKeys.concat(keys) if keys
 
+    #activity resources
+    # resource_codes.each do |code|
+    #   header, content, keys = build_generic_column(treeType, version, code, resourceable, joins, resourcesByCode[code], user_for_joins)
+    #   table[:headers_array] << header
+    #   table[:content_array] << content
+    #   translKeys.concat(keys)
+    # end
+    [
+      'purpose',
+      'desc_activity',
+      'connections',
+      'formative_assessment',
+      'trans_to_next',
+    ].each do |r_code|
+      table, keys = Resource.build_generic_table(
+        treeType,
+        version,
+        [r_code],
+        self,
+        joins,
+        resourcesByCode,
+        user_for_joins
+      )
+      activity[:activity_tables] << table if r_code != 'trans_to_next'
+      activity[:activity_footer] << table if r_code == 'trans_to_next'
+      translKeys.concat(keys)
+    end
 
     return [activity, translKeys]
   end

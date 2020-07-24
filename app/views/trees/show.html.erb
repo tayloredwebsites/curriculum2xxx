@@ -11,7 +11,7 @@
       <% if @editMe %>
         <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", tree_path(@tree.id) ) %>)</span>
       <% else %>
-        <%= link_to("Edit #{@hierarchies[@treeTypeRec[:outcome_depth]]}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? && can?(:edit, Tree.new(depth: @treeTypeRec.outcome_depth)) %>
+        <%= link_to("Edit #{@hierarchies[@treeTypeRec[:outcome_depth]]}", tree_path(@tree.id, editme: @tree.id) ) if current_user.present? && can?(:create, LessonPlan.new(is_exemplar: false)) %>
         <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
       <% end %>
       <button class="btn btn-primary print-btn"><span class="fa fa-print"></span> <%= I18n.translate("app.labels.print")%></button>
