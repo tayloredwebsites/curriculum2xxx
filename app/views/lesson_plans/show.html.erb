@@ -18,22 +18,23 @@
   <% if @lesson_plan.is_exemplar %>
     <i class="fa fa-star"></i>
   <% end %>
-  <%= I18n.translate('lesson_plan.title') %>
-  <%= link_to(fa_icon("gears"), new_lookup_tables_option_path(option: {table_names: ['student_org', 'teach_strat']}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if can?(:manage, LookupTablesOption.new) %>
+  <% lp_title = @lesson_plan.is_exemplar ? 'lesson_plan.exemplar_title' : 'lesson_plan.title' %>
+  <%= I18n.translate(lp_title) %>
+  <%= link_to(fa_icon("gears"), new_lookup_tables_option_path(option: {table_names: ['student_org', 'teach_strat']}), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) if can?(:manage, LookupTablesOption.new) && !@lesson_plan.is_exemplar %>
 </h2>
-<div class="container">
+<div class="container margin-bottom">
   <div class="detail-page">
     <% @detailTables[:headers].each do |table| %>
       <%= render partial: table[:table_partial_name], locals: { table: table } %>
     <% end %>
     <div class='col col-lg-12 text-right'>
-      <% if @editMe %>
+      <% if @editMe && !@lesson_plan.is_exemplar %>
         <span class='font-weight-bold'>Editing (<%= link_to("#{I18n.t('app.labels.leave_edit_mode')}", lesson_plan_path(@lesson_plan.id) ) %>)</span>
-      <% else %>
+      <% elsif !@lesson_plan.is_exemplar %>
         <%= link_to("Edit #{I18n.translate('lesson_plan.title')}", lesson_plan_path(@lesson_plan.id, editme: @lesson_plan.id) ) if current_user.present? && can?(:edit, @lesson_plan) %>
         <!-- # %= link_to("Edit LO", edit_tree_path(@tree.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_popup'}) % -->
       <% end %>
-      <% if can?(:create, LessonPlan.new(is_exemplar: true)) %>
+      <% if can?(:create, LessonPlan.new(is_exemplar: true)) && !@lesson_plan.is_exemplar %>
         <%= link_to(
           "<button class='btn btn-info'>#{I18n.translate('lesson_plan.create_exemplar')}</button>".html_safe,
           make_exemplar_lesson_plans_path(lesson_plan: {id: @lesson_plan}),
@@ -45,6 +46,17 @@
     <% @detailTables[:body].each do |table| %>
       <%= render partial: table[:table_partial_name], locals: { table: table } %>
     <% end %>
+
+    <div id="tracker-sections-table" class="margin-top related-items-table">
+      <div class='row dark-border colorful-header colorful-header-0  generic-grid generic-grid--cols-1'>
+        My Tracker Sections
+      </div>
+      <div id="tracker-sections-data" class="padding-left padding-right dark-border generic-grid generic-grid--cols-1">
+        <% @sections.each do |section| %>
+          <%= intercomponent_link("#{section['section_name']} #{section['section_line_number']}", "http://localhost:3006/sections/#{section['section_id']}") %>
+        <% end %>
+      </div>
+    </div>
 
   </div>
 </div>

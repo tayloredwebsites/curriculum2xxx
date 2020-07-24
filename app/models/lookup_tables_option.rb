@@ -10,7 +10,7 @@ class LookupTablesOption < BaseRec
 
   # returns both the (ordered) array of options for the given table
   # and the translation keys to lookup, to build the translations for
-  # the
+  # the dropdown menu
   def self.get_table_array_and_keys(treeTypeCode, versionCode, table_name)
   	ret_array = []
   	translKeys = [get_label_key(treeTypeCode, versionCode, table_name)]
@@ -19,7 +19,7 @@ class LookupTablesOption < BaseRec
   	).order(
   	  'lookup_code'
   	).each do |l|
-      translKeys << l.lookup_translation_key
+      translKeys << l.name_key
   	  ret_array << l
   	end
   	return [ret_array, translKeys]

@@ -12,6 +12,8 @@ class LessonPlan < BaseRec
   	'evid_achievement',
   	'objective',
   	'reflections',
+  	'lesson_start',
+  	'lesson_closure',
   ]
 
   scope :active, -> { where(:active => true) }

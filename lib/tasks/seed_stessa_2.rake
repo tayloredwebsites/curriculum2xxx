@@ -479,6 +479,8 @@ namespace :seed_stessa_2 do
       ["Evidence of Achievement of Lesson Plan", "دليل على تحقيق خطة الدرس"],
       ["Objective of This Day's Lesson", "الهدف من درس هذا اليوم"],
       ["Notes and Reflections", "ملاحظات وتأملات"],
+      ["How will you start the lesson?", "كيف ستبدأ الدرس؟"],
+      ["Closure? Or coming attraction for next lesson?", "إغلاق؟ أو جذب القادمة للدرس القادم؟"]
     ]
 
     rec, status, message = Translation.find_or_update_translation(BaseRec::LOCALE_EN, LessonPlan.lp_table_header_key(true), "My Lesson Plans")
@@ -508,12 +510,11 @@ namespace :seed_stessa_2 do
   desc "create translations for outcome resources"
   task activity_translations: :environment do
     act_resource_codes_arr = [
-      ['Purpose of Activity', 'Purpose of Activity'],
-      ['Student Organization', 'Student Organization'],
-      ['Teaching Strategy', 'Teaching Strategy'],
+      ['Pedagogical Purpose of Activity', 'Pedagogical Purpose of Activity'],
       ['Connections to Capstones, Grand Challenges, and Other Subjects?', 'Connections to Capstones, Grand Challenges, and Other Subjects?'],
-      ['Formative Assessment During Learning', 'Formative Assessment During Learning'],
+      ['Type of Formative Assessment to be Used?', 'Formative Assessment During Learning'],
       ['Description of Activity', 'Description of Activity'],
+      ['How will you transition to the next segment?', 'How will you transition to the next segment?'],
     ]
 
     act_resource_codes_arr.each_with_index do |resource, i|

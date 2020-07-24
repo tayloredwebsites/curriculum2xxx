@@ -23,6 +23,7 @@ class LessonPlansController < ApplicationController
     end
   end
 
+
   def create
     ActiveRecord::Base.transaction do
       @lesson_plan = LessonPlan.create(lesson_plan_params)
@@ -38,7 +39,17 @@ class LessonPlansController < ApplicationController
     end
   end
 
+
   def show
+    body = { user: { email: current_user.email} }
+    token = JWT.encode({email: current_user.email}, JWT_PASSWORD)
+    begin
+      response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
+      @sections = response['sections']
+    rescue
+    end
+    @sections = [] if @sections.nil?
+
     @editMe = (params[:editme] == @lesson_plan.id.to_s)
     translKeys = [@lesson_plan.name_key]
     @detailTables = Hash.new { |h, k| h[k] = [] }
@@ -56,7 +67,7 @@ class LessonPlansController < ApplicationController
     table, keys = Resource.build_generic_table(
       @treeTypeRec,
       @versionRec,
-      ['objective', 'evid_achievement'],  #resource_code,
+      ['objective', 'evid_achievement', 'lesson_start'],  #resource_code,
       @lesson_plan,
       joins,
       resourcesByCode,
@@ -77,7 +88,7 @@ class LessonPlansController < ApplicationController
     table, keys = Resource.build_generic_table(
       @treeTypeRec,
       @versionRec,
-      ['reflections'],  #resource_code,
+      ['lesson_closure', 'reflections'],  #resource_code,
       @lesson_plan,
       joins,
       resourcesByCode,

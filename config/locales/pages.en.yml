@@ -229,6 +229,7 @@ en:
       updated_key: "Translation for %{key} updated."
       error_creating_code_val: "error creating translation #{code} to: #{val}"
   lesson_plan:
+    exemplar_title: "Exemplar Lesson Plan"
     title: "Lesson Plan"
     authors: "Authors"
     segment: "Lesson Plan Segment"
@@ -239,7 +240,10 @@ en:
     title: "Activity"
     title_with_num: "Activity #%{sequence}"
     time_min: "<strong>Estimated Time:</strong> %{min} minutes"
+    time: "Estimated Time in Minutes"
     desc: "Description of Activity"
+    teach_strat: "Teaching Strategy"
+    student_org: "Student Organization"
   trees:
     index:
       name: "Mektebim STEM Curriculum"

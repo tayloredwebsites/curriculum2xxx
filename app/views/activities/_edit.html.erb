@@ -11,8 +11,18 @@
       <%= f.hidden_field :sequence, value: @activity.sequence %>
     </div>
     <fieldset>
+
       <label for='translation[value]'><%= I18n.translate('app.labels.title') %></label>
-      <input type="text" name="translation[value]">
+      <%= f.text_area :value, name: "translation[value]", value: @name_translation.value %>
+
+      <%= f.label :time_min, I18n.t('activity.time') %>
+      <%= f.number_field :time_min, value: @activity.time_min %>
+
+      <%= f.label :student_org, I18n.translate('activity.student_org') %>
+      <%= f.select :student_org, @dropdown_tables[:student_org].map { |opt| [ @translations[opt.name_key], opt.id ] }, include_blank: true %>
+
+      <%= f.label :teach_strat, I18n.translate('activity.teach_strat') %>
+      <%= f.select :teach_strat, @dropdown_tables[:teach_strat].map { |opt| [ @translations[opt.name_key], opt.id ] }, include_blank: true %>
     </fieldset>
 
     <div class="modal-footer">
