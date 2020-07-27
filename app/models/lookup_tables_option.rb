@@ -8,6 +8,8 @@ class LookupTablesOption < BaseRec
 		return "table.#{table_name}.opt_id.#{id}"
 	end
 
+  # TODO: Fix logic that would cause shared options between treetype/versions.
+  #
   # returns both the (ordered) array of options for the given table
   # and the translation keys to lookup, to build the translations for
   # the dropdown menu

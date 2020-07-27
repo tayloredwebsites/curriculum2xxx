@@ -21,11 +21,11 @@
   }
 -->
 <% table[:activities].each do |activity| %>
-  <div class='row margin-top dark-border colorful-header colorful-header-1 generic-grid generic-grid--cols-1'>
+  <div class='activity-table row margin-top dark-border--thick colorful-header colorful-header-1 generic-grid generic-grid--cols-1'>
     <%= I18n.translate('lesson_plan.segment_with_num', sequence: activity[:sequence]) %>
     <%= "- #{@translations[activity[:name_key]]}" if activity[:name_key] %>
   </div>
-  <div class='row padding-left padding-right padding-top padding-bottom dark-border generic-grid generic-grid--cols-1'>
+  <div class='row padding-left padding-right padding-top padding-bottom dark-border--thick generic-grid generic-grid--cols-1'>
     <% activity[:tables].each do |t| %>
       <%= render partial: t[:table_partial_name], locals: { table: t } %>
     <% end %>

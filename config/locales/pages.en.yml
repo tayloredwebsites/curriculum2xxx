@@ -417,3 +417,6 @@ en:
         work_phone: 'Work Phone'
         work_address: 'Work Address'
         terms_accepted: 'Terms and condition of use'
+  tracker:
+    page_for_item: '%{item} Tracker Page'
+
