@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200714223753) do
+ActiveRecord::Schema.define(version: 20200727201502) do
 
   create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "lesson_plan_id", null: false
@@ -104,10 +104,13 @@ ActiveRecord::Schema.define(version: 20200714223753) do
   create_table "lookup_tables_options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "table_name"
     t.string "lookup_code"
-    t.string "lookup_translation_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: true, null: false
+    t.bigint "tree_type_id"
+    t.bigint "version_id"
+    t.index ["tree_type_id"], name: "index_lookup_tables_options_on_tree_type_id"
+    t.index ["version_id"], name: "index_lookup_tables_options_on_version_id"
   end
 
   create_table "outcomes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|

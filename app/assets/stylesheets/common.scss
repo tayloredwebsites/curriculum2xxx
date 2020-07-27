@@ -50,9 +50,12 @@ body {
   }
 .colorful-header {
   text-align: center;
-  &:not(.sub-header-margin) {
-    min-height: 40px;
-    font-weight: bold;
+  &:not(.sub-header-margin) { font-weight: bold; }
+  &:not(.sub-header-margin), &:not(.activity-table) { min-height: 40px; }
+  &.activity-table {
+    font-size: 1.5rem;
+    line-height: 60px;
+    min-height: 75px;
   }
   &.colorful-header-0 { background-color: #d2ccf5; }
   &.colorful-header-1 { background-color: #ffedc1; }
@@ -243,6 +246,7 @@ End Treeview styles- deprecated. These are for the old Curriculum Tree page.
 .dark-border--bottom {border-bottom: 1px solid black;}
 .dark-border--left {border-left: 1px solid black;}
 .dark-border--right {border-right: 1px solid black;}
+.dark-border--thick { border: 3px solid black; }
 
 .cloud-tag {
   border: 1px solid grey;

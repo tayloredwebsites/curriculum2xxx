@@ -1,6 +1,21 @@
 <% content_for(:title_code, 'trees.show.name') %>
 <% content_for(:page_class, 'trees') %>
 
+<h2><%= @hierarchies[@tree[:depth]] %></h2>
+<!--
+  Link to LO Page in Tracker.
+  TODO:
+       - Modify to only display if @tracker_link is
+         defined for current_user?
+       - Define @tracker_link in controller.
+-->
+<a href="<%= @tracker_link || '#' %>">
+<button class="btn btn-info">
+  <%= I18n.translate("tracker.page_for_item", item: @hierarchies[@tree[:depth]]) %>
+  <i class="fa fa-share-square-o"></i>
+</button>
+</a>
+
 <div class='container'>
   <!--  loop through config obj for the headers -->
   <div class='detail-page'>
