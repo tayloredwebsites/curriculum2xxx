@@ -1,12 +1,13 @@
 module Sso
   module Registrations
 
+    include Sso::Constants
+
     def create
       build_resource(sign_up_params)
       resource.save
-
       if resource.persisted?
-        perform_sso_signup if SSO_ENABLED
+        perform_sso_signup if secrets['sso_enabled']
 
         if resource.active_for_authentication?
           set_flash_message! :notice, :signed_up
@@ -26,8 +27,8 @@ module Sso
 
     def perform_sso_signup
       body = {user: sign_up_params}
-      response = HTTParty.post('http://localhost:3000/users', body: body).parsed_response
-      session[:jwt_token] = response['token']   
+      response = HTTParty.post(secrets['sso_url'] + '/users', body: body).parsed_response
+      session[:jwt_token] = response['token']
     end
   end
 end

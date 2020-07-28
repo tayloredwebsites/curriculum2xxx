@@ -1,5 +1,6 @@
 class PasswordsController < Devise::PasswordsController
   include Sso::Headers
+  include Sso::Constants
 
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
@@ -23,8 +24,8 @@ class PasswordsController < Devise::PasswordsController
 
   def update_sso_password(email)
     body = { user: { email: email, password: params[:user][:password] } }
-    token = JWT.encode({email: email}, JWT_PASSWORD)
-    response = HTTParty.put('http://localhost:3000/users/passwords', body: body, headers: sso_headers(token)).parsed_response
+    token = JWT.encode({email: email}, secrets['json_api_key'])
+    response = HTTParty.put(secrets['sso_url'] + '/users/passwords', body: body, headers: sso_headers(token)).parsed_response
     response['status']
     Rails.logger.debug("Response - #{response.inspect}".yellow)
   end

@@ -1,4 +1,5 @@
 class LessonPlansController < ApplicationController
+  include Sso::Constants
   before_action :authenticate_user!
   before_action :find_lesson_plan, only: [:show]
   before_action :find_lp_tree, only: [:show]
@@ -42,9 +43,9 @@ class LessonPlansController < ApplicationController
 
   def show
     body = { user: { email: current_user.email} }
-    token = JWT.encode({email: current_user.email}, JWT_PASSWORD)
+    token = JWT.encode({email: current_user.email}, secrets['json_api_key'])
     begin
-      response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
+      response = HTTParty.get(secrets['tracker_url'] + '/api/v1/tracker_pages', body: token).parsed_response
       @sections = response['sections']
     rescue
     end

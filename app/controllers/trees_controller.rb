@@ -1,4 +1,5 @@
 class TreesController < ApplicationController
+  include Sso::Constants
 
   before_action :authenticate_user!
   before_action :find_tree, only: [:show, :show_outcome, :edit, :update, :deactivate]
@@ -834,14 +835,11 @@ class TreesController < ApplicationController
   end
 
   def show
-    token = JWT.encode({email: current_user.email}, JWT_PASSWORD)
-
-    # response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
-    # response['sections'] ? @sections = response['sections'] : @sections = []
+    token = JWT.encode({email: current_user.email}, secrets['json_api_key'])
 
     @sections = []
     begin
-      response = HTTParty.get('http://localhost:3006/api/v1/tracker_pages', body: token).parsed_response
+      response = HTTParty.get(secrets['tracker_url'] + '/api/v1/tracker_pages', body: token).parsed_response
     rescue
     end
     if response && response['sections']

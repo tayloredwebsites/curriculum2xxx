@@ -1,5 +1,7 @@
 module Sso::Application
 
+  include Sso::Constants
+
   def sso_handle_intercomponent_request
     session[:jwt_token] = params[:jwt_token]
     sso_set_token_data
@@ -17,12 +19,12 @@ module Sso::Application
     return false if request.referer.nil?
     port_and_path = request.referer.split(':').last
     port = Integer(port_and_path.split('/').first)
-    port != APP_PORT && params[:jwt_token].present? 
+    port != secrets['app_port'] && params[:jwt_token].present?
   end
 
   def sso_verify_token
     return true if sso_is_valid_token?
-    
+
     unless @payload.nil?
       user = User.find_by_email @payload['email']
       sign_out user if current_user.present? && user == current_user
@@ -41,7 +43,7 @@ module Sso::Application
 
   def sso_set_token_data
     begin
-      token_data = JWT.decode(session[:jwt_token], JWT_PASSWORD, true, algorithm: 'HS256')
+      token_data = JWT.decode(session[:jwt_token], secrets['json_api_key'], true, algorithm: 'HS256')
     rescue JWT::DecodeError
       token_data = nil
     end

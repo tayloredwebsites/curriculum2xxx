@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include Sso::Constants
 
   def unauthorized(message = I18n.translate('app.errors.unauthorized'))
     redirect_to root_path, alert: message
@@ -238,7 +239,7 @@ module ApplicationHelper
   end
 
   def intercomponent_link(link_text, url)
-    SSO_ENABLED ? link_to(link_text, url + "?jwt_token=#{session[:jwt_token]}") : link_to(link_text, url)
+    secrets['sso_enabled'] ? link_to(link_text, url + "?jwt_token=#{session[:jwt_token]}") : link_to(link_text, url)
   end
 
 end
