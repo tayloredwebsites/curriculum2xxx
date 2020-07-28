@@ -846,6 +846,12 @@ class TreesController < ApplicationController
     end
     if response && response['sections']
       @sections = response['sections']
+      @tracker_link = response['tracker_link'] + "?jwt_token=#{session[:jwt_token]}"
+      # Since we already have sections links on the bottom of the page,
+      # I figured we take them to their homepage so that they can see all their sections!
+      # We can very easily change this if it needs to be something else.
+      @evidence_types = response['evidence_types']
+      # Evidence_types data is how we want it!
     end
 
     process_tree = (@tree[:depth] == @treeTypeRec[:outcome_depth])
