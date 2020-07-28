@@ -60,7 +60,7 @@ class LessonPlansController < ApplicationController
       translKeys << @lp_tree.name_key
     end
 
-    joins = @lesson_plan.is_exemplar ? @lesson_plan.resource_joins : @lesson_plan.user_resources
+    joins = @lesson_plan.resource_joins
     resourcesByCode = Hash.new { |h, k| h[k] = [] }
     Resource.where(id: joins.pluck('resource_id').uniq).each { |r| resourcesByCode[r.resource_code] << r }
 
@@ -97,8 +97,6 @@ class LessonPlansController < ApplicationController
     @detailTables[:body] << table
     translKeys.concat(keys)
 
-
-
     @translations = Translation.translationsByKeys(
       @locale_code,
       translKeys
@@ -125,7 +123,7 @@ class LessonPlansController < ApplicationController
       Translation.copy_translations_for_key(@working_lp.name_key, @lesson_plan.name_key)
       @working_lp.users.each { |user| @lesson_plan.users << user }
 
-      resource_ids = @working_lp.user_resources.pluck('resource_id')
+      resource_ids = @working_lp.resource_joins.pluck('resource_id').uniq
 
       @lesson_plan.clone_and_join_resources(Resource.where(id: resource_ids), nil)
 

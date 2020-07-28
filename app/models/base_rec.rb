@@ -129,21 +129,19 @@ class BaseRec < ActiveRecord::Base
   # If a user_for_joins is provided, join with a UserResources rec,
   # else join with a ResourceJoin rec.
   def clone_and_join_resources(resources, user_for_joins)
-    if self.class.reflect_on_association(:resource_joins).present? &&
-      self.class.reflect_on_association(:resource_joins).present?
+    if self.class.reflect_on_association(:resource_joins).present?
       resources.each do |r|
         resource = r.clone_with_translations
-        if user_for_joins.present? && resource.id
-          UserResource.create(
+        if resource.id
+          user_id = user_for_joins.id if user_for_joins
+          ResourceJoin.create(
               resource: resource,
-              user_resourceable: self,
-              user: user_for_joins
+              resourceable: self,
+              user_id: user_id,
             )
-        elsif resource.id
-          self.resources << resource
         end #if block: user_for_joins.present?
       end #resources.each do |r|
-    end #self is resourceable and user_resourceable
+    end #self is resourceable
   end #def copy_resources(resources, user_for_joins)
 
 end

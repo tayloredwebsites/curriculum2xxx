@@ -3,7 +3,6 @@ class LessonPlan < BaseRec
   has_many :activities, :class_name => 'Activity'
   has_many :resource_joins, as: :resourceable
   has_many :resources, through: :resource_joins
-  has_many :user_resources, as: :user_resourceable
   belongs_to :user, optional: true
   belongs_to :tree
   has_many :users, through: :user_lesson_plans
@@ -162,8 +161,9 @@ class LessonPlan < BaseRec
   		activity_clone = old_activity.dup
   		activity_clone.lesson_plan_id = self.id
   		activity_clone.save
-	    resource_ids = old_activity.user_resources.pluck('resource_id')
-	    activity_clone.clone_and_join_resources(Resource.where(id: resource_ids), nil)
+  		Translation.copy_translations_for_key(old_activity.name_key, activity_clone.name_key)
+	    resource_ids = old_activity.resource_joins.pluck('resource_id').uniq
+	    activity_clone.clone_and_join_resources(Resource.where(id: resource_ids), user_for_joins)
 	    activity_clone.bulk_join_dimensions(old_activity.dimensions)
   	end
   end

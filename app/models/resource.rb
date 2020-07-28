@@ -1,13 +1,14 @@
 class Resource < BaseRec
   has_many :resource_joins
-  has_many :user_resources
   belongs_to :resourceable, polymorphic: true, optional: true
   belongs_to :user, optional: true
-  has_many :users, through: :user_resources
+  has_many :users, through: :resource_joins
 
   has_many :trees, through: :resource_joins, source: :resourceable, source_type: 'Tree'
   has_many :outcomes, through: :resource_joins, source: :resourceable, source_type: 'Outcome'
   has_many :dimensions, through: :resource_joins, source: :resourceable, source_type: 'Dimension'
+  has_many :lesson_plans, through: :resource_joins, source: :resourceable, source_type: 'LessonPlan'
+  has_many :activities, through: :resource_joins, source: :resourceable, source_type: 'Activity'
 
  #  Deprecated - This does not work with reqsequencing/multiple
  #    resources of the same type attached to the same curriculum item
@@ -61,7 +62,8 @@ class Resource < BaseRec
     if (content.length == 0)
       user_id = user_for_joins ? user_for_joins.id : nil
       content << {
-        rec: user_for_joins ? UserResource.new(user_resourceable: resourceable, user: user_for_joins) :  ResourceJoin.new(resourceable: resourceable),
+        # TODO: add user_id to ResourceJoin once column is added to that table
+        rec: ResourceJoin.new(resourceable: resourceable, user_id: user_id),
         transl_key: nil,
         edit: { path: urls.new_resource_path(
             resource: { resource_code: resource_code, resourceable_id: resourceable.id, resourceable_type: resourceable.class.to_s, user_id: user_id },

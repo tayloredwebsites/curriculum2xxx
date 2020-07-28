@@ -31,7 +31,6 @@ class Dimension < BaseRec
   has_many :trees, through: :dim_trees
 
   has_many :resource_joins, -> {where active: true}, as: :resourceable
-  has_many :user_resources, as: :user_resourceable
   has_many :resources, through: :resource_joins
 
   has_many :activity_dimensions

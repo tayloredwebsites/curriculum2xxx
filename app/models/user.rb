@@ -19,8 +19,9 @@ class User < BaseRec
   validates :work_address, presence: true
   validates :terms_accepted, presence: true
 
-  has_many :user_resources
-  has_many :resources, through: :user_resources
+  has_many :resource_joins
+  has_many :resources, through: :resource_joins
+  belongs_to :resource, optional: true
 
   has_many :user_lesson_plans
   has_many :lesson_plans, through: :user_lesson_plans

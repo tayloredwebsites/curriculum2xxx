@@ -48,7 +48,6 @@ class Tree < BaseRec
   has_many :dimensions, through: :dim_trees
 
   has_many :resource_joins, as: :resourceable
-  has_many :user_resources, as: :user_resourceable
   has_many :resources, through: :resource_joins
 
   has_many :lesson_plans
