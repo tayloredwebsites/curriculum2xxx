@@ -44,7 +44,7 @@ class Ability
       can :manage, LessonPlan do |lesson_plan|
         lesson_plan.authored_by?(user)
       end
-      can :manage, UserResource, :user_id => user.id
+      can :manage, ResourceJoin, :user_id => user.id
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200727201502) do
+ActiveRecord::Schema.define(version: 20200728144232) do
 
   create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "lesson_plan_id", null: false
@@ -128,8 +128,10 @@ ActiveRecord::Schema.define(version: 20200727201502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active", default: true, null: false
+    t.bigint "user_id"
     t.index ["resource_id"], name: "index_resource_joins_on_resource_id"
     t.index ["resourceable_type", "resourceable_id"], name: "resourceable"
+    t.index ["user_id"], name: "index_resource_joins_on_user_id"
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
@@ -288,19 +290,6 @@ ActiveRecord::Schema.define(version: 20200727201502) do
     t.boolean "active", default: true, null: false
     t.index ["lesson_plan_id"], name: "user_lp_lp_id"
     t.index ["user_id"], name: "user_lp_user_id"
-  end
-
-  create_table "user_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
-    t.bigint "resource_id", null: false
-    t.bigint "user_id", null: false
-    t.string "user_resourceable_type"
-    t.bigint "user_resourceable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "active", default: true, null: false
-    t.index ["resource_id"], name: "index_user_resources_on_resource_id"
-    t.index ["user_id"], name: "index_user_resources_on_user_id"
-    t.index ["user_resourceable_type", "user_resourceable_id"], name: "user_resourceable"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

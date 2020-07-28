@@ -5,7 +5,6 @@ class Activity < BaseRec
   belongs_to :dimension, optional: true
   has_many :resource_joins, as: :resourceable
   has_many :resources, through: :resource_joins
-  has_many :user_resources, as: :user_resourceable
 
   # Used by the curriculum seed processes
   # to create translations for these
@@ -99,25 +98,21 @@ class Activity < BaseRec
   #     },
   def build_activity_tables(treeType, version, lp, user_for_joins)
     #(treeType, version, resource_codes, resourceable, joins, resourcesByCode, user_for_joins)
+    translKeys = []
     activity = { sequence: sequence, name_key: name_key, tables: [], activity_tables: [], activity_footer: [] }
+
+    joins = resource_joins
     resourcesByCode = Hash.new { |h, k| h[k] = [] }
+    Resource.where(id: joins.pluck('resource_id').uniq).each { |r| resourcesByCode[r.resource_code] << r }
+
     dimensionsByCode = Hash.new { |h, k| h[k] = [] }
+    dimensions.each { |d| dimensionsByCode[d.dim_code] = d }
+
     selectOptionsById = Hash[
         LookupTablesOption.where(
             id: [teach_strat, student_org]
         ).map { |opt| [opt.id, opt.name_key] }
       ]
-    translKeys = []
-
-    if user_for_joins
-      joins = user_resources
-      Resource.where(id: user_resources.pluck('resource_id').uniq).each { |r| resourcesByCode[r.resource_code] << r }
-    else
-      resources.each { |r| resourcesByCode[r.resource_code] << r }
-      joins = resource_joins
-    end
-
-    dimensions.each { |d| dimensionsByCode[d.dim_code] = d }
 
     #activity headers
     [:title, :time_min, :student_org, :teach_strat].each do |header_type|
