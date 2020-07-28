@@ -21,6 +21,7 @@ class User < BaseRec
 
   has_many :resource_joins
   has_many :resources, through: :resource_joins
+  belongs_to :resource, optional: true
 
   has_many :user_lesson_plans
   has_many :lesson_plans, through: :user_lesson_plans
